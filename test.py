@@ -252,7 +252,7 @@ def main()
     struct.fix_coords_in_unit_cell()
     PbTe_primitive = struct.get_ase_atoms()
     #podemos ver la estructura
-    view(PbTe_primitive)
+    #view(PbTe_primitive)
 
     calcula_espresso.relaja()
 
@@ -292,7 +292,7 @@ def main()
     	#veamos como cambia al usar 20 estructuras <---------------------
     	#ensemble.generate(N = 20)
     	#visualizamos lo que hemos hecho
-    	view(ensemble.structures[0].get_ase_atoms())
+    	#view(ensemble.structures[0].get_ase_atoms())
 
     	#A fin de minimizar necesitamos conocer los potenciales, esto se hace usando algun codigo externo
     	#se puede hacer de forma manual o automatica
@@ -343,7 +343,7 @@ def main()
     print(minimizer.get_stress_tensor()[1])
     print("The stocastic error of the free energy instead, was:", minimizer.get_free_energy(return_error = True)[1], " Ry")
     # Draw the 3D structure of the final average atomic positions
-    view(minimizer.dyn.structure.get_ase_atoms())
+    #view(minimizer.dyn.structure.get_ase_atoms())
 
     # We can save the dynamical matrix
     minimizer.dyn.save_qe("dyn_pop1_")
