@@ -1,0 +1,120 @@
+Trans_File		= "Fichier"
+Trans_New		= "Nouveau          Ctrl+n"
+Trans_Open		= "Ouvrir              Ctrl+o"
+Trans_Close		= "Fermer"
+Trans_Save		= "Enregistrer        Ctrl+s"
+Trans_SaveAs		= "Enregistrer Sous"
+Trans_Quit		= "Quitter             Ctrl+q"
+Trans_Edit		= "Editer"
+Trans_Undo		= "Annuler              Ctrl+z"
+Trans_Cut		= "Couper              Ctrl+x"
+Trans_Copy		= "Copier              Ctrl+c"
+Trans_Paste		= "Coller              Ctrl+v"
+Trans_SelAll		= "Tout sélectionner     Ctrl+a"
+Trans_Replace_Menu	= "Cherche/Remplace    Ctrl+f"
+Trans_Insert		= "Insérer"
+Trans_Options		= "Options"
+Trans_Font		= "Police et couleurs"
+Trans_Exe_Opt		= "Options POV-Ray"
+Trans_Force_Coloring	= "Forcer coloration syntaxique"
+Trans_Auto_Save		= "Auto-enregistrement"
+Trans_Yes		= "Oui"
+Trans_No		= "Non"
+Trans_Expand_Keyword	= "Mots-clés auto      Ctrl+space"
+Trans_Expand_Kd		= "Mots-cles"
+Trans_HLP_Lang_Menu	= "Choisir sa langue et l'aide"
+Trans_Choose_Lang	= "Choisir sa langue"
+Trans_FRENCH		= "Français"
+Trans_ENGLISH		= "Anglais"
+Trans_GERMAN		= "Allemand"
+Trans_POLISH		= "Polonais"
+Trans_ITALIAN		= "Italien"
+Trans_DUTCH		= "Hollandais"
+Trans_SPANISH		= "Espagnol"
+Trans_Render_Menu	= "Rendu"
+Trans_Render		= "Calculer Ctrl+g"
+Trans_Stop		= "Stop     Ctrl+g"
+Trans_Pause		= "Pause    Ctrl+p"
+Trans_Resume		= "Relancer Ctrl+p"
+Trans_Help		= "Aide"
+Trans_About		= "A Propos...."
+Trans_Help_Options	= "Options d'aide"
+Trans_Show_Help		= "Voir l'aide"
+Trans_Parameters	= "Paramétres : "
+Trans_Quality		= "QUALITE"
+Trans_File_Selector	= "Sélecteur Fichier"
+Trans_Fast_Resol	= "Resolutions"
+Trans_Fast_Prev		= "Aperçu"
+Trans_Default		= "Par defaut"
+Trans_Partial_Render	= "Rendu partiel"
+Trans_activate		= "activer"
+
+#         Help viewer Translations     #
+
+Trans_Choose_HLP_Viewer = "Paramètres d'aide et langue"
+Trans_HLP_PATH		= "\nChemin vers l'aide. Sélectionner index.html ou intro.html"
+Trans_Search_HLP_LOC	= "Chercher le fichier d'aide"
+Trans_View_POV_HLP	= "Voir l'aide"
+
+
+#       Font menu Translations        #
+Trans_Font_Options	= "Options de la police"
+Trans_Size		= "Taille"
+Trans_Apply             = "Appliquer"
+Trans_Exit              = "Sortie"
+Trans_Select_Word_Class = "Type de mots"
+Trans_Indentation       = "Tabulation"
+Trans_Red               = "Rouge"
+Trans_Green             = "Vert"
+Trans_Blue              = "Bleu"
+
+
+
+#       Povray executalbe options      #
+
+# Trans_Exe_Opt		= "POV-Ray executable options"
+Trans_POV_Location	= "Emplacement de Pov-Ray :"
+Trans_Render_Niceness	= "TYRAN -- PRIORITY RENDU ++ RELAX"
+Trans_Search_Location	= "Chercher l'emplacement de POV"
+
+
+#       Replace / Find Menu           #
+
+Trans_Find_Replace	= "CHERCHE / REMPLACE"
+Trans_Find		= "Cherche     :"
+Trans_Replace_BY	= "Remplace par :"
+Trans_Match_Case	= "Respect de la casse"
+Trans_Next		= "Suivant"
+Trans_Replace		= "Remplace"
+Trans_Replace_All	= "Remplace Tout"
+Trans_Cancel		= "Annule - Esc"
+
+
+#     Menu expand word                #
+Trans_Word_Expansion    = "Syntaxe automatique"
+Trans_Phrase            = "- Utiliser les fléches haut et bas\n- Taper 'Entrée' pour sélectionner\n- Taper 'Echap' pour sortir"
+
+
+#         right-click              #
+Trans_Delete_line	= "Supprimer ligne  Ctrl+y"
+Trans_Delete_word	= "Supprimer mot    Ctrl+backspace"
+
+#        messages
+Trans_Warning		= "Avertissement !"
+Trans_Already_Open	= "Ce script est déjà ouvert\n dans le sélécteur de fichier"
+Trans_Replaced_DLG	= "'%s' a été remplacé par '%s' %d fois"
+Trans_Too_Large		= "Ce fichier a une taille de %d ko\nPour aller plus vite\ntous les fichiers de plus de 500 ko ne sont pas colorisés"
+Trans_KB_SC		= "Raccourcis claviers"
+Trans_File_Error	= "\nErreur trouvée\n\n fichier : %s \n ligne : %s"
+Trans_Really_close_File = "Voulez-vous vraiment fermer ce fichier ?"
+Trans_Check_permissions = "Ce fichier n'a pas pu être enregistré.\nVérifier vos droits d'écriture"
+Trans_Where_POV		= "\n\nVous devez indiquer ou se trouve \nl'exécutable POV \n\nUtiliser : Options POV-Ray\n\n"
+Trans_Where_Help	= "Il n'y a pas de fichier d'aide ou de visionneur sélectionné\nVeuillez en séléctionner un dans le menu options"
+Trans_File_Select_B	= "Utiliser cette fenêtre déroulante\npour sélectionner le script\nà éditer ou à calculer"
+Trans_Resol_Select_B	= "Utiliser cette fenêtre déroulante\nsi vous voulez utiliser une\nrésolution pré-definie"
+Trans_Quality_B		= "Utiliser ce curseur pour régler\nla qualité du rendu\nL'échelle va de\n0 (qualité la plus basse) à\n9 (qualité la plus haute)"
+Trans_Preview_B		= "Cocher cette boîte pour faire\nun rendu rapide\nCela revient à utiliser\n+sp64 +ep2 dans la barre de paramètres"
+Trans_Part_Butt_B	= "RENDU PARTIEL\nPresser ce bouton pour ajuster\nla zone de l'image à calculer"
+Trans_Part_Check_B	= "RENDU PARTIEL\nCliquer cette coche pour activer/désactiver\nles rendus partiels"
+Trans_Parameter_Bar	= "BARRE DE PARAMETRES\nAjouter dans cette barre les paramètres de calcul de POV\npar exemple :\n+p +v +w845 +h403"
+Trans_Display_HLP_B	= "Afficher les bulles d'aides"

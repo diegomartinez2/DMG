@@ -1,0 +1,32 @@
+_____________________________________________________________
+
+
+<CRTL> + c -------------- copy
+
+<CRTL> + v -------------- paste
+
+<CRTL> + a -------------- select all
+
+<CRTL> + f -------------- find/replace
+
+<CRTL> + <space> -------- Show a list of keywords that match
+                          what you have started typing
+
+<CRTL> + y -------------- delete the current line
+
+<CRTL> + <backspace> ---- delete the current word, 
+                          or the word behind the cursor
+
+<CRTL> + n -------------- create new file
+
+<CRTL> + o -------------- open a file
+
+<CRTL> + s -------------- save the current file
+
+<CRTL> + q -------------- exit pyvon
+
+<CRTL> + g -------------- starts/stops the render
+
+<CRTL> + p -------------- pause/resume the render
+_____________________________________________________________
+
