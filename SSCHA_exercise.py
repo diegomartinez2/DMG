@@ -219,7 +219,7 @@ class Hessiano_Vs_Temperatura(object):
 
             self.lowest_sscha_mode.append(np.min(w_sscha) * CC.Units.RY_TO_CM) # Convert from Ry to cm-1
 
-            w_hessian, pols_hessian = self.dyn_hessian.DiagonalizeSupercell()
+            w_hessian, pols_hessian = dyn_hessian.DiagonalizeSupercell()
             # Discard the acoustic modes
             acoustic_modes = CC.Methods.get_translations(pols_hessian, superstructure.get_masses_array())
             w_hessian = w_hessian[~acoustic_modes]
