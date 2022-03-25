@@ -77,7 +77,7 @@ class Calculo_inicial(object):
         self.minim.kong_liu_ratio = 0.2 # Default 0.5
 
         self.relax = sscha.Relax.SSCHA(self.minim,
-                          ase_calculator = ff_calculator,
+                          ase_calculator = self.ff_calculator,
                           N_configs = 1000,
                           max_pop = 20)
 
@@ -155,7 +155,16 @@ class Busca_inestabilidades(object):
         print("\n".join(["{:16.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in w_hessian]))
 
 class Hessiano_Vs_Temperatura(object):
-    def __init__(self,temperatura_i):
+    def __init__(self,temperatura_i,fichero_ForceFields):
+        # Load the dynamical matrix for the force field
+        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
+
+        # Setup the forcefield with the correct parameters
+        self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
+        self.ff_calculator.type_cal = "pbtex"
+        self.ff_calculator.p3 = 0.036475
+        self.ff_calculator.p4 = -0.022
+        self.ff_calculator.p4x = -0.014
         # Define the temperatures, from 50 to 300 K, 6 temperatures
         #self.temperatures = np.linspace(50, 300, 6)
         self.temperatures = temperatura_i
@@ -182,18 +191,18 @@ class Hessiano_Vs_Temperatura(object):
             #minim.precond_dyn = False
 
             # Prepare the relaxer (through many population)
-            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = ff_calculator, N_configs=1000, max_pop=5)
+            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=5)
 
             # Relax
             self.relax.relax()
 
             # Save the dynamical matrix
-            self.relax.minim.dyn.save_qe(Fichero_final_matriz_dinamica.format(int(T)))
+            self.relax.minim.dyn.save_qe(Fichero_final_matriz_dinamica.format(int(Temperatura)))
 
             # Recompute the ensemble for the hessian calculation
             self.ensemble = sscha.Ensemble.Ensemble(self.relax.minim.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
             self.ensemble.generate(5000)
-            self.ensemble.get_energy_forces(ff_calculator, compute_stress = False)
+            self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False)
 
             # Get the free energy hessian
             dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False)
@@ -208,20 +217,20 @@ class Hessiano_Vs_Temperatura(object):
             acoustic_modes = CC.Methods.get_translations(pols_sscha, superstructure.get_masses_array())
             w_sscha = w_sscha[~acoustic_modes]
 
-            lowest_sscha_mode.append(np.min(w_sscha) * CC.Units.RY_TO_CM) # Convert from Ry to cm-1
+            self.lowest_sscha_mode.append(np.min(w_sscha) * CC.Units.RY_TO_CM) # Convert from Ry to cm-1
 
             w_hessian, pols_hessian = self.dyn_hessian.DiagonalizeSupercell()
             # Discard the acoustic modes
             acoustic_modes = CC.Methods.get_translations(pols_hessian, superstructure.get_masses_array())
             w_hessian = w_hessian[~acoustic_modes]
-            lowest_hessian_mode.append(np.min(w_hessian) * CC.Units.RY_TO_CM) # Convert from Ry to cm-1
+            self.lowest_hessian_mode.append(np.min(w_hessian) * CC.Units.RY_TO_CM) # Convert from Ry to cm-1
 
             self.t_old = Temperatura
         # We prepare now the file to save the results
         freq_data = np.zeros( (len(self.temperatures), 3))
         freq_data[:, 0] = self.temperatures
-        freq_data[:, 1] = lowest_sscha_mode
-        freq_data[:, 2] = lowest_hessian_mode
+        freq_data[:, 1] = self.lowest_sscha_mode
+        freq_data[:, 2] = self.lowest_hessian_mode
 
         # Save results on file
         np.savetxt("hessian_vs_temperature.dat", freq_data, header = "T [K]; SSCHA mode [cm-1]; Free energy hessian [cm-1]")
@@ -272,12 +281,12 @@ def main(args):
     Inestable.hessiano()
 
     #aqui se mete el bucle en temperaturas para crear la entrada de datos a Hessiano_Vs_Temperatura
-    #temperatura_i = np.linspace(50, 300, 6)
-    for Temperatura in self.Temperatura_i:
-       Calculo.ensambla(Temperatura)
-       Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(Temperatura)))
+    ##temperatura_i = np.linspace(50, 300, 6)
+    #for Temperatura in self.Temperatura_i:
+    #   Calculo.ensambla(Temperatura)
+    #   Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(Temperatura)))
 
-    HessianoVsTemperatura = Hessiano_Vs_Temperatura(Temperatura_i)
+    HessianoVsTemperatura = Hessiano_Vs_Temperatura(Temperatura_i,Fichero_ForceFields)
     HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica)
     HessianoVsTemperatura.dibuja()
     return 0
