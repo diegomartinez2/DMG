@@ -112,6 +112,7 @@ class Calculo_inicial(object):
         plt.ylabel("Frequencies [cm-1]")
         plt.title("Evolution of the frequencies")
         plt.tight_layout()
+        plt.show()
 
 class Busca_inestabilidades(object):
     def __init__(self,fichero_ForceFields):
@@ -246,6 +247,7 @@ class Hessiano_Vs_Temperatura(object):
         plt.ylabel("Frequency [cm-1]")
         plt.legend()
         plt.tight_layout()
+        plt.show()
 
         plt.figure(dpi = 120)
         plt.plot(hessian_data[:,0], np.sign(hessian_data[:,2]) * hessian_data[:,2]**2, label = "Free energy curvature", marker = "o")
@@ -254,6 +256,7 @@ class Hessiano_Vs_Temperatura(object):
         plt.ylabel("$\omega^2$ [cm-2]")
         plt.legend()
         plt.tight_layout()
+        plt.show()
 
 
 def main(args):
