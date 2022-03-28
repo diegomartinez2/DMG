@@ -39,9 +39,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class Calculo_inicial(object):
-    def __init__(self,fichero_ForceFields):
+    def __init__(self,fichero_ForceFields,nqirr):
         # Load the dynamical matrix for the force field
-        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
+        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, nqirr)
 
         # Setup the forcefield with the correct parameters
         self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
@@ -116,9 +116,9 @@ class Calculo_inicial(object):
         plt.savefig('Step_Freq.png')
 
 class Busca_inestabilidades(object):
-    def __init__(self,fichero_ForceFields):
+    def __init__(self,fichero_ForceFields,nqirr):
         # Load the dynamical matrix for the force field
-        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
+        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, nqirr)
 
         # Setup the forcefield with the correct parameters
         self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
@@ -133,9 +133,9 @@ class Busca_inestabilidades(object):
 
         # Apply also the ASR and the symmetry group
         self.dyn_sscha.Symmetrize()
-    def load_dyn(self,Fichero_final_matriz_dinamica):
+    def load_dyn(self,Fichero_final_matriz_dinamica,nqirr):
         # We reload the final result (no need to rerun the sscha minimization)
-        self.dyn_sscha_final = CC.Phonons.Phonons(Fichero_final_matriz_dinamica, 3)
+        self.dyn_sscha_final = CC.Phonons.Phonons(Fichero_final_matriz_dinamica, nqirr)
     def ensambla(self,T):
         # We reset the ensemble
         self.ensemble = sscha.Ensemble.Ensemble(self.dyn_sscha_final, T0 = T, supercell = self.dyn_sscha_final.GetSupercell())
@@ -157,9 +157,9 @@ class Busca_inestabilidades(object):
         print("\n".join(["{:16.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in w_hessian]))
 
 class Hessiano_Vs_Temperatura(object):
-    def __init__(self,T0,temperatura_i,fichero_ForceFields):
+    def __init__(self,T0,temperatura_i,fichero_ForceFields,nqirr):
         # Load the dynamical matrix for the force field
-        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
+        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, nqirr)
 
         # Setup the forcefield with the correct parameters
         self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
@@ -177,10 +177,10 @@ class Hessiano_Vs_Temperatura(object):
         # Perform a simulation at each temperature
         self.t_old = T0
 
-    def ciclo_T(self,Fichero_final_matriz_dinamica):
+    def ciclo_T(self,Fichero_final_matriz_dinamica,nqirr):
         for Temperatura in self.temperatures:
             # Load the starting dynamical matrix
-            self.dyn = CC.Phonons.Phonons(Fichero_final_matriz_dinamica.format(int(self.t_old)), 3)
+            self.dyn = CC.Phonons.Phonons(Fichero_final_matriz_dinamica.format(int(self.t_old)), nqirr)
 
             # Prepare the ensemble
             self.ensemble = sscha.Ensemble.Ensemble(self.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
@@ -269,19 +269,21 @@ def main(args):
     Temperatura_i = np.linspace(50, 300, 6)
     #El fichero de la matrix dinámica para el campo de fuerzas (entrada)
     Fichero_ForceFields = "ffield_dynq"
+    #y el numero de ficheros (relacionado con la supercelda)
+    nqirr = 3
     #El fichero de las frecuencias (salida)
     Fichero_frecuencias = "frequencies.dat"
     #Los ficheros de la matriz dinamica (salida)
     Fichero_final_matriz_dinamica = "final_sscha_T{}_"
     #"final_sscha_T{}_".format(int(T))
 
-    Calculo = Calculo_inicial(Fichero_ForceFields)
+    Calculo = Calculo_inicial(Fichero_ForceFields,nqirr)
     Calculo.ensambla(T0)
-    Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(T0)))
+    Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(T0)),nqirr)
     Calculo.dibuja(Fichero_frecuencias)
 
-    Inestable = Busca_inestabilidades(Fichero_ForceFields)
-    Inestable.load_dyn(Fichero_final_matriz_dinamica.format(int(T0)))
+    Inestable = Busca_inestabilidades(Fichero_ForceFields,nqirr)
+    Inestable.load_dyn(Fichero_final_matriz_dinamica.format(int(T0),nqirr))
     Inestable.ensambla(T0)
     Inestable.calcula1()
     Inestable.hessiano()
@@ -292,8 +294,8 @@ def main(args):
     #   Calculo.ensambla(Temperatura)
     #   Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(Temperatura)))
 
-    HessianoVsTemperatura = Hessiano_Vs_Temperatura(T0,Temperatura_i,Fichero_ForceFields)
-    HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica)
+    HessianoVsTemperatura = Hessiano_Vs_Temperatura(T0,Temperatura_i,Fichero_ForceFields,nqirr)
+    HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,nqirr)
     HessianoVsTemperatura.dibuja()
     return 0
 
