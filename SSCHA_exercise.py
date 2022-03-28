@@ -96,7 +96,7 @@ class Calculo_inicial(object):
 
     def dibuja(self,fichero):
         # Setup the interactive plotting mode
-        plt.ion()
+        #plt.ion()
 
         # Lets plot the Free energy, gradient and the Kong-Liu effective sample size
         self.relax.minim.plot_results()
@@ -112,7 +112,8 @@ class Calculo_inicial(object):
         plt.ylabel("Frequencies [cm-1]")
         plt.title("Evolution of the frequencies")
         plt.tight_layout()
-        plt.show()
+        #plt.show()
+        plt.savefig('Step_Freq.png')
 
 class Busca_inestabilidades(object):
     def __init__(self,fichero_ForceFields):
@@ -156,7 +157,7 @@ class Busca_inestabilidades(object):
         print("\n".join(["{:16.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in w_hessian]))
 
 class Hessiano_Vs_Temperatura(object):
-    def __init__(self,temperatura_i,fichero_ForceFields):
+    def __init__(self,T0,temperatura_i,fichero_ForceFields):
         # Load the dynamical matrix for the force field
         self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
 
@@ -174,7 +175,7 @@ class Hessiano_Vs_Temperatura(object):
         self.lowest_sscha_mode = []
 
         # Perform a simulation at each temperature
-        self.t_old = 0
+        self.t_old = T0
 
     def ciclo_T(self,Fichero_final_matriz_dinamica):
         for Temperatura in self.temperatures:
@@ -247,7 +248,8 @@ class Hessiano_Vs_Temperatura(object):
         plt.ylabel("Frequency [cm-1]")
         plt.legend()
         plt.tight_layout()
-        plt.show()
+        plt.savefig('Temp_Freq.png')
+        #plt.show()
 
         plt.figure(dpi = 120)
         plt.plot(hessian_data[:,0], np.sign(hessian_data[:,2]) * hessian_data[:,2]**2, label = "Free energy curvature", marker = "o")
@@ -256,7 +258,8 @@ class Hessiano_Vs_Temperatura(object):
         plt.ylabel("$\omega^2$ [cm-2]")
         plt.legend()
         plt.tight_layout()
-        plt.show()
+        plt.savefig('Temp_Omeg.png')
+        #plt.show()
 
 
 def main(args):
@@ -285,11 +288,11 @@ def main(args):
 
     #aqui se mete el bucle en temperaturas para crear la entrada de datos a Hessiano_Vs_Temperatura
     ##temperatura_i = np.linspace(50, 300, 6)
-    #for Temperatura in self.Temperatura_i:
+    #for Temperatura in Temperatura_i:
     #   Calculo.ensambla(Temperatura)
     #   Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(Temperatura)))
 
-    HessianoVsTemperatura = Hessiano_Vs_Temperatura(Temperatura_i,Fichero_ForceFields)
+    HessianoVsTemperatura = Hessiano_Vs_Temperatura(T0,Temperatura_i,Fichero_ForceFields)
     HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica)
     HessianoVsTemperatura.dibuja()
     return 0
