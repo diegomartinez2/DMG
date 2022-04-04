@@ -204,14 +204,16 @@ class Hessiano_Vs_Temperatura(object):
             # Recompute the ensemble for the hessian calculation
             self.ensemble = sscha.Ensemble.Ensemble(self.relax.minim.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
             self.ensemble.generate(5000)
-            self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False)
+            self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #gets the energies and forces from ff_calculator
 
+            #update weights!!! es posible que este sea el motivo por el que no obtengo buenos resultados?
+            self.ensemble.update_weights(self.relax.minim.dyn, Temperatura)
             # Get the free energy hessian
-            dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False)
+            dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) #free energy hessian as in Bianco paper 2017
             dyn_hessian.save_qe("hessian_T{}_".format(int(Temperatura)))
 
             # Get the lowest frequencies for the sscha and the free energy hessian
-            w_sscha, pols_sscha = self.relax.minim.dyn.DiagonalizeSupercell()
+            w_sscha, pols_sscha = self.relax.minim.dyn.DiagonalizeSupercell() #dynamical matrix
             # Get the structure in the supercell
             superstructure = self.relax.minim.dyn.structure.generate_supercell(self.relax.minim.dyn.GetSupercell()) #
 
@@ -221,7 +223,7 @@ class Hessiano_Vs_Temperatura(object):
 
             self.lowest_sscha_mode.append(np.min(w_sscha) * CC.Units.RY_TO_CM) # Convert from Ry to cm-1
 
-            w_hessian, pols_hessian = dyn_hessian.DiagonalizeSupercell()
+            w_hessian, pols_hessian = dyn_hessian.DiagonalizeSupercell() #recomputed dyn for hessian
             # Discard the acoustic modes
             acoustic_modes = CC.Methods.get_translations(pols_hessian, superstructure.get_masses_array())
             w_hessian = w_hessian[~acoustic_modes]
@@ -260,6 +262,116 @@ class Hessiano_Vs_Temperatura(object):
         plt.tight_layout()
         plt.savefig('Temp_Omeg.png')
         #plt.show()
+class Calculo_general(object):
+    def __init__(self,T0,temperatura_i,fichero_ForceFields,nqirr):
+        #dyn = CC.Phonons.Phonons(namefile, NQIRR)
+        # Load the dynamical matrix for the force field
+        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, nqirr)
+
+        # Setup the forcefield with the correct parameters
+        self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
+        self.ff_calculator.type_cal = "pbtex"
+        self.ff_calculator.p3 = 0.036475
+        self.ff_calculator.p4 = -0.022
+        self.ff_calculator.p4x = -0.014
+
+        dyn.Symmetrize()
+
+        dyn.ForcePositiveDefinite()
+    def ensambla(self):
+        self.ensemble = sscha.Ensemble.Ensemble(self.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
+        #ensemble = sscha.Ensemble.Ensemble(dyn, 1000, supercell = dyn.GetSupercell())
+        #ensemble.generate(N)
+    def minimiza(self):
+        minimizer = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
+        minimizer.min_step_dyn = 0.005         # The minimization step on the dynamical matrix
+        minimizer.min_step_struc = 0.05        # The minimization step on the structure
+        minimizer.kong_liu_ratio = 0.5         # The parameter that estimates whether the ensemble is still good
+        minimizer.meaningful_factor = 0.000001 # How much small the gradient should be before I stop?
+    def paso_a_paso(self):
+        minimizer.init()
+        minimizer.run()
+        #...
+        minimizer.finalize()
+    def relaja(self):
+        relax = sscha.Relax.SSCHA(minimizer,
+                          ase_calculator = ff_calculator,
+                          N_configs = 10000,
+                          max_pop = 20)
+        relax.relax()
+    def hessiano(self):
+        #* Matriz dinamica original:
+        dyn = CC.Phonons.Phonons(DYN_PREFIX, NQIRR)
+
+        #* Matriz dinamica actual:
+        final_dyn = CC.Phonons.Phonons(FINAL_DYN, NQIRR)
+
+        #* reensmblado:
+        ens = sscha.Ensemble.Ensemble(dyn, Tg, dyn.GetSupercell())
+        ens.load(DATA_DIR, POPULATION, N_RANDOM)
+
+        #* Importante reajustar los pesos:
+        ens.update_weights(final_dyn, T)
+
+        dyn_hessian = ens.get_free_energy_hessian(include_v4 = INCLUDE_V4,
+                                          get_full_hessian = True,
+                                          verbose = True)
+        dyn_hessian.save_qe(SAVE_PREFIX)
+    def spectral_function(self):
+        # Initialize the tensor3 object
+        # We need 2nd FCs of the used grid to configure the supercell.
+        # For example, we can use the sscha final auxiliary dynamical matrices
+        dyn = CC.Phonons.Phonons("dyn_end_population3_",3)
+        supercell = dyn.GetSupercell()
+        tensor3 = CC.ForceTensor.Tensor3(dyn.structure,
+                                dyn.structure.generate_supercell(supercell),
+                                supercell)
+
+       # Assign the tensor3 values
+       d3 = np.load("d3_realspace_sym.npy")*2.0 # The 2 factor is because of units, needs to be passed to Ry
+       tensor3.SetupFromTensor(d3)
+
+       # Center and apply ASR, which is needed to interpolate the third order force constant
+       tensor3.Center()
+       tensor3.Apply_ASR()
+
+       # Print the tensor if you want, uncommenting the next line
+       #tensor3.WriteOnFile(fname="FC3",file_format='D3Q')
+
+       # Calculate the spectral function at Gamma in the no-mode mixing approximation
+       # keeping the energy dependence on the self-energy.
+       #
+       # An interpolation grid needs to be used (and one needs to check convergence with
+       # respect to it considering different values of the smearing)
+
+
+       # interpolation grid
+       k_grid=[20,20,20]
+
+       #
+       G=[0.0,0.0,0.0]
+
+       CC.Spectral.get_diag_dynamic_correction_along_path(dyn=dyn,
+                                                   tensor3=tensor3,
+                                                   k_grid=k_grid,
+                                                   q_path=G,
+                                                   T = 200,                             # The temperature for the calculation
+                                                   e1=145, de=0.1, e0=0,                # The energy grid in cm-1
+                                                   sm1=1.0, nsm=1, sm0=1.0,             # The smearing \eta for the analytic continuation
+                                                   filename_sp = 'nomm_spectral_func')  # Output file name
+
+       # Now perform the calculation of the spectral function in a
+       # path of q points where the list of q points is gicen in 2pi/a units, with
+       # a the lattice parameter given in Arnstrong
+
+       CC.Spectral.get_diag_dynamic_correction_along_path(dyn=dyn,
+                                                   tensor3=tensor3,
+                                                   k_grid=k_grid,
+                                                   q_path_file="XGX.dat",
+                                                   T = 200.0,
+                                                   e1=145, de=0.1, e0=0,
+                                                   sm1=1.0, nsm=1, sm0=1.0,
+                                                   filename_sp = 'nomm_spectral_func_in_path')
 
 
 def main(args):
@@ -269,7 +381,7 @@ def main(args):
     Temperatura_i = np.linspace(50, 300, 6)
     #El fichero de la matrix dinámica para el campo de fuerzas (entrada)
     Fichero_ForceFields = "ffield_dynq"
-    #y el numero de ficheros (relacionado con la supercelda)
+    #y el numero de ficheros, relacionado con q mesh del quantum espresso (y a su vez relacionado con la supercelda)
     nqirr = 3
     #El fichero de las frecuencias (salida)
     Fichero_frecuencias = "frequencies.dat"
