@@ -283,19 +283,19 @@ class Calculo_general(object):
         #ensemble = sscha.Ensemble.Ensemble(dyn, 1000, supercell = dyn.GetSupercell())
         #ensemble.generate(N)
     def minimiza(self):
-        minimizer = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
-        minimizer.min_step_dyn = 0.005         # The minimization step on the dynamical matrix
-        minimizer.min_step_struc = 0.05        # The minimization step on the structure
-        minimizer.kong_liu_ratio = 0.5         # The parameter that estimates whether the ensemble is still good
-        minimizer.meaningful_factor = 0.000001 # How much small the gradient should be before I stop?
+        self.minimizer = sscha.SchaMinimizer.SSCHA_Minimizer(self.ensemble)
+        self.minimizer.min_step_dyn = 0.005         # The minimization step on the dynamical matrix
+        self.minimizer.min_step_struc = 0.05        # The minimization step on the structure
+        self.minimizer.kong_liu_ratio = 0.5         # The parameter that estimates whether the ensemble is still good
+        self.minimizer.meaningful_factor = 0.000001 # How much small the gradient should be before I stop?
     def paso_a_paso(self):
-        minimizer.init()
-        minimizer.run()
+        self.minimizer.init()
+        self.minimizer.run()
         #...
-        minimizer.finalize()
+        slef.minimizer.finalize()
     def relaja(self):
-        relax = sscha.Relax.SSCHA(minimizer,
-                          ase_calculator = ff_calculator,
+        relax = sscha.Relax.SSCHA(self.minimizer,
+                          ase_calculator = self.ff_calculator,
                           N_configs = 10000,
                           max_pop = 20)
         relax.relax()
