@@ -274,11 +274,12 @@ class Calculo_general(object):
         self.ff_calculator.p3 = 0.036475
         self.ff_calculator.p4 = -0.022
         self.ff_calculator.p4x = -0.014
+        self.dyn = self.ff_dyn.Copy()
 
-        dyn.Symmetrize()
+        self.dyn.Symmetrize()
 
-        dyn.ForcePositiveDefinite()
-    def ensambla(self):
+        self.dyn.ForcePositiveDefinite()
+    def ensambla(self,Temperatura):
         self.ensemble = sscha.Ensemble.Ensemble(self.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
         #ensemble = sscha.Ensemble.Ensemble(dyn, 1000, supercell = dyn.GetSupercell())
         #ensemble.generate(N)
@@ -299,19 +300,19 @@ class Calculo_general(object):
                           N_configs = 10000,
                           max_pop = 20)
         relax.relax()
-    def hessiano(self):
+    def hessiano(self,DYN_PREFIX,file_FINAL_DYN,NQIRR,Tg,DATA_DIR, POPULATION, N_RANDOM,SAVE_PREFIX):
         #* Matriz dinamica original:
         dyn = CC.Phonons.Phonons(DYN_PREFIX, NQIRR)
 
         #* Matriz dinamica actual:
-        final_dyn = CC.Phonons.Phonons(FINAL_DYN, NQIRR)
+        final_dyn = CC.Phonons.Phonons(file_FINAL_DYN, NQIRR)
 
         #* reensmblado:
         ens = sscha.Ensemble.Ensemble(dyn, Tg, dyn.GetSupercell())
         ens.load(DATA_DIR, POPULATION, N_RANDOM)
 
         #* Importante reajustar los pesos:
-        ens.update_weights(final_dyn, T)
+        ens.update_weights(final_dyn, Tg)
 
         dyn_hessian = ens.get_free_energy_hessian(include_v4 = INCLUDE_V4,
                                           get_full_hessian = True,
