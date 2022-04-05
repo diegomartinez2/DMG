@@ -293,7 +293,8 @@ class Calculo_general(object):
         self.minimizer.init()
         self.minimizer.run()
         #...
-        slef.minimizer.finalize()
+        self.minimizer.finalize()
+        self.minimizer.plot_results()
     def relaja(self):
         relax = sscha.Relax.SSCHA(self.minimizer,
                           ase_calculator = self.ff_calculator,
