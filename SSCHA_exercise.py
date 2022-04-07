@@ -148,6 +148,8 @@ class Busca_inestabilidades(object):
         self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False)
     def hessiano(self):
         self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
+        #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = INCLUDE_V4,
+        #                                          get_full_hessian = True,verbose = True)) # Full calculus
         # We can save it
         self.dyn_hessian.save_qe("hessian")
 
@@ -187,8 +189,10 @@ class Hessiano_Vs_Temperatura(object):
 
             # Prepare the minimizer
             self.minim = sscha.SchaMinimizer.SSCHA_Minimizer(self.ensemble)
+            self.minim.min_step_struc = 0.05
             self.minim.min_step_dyn = 0.002
             self.minim.kong_liu_ratio = 0.5
+            self.minim.meaningful_factor = 0.000001
             #minim.root_representation = "root4"
             #minim.precond_dyn = False
 
@@ -228,6 +232,8 @@ class Hessiano_Vs_Temperatura(object):
             acoustic_modes = CC.Methods.get_translations(pols_hessian, superstructure.get_masses_array())
             w_hessian = w_hessian[~acoustic_modes]
             self.lowest_hessian_mode.append(np.min(w_hessian) * CC.Units.RY_TO_CM) # Convert from Ry to cm-1
+            #print ("\n".join(["{:.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in pols_hessian]))
+            #exit()
 
             self.t_old = Temperatura
         # We prepare now the file to save the results
@@ -308,7 +314,7 @@ class Calculo_general(object):
         #* Matriz dinamica actual:
         final_dyn = CC.Phonons.Phonons(file_FINAL_DYN, NQIRR)
 
-        #* reensmblado:
+        #* reensamblado:
         ens = sscha.Ensemble.Ensemble(dyn, Tg, dyn.GetSupercell())
         ens.load(DATA_DIR, POPULATION, N_RANDOM)
 
