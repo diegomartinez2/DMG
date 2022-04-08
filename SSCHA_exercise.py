@@ -197,7 +197,7 @@ class Hessiano_Vs_Temperatura(object):
             #minim.precond_dyn = False
 
             # Prepare the relaxer (through many population)
-            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=5)
+            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)
 
             # Relax
             self.relax.relax()
