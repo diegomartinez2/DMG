@@ -100,9 +100,9 @@ class Mi_espresso(object):
 
         	! the q mesh
         	ldisp = .true.
-        	nq1 = 1
-        	nq2 = 1
-        	nq3 = 1
+        	nq1 = 2
+        	nq2 = 2
+        	nq3 = 2
 
         	! compute also the effective charges and the dielectric tensor
         	epsil = .true.
@@ -235,15 +235,65 @@ class Mi_espresso(object):
         energy_file = os.path.join("data_ensemble_manual", "energies_supercell_population1.dat")
         np.savetxt(energy_file, energies)
 
+class Create_configurations(object):
+    def __init__(self):
+        self.NQIRR = 4                     # The number of irreducible q points in the q-point grid
+        self.T = 0                       # The temperature at which we want to perform the calculation in Kelvin
+        self.SUPERCELL = (3,3,3)           # The size of the supercell (or the q point grid)
+        self.N_RANDOM = 50                # The number of configurations that will be created
+        self.POPULATION = 1                # The population to generate
+
+        # Load the starting dynamical matrices in the 2x2x2 grid
+
+        if self.POPULATION == 1:
+            self.namefile='harmonic_calculation/harmonic_dyn'  # We will start from the harmonic dynamical matrices at the first step
+        else:
+            self.namefile='dyn_end_population'+str(self.POPULATION-1)+'_'  # We will start from the output dynamical matrices at the previous step
+
+    def create_dyn(self):
+        self.dyn = CC.Phonons.Phonons(self.namefile, self.NQIRR)
+
+        # Apply the sum rule and symmetries
+
+        self.dyn.Symmetrize()
+
+        # Flip the imaginary frequencies into real ones if there are imaginary phonon frequencies
+
+        self.dyn.ForcePositiveDefinite()
+
+    def print_freq(self):
+        # We can print the frequencies to show the magic:
+
+        w_s, pols = dyn.DiagonalizeSupercell()
+        print ("\n".join(["{:.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in  w_s]))
+
+    def Build_esemble(self):
+        # Generate the ensemble
+
+        self.ens = sscha.Ensemble.Ensemble(self.dyn, self.T, self.SUPERCELL)
+        self.ens.generate(self.N_RANDOM)
+
+        # Save the ensemble
+
+        namefile='population'+str(self.POPULATION)+'_ensemble'
+        ens.save(self.namefile, self.POPULATION)
+
+        # Prepare qe input files
+
+        for i in range(N_RANDOM):
+            bash_command = 'cat head_scf.in population'+str(self.POPULATION)+'_ensemble/scf_population'+str(self.POPULATION)+'_'+str(i+1)+'.dat > population'+str(self.POPULATION)+'_ensemble/scf_'+str(i+1)+'.in'
+            os.system(bash_command)
+
+
 
 def main(args):
-    calcula_espresso = Mi_espresso()
-    Si_atoms = ase.io.read("Si.cif")
-    struct = CC.Structure.Structure()
-    struct.generate_from_ase_atoms(Si_atoms)
-    struct.fix_coords_in_unit_cell()
-    Si_primitive = struct.get_ase_atoms()
-    calcula_espresso.relaja(Si_primitive)
+    #calcula_espresso = Mi_espresso()
+    #Si_atoms = ase.io.read("Si.cif")
+    #struct = CC.Structure.Structure()
+    #struct.generate_from_ase_atoms(Si_atoms)
+    #struct.fix_coords_in_unit_cell()
+    #Si_primitive = struct.get_ase_atoms()
+    #calcula_espresso.relaja(Si_primitive)
 
 
     return 0
