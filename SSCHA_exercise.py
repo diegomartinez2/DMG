@@ -269,7 +269,7 @@ class Hessiano_Vs_Temperatura(object):
         plt.savefig('Temp_Omeg.png')
         #plt.show()
 class Calculo_general(object):
-    def __init__(self,T0,temperatura_i,fichero_ForceFields,nqirr):
+    def __init__(self,fichero_ForceFields,POPULATION,nqirr):
         #dyn = CC.Phonons.Phonons(namefile, NQIRR)
         # Load the dynamical matrix for the force field
         self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, nqirr)
@@ -285,22 +285,35 @@ class Calculo_general(object):
         self.dyn.Symmetrize()
 
         self.dyn.ForcePositiveDefinite()
-    def ensambla(self,Temperatura):
+
+        self.POPULATION = 1
+    def ensambla(self,Temperatura,N):
         self.ensemble = sscha.Ensemble.Ensemble(self.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
         #ensemble = sscha.Ensemble.Ensemble(dyn, 1000, supercell = dyn.GetSupercell())
-        #ensemble.generate(N)
+        self.ensemble.generate(N)
+        #namefile = 'Population'+str(self.POPULATION)+'_ensemble'
+        #self.ensemble.save(namefile,self.POPULATION)
+    def computa_ensamblado(self):
+        self.ensemble.compute_ensemble(self.ff_calculator)
+        self.ensemble.save('data_enseble_ff',population = self.POPULATION)
     def minimiza(self):
         self.minimizer = sscha.SchaMinimizer.SSCHA_Minimizer(self.ensemble)
         self.minimizer.min_step_dyn = 0.005         # The minimization step on the dynamical matrix
         self.minimizer.min_step_struc = 0.05        # The minimization step on the structure
         self.minimizer.kong_liu_ratio = 0.5         # The parameter that estimates whether the ensemble is still good
         self.minimizer.meaningful_factor = 0.000001 # How much small the gradient should be before I stop?
-    def paso_a_paso(self):
+        self.minimizer.minim_struct = True
+    def paso_a_paso(self,Temperatura):
         self.minimizer.init()
         self.minimizer.run()
         #...
         self.minimizer.finalize()
         self.minimizer.plot_results()
+        namefile = 'dyn_end_population'+str(self.POPULATION)+'_T_'+str(int(Temperatura))
+        self.minimizer.dyn.save_qe(namefile)
+    def Chequeo(self):
+        self.running = not self.minim.is_converged() #para hacer "while running:" con paso a paso
+        slef.POPULATION += 1
     def relaja(self):
         relax = sscha.Relax.SSCHA(self.minimizer,
                           ase_calculator = self.ff_calculator,
