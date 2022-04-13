@@ -172,7 +172,7 @@ class Busca_inestabilidades(object):
         print("\n".join(["{:16.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in w_hessian]))
 
 class Hessiano_Vs_Temperatura(object):
-    def __init__(self,T0,temperatura_i,fichero_ForceFields,fichero_dyn,nqirr):
+    def __init__(self,T0,temperatura_i,fichero_ForceFields):
         # Load the dynamical matrix for the force field
         self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
 
@@ -449,7 +449,7 @@ def main(args):
     #   Calculo.ensambla(Temperatura)
     #   Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(Temperatura)))
 
-    HessianoVsTemperatura = Hessiano_Vs_Temperatura(T0,Temperatura_i,Fichero_ForceFields,nqirr)
+    HessianoVsTemperatura = Hessiano_Vs_Temperatura(T0,Temperatura_i,Fichero_ForceFields)
     HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,nqirr)
     HessianoVsTemperatura.dibuja()
     return 0
