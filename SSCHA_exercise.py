@@ -213,7 +213,7 @@ class Hessiano_Vs_Temperatura(object):
 
             # Detect space group
             symm=spglib.get_spacegroup(self.dyn.structure.get_ase_atoms(), 0.005)
-            print('Current SG = ', symm)
+            print('Current SG = ', symm,' at T=',int(Temperatura))
 
             # Recompute the ensemble for the hessian calculation
             self.ensemble = sscha.Ensemble.Ensemble(self.relax.minim.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())

@@ -82,8 +82,8 @@ class Calculo(object):
 
         # Generate the ensemble
 
-        self.ens = sscha.Ensemble.Ensemble(dyn, T, SUPERCELL)
-        self.ens.generate(N_RANDOM)
+        self.ens = sscha.Ensemble.Ensemble(self.dyn, self.T, self.SUPERCELL)
+        self.ens.generate(self.N_RANDOM)
 
         # Save the ensemble
 
@@ -96,7 +96,7 @@ class Calculo(object):
             bash_command = 'cat head_scf.in population'+str(self.POPULATION)+'_ensemble/scf_population'+str(self.POPULATION)+'_'+str(i+1)+'.dat > population'+str(self.POPULATION)+'_ensemble/scf_'+str(i+1)+'.in'
             os.system(bash_command)
     def calcula_qe(self):
-        self.ens.compute_ensemble(ff_calculator)
+        self.ens.compute_ensemble(self.ff_calculator)
         self.ens.save('data_enseble_ff',self.POPULATION)
     def extrae_energias(self):
         return 0
