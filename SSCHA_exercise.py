@@ -61,6 +61,10 @@ class Calculo_inicial(object):
 
     def ensambla(self,T):
         self.ensemble = sscha.Ensemble.Ensemble(self.dyn_sscha, T0 = T, supercell = self.dyn_sscha.GetSupercell())
+        # Detect space group
+        symm=spglib.get_spacegroup(self.dyn_sscha.structure.get_ase_atoms(), 0.005)
+        print('Initial SG = ', symm)
+
 
     def minimiza(self,fichero_frecuencias,fichero_matriz):
         self.minim = sscha.SchaMinimizer.SSCHA_Minimizer(self.ensemble)
@@ -206,6 +210,10 @@ class Hessiano_Vs_Temperatura(object):
 
             # Save the dynamical matrix
             self.relax.minim.dyn.save_qe(Fichero_final_matriz_dinamica.format(int(Temperatura)))
+
+            # Detect space group
+            symm=spglib.get_spacegroup(self.dyn.structure.get_ase_atoms(), 0.005)
+            print('Current SG = ', symm)
 
             # Recompute the ensemble for the hessian calculation
             self.ensemble = sscha.Ensemble.Ensemble(self.relax.minim.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
