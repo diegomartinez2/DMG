@@ -32,6 +32,9 @@ import cellconstructor as CC
 import cellconstructor.Phonons
 import sscha, sscha.Ensemble
 import sscha.SchaMinimizer, sscha.Relax
+# Import the modules of the force field
+import fforces as ff
+import fforces.Calculator
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -42,7 +45,7 @@ import numpy as np
 # Clases
 # -------
 class Calculo(object):
-    def __init__(self,Temperatura,NQirr,configuraciones):
+    def __init__(self,Temperatura,NQirr,configuraciones,fichero_ForceFields):
         # Define input variables
 
         self.NQIRR = NQirr #3                     # The number of irreducible q points in the q-point grid
@@ -52,6 +55,7 @@ class Calculo(object):
         self.POPULATION = 1                # The population to generate
 
         # define calculator
+        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, NQirr)
         self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
         self.ff_calculator.type_cal = "pbtex"
         self.ff_calculator.p3 = 0.036475
@@ -96,7 +100,7 @@ class Calculo(object):
             bash_command = 'cat head_scf.in population'+str(self.POPULATION)+'_ensemble/scf_population'+str(self.POPULATION)+'_'+str(i+1)+'.dat > population'+str(self.POPULATION)+'_ensemble/scf_'+str(i+1)+'.in'
             os.system(bash_command)
     def calcula_qe(self):
-        self.ens.compute_ensemble(self.ff_calculator)
+        self.ens.compute_ensemble(self.ff_calculator,stress_numerical = True)
         self.ens.save('data_enseble_ff',self.POPULATION)
     def extrae_energias(self):
         return 0
@@ -112,9 +116,10 @@ class Calculo(object):
 
         # Prepare the stochastic weights for the SSCHA minimization
 
-        folder_with_ensemble='population'+str(POPULATION)+'_ensemble'
-        ensemble = sscha.Ensemble.Ensemble(dyn, T, SUPERCELL)
-        ensemble.load(folder_with_ensemble, population = POPULATION, N = N_RANDOM)
+        #folder_with_ensemble='population'+str(self.POPULATION)+'_ensemble'
+        ensemble = sscha.Ensemble.Ensemble(self.dyn, self.T, self.SUPERCELL)
+        #ensemble.load(folder_with_ensemble, population = self.POPULATION, N = self.N_RANDOM)
+        ensemble.generate(self.N_RANDOM)
 
         # Define the minimization
 
@@ -126,7 +131,7 @@ class Calculo(object):
         minimizer.min_step_struc = 0.05        # The minimization step on the structure
         minimizer.kong_liu_ratio = 0.5         # The parameter that estimates whether the ensemble is still good
         minimizer.meaningful_factor = 0.000001 # How much small the gradient should be before I stop?
-
+        minimizer.mimin_struct = True # we ask to minim. the structure *test*
         # Let's start the minimization
 
         minimizer.init()
@@ -134,7 +139,7 @@ class Calculo(object):
 
         # Let's make some plot on the evolution of the minimization
 
-        name_for_data = 'population'+str(POPULATION)+'_minimization.dat'
+        name_for_data = 'population'+str(self.POPULATION)+'_minimization.dat'
         #name_for_plot = 'population'+str(POPULATION)+'_minimization.pdf'
 
         minimizer.plot_results(save_filename = name_for_data, plot = False)
@@ -175,7 +180,7 @@ class Calculo(object):
         minimizer.dyn.save_qe(namefile)
     def Chequeo(self):
         self.running = not self.minim.is_converged() #para hacer "while running:" con paso a paso
-        slef.POPULATION += 1
+        self.POPULATION += 1
 # ----------
 # Funciones
 # ----------
@@ -185,7 +190,7 @@ def main(args):
     nquirr = 3
     numero_de_configuraciones = 10
 
-    calcula = Calculo(temperatura,nquirr,numero_de_configuraciones)
+    calcula = Calculo(temperatura,nquirr,numero_de_configuraciones,'ffield_dynq')
     calcula.create_configurations()
     calcula.calcula_qe()
     calcula.minimiza()
