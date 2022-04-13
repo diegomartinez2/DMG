@@ -426,7 +426,7 @@ def main(args):
     Calculo.dibuja(Fichero_frecuencias)
 
     Inestable = Busca_inestabilidades(Fichero_ForceFields,nqirr)
-    Inestable.load_dyn(Fichero_final_matriz_dinamica.format(int(T0),nqirr))
+    Inestable.load_dyn(Fichero_final_matriz_dinamica.format(int(T0)),nqirr)
     Inestable.ensambla(T0)
     Inestable.calcula1()
     Inestable.hessiano()
