@@ -34,6 +34,8 @@ import fforces.Calculator
 import sscha, sscha.Ensemble, sscha.SchaMinimizer
 import sscha.Relax, sscha.Utilities
 
+import spglib
+
 # Import Matplotlib to plot
 import numpy as np
 import matplotlib.pyplot as plt
