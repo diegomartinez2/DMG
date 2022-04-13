@@ -41,9 +41,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class Calculo_inicial(object):
-    def __init__(self,fichero_ForceFields,nqirr):
+    def __init__(self,fichero_ForceFields,fichero_dyn,nqirr):
         # Load the dynamical matrix for the force field
-        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, nqirr)
+        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
 
         # Setup the forcefield with the correct parameters
         self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
@@ -53,7 +53,7 @@ class Calculo_inicial(object):
         self.ff_calculator.p4x = -0.014
 
         # Initialization of the SSCHA matrix
-        self.dyn_sscha = self.ff_dyn.Copy()
+        self.dyn_sscha = CC.Phonons.Phonons(fichero_dyn, nqirr)
         # Flip the imaginary frequencies into real ones
         self.dyn_sscha.ForcePositiveDefinite()
         # Apply the ASR and the symmetry group
@@ -80,7 +80,9 @@ class Calculo_inicial(object):
         self.minim.min_step_dyn = 0.5 # If the minimization ends with few steps (less than 10), decrease it, if it takes too much, increase it Default 1
 
         # We decrease the Kong-Liu effective sample size below which the population is stopped
-        self.minim.kong_liu_ratio = 0.2 # Default 0.5
+        self.minim.kong_liu_ratio = 0.5 # Default 0.5
+        # Pedimos que minimize la estructura (eso espero) *test*
+        self.minim.minim_struct = True
 
         self.relax = sscha.Relax.SSCHA(self.minim,
                           ase_calculator = self.ff_calculator,
@@ -96,9 +98,14 @@ class Calculo_inicial(object):
         self.relax.setup_custom_functions(custom_function_post = self.io_func.CFP_SaveFrequencies)
         # Finalmente hacemos todos los calculos de busqueda de la energia libre.
         self.relax.relax()
+#        self.relax.vc_relax(static_bulk_modulus=40, fix_volume = False, stress_numerical = True)
+        #self.relax.vc_relax(static_bulk_modulus=40, fix_volume = False)
 
         # Save the final dynamical matrix
         self.relax.minim.dyn.save_qe(fichero_matriz)
+        # Detect space group
+        symm=spglib.get_spacegroup(self.relax.minim.dyn.structure.get_ase_atoms(), 0.005)
+        print('New SG = ', symm)
 
     def dibuja(self,fichero):
         # Setup the interactive plotting mode
@@ -122,9 +129,9 @@ class Calculo_inicial(object):
         plt.savefig('Step_Freq.png')
 
 class Busca_inestabilidades(object):
-    def __init__(self,fichero_ForceFields,nqirr):
+    def __init__(self,fichero_ForceFields,fichero_dyn,nqirr):
         # Load the dynamical matrix for the force field
-        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, nqirr)
+        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
 
         # Setup the forcefield with the correct parameters
         self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
@@ -134,7 +141,7 @@ class Busca_inestabilidades(object):
         self.ff_calculator.p4x = -0.014
 
         # Initialization of the SSCHA matrix
-        self.dyn_sscha = self.ff_dyn.Copy()
+        self.dyn_sscha = CC.Phonons.Phonons(fichero_dyn, nqirr)
         self.dyn_sscha.ForcePositiveDefinite()
 
         # Apply also the ASR and the symmetry group
@@ -165,9 +172,9 @@ class Busca_inestabilidades(object):
         print("\n".join(["{:16.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in w_hessian]))
 
 class Hessiano_Vs_Temperatura(object):
-    def __init__(self,T0,temperatura_i,fichero_ForceFields,nqirr):
+    def __init__(self,T0,temperatura_i,fichero_ForceFields,fichero_dyn,nqirr):
         # Load the dynamical matrix for the force field
-        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, nqirr)
+        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
 
         # Setup the forcefield with the correct parameters
         self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
@@ -201,7 +208,7 @@ class Hessiano_Vs_Temperatura(object):
             self.minim.meaningful_factor = 0.000001
             #minim.root_representation = "root4"
             #minim.precond_dyn = False
-            #self.minim.minim_struct = True
+            self.minim.minim_struct = True # *test*
 
             # Prepare the relaxer (through many population)
             self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)
@@ -214,7 +221,7 @@ class Hessiano_Vs_Temperatura(object):
             self.relax.minim.dyn.save_qe(Fichero_final_matriz_dinamica.format(int(Temperatura)))
 
             # Detect space group
-            symm=spglib.get_spacegroup(self.dyn.structure.get_ase_atoms(), 0.005)
+            symm=spglib.get_spacegroup(self.relax.minim.dyn.structure.get_ase_atoms(), 0.005)
             print('Current SG = ', symm,' at T=',int(Temperatura))
 
             # Recompute the ensemble for the hessian calculation
@@ -414,20 +421,23 @@ def main(args):
     Temperatura_i = np.linspace(100, 250, 15)
     #El fichero de la matrix dinámica para el campo de fuerzas (entrada)
     Fichero_ForceFields = "ffield_dynq"
+    #El fichero de la matriz dinamica del sistema SnTe
+    Fichero_dyn_SnTe = "start_dyn_"
     #y el numero de ficheros, relacionado con q mesh del quantum espresso (y a su vez relacionado con la supercelda)
-    nqirr = 3
+    nqirr = 4
     #El fichero de las frecuencias (salida)
     Fichero_frecuencias = "frequencies.dat"
     #Los ficheros de la matriz dinamica (salida)
     Fichero_final_matriz_dinamica = "final_sscha_T{}_"
     #"final_sscha_T{}_".format(int(T))
 
-    Calculo = Calculo_inicial(Fichero_ForceFields,nqirr)
+    Calculo = Calculo_inicial(Fichero_ForceFields,Fichero_dyn_SnTe,nqirr)
     Calculo.ensambla(T0)
-    Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(T0)),nqirr)
+    #Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(T0)),nqirr)
+    Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(T0)))
     Calculo.dibuja(Fichero_frecuencias)
 
-    Inestable = Busca_inestabilidades(Fichero_ForceFields,nqirr)
+    Inestable = Busca_inestabilidades(Fichero_ForceFields,Fichero_dyn_SnTe,nqirr)
     Inestable.load_dyn(Fichero_final_matriz_dinamica.format(int(T0)),nqirr)
     Inestable.ensambla(T0)
     Inestable.calcula1()
