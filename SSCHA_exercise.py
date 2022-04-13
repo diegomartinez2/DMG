@@ -77,7 +77,7 @@ class Calculo_inicial(object):
 
         # Now we setup the minimization parameters
         # Since we are quite far from the correct solution, we will use a small optimization step
-        self.minim.min_step_dyn = 1 # If the minimization ends with few steps (less than 10), decrease it, if it takes too much, increase it
+        self.minim.min_step_dyn = 0.5 # If the minimization ends with few steps (less than 10), decrease it, if it takes too much, increase it Default 1
 
         # We decrease the Kong-Liu effective sample size below which the population is stopped
         self.minim.kong_liu_ratio = 0.2 # Default 0.5
@@ -201,12 +201,14 @@ class Hessiano_Vs_Temperatura(object):
             self.minim.meaningful_factor = 0.000001
             #minim.root_representation = "root4"
             #minim.precond_dyn = False
+            #self.minim.minim_struct = True
 
             # Prepare the relaxer (through many population)
             self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)
 
             # Relax
             self.relax.relax()
+            #self.relax.vc_relax()
 
             # Save the dynamical matrix
             self.relax.minim.dyn.save_qe(Fichero_final_matriz_dinamica.format(int(Temperatura)))
@@ -218,9 +220,9 @@ class Hessiano_Vs_Temperatura(object):
             # Recompute the ensemble for the hessian calculation
             self.ensemble = sscha.Ensemble.Ensemble(self.relax.minim.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
             self.ensemble.generate(5000)
-            self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #gets the energies and forces from ff_calculator
+            #self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #gets the energies and forces from ff_calculator
 
-            #update weights!!! es posible que este sea el motivo por el que no obtengo buenos resultados?
+            #update weights!!!
             self.ensemble.update_weights(self.relax.minim.dyn, Temperatura)
             # Get the free energy hessian
             dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) #free energy hessian as in Bianco paper 2017
@@ -409,7 +411,7 @@ def main(args):
     #La temperatura del primer calculo
     T0 = 0
     #Las temperaturas de los otros calculos
-    Temperatura_i = np.linspace(50, 300, 6)
+    Temperatura_i = np.linspace(100, 250, 15)
     #El fichero de la matrix dinámica para el campo de fuerzas (entrada)
     Fichero_ForceFields = "ffield_dynq"
     #y el numero de ficheros, relacionado con q mesh del quantum espresso (y a su vez relacionado con la supercelda)
