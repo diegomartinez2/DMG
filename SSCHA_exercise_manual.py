@@ -178,7 +178,7 @@ class Calculo(object):
 
         namefile='dyn_end_population'+str(POPULATION)+'_'
         minimizer.dyn.save_qe(namefile)
-    def Chequeo(self):
+    def chequeo(self):
         self.running = not self.minim.is_converged() #para hacer "while running:" con paso a paso
         self.POPULATION += 1
 # ----------
@@ -191,9 +191,11 @@ def main(args):
     numero_de_configuraciones = 10
 
     calcula = Calculo(temperatura,nquirr,numero_de_configuraciones,'ffield_dynq')
+    #while self.running:
     calcula.create_configurations()
     calcula.calcula_qe()
     calcula.minimiza()
+    #calcula.chequeo()
     return 0
 
 if __name__ == '__main__':
