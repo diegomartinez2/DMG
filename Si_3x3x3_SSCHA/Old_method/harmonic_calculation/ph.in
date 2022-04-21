@@ -1,0 +1,14 @@
+
+&inputph
+    prefix           = 'Si'
+    outdir           = './tmp/'
+    fildyn           = "harmonic_dyn"
+!    amass(1)         = 28.085
+!    amass(2)         = 28.085    
+    ldisp            = .true.
+    nq1              = 3 
+    nq2              = 3
+    nq3              = 3
+    epsil            = .true.
+    tr2_ph           = 1.0d-16
+&end

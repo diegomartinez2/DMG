@@ -1,0 +1,27 @@
+&CONTROL
+   calculation      = 'scf'
+   restart_mode     = 'from_scratch'
+   tstress          = .true.
+   tprnfor          = .true.
+   pseudo_dir       = './'
+   outdir           = './tmp/'
+   prefix           = 'Si'           
+/
+&SYSTEM
+   ecutwfc          = 60
+   ntyp             = 1
+   nat              = 54             ! Number of atoms in the supercell (2 atm. por celda primitiva 2x3x3x3=54 ; red diamante fcc con base 8 atm. por celda 8x3x3x3=216 cual es? 54 solo mhay que leer el archivo de datos y contar)
+   ibrav            = 0              ! La estructura viene definida con los datos
+   occupations      = 'fixed'
+/
+&ELECTRONS
+   conv_thr         = 1e-08
+/
+
+ATOMIC_SPECIES
+Si 28.085 Si.pbe-n-rrkjus_psl.0.1.UPF
+
+K_POINTS automatic
+2 2 2  0 0 0                         ! Number of k points in the unit cell (reduced according to supercell size)
+
+

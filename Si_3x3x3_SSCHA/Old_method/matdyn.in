@@ -1,0 +1,17 @@
+ &input
+    asr            = 'simple',       ! Impose the acoustic sum rule, in the simple style
+    amass(1)       =  207.2          ! Mass of atom 1 in m.a.u.
+    amass(2)       =  127.6          ! Mass of atom 2 in m.a.u.
+    flfrc          = 'hessian.fc',     ! File with the ral space force constants
+    flfrq          = 'hessian.freq'    ! File where the frequencies will be printed
+    dos            = .false.         ! Do not calculate the Phonon DOS
+    q_in_band_form = .true.          ! Enter list of q points in band form
+ /
+7
+ 0.70710678  0.00000000  0.00000000  50    ! Enter q points in 2pi/a units
+ 0.00000000  0.00000000  0.00000000  35    
+ 0.53033009  0.53033009  0.00000000  15
+ 0.70710678  0.70710678  0.00000000  25
+ 0.35355339  0.70710678  0.00000000  50
+ 0.35355339  0.35355339  0.35355339  50
+ 0.00000000  0.00000000  0.00000000  1

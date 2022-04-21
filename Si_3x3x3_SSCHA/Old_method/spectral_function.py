@@ -1,0 +1,61 @@
+import cellconstructor as CC
+import cellconstructor.ForceTensor
+import cellconstructor.Structure
+import cellconstructor.Spectral
+
+import numpy as np
+
+# Initialize the tensor3 object
+# We need 2nd FCs of the used grid to configure the supercell.
+# For example, we can use the sscha final auxiliary dynamical matrices
+dyn = CC.Phonons.Phonons("dyn_end_population3_",4)
+supercell = dyn.GetSupercell()
+tensor3 = CC.ForceTensor.Tensor3(dyn.structure,
+                                dyn.structure.generate_supercell(supercell),
+                                supercell)
+
+# Assign the tensor3 values
+d3 = np.load("d3_realspace_sym.npy")*2.0 # The 2 factor is because of units, needs to be passed to Ry
+tensor3.SetupFromTensor(d3)
+
+# Center and apply ASR, which is needed to interpolate the third order force constant
+tensor3.Center()
+tensor3.Apply_ASR()
+
+# Print the tensor if you want, uncommenting the next line
+#tensor3.WriteOnFile(fname="FC3",file_format='D3Q')
+
+# Calculate the spectral function at Gamma in the no-mode mixing approximation
+# keeping the energy dependence on the self-energy.
+#
+# An interpolation grid needs to be used (and one needs to check convergence with
+# respect to it considering different values of the smearing)
+
+
+# interpolation grid
+k_grid=[20,20,20]    
+
+# 
+G=[0.0,0.0,0.0]
+
+CC.Spectral.get_diag_dynamic_correction_along_path(dyn=dyn, 
+                                                   tensor3=tensor3,  
+                                                   k_grid=k_grid, 
+                                                   q_path=G,
+                                                   T = 0,                             # The temperature for the calculation  
+                                                   e1=145, de=0.1, e0=0,                # The energy grid in cm-1
+                                                   sm1=1.0, nsm=1, sm0=1.0,             # The smearing \eta for the analytic continuation
+                                                   filename_sp = 'nomm_spectral_func')  # Output file name
+
+# Now perform the calculation of the spectral function in a 
+# path of q points where the list of q points is gicen in 2pi/a units, with
+# a the lattice parameter given in Arnstrong
+
+CC.Spectral.get_diag_dynamic_correction_along_path(dyn=dyn,
+                                                   tensor3=tensor3,
+                                                   k_grid=k_grid,
+                                                   q_path_file="XGX.dat",
+                                                   T = 0.0,
+                                                   e1=145, de=0.1, e0=0,
+                                                   sm1=1.0, nsm=1, sm0=1.0,
+                                                   filename_sp = 'nomm_spectral_func_in_path')

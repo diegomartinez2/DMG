@@ -1,0 +1,85 @@
+
+In the folder harmonic_calculation/ there is a previous QE
+harmonic phonon calculation on a 2x2x2 q point grid.
+
+Steps to run the SSCHA minimization
+
+-----------------------------------------
+1) Create random configurations using the harmonic
+dynamical matrices as starting guess:
+
+python create_configurations.py
+
+Edit the script create_configurations.py to change the numnber
+of configurations created, the temeprature of the calculation, etc.
+
+This will create the folder population1_ensemble/ where the displacements
+will be listed.
+
+Based on the head_scf.in file the scf calculations that need to be 
+performed in the supercell are created. Edit the head_scf.in 
+file to your needs.
+
+-----------------------------------------
+2) Execute QE to calculate the energies, forces, and stresses on the
+created set of configurations
+
+bash execute_QE.sh
+
+This step is the most CPU intensive part and can be performed in a
+cluster. One needs to copy the scf_*.in files and calculate them. Then
+copy the output files to population1_ensemble/
+
+-----------------------------------------
+3) Extract the energies, forces, and stresses of each configuration
+
+bash extract_forces_energies_stresses.sh 
+
+They need to be written in the files forces_population*_*.dat, pressures_population*_*.dat,
+energies_supercell_population*.dat
+
+-----------------------------------------
+4) Run the SSCHA minimization
+
+python minimize.py > population1.out
+
+This will give the minimization process in the output file. The 
+free energy per unit cell will be given in the end of the file as well as
+the stress tensor. At the end of the minimization
+it will give the output dynamical matrices obtained at the end of the minimization in
+dyn_end_population1_* . 
+
+It will also provide a figure with the evolution of the free energy, gradients, and 
+number of effective configurations in population1_minimization.pdf
+
+-----------------------------------------
+5) Repeat the steps before till convergence
+
+One needs to repeat the steps before until the minimization has stopped because the
+gradient becomes smaller than the threshold, and not because of the statistical criteria.
+
+Once after the minimization has finished one can perform a last step with a larger number of
+configurations to see the convergence with the number of configurations in the statistics.
+
+Note that when repeating the step before, the POPULATION flag needs to be updated in
+create_configurations.py and minimize.py . 
+ 
+I provide an example where the minimization converges in 2 steps. Later I repeat the minimization
+with 100 configurations to reduce the stochastic error.
+
+-----------------------------------------
+6) Calculate the free energy Hessian
+
+python hessian.py > hessian.out
+
+Once the calculation is finished and converged the Hessian of the free energy can be calculated.
+This will give in output new dynamical matrices dyn_hessian_*, where this Hessian will be stored.
+
+-----------------------------------------
+7) Calculate the spectral function
+
+python spectral_function.py > spectral_function.out
+
+After calculating the third-order force constants (averaged) one can caluclate
+the spectral function. In this example we calculate it at the Gamma point and along all the points in a
+path.
