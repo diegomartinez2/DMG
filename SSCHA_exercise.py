@@ -421,7 +421,7 @@ def main(args):
     Temperatura_i = np.linspace(100, 250, 15)
     #El fichero de la matrix dinámica para el campo de fuerzas (entrada)
     Fichero_ForceFields = "ffield_dynq"
-    #El fichero de la matriz dinamica del sistema SnTe
+    #El fichero de la matriz dinamica del sistema SnTe (ha de ser del mismo sistema que el fichero para el campo de fuerzas)
     Fichero_dyn_SnTe = "start_dyn_"
     #y el numero de ficheros, relacionado con q mesh del quantum espresso (y a su vez relacionado con la supercelda)
     nqirr = 4
