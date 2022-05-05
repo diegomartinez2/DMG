@@ -295,8 +295,8 @@ class Hessiano_Vs_Temperatura(object):
         #plt.show()
 
 class Funcion_espectral(object):
-    def __init__(self):
-        self.dyn = CC.Phonons.Phonons("PbTe.SSCHA.dyn",3)
+    def __init__(self,Fichero_dyn_SnTe,nqirr):
+        self.dyn = CC.Phonons.Phonons(Fichero_dyn_SnTe,nqirr)
         self.supercell = self.dyn.GetSupercell()
     def prepara_tensor(self):
         self.tensor3 =  CC.ForceTensor.Tensor3(dyn.structure,
@@ -376,6 +376,10 @@ def main(args):
  #   Inestable.ensambla(T0)
  #   Inestable.calcula1()
  #   Inestable.hessiano()
+
+    Especro =  Funcion_espectral(Fichero_dyn_SnTe,nqirr)
+    Espectro.prepara_tensor()
+    Espectro.calcula_espectro(T0)
 
     #aqui se mete el bucle en temperaturas para crear la entrada de datos a Hessiano_Vs_Temperatura
     ##temperatura_i = np.linspace(50, 300, 6)
