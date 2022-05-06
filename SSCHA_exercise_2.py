@@ -171,7 +171,7 @@ class Busca_inestabilidades(object):
         #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
 
         print("Updating the importance sampling...")
-        self.ensemble.update_weights(self.dyn_sscha_final, T0 = T)
+        self.ensemble.update_weights(self.dyn_sscha_final, T0)
 
         print("Computing the free energy hessian...")
         self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = INCLUDE_V4,
