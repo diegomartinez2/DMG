@@ -167,10 +167,15 @@ class Busca_inestabilidades(object):
     def calcula1(self):
         # We now compute forces and energies using the force field calculator
         self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #test compute_stress = True no puede con este potencial...
-    def hessiano(self):
-        self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
-        #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = INCLUDE_V4,
-        #                                          get_full_hessian = True,verbose = True)) # Full calculus
+    def hessiano(self,T):
+        #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
+
+        print("Updating the importance sampling...")
+        self.ensemble.update_weights(self.dyn_sscha_final, T0 = T)
+
+        print("Computing the free energy hessian...")
+        self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = INCLUDE_V4,
+                                                  get_full_hessian = True,verbose = True) # Full calculus
         # We can save it
         self.dyn_hessian.save_qe("hessian")
 
@@ -483,11 +488,11 @@ def main(args):
     Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(T0)))
     Calculo.dibuja(Fichero_frecuencias)
 
- #   Inestable = Busca_inestabilidades(Fichero_ForceFields,Fichero_dyn_SnTe,nqirr)
- #   Inestable.load_dyn(Fichero_final_matriz_dinamica.format(int(T0)),nqirr)
- #   Inestable.ensambla(T0)
- #   Inestable.calcula1()
- #   Inestable.hessiano()
+    Inestable = Busca_inestabilidades(Fichero_ForceFields,Fichero_dyn_SnTe,nqirr)
+    Inestable.load_dyn(Fichero_final_matriz_dinamica.format(int(T0)),nqirr)
+    Inestable.ensambla(T0)
+    Inestable.calcula1()
+    Inestable.hessiano(T0)
 
     Espectro =  Funcion_espectral(Fichero_dyn_SnTe,nqirr)
     Espectro.prepara_tensor()
