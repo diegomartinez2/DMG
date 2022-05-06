@@ -302,9 +302,9 @@ class Funcion_espectral(object):
         self.dyn = CC.Phonons.Phonons(Fichero_dyn_SnTe,nqirr)
         self.supercell = self.dyn.GetSupercell()
     def prepara_tensor(self):
-        self.tensor3 =  CC.ForceTensor.Tensor3(dyn.structure,
-                                dyn.structure.generate_supercell(supercell),
-                                supercell)
+        self.tensor3 =  CC.ForceTensor.Tensor3(self.dyn.structure,
+                                self.dyn.structure.generate_supercell(self.supercell),
+                                self.supercell)
         #! Assign the tensor3 values
         d3 = np.load("d3_realspace_sym.npy")*2.0 # The 2 factor is because of units, needs to be passed to Ry
         self.tensor3.SetupFromTensor(d3)
