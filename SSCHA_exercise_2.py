@@ -363,6 +363,7 @@ class Funcion_espectral(object):
                                                    k_grid=k_grid,
                                                    e1=100, de=0.1, e0=0,     # energy grid
                                                    sm1=1.0, sm0=1.0,  nsm=1, # smearing values
+                                                   sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
                                                    T = T0,
                                                    q_path=points,
                                                    static_limit = True, #static approximation
@@ -382,6 +383,7 @@ class Funcion_espectral(object):
                                            k_grid=k_grid,
                                            e1=145, de=0.1, e0=0,
                                            sm1=1, sm0=1,nsm=1,
+                                           sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
                                            T = T0,
                                            q_path=G,
                                            notransl = True,
@@ -401,6 +403,7 @@ class Funcion_espectral(object):
                                                    T = T0,
                                                    e1=145, de=0.1, e0=0,
                                                    sm1=1.0, nsm=1, sm0=1.0,
+                                                   sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
                                                    filename_sp = 'nomm_spectral_func')
 
     def calcula_espectro6(self,T0):
@@ -414,6 +417,7 @@ class Funcion_espectral(object):
                                                    T = T0,
                                                    e1=145, de=0.1, e0=0,
                                                    sm1=1.0, nsm=1, sm0=1.0,
+                                                   sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
                                                    filename_sp = 'nomm_spectral_func')
 
 
@@ -437,6 +441,7 @@ class Funcion_espectral(object):
                                                    T = T0,                             # The temperature for the calculation
                                                    e1=145, de=0.1, e0=0,                # The energy grid in cm-1
                                                    sm1=1.0, nsm=1, sm0=1.0,             # The smearing \eta for the analytic continuation
+                                                   sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
                                                    filename_sp = 'nomm_spectral_func')  # Output file name
 
         #! Now perform the calculation of the spectral function in a
@@ -450,6 +455,7 @@ class Funcion_espectral(object):
                                                    T = T0,
                                                    e1=145, de=0.1, e0=0,
                                                    sm1=1.0, nsm=1, sm0=1.0,
+                                                   sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
                                                    filename_sp = 'nomm_spectral_func_in_path')
 
 def main(args):
