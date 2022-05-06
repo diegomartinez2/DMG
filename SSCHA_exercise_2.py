@@ -25,6 +25,9 @@
 # Import the cellconstructor stuff
 import cellconstructor as CC
 import cellconstructor.Phonons
+import cellconstructor.ForceTensor
+import cellconstructor.Structure
+import cellconstructor.Spectral
 
 # Import the modules of the force field
 import fforces as ff
@@ -302,15 +305,15 @@ class Funcion_espectral(object):
         self.tensor3 =  CC.ForceTensor.Tensor3(dyn.structure,
                                 dyn.structure.generate_supercell(supercell),
                                 supercell)
-         #! Assign the tensor3 values
-         d3 = np.load("d3_realspace_sym.npy")*2.0 # The 2 factor is because of units, needs to be passed to Ry
-         self.tensor3.SetupFromTensor(d3)
-          #! Center and apply ASR, which is needed to interpolate the third order force constant
-         self.tensor3.Center()
-         self.tensor3.Apply_ASR()
+        #! Assign the tensor3 values
+        d3 = np.load("d3_realspace_sym.npy")*2.0 # The 2 factor is because of units, needs to be passed to Ry
+        self.tensor3.SetupFromTensor(d3)
+        #! Center and apply ASR, which is needed to interpolate the third order force constant
+        self.tensor3.Center()
+        self.tensor3.Apply_ASR()
 
-         #! Print the tensor if you want, uncommenting the next line
-         #self.tensor3.WriteOnFile(fname="FC3",file_format='D3Q')
+        #! Print the tensor if you want, uncommenting the next line
+        #self.tensor3.WriteOnFile(fname="FC3",file_format='D3Q')
     def calcula_espectro(self,T0):
         """
         #! Calculate the spectral function at Gamma in the no-mode mixing approximation
@@ -321,10 +324,10 @@ class Funcion_espectral(object):
         #! interpolation grid
         k_grid=[20,20,20]
 
-       #
-       G=[0.0,0.0,0.0]
+        #
+        G=[0.0,0.0,0.0]
 
-       CC.Spectral.get_diag_dynamic_correction_along_path(dyn=self.dyn,
+        CC.Spectral.get_diag_dynamic_correction_along_path(dyn=self.dyn,
                                                    tensor3=self.tensor3,
                                                    k_grid=k_grid,
                                                    q_path=G,
@@ -333,11 +336,11 @@ class Funcion_espectral(object):
                                                    sm1=1.0, nsm=1, sm0=1.0,             # The smearing \eta for the analytic continuation
                                                    filename_sp = 'nomm_spectral_func')  # Output file name
 
-       #! Now perform the calculation of the spectral function in a
-       #! path of q points where the list of q points is gicen in 2pi/a units, with
-       #! a the lattice parameter given in Arnstrong
+        #! Now perform the calculation of the spectral function in a
+        #! path of q points where the list of q points is gicen in 2pi/a units, with
+        #! a the lattice parameter given in Arnstrong
 
-       CC.Spectral.get_diag_dynamic_correction_along_path(dyn=self.dyn,
+        CC.Spectral.get_diag_dynamic_correction_along_path(dyn=self.dyn,
                                                    tensor3=self.tensor3,
                                                    k_grid=k_grid,
                                                    q_path_file="XGX.dat",
@@ -377,7 +380,7 @@ def main(args):
  #   Inestable.calcula1()
  #   Inestable.hessiano()
 
-    Especro =  Funcion_espectral(Fichero_dyn_SnTe,nqirr)
+    Espectro =  Funcion_espectral(Fichero_dyn_SnTe,nqirr)
     Espectro.prepara_tensor()
     Espectro.calcula_espectro(T0)
 
