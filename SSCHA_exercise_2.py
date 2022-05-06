@@ -314,6 +314,109 @@ class Funcion_espectral(object):
 
         #! Print the tensor if you want, uncommenting the next line
         #self.tensor3.WriteOnFile(fname="FC3",file_format='D3Q')
+    def calcula_espectro1(self,T0):
+        # integration grid
+        k_grid=[4,4,4]
+
+        # q points in 2pi/Angstrom
+        list_of_q_points=[ [  0.0000000,  0.0000000,  0.0000000 ],
+                           [ -0.0386763,  0.0386763, -0.0386763 ],
+                           [  0.0773527, -0.0773527,  0.0773527 ],
+                           [  0.0000000,  0.0773527,  0.0000000 ],
+                           [  0.1160290, -0.0386763,  0.1160290 ],
+                           [  0.0773527,  0.0000000,  0.0773527 ],
+                           [  0.0000000, -0.1547054,  0.0000000 ],
+                           [ -0.0773527, -0.1547054,  0.0000000 ]   ]
+
+
+        CC.Spectral.get_static_correction_along_path(dyn=dyn,
+                                             tensor3=tensor,
+                                             k_grid=k_grid,
+                                             q_path=list_of_q_points,
+                                             filename_st="v2_v2+d3static_freq.dat",
+                                             T =300.0,
+                                             print_dyn = False) # set true to print the Hessian dynamical matrices
+                                                                # for each q point
+    def calcula_espectro2(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+
+        CC.Spectral.get_static_correction_along_path(dyn=dyn,
+                                             tensor3=tensor,
+                                             k_grid=k_grid,
+                                             q_path_file="XGX_path.dat",
+                                             filename_st="v2_v2+d3static_freq.dat",
+                                             T =T0,
+                                             print_dyn = False) # set true to print the Hessian dynamical matrices
+                                                                # for each q point
+    def calcula_espectro3(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+        # X and G in 2pi/Angstrom
+        points=[[-0.1525326,  0.0,  0.0],
+                [0.0       ,  0.0,  0.0]      ]
+
+        CC.Spectral.get_full_dynamic_correction_along_path(dyn=dyn,
+                                                   tensor3=tensor3,
+                                                   k_grid=k_grid,
+                                                   e1=100, de=0.1, e0=0,     # energy grid
+                                                   sm1=1.0, sm0=1.0,  nsm=1, # smearing values
+                                                   T=300,
+                                                   q_path=points,
+                                                   static_limit = True, #static approximation
+                                                   notransl = True,  # projects out the acoustic zone center modes
+                                                   filename_sp='static_spectral_func')
+
+    def calcula_espectro4(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+        # q point
+        G=[0.0,0.0,0.0]
+
+
+        CC.Spectral.get_full_dynamic_correction_along_path(dyn=dyn,
+                                           tensor3=tensor3,
+                                           k_grid=k_grid,
+                                           e1=145, de=0.1, e0=0,
+                                           sm1=1, sm0=1,nsm=1,
+                                           T=300,
+                                           q_path=G,
+                                           notransl = True,
+                                           filename_sp='full_spectral_func')
+
+    def calcula_espectro5(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+        #
+        G=[0.0,0.0,0.0]
+
+        CC.Spectral.get_diag_dynamic_correction_along_path(dyn=dyn,
+                                                   tensor3=tensor3,
+                                                   k_grid=k_grid,
+                                                   q_path=G,
+                                                   T = 300.0,
+                                                   e1=145, de=0.1, e0=0,
+                                                   sm1=1.0, nsm=1, sm0=1.0,
+                                                   filename_sp = 'nomm_spectral_func')
+
+    def calcula_espectro6(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+        CC.Spectral.get_diag_dynamic_correction_along_path(dyn=dyn,
+                                                   tensor3=tensor3,
+                                                   k_grid=k_grid,
+                                                   q_path_file="XGX_path.dat"
+                                                   T = 300.0,
+                                                   e1=145, de=0.1, e0=0,
+                                                   sm1=1.0, nsm=1, sm0=1.0,
+                                                   filename_sp = 'nomm_spectral_func')
+
+
     def calcula_espectro(self,T0):
         """
         #! Calculate the spectral function at Gamma in the no-mode mixing approximation
