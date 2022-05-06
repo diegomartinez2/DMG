@@ -329,12 +329,12 @@ class Funcion_espectral(object):
                            [ -0.0773527, -0.1547054,  0.0000000 ]   ]
 
 
-        CC.Spectral.get_static_correction_along_path(dyn=dyn,
-                                             tensor3=tensor,
+        CC.Spectral.get_static_correction_along_path(dyn=self.dyn,
+                                             tensor3=self.tensor3,
                                              k_grid=k_grid,
                                              q_path=list_of_q_points,
                                              filename_st="v2_v2+d3static_freq.dat",
-                                             T =300.0,
+                                             T = T0,
                                              print_dyn = False) # set true to print the Hessian dynamical matrices
                                                                 # for each q point
     def calcula_espectro2(self,T0):
@@ -342,12 +342,12 @@ class Funcion_espectral(object):
         k_grid=[20,20,20]
 
 
-        CC.Spectral.get_static_correction_along_path(dyn=dyn,
-                                             tensor3=tensor,
+        CC.Spectral.get_static_correction_along_path(dyn=self.dyn,
+                                             tensor3=self.tensor3,
                                              k_grid=k_grid,
                                              q_path_file="XGX_path.dat",
                                              filename_st="v2_v2+d3static_freq.dat",
-                                             T =T0,
+                                             T = T0,
                                              print_dyn = False) # set true to print the Hessian dynamical matrices
                                                                 # for each q point
     def calcula_espectro3(self,T0):
@@ -358,12 +358,12 @@ class Funcion_espectral(object):
         points=[[-0.1525326,  0.0,  0.0],
                 [0.0       ,  0.0,  0.0]      ]
 
-        CC.Spectral.get_full_dynamic_correction_along_path(dyn=dyn,
-                                                   tensor3=tensor3,
+        CC.Spectral.get_full_dynamic_correction_along_path(dyn=self.dyn,
+                                                   tensor3=self.tensor3,
                                                    k_grid=k_grid,
                                                    e1=100, de=0.1, e0=0,     # energy grid
                                                    sm1=1.0, sm0=1.0,  nsm=1, # smearing values
-                                                   T=300,
+                                                   T = T0,
                                                    q_path=points,
                                                    static_limit = True, #static approximation
                                                    notransl = True,  # projects out the acoustic zone center modes
@@ -377,12 +377,12 @@ class Funcion_espectral(object):
         G=[0.0,0.0,0.0]
 
 
-        CC.Spectral.get_full_dynamic_correction_along_path(dyn=dyn,
-                                           tensor3=tensor3,
+        CC.Spectral.get_full_dynamic_correction_along_path(dyn=self.dyn,
+                                           tensor3=self.tensor3,
                                            k_grid=k_grid,
                                            e1=145, de=0.1, e0=0,
                                            sm1=1, sm0=1,nsm=1,
-                                           T=300,
+                                           T = T0,
                                            q_path=G,
                                            notransl = True,
                                            filename_sp='full_spectral_func')
@@ -394,11 +394,11 @@ class Funcion_espectral(object):
         #
         G=[0.0,0.0,0.0]
 
-        CC.Spectral.get_diag_dynamic_correction_along_path(dyn=dyn,
-                                                   tensor3=tensor3,
+        CC.Spectral.get_diag_dynamic_correction_along_path(dyn=self.dyn,
+                                                   tensor3=self.tensor3,
                                                    k_grid=k_grid,
                                                    q_path=G,
-                                                   T = 300.0,
+                                                   T = T0,
                                                    e1=145, de=0.1, e0=0,
                                                    sm1=1.0, nsm=1, sm0=1.0,
                                                    filename_sp = 'nomm_spectral_func')
@@ -407,11 +407,11 @@ class Funcion_espectral(object):
         # integration grid
         k_grid=[20,20,20]
 
-        CC.Spectral.get_diag_dynamic_correction_along_path(dyn=dyn,
-                                                   tensor3=tensor3,
+        CC.Spectral.get_diag_dynamic_correction_along_path(dyn=self.dyn,
+                                                   tensor3=self.tensor3,
                                                    k_grid=k_grid,
-                                                   q_path_file="XGX_path.dat"
-                                                   T = 300.0,
+                                                   q_path_file="XGX_path.dat",
+                                                   T = T0,
                                                    e1=145, de=0.1, e0=0,
                                                    sm1=1.0, nsm=1, sm0=1.0,
                                                    filename_sp = 'nomm_spectral_func')
