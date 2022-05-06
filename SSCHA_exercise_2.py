@@ -314,9 +314,10 @@ class Funcion_espectral(object):
         d3 = np.load("d3_realspace_sym.npy")*2.0 # The 2 factor is because of units, needs to be passed to Ry
         self.tensor3.SetupFromTensor(d3)
         #! Center and apply ASR, which is needed to interpolate the third order force constant
-        self.tensor3.Center()
-        self.tensor3.Apply_ASR()
-
+        # self.tensor3.Center()
+        # self.tensor3.Apply_ASR()
+        self.tensor3.Center(Far=2)
+        self.tensor3.Apply_ASR(PBC=True)
         #! Print the tensor if you want, uncommenting the next line
         #self.tensor3.WriteOnFile(fname="FC3",file_format='D3Q')
     def calcula_espectro1(self,T0):
@@ -342,6 +343,29 @@ class Funcion_espectral(object):
                                              T = T0,
                                              print_dyn = False) # set true to print the Hessian dynamical matrices
                                                                 # for each q point
+    def dibuja_espectro1(self):
+        data = np.loadtxt("v2_v2+d3static_freq.dat")
+        plt.figure(dpi = 120)
+        plt.plot(data[:,0], data[:,1], marker = "o")
+        plt.plot(data[:,0], data[:,2], marker = "o")
+        plt.plot(data[:,0], data[:,3], marker = "o")
+        plt.plot(data[:,0], data[:,4], marker = "o")
+        plt.plot(data[:,0], data[:,5], marker = "o")
+        plt.plot(data[:,0], data[:,6], marker = "o")
+        # plt.plot(data[:,0], data[:,7], marker = ">")
+        # plt.plot(data[:,0], data[:,8], marker = ">")
+        # plt.plot(data[:,0], data[:,9], marker = ">")
+        # plt.plot(data[:,0], data[:,10], marker = ">")
+        # plt.plot(data[:,0], data[:,11], marker = ">")
+        # plt.plot(data[:,0], data[:,12], marker = ">")
+        plt.xlabel("len [2pi/Angstrom]")
+        plt.ylabel("Frequency [cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('Temp_Freq.png')
+        #plt.show()
+        return 0
+
     def calcula_espectro2(self,T0):
         # integration grid
         k_grid=[20,20,20]
@@ -355,6 +379,8 @@ class Funcion_espectral(object):
                                              T = T0,
                                              print_dyn = False) # set true to print the Hessian dynamical matrices
                                                                 # for each q point
+    def dibuja_espectro2(self):
+        return 0
     def calcula_espectro3(self,T0):
         # integration grid
         k_grid=[20,20,20]
@@ -374,6 +400,17 @@ class Funcion_espectral(object):
                                                    static_limit = True, #static approximation
                                                    notransl = True,  # projects out the acoustic zone center modes
                                                    filename_sp='static_spectral_func')
+    def dibuja_espectro3(self):
+        data = np.loadtxt("static_spectral_func_1.00_1.0.dat")
+        plt.figure(dpi = 120)
+        plt.plot(data[:,1], data[:,2])
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [1/cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('static_spectral_func.png')
+        #plt.show()
+        return 0
 
     def calcula_espectro4(self,T0):
         # integration grid
@@ -393,6 +430,17 @@ class Funcion_espectral(object):
                                            q_path=G,
                                            notransl = True,
                                            filename_sp='full_spectral_func')
+    def dibuja_espectro4(self):
+        data = np.loadtxt("full_spectral_func_1.00_1.0.dat")
+        plt.figure(dpi = 120)
+        plt.plot(data[:,1], data[:,2])
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [1/cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('full_spectral_func.png')
+        #plt.show()
+        return 0
 
     def calcula_espectro5(self,T0):
         # integration grid
@@ -410,6 +458,47 @@ class Funcion_espectral(object):
                                                    sm1=1.0, nsm=1, sm0=1.0,
                                                    sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
                                                    filename_sp = 'nomm_spectral_func')
+    def dibuja_espectro5(self):
+        data = np.loadtxt("nomm_spectral_func_1.00.dat")
+        plt.plot(data[:,1], data[:,2])
+        plt.plot(data[:,1], data[:,3])
+        plt.plot(data[:,1], data[:,4])
+        plt.plot(data[:,1], data[:,5])
+        plt.plot(data[:,1], data[:,6])
+        plt.plot(data[:,1], data[:,7])
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [1/cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('nomm_spectral_func.png')
+        #plt.show()
+        data = np.loadtxt("nomm_spectral_func_lorentz_one_shot_1.00.dat")
+        plt.plot(data[:,1], data[:,2])
+        plt.plot(data[:,1], data[:,3])
+        plt.plot(data[:,1], data[:,4])
+        plt.plot(data[:,1], data[:,5])
+        plt.plot(data[:,1], data[:,6])
+        plt.plot(data[:,1], data[:,7])
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [1/cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('nomm_spectral_func_lorentz_one_shot.png')
+        #plt.show()
+        data = np.loadtxt("nomm_spectral_func_lorentz_perturb_1.00.dat")
+        plt.plot(data[:,1], data[:,2])
+        plt.plot(data[:,1], data[:,3])
+        plt.plot(data[:,1], data[:,4])
+        plt.plot(data[:,1], data[:,5])
+        plt.plot(data[:,1], data[:,6])
+        plt.plot(data[:,1], data[:,7])
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [1/cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('nomm_spectral_func_lorentz_perturb.png')
+        #plt.show()
+        return 0
 
     def calcula_espectro6(self,T0):
         # integration grid
@@ -424,7 +513,8 @@ class Funcion_espectral(object):
                                                    sm1=1.0, nsm=1, sm0=1.0,
                                                    sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
                                                    filename_sp = 'nomm_spectral_func')
-
+    def dibuja_espectro6(self):
+        return 0
 
     def calcula_espectro(self,T0):
         """
@@ -496,7 +586,19 @@ def main(args):
 
     Espectro =  Funcion_espectral(Fichero_dyn_SnTe,nqirr)
     Espectro.prepara_tensor()
-    Espectro.calcula_espectro(T0)
+    Espectro.calcula_espectro1(T0)
+    Espectro.dibuja_espectro1()
+    Espectro.calcula_espectro2(T0)
+    Espectro.dibuja_espectro2()
+    Espectro.calcula_espectro3(T0)
+    Espectro.dibuja_espectro3()
+    Espectro.calcula_espectro4(T0)
+    Espectro.dibuja_espectro4()
+    Espectro.calcula_espectro5(T0)
+    Espectro.dibuja_espectro5()
+    Espectro.calcula_espectro6(T0)
+    Espectro.dibuja_espectro6()
+
 
     #aqui se mete el bucle en temperaturas para crear la entrada de datos a Hessiano_Vs_Temperatura
     ##temperatura_i = np.linspace(50, 300, 6)
