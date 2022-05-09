@@ -380,6 +380,19 @@ class Funcion_espectral(object):
                                              print_dyn = False) # set true to print the Hessian dynamical matrices
                                                                 # for each q point
     def dibuja_espectro2(self):
+        data = np.loadtxt("v2_v2+d3static_freq.dat")
+        plt.figure(dpi = 120)
+        plt.plot(data[:,0], data[:,1], marker = "o")
+        plt.plot(data[:,0], data[:,2], marker = "o")
+        plt.plot(data[:,0], data[:,3], marker = "o")
+        plt.plot(data[:,0], data[:,4], marker = "o")
+        plt.plot(data[:,0], data[:,5], marker = "o")
+        plt.plot(data[:,0], data[:,6], marker = "o")
+        plt.xlabel("len [2pi/Angstrom]")
+        plt.ylabel("Frequency [cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('Temp_Freq2.png')
         return 0
     def calcula_espectro3(self,T0):
         # integration grid
