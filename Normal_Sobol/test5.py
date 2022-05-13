@@ -13,45 +13,36 @@ def  random_data():
 def Sobol_1d_serial():
     #Sobol 1d random data
     sampler = qmc.Sobol(d=1, scramble=False)
-    sample = sampler.random_base2(m=3)
+    sample = sampler.random_base2(m=9)
     x = []
     y = []
-    while (len(x)<1000):
+    while (len(x)<500):
         x.append(2.0*sampler.random()[0][0]-1.0)
         y.append(2.0*sampler.random()[0][0]-1.0)
     return x,y
 def Sobol_1d():
     #Sobol 1d random data
     sampler = qmc.Sobol(d=1, scramble=False)
-    sample = sampler.random_base2(m=3)
-    #x = []
-    #y = []
-    x = 2.0*sampler.random(1000)[:,0]-1.0
-    y = 2.0*sampler.random(1000)[:,0]-1.0
+    sample = sampler.random_base2(m=9)
+    x = 2.0*sampler.random(500)[:,0]-1.0
+    y = 2.0*sampler.random(500)[:,0]-1.0
     return x,y
 def Pure_Sobol_2d(size):
     #Pure Sobol 2d random data
     sampler = qmc.Sobol(d=2, scramble=False)
     sample = sampler.random_base2(m=size)
-    #x = []
-    #y = []
-    data1 = sampler.random(1000)
+    data1 = sampler.random(500)
     x = 2.0*data1[:,0]-1.0
     y = 2.0*data1[:,1]-1.0
     return x,y
-def Sobol_2d():
+def Sobol_2d(size):
     #Sobol 2d alt random data
     sampler = qmc.Sobol(d=2, scramble=False)
-    sample = sampler.random_base2(m=3)
-    #x = []
-    #y = []
+    sample = sampler.random_base2(m=size)
     x = 2.0*sampler.random(500)[:,0]-1.0
     y = 2.0*sampler.random(500)[:,1]-1.0
     return x,y
 def random_sym_data():
-    # random u, -u data
-    #x = []
-    #y = []
     x = 2.0*np.random.rand(250)-1.0
     y = 2.0*np.random.rand(250)-1.0
     x=np.append(x,-x)
@@ -85,9 +76,13 @@ def scatter_hist(x, y, ax, ax_histx, ax_histy):
     ax_histx.hist(x, bins=bins)
     ax_histy.hist(y, bins=bins, orientation='horizontal')
 
-#x,y = Sobol_sym_data(4)
-#x,y = Pure_Sobol_2d(3)
-x,y = Sobol_2d()
+#x,y = random_data()
+#x,y = Sobol_1d_serial()
+#x,y = Sobol_1d()
+x,y = Pure_Sobol_2d(9)
+#x,y = Sobol_2d(9)
+#x,y = random_sym_data()
+#x,y = Sobol_sym_data(8)
 
 # definitions for the axes
 left, width = 0.1, 0.65
