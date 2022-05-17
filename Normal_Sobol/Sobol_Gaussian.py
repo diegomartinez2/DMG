@@ -100,7 +100,7 @@ class Random_generador(object):
         ###########################################################
 
 def main(args):
-    calculos = Random_generador(100)
+    calculos = Random_generador(500)
     calculos.sobol_normal()
     calculos.random_normal()
     calculos.random_numpy_normal()
