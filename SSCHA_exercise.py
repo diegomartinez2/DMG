@@ -25,6 +25,9 @@
 # Import the cellconstructor stuff
 import cellconstructor as CC
 import cellconstructor.Phonons
+import cellconstructor.ForceTensor
+import cellconstructor.Structure
+import cellconstructor.Spectral
 
 # Import the modules of the force field
 import fforces as ff
@@ -35,10 +38,15 @@ import sscha, sscha.Ensemble, sscha.SchaMinimizer
 import sscha.Relax, sscha.Utilities
 
 import spglib
+from ase.visualize import view
 
 # Import Matplotlib to plot
 import numpy as np
 import matplotlib.pyplot as plt
+#from matplotlib.colors import BoundaryNorm
+#from matplotlib.ticker import MaxNLocator
+from matplotlib import cm
+import timeit
 
 class Calculo_inicial(object):
     def __init__(self,fichero_ForceFields,fichero_dyn,nqirr):
@@ -70,24 +78,27 @@ class Calculo_inicial(object):
         self.minim = sscha.SchaMinimizer.SSCHA_Minimizer(self.ensemble)
 
         # Lets setup the minimization on the fourth root
-        self.minim.root_representation = "root4" # Other possibilities are 'normal' and 'sqrt'
+#        self.minim.root_representation = "root4" # Other possibilities are 'normal' and 'sqrt'
 
         # To work correctly with the root4, we must deactivate the preconditioning on the dynamical matrix
-        self.minim.precond_dyn = False
+#        self.minim.precond_dyn = False
+
+        # Probemos con self.neglect_symmetries= true
+#        self.minim.neglect_symmetries = True    # *test*
 
         # Now we setup the minimization parameters
         # Since we are quite far from the correct solution, we will use a small optimization step
-        self.minim.min_step_dyn = 0.5 # If the minimization ends with few steps (less than 10), decrease it, if it takes too much, increase it Default 1
+        self.minim.min_step_dyn = 0.5 # If the minimization ends with few steps (less than 10), decrease it, if it takes too much, increase it
 
         # We decrease the Kong-Liu effective sample size below which the population is stopped
         self.minim.kong_liu_ratio = 0.5 # Default 0.5
         # Pedimos que minimize la estructura (eso espero) *test*
-        self.minim.minim_struct = True
+#        self.minim.minim_struct = True
 
         self.relax = sscha.Relax.SSCHA(self.minim,
                           ase_calculator = self.ff_calculator,
-                          N_configs = 1000,
-                          max_pop = 20)
+                          N_configs = 10000,
+                          max_pop = 200)
 
         # Setup the custom function to print the frequencies at each step of the minimization
         self.io_func = sscha.Utilities.IOInfo()
@@ -98,7 +109,7 @@ class Calculo_inicial(object):
         self.relax.setup_custom_functions(custom_function_post = self.io_func.CFP_SaveFrequencies)
         # Finalmente hacemos todos los calculos de busqueda de la energia libre.
         self.relax.relax()
-#        self.relax.vc_relax(static_bulk_modulus=40, fix_volume = False, stress_numerical = True)
+#        self.relax.vc_relax(static_bulk_modulus="recalc",restart_from_ens = True, fix_volume = True, stress_numerical = True)
         #self.relax.vc_relax(static_bulk_modulus=40, fix_volume = False)
 
         # Save the final dynamical matrix
@@ -106,6 +117,7 @@ class Calculo_inicial(object):
         # Detect space group
         symm=spglib.get_spacegroup(self.relax.minim.dyn.structure.get_ase_atoms(), 0.005)
         print('New SG = ', symm)
+        view(self.relax.minim.dyn.structure.get_ase_atoms())
 
     def dibuja(self,fichero):
         # Setup the interactive plotting mode
@@ -158,11 +170,17 @@ class Busca_inestabilidades(object):
         self.ensemble.generate(10000)
     def calcula1(self):
         # We now compute forces and energies using the force field calculator
-        self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False)
-    def hessiano(self):
-        self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
-        #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = INCLUDE_V4,
-        #                                          get_full_hessian = True,verbose = True)) # Full calculus
+        self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #test compute_stress = True no puede con este potencial...
+    def hessiano(self,T):
+        #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
+
+        print("Updating the importance sampling...")
+        self.ensemble.update_weights(self.dyn_sscha_final, T)
+
+        print("Computing the free energy hessian...")
+       #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
+        self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = True,
+                                                  get_full_hessian = True,verbose = True) # Full calculus
         # We can save it
         self.dyn_hessian.save_qe("hessian")
 
@@ -208,14 +226,15 @@ class Hessiano_Vs_Temperatura(object):
             self.minim.meaningful_factor = 0.000001
             #minim.root_representation = "root4"
             #minim.precond_dyn = False
-            self.minim.minim_struct = True # *test*
+#            self.minim.minim_struct = True # *test*
+#            self.minim.neglect_symmetries = True    # *test*
 
             # Prepare the relaxer (through many population)
-            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)
+#            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)
+            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=10000, max_pop=200)
 
             # Relax
             self.relax.relax()
-            #self.relax.vc_relax()
 
             # Save the dynamical matrix
             self.relax.minim.dyn.save_qe(Fichero_final_matriz_dinamica.format(int(Temperatura)))
@@ -227,9 +246,9 @@ class Hessiano_Vs_Temperatura(object):
             # Recompute the ensemble for the hessian calculation
             self.ensemble = sscha.Ensemble.Ensemble(self.relax.minim.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
             self.ensemble.generate(5000)
-            #self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #gets the energies and forces from ff_calculator
+            self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #gets the energies and forces from ff_calculator
 
-            #update weights!!!
+            #update weights!!! es posible que este sea el motivo por el que no obtengo buenos resultados?
             self.ensemble.update_weights(self.relax.minim.dyn, Temperatura)
             # Get the free energy hessian
             dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) #free energy hessian as in Bianco paper 2017
@@ -287,161 +306,398 @@ class Hessiano_Vs_Temperatura(object):
         plt.tight_layout()
         plt.savefig('Temp_Omeg.png')
         #plt.show()
-class Calculo_general(object):
-    def __init__(self,fichero_ForceFields,POPULATION,nqirr):
-        #dyn = CC.Phonons.Phonons(namefile, NQIRR)
-        # Load the dynamical matrix for the force field
-        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, nqirr)
+class Funcion_espectral(object):
+    def __init__(self,Fichero_dyn_SnTe,nqirr):
+        self.dyn = CC.Phonons.Phonons(Fichero_dyn_SnTe,nqirr)
+        self.supercell = self.dyn.GetSupercell()
+    def prepara_tensor(self):
+        self.tensor3 =  CC.ForceTensor.Tensor3(self.dyn.structure,
+                                self.dyn.structure.generate_supercell(self.supercell),
+                                self.supercell)
+         #! Assign the tensor3 values
+        d3 = np.load("d3_realspace_sym.npy")*2.0 # The 2 factor is because of units, needs to be passed to Ry
+        self.tensor3.SetupFromTensor(d3)
+          #! Center and apply ASR, which is needed to interpolate the third order force constant
+#        self.tensor3.Center()
+#        self.tensor3.Apply_ASR()
+        self.tensor3.Center(Far=2)
+        self.tensor3.Apply_ASR(PBC=True)
 
-        # Setup the forcefield with the correct parameters
-        self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
-        self.ff_calculator.type_cal = "pbtex"
-        self.ff_calculator.p3 = 0.036475
-        self.ff_calculator.p4 = -0.022
-        self.ff_calculator.p4x = -0.014
-        self.dyn = self.ff_dyn.Copy()
+         #! Print the tensor if you want, uncommenting the next line
+         #self.tensor3.WriteOnFile(fname="FC3",file_format='D3Q')
+    def calcula_espectro(self,T0):
+        """
+        #! Calculate the spectral function at Gamma in the no-mode mixing approximation
+        #! keeping the energy dependence on the self-energy.
+        """
+        #! An interpolation grid needs to be used (and one needs to check convergence with
+        #! respect to it considering different values of the smearing)
+        #! interpolation grid
+        k_grid=[20,20,20]
 
-        self.dyn.Symmetrize()
+        #
+        G=[0.0,0.0,0.0]
 
-        self.dyn.ForcePositiveDefinite()
-
-        self.POPULATION = 1
-    def ensambla(self,Temperatura,N):
-        self.ensemble = sscha.Ensemble.Ensemble(self.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
-        #ensemble = sscha.Ensemble.Ensemble(dyn, 1000, supercell = dyn.GetSupercell())
-        self.ensemble.generate(N)
-        #namefile = 'Population'+str(self.POPULATION)+'_ensemble'
-        #self.ensemble.save(namefile,self.POPULATION)
-    def computa_ensamblado(self):
-        self.ensemble.compute_ensemble(self.ff_calculator)
-        self.ensemble.save('data_enseble_ff',population = self.POPULATION)
-    def minimiza(self):
-        self.minimizer = sscha.SchaMinimizer.SSCHA_Minimizer(self.ensemble)
-        self.minimizer.min_step_dyn = 0.005         # The minimization step on the dynamical matrix
-        self.minimizer.min_step_struc = 0.05        # The minimization step on the structure
-        self.minimizer.kong_liu_ratio = 0.5         # The parameter that estimates whether the ensemble is still good
-        self.minimizer.meaningful_factor = 0.000001 # How much small the gradient should be before I stop?
-        self.minimizer.minim_struct = True
-    def paso_a_paso(self,Temperatura):
-        self.minimizer.init()
-        self.minimizer.run()
-        #...
-        self.minimizer.finalize()
-        self.minimizer.plot_results()
-        namefile = 'dyn_end_population'+str(self.POPULATION)+'_T_'+str(int(Temperatura))
-        self.minimizer.dyn.save_qe(namefile)
-    def Chequeo(self):
-        self.running = not self.minim.is_converged() #para hacer "while running:" con paso a paso
-        slef.POPULATION += 1
-    def relaja(self):
-        relax = sscha.Relax.SSCHA(self.minimizer,
-                          ase_calculator = self.ff_calculator,
-                          N_configs = 10000,
-                          max_pop = 20)
-        relax.relax()
-    def hessiano(self,DYN_PREFIX,file_FINAL_DYN,NQIRR,Tg,DATA_DIR, POPULATION, N_RANDOM,SAVE_PREFIX):
-        #* Matriz dinamica original:
-        dyn = CC.Phonons.Phonons(DYN_PREFIX, NQIRR)
-
-        #* Matriz dinamica actual:
-        final_dyn = CC.Phonons.Phonons(file_FINAL_DYN, NQIRR)
-
-        #* reensamblado:
-        ens = sscha.Ensemble.Ensemble(dyn, Tg, dyn.GetSupercell())
-        ens.load(DATA_DIR, POPULATION, N_RANDOM)
-
-        #* Importante reajustar los pesos:
-        ens.update_weights(final_dyn, Tg)
-
-        dyn_hessian = ens.get_free_energy_hessian(include_v4 = INCLUDE_V4,
-                                          get_full_hessian = True,
-                                          verbose = True)
-        dyn_hessian.save_qe(SAVE_PREFIX)
-    def spectral_function(self):
-        # Initialize the tensor3 object
-        # We need 2nd FCs of the used grid to configure the supercell.
-        # For example, we can use the sscha final auxiliary dynamical matrices
-        dyn = CC.Phonons.Phonons("dyn_end_population3_",3)
-        supercell = dyn.GetSupercell()
-        tensor3 = CC.ForceTensor.Tensor3(dyn.structure,
-                                dyn.structure.generate_supercell(supercell),
-                                supercell)
-
-       # Assign the tensor3 values
-       d3 = np.load("d3_realspace_sym.npy")*2.0 # The 2 factor is because of units, needs to be passed to Ry
-       tensor3.SetupFromTensor(d3)
-
-       # Center and apply ASR, which is needed to interpolate the third order force constant
-       tensor3.Center()
-       tensor3.Apply_ASR()
-
-       # Print the tensor if you want, uncommenting the next line
-       #tensor3.WriteOnFile(fname="FC3",file_format='D3Q')
-
-       # Calculate the spectral function at Gamma in the no-mode mixing approximation
-       # keeping the energy dependence on the self-energy.
-       #
-       # An interpolation grid needs to be used (and one needs to check convergence with
-       # respect to it considering different values of the smearing)
-
-
-       # interpolation grid
-       k_grid=[20,20,20]
-
-       #
-       G=[0.0,0.0,0.0]
-
-       CC.Spectral.get_diag_dynamic_correction_along_path(dyn=dyn,
-                                                   tensor3=tensor3,
+        CC.Spectral.get_diag_dynamic_correction_along_path(dyn=self.dyn,
+                                                   tensor3=self.tensor3,
                                                    k_grid=k_grid,
                                                    q_path=G,
-                                                   T = 200,                             # The temperature for the calculation
+                                                   T = T0,                             # The temperature for the calculation
                                                    e1=145, de=0.1, e0=0,                # The energy grid in cm-1
                                                    sm1=1.0, nsm=1, sm0=1.0,             # The smearing \eta for the analytic continuation
                                                    filename_sp = 'nomm_spectral_func')  # Output file name
 
-       # Now perform the calculation of the spectral function in a
-       # path of q points where the list of q points is gicen in 2pi/a units, with
-       # a the lattice parameter given in Arnstrong
+        #! Now perform the calculation of the spectral function in a
+        #! path of q points where the list of q points is gicen in 2pi/a units, with
+        #! a the lattice parameter given in Arnstrong
 
-       CC.Spectral.get_diag_dynamic_correction_along_path(dyn=dyn,
-                                                   tensor3=tensor3,
+#        CC.Spectral.get_diag_dynamic_correction_along_path(dyn=self.dyn,
+#                                                   tensor3=self.tensor3,
+#                                                   k_grid=k_grid,
+#                                                   q_path_file="XGX.dat",
+#                                                   T = T0,
+#                                                   e1=145, de=0.1, e0=0,
+#                                                   sm1=1.0, nsm=1, sm0=1.0,
+#                                                   filename_sp = 'nomm_spectral_func_in_path')
+    def calcula_espectro1(self,T0):
+        # integration grid
+        k_grid=[4,4,4]
+
+        # q points in 2pi/Angstrom
+        list_of_q_points=[ [  0.0000000,  0.0000000,  0.0000000 ],
+                           [ -0.0386763,  0.0386763, -0.0386763 ],
+                           [  0.0773527, -0.0773527,  0.0773527 ],
+                           [  0.0000000,  0.0773527,  0.0000000 ],
+                           [  0.1160290, -0.0386763,  0.1160290 ],
+                           [  0.0773527,  0.0000000,  0.0773527 ],
+                           [  0.0000000, -0.1547054,  0.0000000 ],
+                           [ -0.0773527, -0.1547054,  0.0000000 ]   ]
+
+
+        CC.Spectral.get_static_correction_along_path(dyn=self.dyn,
+                                             tensor3=self.tensor3,
+                                             k_grid=k_grid,
+                                             q_path=list_of_q_points,
+                                             filename_st="v2_v2+d3static_freq.dat",
+                                             T = T0,
+                                             print_dyn = False) # set true to print the Hessian dynamical matrices
+                                                                # for each q point
+    def dibuja1(self):
+        plot_data = np.loadtxt("v2_v2+d3static_freq.dat")
+
+        plt.figure(dpi = 120)
+        plt.plot(plot_data[:,0], plot_data[:,1], marker = "o")
+        plt.plot(plot_data[:,0], plot_data[:,2], marker = "o")
+        plt.plot(plot_data[:,0], plot_data[:,3], marker = "o")
+        plt.plot(plot_data[:,0], plot_data[:,4], marker = "o")
+        plt.plot(plot_data[:,0], plot_data[:,5], marker = "o")
+        plt.plot(plot_data[:,0], plot_data[:,6], marker = "o")
+        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
+        plt.xlabel("Path (2pi/Angstrom)")
+        plt.ylabel("Frequency [cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('v2_v2_path_Freq.png')
+        #plt.show()
+
+    def calcula_espectro2(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+
+        CC.Spectral.get_static_correction_along_path(dyn=self.dyn,
+                                             tensor3=self.tensor3,
+                                             k_grid=k_grid,
+                                             q_path_file="XGX_path.dat",
+                                             filename_st="v2_v2+d3static_freq2.dat",
+                                             T = T0,
+                                             print_dyn = False) # set true to print the Hessian dynamical matrices
+                                                                # for each q point
+    def calcula_espectro2multiprocessing(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+
+        CC.Spectral.get_static_correction_along_path_multiprocessing(dyn=self.dyn,
+                                             tensor3=self.tensor3,
+                                             k_grid=k_grid,
+                                             q_path_file="XGX_path2.dat",
+                                             filename_st="v2_v2+d3static_freq2_multiprocessing.dat",
+                                             T = T0,
+                                             print_dyn = False) # set true to print the Hessian dynamical matrices
+                                                                # for each q point
+    def dibuja2(self):
+        plot_data = np.loadtxt("v2_v2+d3static_freq2.dat")
+
+        plt.figure(dpi = 120)
+        plt.plot(plot_data[:,0], plot_data[:,1])
+        plt.plot(plot_data[:,0], plot_data[:,2])
+        plt.plot(plot_data[:,0], plot_data[:,3])
+        plt.plot(plot_data[:,0], plot_data[:,4])
+        plt.plot(plot_data[:,0], plot_data[:,5])
+        plt.plot(plot_data[:,0], plot_data[:,6])
+#        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
+        plt.xlabel("XGX")
+        plt.ylabel("Frequency [cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('v2_v2+d3static_freq2.png')
+        #plt.show()
+    def dibuja2multiprocessing(self):
+        plot_data = np.loadtxt("v2_v2+d3static_freq2_multiprocessing.dat")
+
+        plt.figure(dpi = 120)
+        plt.plot(plot_data[:,0], plot_data[:,1])
+        plt.plot(plot_data[:,0], plot_data[:,2])
+        plt.plot(plot_data[:,0], plot_data[:,3])
+        plt.plot(plot_data[:,0], plot_data[:,4])
+        plt.plot(plot_data[:,0], plot_data[:,5])
+        plt.plot(plot_data[:,0], plot_data[:,6])
+#        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
+        plt.xlabel("XGX")
+        plt.ylabel("Frequency [cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('v2_v2+d3static_freq2_multiprocessing.png')
+        #plt.show()
+
+    def calcula_espectro3(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+        # X and G in 2pi/Angstrom
+        points=[[-0.1525326,  0.0,  0.0],
+                [0.0       ,  0.0,  0.0]      ]
+
+        CC.Spectral.get_full_dynamic_correction_along_path(dyn=self.dyn,
+                                                   tensor3=self.tensor3,
                                                    k_grid=k_grid,
-                                                   q_path_file="XGX.dat",
-                                                   T = 200.0,
+                                                   e1=100, de=0.1, e0=0,     # energy grid
+                                                   sm1=1.0, sm0=1.0,  nsm=1, # smearing values
+                                                   sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
+                                                   T = T0,
+                                                   q_path=points,
+                                                   static_limit = True, #static approximation
+                                                   notransl = True,  # projects out the acoustic zone center modes
+                                                   filename_sp='static_spectral_func')
+
+    def dibuja3(self):
+        plot_data = np.loadtxt("static_spectral_func_1.00_1.0.dat")
+
+        plt.figure(dpi = 120)
+        plt.plot(plot_data[:,1], plot_data[:,2])
+#        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('static_spectral_func_1.00_1.0.png')
+        #plt.show()
+
+    def calcula_espectro4(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+        # q point
+        G=[0.0,0.0,0.0]
+
+
+        CC.Spectral.get_full_dynamic_correction_along_path(dyn=self.dyn,
+                                           tensor3=self.tensor3,
+                                           k_grid=k_grid,
+                                           e1=145, de=0.1, e0=0,
+                                           sm1=1, sm0=1,nsm=1,
+                                           sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
+                                           T = T0,
+                                           q_path=G,
+                                           notransl = True,
+                                           filename_sp='full_spectral_func')
+    def dibuja4(self):
+        plot_data = np.loadtxt("full_spectral_func_1.00_1.0.dat")
+
+        plt.figure(dpi = 120)
+        plt.plot(plot_data[:,1], plot_data[:,2])
+#        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('full_spectral_func_1.00_1.0.png')
+        #plt.show()
+
+    def calcula_espectro5(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+        #
+        G=[0.0,0.0,0.0]
+
+        CC.Spectral.get_diag_dynamic_correction_along_path(dyn=self.dyn,
+                                                   tensor3=self.tensor3,
+                                                   k_grid=k_grid,
+                                                   q_path=G,
+                                                   T = T0,
                                                    e1=145, de=0.1, e0=0,
                                                    sm1=1.0, nsm=1, sm0=1.0,
-                                                   filename_sp = 'nomm_spectral_func_in_path')
+                                                   sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
+                                                   filename_sp = 'nomm_spectral_func')
+    def dibuja5(self):
+        plot_data = np.loadtxt("nomm_spectral_func_1.00.dat")
+
+        plt.figure(dpi = 120)
+        plt.plot(plot_data[:,1], plot_data[:,2])
+        plt.plot(plot_data[:,1], plot_data[:,3])
+        plt.plot(plot_data[:,1], plot_data[:,4])
+        plt.plot(plot_data[:,1], plot_data[:,5])
+        plt.plot(plot_data[:,1], plot_data[:,6])
+        plt.plot(plot_data[:,1], plot_data[:,7])
+        plt.plot(plot_data[:,1], plot_data[:,8])
+#        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [1/cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('nomm_spectral_func_1.00.png')
+        #plt.show()
+
+        plot_data = np.loadtxt("nomm_spectral_func_lorentz_one_shot_1.00.dat")
+
+        plt.figure(dpi = 120)
+        plt.plot(plot_data[:,1], plot_data[:,2])
+        plt.plot(plot_data[:,1], plot_data[:,3])
+        plt.plot(plot_data[:,1], plot_data[:,4])
+        plt.plot(plot_data[:,1], plot_data[:,5])
+        plt.plot(plot_data[:,1], plot_data[:,6])
+        plt.plot(plot_data[:,1], plot_data[:,7])
+        plt.plot(plot_data[:,1], plot_data[:,8])
+#        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [1/cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('nomm_spectral_func_lorentz_one_shot_1.00.png')
+        #plt.show()
+
+        plot_data = np.loadtxt("nomm_spectral_func_lorentz_perturb_1.00.dat")
+
+        plt.figure(dpi = 120)
+        plt.plot(plot_data[:,1], plot_data[:,2])
+        plt.plot(plot_data[:,1], plot_data[:,3])
+        plt.plot(plot_data[:,1], plot_data[:,4])
+        plt.plot(plot_data[:,1], plot_data[:,5])
+        plt.plot(plot_data[:,1], plot_data[:,6])
+        plt.plot(plot_data[:,1], plot_data[:,7])
+        plt.plot(plot_data[:,1], plot_data[:,8])
+#        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [1/cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('nomm_spectral_func_lorentz_perturb_1.00.png')
+        #plt.show()
+
+
+    def calcula_espectro6(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+        CC.Spectral.get_diag_dynamic_correction_along_path(dyn=self.dyn,
+                                                   tensor3=self.tensor3,
+                                                   k_grid=k_grid,
+                                                   q_path_file="XGX_path.dat",
+                                                   T =T0,
+                                                   e1=145, de=0.1, e0=0,
+                                                   sm1=1.0, nsm=1, sm0=1.0,
+                                                   sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
+                                                   filename_sp = 'nomm_spectral_func2')
+    def dibuja6(self):
+        # Prepare plot of phonon spectra
+        fig, ax1 = plt.subplots(1,1)
+        data = np.loadtxt('nomm_spectral_func2_1.00.dat')
+        plt.scatter(data[:,0], data[:,1], s=1, c=data[:,2], cmap='hot')
+        ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
+        plt.colorbar()
+        plt.savefig('spectral_path.pdf', bbox_inches='tight')
+        plt.savefig('nomm_spectral_func2_1.00.png')
+        return 0
+
+    def calcula_espectro6multiprocessing(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+        CC.Spectral.get_diag_dynamic_correction_along_path_multiprocessing(dyn=self.dyn,
+                                                   tensor3=self.tensor3,
+                                                   k_grid=k_grid,
+                                                   q_path_file="XGX_path.dat",
+                                                   T =T0,
+                                                   e1=145, de=0.1, e0=0,
+                                                   sm1=1.0, nsm=1, sm0=1.0,
+                                                   sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
+                                                   filename_sp = 'nomm_spectral_func2_multiprocessing')
+    def dibuja6multiprocessing(self):
+        # Prepare plot of phonon spectra
+        fig, ax1 = plt.subplots(1,1)
+        data = np.loadtxt('nomm_spectral_func2_multiprocessing_1.00.dat')
+        plt.scatter(data[:,0], data[:,1], s=1, c=data[:,2], cmap='hot')
+        ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
+        plt.colorbar()
+        plt.savefig('spectral_path2.pdf', bbox_inches='tight')
+        plt.savefig('nomm_spectral_func2_multiprocessing_1.00.png')
+        return 0
+    def dibuja6multiprocessing2(self):
+        # Prepare plot of phonon spectra
+        fig, ax1 = plt.subplots(1,1)
+        data = np.loadtxt('nomm_spectral_func2_multiprocessing_1.00.dat')
+#        X = data[:,0]
+#        Y = data[:,1]
+#        Z = data[:,3]
+#        X, Y = np.meshgrid(X, Y)
+#        surf = ax1.plot_surface(X, Y, Z, cmap=cm.coolwarm,
+#                       linewidth=0, antialiased=False)
+#        norm = cm.colors.Normalize(vmax=abs(Z).max(), vmin=-abs(Z).max())
+#        cset1 = ax1.contourf(X, Y, Z, 40, norm=norm)
+#        data1 = data[:,3].reshape(1450,int(len(data[:,3])/1450))
+#        cax = ax1.imshow(data1, cmap=cm.coolwarm)
+
+        plt.scatter(data[:,0], data[:,1], s=1, c=data[:,2], cmap='hot')
+        ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
+        plt.colorbar()
+        #plt.savefig('spectral_path2.pdf', bbox_inches='tight')
+        plt.savefig('nomm_spectral_func2_multiprocessing2_1.00.png')
+        plt.show()
+        return 0
 
 
 def main(args):
     #La temperatura del primer calculo
-    T0 = 0
+    T0 = 250
     #Las temperaturas de los otros calculos
-    Temperatura_i = np.linspace(100, 250, 15)
+    Temperatura_i = np.linspace(100, 250, 6)
     #El fichero de la matrix dinámica para el campo de fuerzas (entrada)
     Fichero_ForceFields = "ffield_dynq"
-    #El fichero de la matriz dinamica del sistema SnTe (ha de ser del mismo sistema que el fichero para el campo de fuerzas)
-    Fichero_dyn_SnTe = "start_dyn_"
+    #Fichero_ForceFields = "harmonic_dyn"
+    #El fichero de la matriz dinamica del sistema SnTe
+    #Fichero_dyn_SnTe = "harmonic_dyn"
+    #Fichero_dyn_SnTe = "ffield_dynq"
+    Fichero_dyn_SnTe = "final_sscha_T250_"
     #y el numero de ficheros, relacionado con q mesh del quantum espresso (y a su vez relacionado con la supercelda)
-    nqirr = 4
+    nqirr = 3
     #El fichero de las frecuencias (salida)
     Fichero_frecuencias = "frequencies.dat"
     #Los ficheros de la matriz dinamica (salida)
     Fichero_final_matriz_dinamica = "final_sscha_T{}_"
     #"final_sscha_T{}_".format(int(T))
 
-    Calculo = Calculo_inicial(Fichero_ForceFields,Fichero_dyn_SnTe,nqirr)
-    Calculo.ensambla(T0)
-    #Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(T0)),nqirr)
-    Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(T0)))
-    Calculo.dibuja(Fichero_frecuencias)
+#    Calculo = Calculo_inicial(Fichero_ForceFields,Fichero_dyn_SnTe,nqirr)
+#    Calculo.ensambla(T0)
+#    Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(T0)))
+#    Calculo.dibuja(Fichero_frecuencias)
 
-    Inestable = Busca_inestabilidades(Fichero_ForceFields,Fichero_dyn_SnTe,nqirr)
-    Inestable.load_dyn(Fichero_final_matriz_dinamica.format(int(T0)),nqirr)
-    Inestable.ensambla(T0)
-    Inestable.calcula1()
-    Inestable.hessiano()
+#    Inestable = Busca_inestabilidades(Fichero_ForceFields,Fichero_dyn_SnTe,nqirr)
+#    Inestable.load_dyn(Fichero_final_matriz_dinamica.format(int(T0)),nqirr)
+#    Inestable.ensambla(T0)
+#    Inestable.calcula1()
+#    Inestable.hessiano(T0)
 
     #aqui se mete el bucle en temperaturas para crear la entrada de datos a Hessiano_Vs_Temperatura
     ##temperatura_i = np.linspace(50, 300, 6)
@@ -449,9 +705,34 @@ def main(args):
     #   Calculo.ensambla(Temperatura)
     #   Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(Temperatura)))
 
-    HessianoVsTemperatura = Hessiano_Vs_Temperatura(T0,Temperatura_i,Fichero_ForceFields)
-    HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,nqirr)
-    HessianoVsTemperatura.dibuja()
+#    HessianoVsTemperatura = Hessiano_Vs_Temperatura(T0,Temperatura_i,Fichero_ForceFields)
+#    HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,nqirr)
+#    HessianoVsTemperatura.dibuja()
+
+    Espectro =  Funcion_espectral(Fichero_dyn_SnTe,nqirr)
+    Espectro.prepara_tensor()
+    starttime = timeit.default_timer()
+    print("The start time is :",starttime)
+#    Espectro.calcula_espectro1(T0)
+#    Espectro.calcula_espectro2(T0)
+#    Espectro.calcula_espectro2multiprocessing(T0)
+#    Espectro.calcula_espectro3(T0)
+#    Espectro.calcula_espectro4(T0)
+#    Espectro.calcula_espectro5(T0)
+#    Espectro.calcula_espectro6(T0)
+#    Espectro.calcula_espectro6multiprocessing(T0)
+##    Espectro.calcula_espectro(T0)
+    print("The time difference is :", timeit.default_timer() - starttime)
+#    Espectro.dibuja1()
+#    Espectro.dibuja2()
+#    Espectro.dibuja2multiprocessing()
+#    Espectro.dibuja3()
+#    Espectro.dibuja4()
+#    Espectro.dibuja5()
+    Espectro.dibuja6()
+    Espectro.dibuja6multiprocessing()
+#    Espectro.dibuja6multiprocessing2()
+#    Espectro.dibuja()
     return 0
 
 if __name__ == '__main__':
