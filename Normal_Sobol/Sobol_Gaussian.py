@@ -3,7 +3,7 @@
 #
 #  untitled.py
 #
-#  Copyright 2022 Diego <diego@u038025>
+#  Copyright 2022 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -55,11 +55,11 @@ class Random_generador(object):
         plt.hist(data1, bins=50)
         print("Sobol graphics")
         plt.show()
-        plt.savefig('Sobol_hist.png')
+        plt.savefig('Sobol_hist_{}.png'.format(self.size))
         plt.scatter(data1,range(len(data1)))
         print("Sobol graphics")
         plt.show()
-        plt.savefig('Sobol_scatter.png')
+        plt.savefig('Sobol_scatter_{}.png'.format(self.size))
         return data1
         ###########################################################
     def random_normal(self):
@@ -77,11 +77,11 @@ class Random_generador(object):
         plt.hist(data1, bins=50)
         print("random normal graphics")
         plt.show()
-        plt.savefig('random_hist.png')
+        plt.savefig('random_hist_{}.png'.format(self.size))
         plt.scatter(data1,range(len(data1)))
         print("random normal graphics")
         plt.show()
-        plt.savefig('random_scatter.png')
+        plt.savefig('random_scatter_{}.png'.format(self.size))
         return data1
         ###########################################################
     def random_numpy_normal(self):
@@ -91,11 +91,11 @@ class Random_generador(object):
         plt.hist(data1, bins=50)
         print("numpy normal graphics")
         plt.show()
-        plt.savefig('numpy_normal_hist.png')
+        plt.savefig('numpy_normal_hist_{}.png'.format(self.size))
         plt.scatter(data1,range(len(data1)))
         print("numpy normal graphics")
         plt.show()
-        plt.savefig('numpy_normal_scatter.png')
+        plt.savefig('numpy_normal_scatter_{}.png'.format(self.size))
         return data1
         ###########################################################
 
