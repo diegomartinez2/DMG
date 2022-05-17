@@ -54,12 +54,12 @@ class Random_generador(object):
 
         plt.hist(data1, bins=50)
         print("Sobol graphics")
-        plt.show()
         plt.savefig('Sobol_hist_{}.png'.format(self.size))
+        plt.show()
         plt.scatter(data1,range(len(data1)))
         print("Sobol graphics")
-        plt.show()
         plt.savefig('Sobol_scatter_{}.png'.format(self.size))
+        plt.show()
         return data1
         ###########################################################
     def random_normal(self):
@@ -76,12 +76,12 @@ class Random_generador(object):
 
         plt.hist(data1, bins=50)
         print("random normal graphics")
-        plt.show()
         plt.savefig('random_hist_{}.png'.format(self.size))
+        plt.show()
         plt.scatter(data1,range(len(data1)))
         print("random normal graphics")
-        plt.show()
         plt.savefig('random_scatter_{}.png'.format(self.size))
+        plt.show()
         return data1
         ###########################################################
     def random_numpy_normal(self):
@@ -90,17 +90,17 @@ class Random_generador(object):
              data1.append(np.random.normal())
         plt.hist(data1, bins=50)
         print("numpy normal graphics")
-        plt.show()
         plt.savefig('numpy_normal_hist_{}.png'.format(self.size))
+        plt.show()
         plt.scatter(data1,range(len(data1)))
         print("numpy normal graphics")
-        plt.show()
         plt.savefig('numpy_normal_scatter_{}.png'.format(self.size))
+        plt.show()
         return data1
         ###########################################################
 
 def main(args):
-    calculos = Random_generador(500)
+    calculos = Random_generador(100)
     calculos.sobol_normal()
     calculos.random_normal()
     calculos.random_numpy_normal()
