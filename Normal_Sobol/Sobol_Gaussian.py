@@ -27,7 +27,7 @@ import matplotlib.pyplot as plt
 # plt.show()
 
 ###########################################
-size=500
+size=100
 sampler = qmc.Sobol(d=2, scramble=False)
 size_sobol = int(np.log(size)/np.log(2))+1
 print("size = ",size," ;size Sobol = ",size_sobol)
@@ -45,12 +45,14 @@ while (len(data1)<size):
  if(0 <= Riq <= 1):
      #print("Riq=",Riq)
      data3=np.sqrt(-2*np.log(Riq)/Riq)
-     print("data=",v1*data3)
+     #print("data=",v1*data3)
      data1.append(v1*data3)
 
 plt.hist(data1, bins=50)
+print("Sobol graphics")
 plt.show()
 plt.scatter(data1,range(len(data1)))
+print("Sobol graphics")
 plt.show()
 ###########################################################
 data1=[]
@@ -61,10 +63,23 @@ while (len(data1)<size):
  if(0 <= Riq <= 1):
      #print("Riq=",Riq)
      data3=np.sqrt(-2*np.log(Riq)/Riq)
-     print("data=",v1*data3)
+     #print("data=",v1*data3)
      data1.append(v1*data3)
 
 plt.hist(data1, bins=50)
+print("random normal graphics")
 plt.show()
 plt.scatter(data1,range(len(data1)))
+print("random normal graphics")
+plt.show()
+
+data1=[]
+while (len(data1)<size):
+     data1.append(np.random.normal())
+
+plt.hist(data1, bins=50)
+print("numpy normal graphics")
+plt.show()
+plt.scatter(data1,range(len(data1)))
+print("numpy normal graphics")
 plt.show()
