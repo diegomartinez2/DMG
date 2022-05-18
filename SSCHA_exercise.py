@@ -621,19 +621,19 @@ class Funcion_espectral(object):
         plt.savefig('nomm_spectral_func2_1.00.png')
         return 0
 
-    def calcula_espectro6multiprocessing(self,T0):
+    def calcula_espectro6multiprocessing(self,T0,processes):
         # integration grid
         k_grid=[20,20,20]
 
         CC.Spectral.get_diag_dynamic_correction_along_path_multiprocessing(dyn=self.dyn,
                                                    tensor3=self.tensor3,
                                                    k_grid=k_grid,
-                                                   q_path_file="XGX_path.dat",
+                                                   q_path_file="XGX_path2.dat",
                                                    T =T0,
                                                    e1=145, de=0.1, e0=0,
                                                    sm1=1.0, nsm=1, sm0=1.0,
                                                    sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
-                                                   filename_sp = 'nomm_spectral_func2_multiprocessing')
+                                                   filename_sp = 'nomm_spectral_func2_multiprocessing', processes = processes)
     def dibuja6multiprocessing(self):
         # Prepare plot of phonon spectra
         fig, ax1 = plt.subplots(1,1)
@@ -648,22 +648,27 @@ class Funcion_espectral(object):
         # Prepare plot of phonon spectra
         fig, ax1 = plt.subplots(1,1)
         data = np.loadtxt('nomm_spectral_func2_multiprocessing_1.00.dat')
-#        X = data[:,0]
-#        Y = data[:,1]
-#        Z = data[:,3]
+        X = data[:,0]
+        Y = data[:,1]
+        Z = data[:,2]
+#       [a[i] for i in np.lexsort((a[:,0],a[:,1]))]
+        z = [Z[i] for i in np.lexsort((Y,X))]
 #        X, Y = np.meshgrid(X, Y)
 #        surf = ax1.plot_surface(X, Y, Z, cmap=cm.coolwarm,
 #                       linewidth=0, antialiased=False)
 #        norm = cm.colors.Normalize(vmax=abs(Z).max(), vmin=-abs(Z).max())
 #        cset1 = ax1.contourf(X, Y, Z, 40, norm=norm)
 #        data1 = data[:,3].reshape(1450,int(len(data[:,3])/1450))
-#        cax = ax1.imshow(data1, cmap=cm.coolwarm)
+#        data1 = np.resize(data[:,2],(1450,int(len(data[:,2])/1450)))
+        data1 = np.resize(z,(int(len(X)/1450),1450))
+#        cax = ax1.imshow(data1.transpose(), cmap=cm.coolwarm)
+        cax = ax1.imshow(np.flip(data1.transpose(),0), cmap=cm.coolwarm)
 
-        plt.scatter(data[:,0], data[:,1], s=1, c=data[:,2], cmap='hot')
+#        plt.scatter(data[:,0], data[:,1], s=1, c=data[:,2], cmap='hot')
         ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
-        plt.colorbar()
+#        plt.colorbar()
         #plt.savefig('spectral_path2.pdf', bbox_inches='tight')
-        plt.savefig('nomm_spectral_func2_multiprocessing2_1.00.png')
+#        plt.savefig('nomm_spectral_func2_multiprocessing_imshow_1.00.png')
         plt.show()
         return 0
 
@@ -720,7 +725,7 @@ def main(args):
 #    Espectro.calcula_espectro4(T0)
 #    Espectro.calcula_espectro5(T0)
 #    Espectro.calcula_espectro6(T0)
-#    Espectro.calcula_espectro6multiprocessing(T0)
+#    Espectro.calcula_espectro6multiprocessing(T0,8)
 ##    Espectro.calcula_espectro(T0)
     print("The time difference is :", timeit.default_timer() - starttime)
 #    Espectro.dibuja1()
@@ -729,9 +734,9 @@ def main(args):
 #    Espectro.dibuja3()
 #    Espectro.dibuja4()
 #    Espectro.dibuja5()
-    Espectro.dibuja6()
-    Espectro.dibuja6multiprocessing()
-#    Espectro.dibuja6multiprocessing2()
+#    Espectro.dibuja6()
+#    Espectro.dibuja6multiprocessing()
+    Espectro.dibuja6multiprocessing2()
 #    Espectro.dibuja()
     return 0
 
