@@ -46,11 +46,14 @@ class Random_generador(object):
          v1=2.0*data[0][0]-1.0
          v2=2.0*data[0][1]-1.0
          Riq=v1**2+v2**2
-         if(0 <= Riq <= 1):
+#         if(0 <= Riq <= 1):
+         if(0 < Riq <= 1):
              #print("Riq=",Riq)
              data3=np.sqrt(-2*np.log(Riq)/Riq)
              #print("data=",v1*data3)
              data1.append(v1*data3)
+#         else:
+#             print('Riq=',Riq)
 
         plt.hist(data1, bins=50)
         print("Sobol graphics")
@@ -68,7 +71,7 @@ class Random_generador(object):
          v1=2.0*np.random.rand()-1.0
          v2=2.0*np.random.rand()-1.0
          Riq=v1**2+v2**2
-         if(0 <= Riq <= 1):
+         if(0 < Riq <= 1):
              #print("Riq=",Riq)
              data3=np.sqrt(-2*np.log(Riq)/Riq)
              #print("data=",v1*data3)
@@ -100,7 +103,7 @@ class Random_generador(object):
         ###########################################################
 
 def main(args):
-    calculos = Random_generador(100)
+    calculos = Random_generador(500)
     calculos.sobol_normal()
     calculos.random_normal()
     calculos.random_numpy_normal()
