@@ -628,7 +628,7 @@ class Funcion_espectral(object):
         CC.Spectral.get_diag_dynamic_correction_along_path_multiprocessing(dyn=self.dyn,
                                                    tensor3=self.tensor3,
                                                    k_grid=k_grid,
-                                                   q_path_file="XGX_path2.dat",
+                                                   q_path_file="XGX_path.dat",
                                                    T =T0,
                                                    e1=145, de=0.1, e0=0,
                                                    sm1=1.0, nsm=1, sm0=1.0,
@@ -651,24 +651,15 @@ class Funcion_espectral(object):
         X = data[:,0]
         Y = data[:,1]
         Z = data[:,2]
-#       [a[i] for i in np.lexsort((a[:,0],a[:,1]))]
         z = [Z[i] for i in np.lexsort((Y,X))]
-#        X, Y = np.meshgrid(X, Y)
-#        surf = ax1.plot_surface(X, Y, Z, cmap=cm.coolwarm,
-#                       linewidth=0, antialiased=False)
-#        norm = cm.colors.Normalize(vmax=abs(Z).max(), vmin=-abs(Z).max())
-#        cset1 = ax1.contourf(X, Y, Z, 40, norm=norm)
-#        data1 = data[:,3].reshape(1450,int(len(data[:,3])/1450))
-#        data1 = np.resize(data[:,2],(1450,int(len(data[:,2])/1450)))
         data1 = np.resize(z,(int(len(X)/1450),1450))
-#        cax = ax1.imshow(data1.transpose(), cmap=cm.coolwarm)
-        cax = ax1.imshow(np.flip(data1.transpose(),0), cmap=cm.coolwarm)
-
-#        plt.scatter(data[:,0], data[:,1], s=1, c=data[:,2], cmap='hot')
+        cax = ax1.imshow(data1.transpose(), cmap=cm.coolwarm, origin='lower')
         ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
-#        plt.colorbar()
-        #plt.savefig('spectral_path2.pdf', bbox_inches='tight')
-#        plt.savefig('nomm_spectral_func2_multiprocessing_imshow_1.00.png')
+        plt.xticks(ticks=[0,499,999], labels=['X','G','X'])
+        plt.yticks(ticks=[0,200,400,600,800,1000], labels=['0','20','40','60','80','100'])
+        cbar = fig.colorbar(cax)
+        plt.savefig('spectral_path2_imshow.pdf', bbox_inches='tight')
+        plt.savefig('nomm_spectral_func2_multiprocessing_imshow_1.00.png')
         plt.show()
         return 0
 
