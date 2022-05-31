@@ -152,14 +152,48 @@ def sobol_norm_rand2(size,n_modes,scramble=True):  # **** Diegom_test ****
     plt.show()
     return np.resize(data1,(size,n_modes))
 
+def sobol_norm_rand3(size,n_modes,scramble=False):  # **** Diegom_test ****
+        sampler = qmc.Sobol(d=2, scramble=scramble)
+        size_sobol = int(np.log(size)/np.log(2))+2
+        print("size = ",size," ;size Sobol = ",size_sobol)
+        sample = sampler.random_base2(m=size_sobol)
+
+        data1=[]
+        while (len(data1)<size):
+         # data = sampler.random()
+         # v1=2.0*data[0][0]-1.0
+         # v2=2.0*data[0][1]-1.0
+
+         v1=2.0*sample[i][0]-1.0
+         v2=2.0*sample[i][1]-1.0
+         Riq=v1**2+v2**2
+#         if(0 <= Riq <= 1):
+         if(0 < Riq <= 1):
+             #print("Riq=",Riq)
+             data3=np.sqrt(-2*np.log(Riq)/Riq)
+             #print("data=",v1*data3)
+             data1.append(v1*data3)
+#         else:
+#             print('Riq=',Riq)
+
+        plt.hist(data1, bins=50)
+        print("Sobol3 graphics")
+        plt.savefig('Sobol3_hist_{}.png'.format(self.size))
+        plt.show()
+        plt.scatter(data1,range(len(data1)))
+        print("Sobol3 graphics")
+        plt.savefig('Sobol3_scatter_{}.png'.format(self.size))
+        plt.show()
+        return data1
+
 
 
 def main(args):
-    calculos = Random_generador(100)
+    calculos = Random_generador(500)
     calculos.sobol_normal(scramble=False)
     calculos.random_normal()
     calculos.random_numpy_normal()
-    sobol_norm_rand2(100,3,scramble=False)
+    sobol_norm_rand3(500,3,scramble=False)
     return 0
 
 if __name__ == '__main__':
