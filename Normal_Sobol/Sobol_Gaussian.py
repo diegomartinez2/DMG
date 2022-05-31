@@ -138,7 +138,9 @@ def sobol_norm_rand2(size,n_modes,scramble=True):  # **** Diegom_test ****
 
     #return np.resize(data1,(size,n_modes))
     data4 = np.resize(data2,(size,n_modes))
-    plt.hist(data4[:,0], bins=50)
+    #plt.hist(data4[:,0], bins=50)
+    for i in range(n_modes):
+        plt.hist(data4[:,i], bins=50)
     #plt.hist(data1, bins=50)
     print("Sobol SSCHA graphics")
     #plt.savefig('numpy_normal_hist_{}.png'.format(size))
@@ -153,11 +155,11 @@ def sobol_norm_rand2(size,n_modes,scramble=True):  # **** Diegom_test ****
 
 
 def main(args):
-    calculos = Random_generador(100)
+    calculos = Random_generador(50)
     calculos.sobol_normal(scramble=False)
     calculos.random_normal()
     calculos.random_numpy_normal()
-    sobol_norm_rand2(100,10,scramble=False)
+    sobol_norm_rand2(50,3,scramble=False)
     return 0
 
 if __name__ == '__main__':
