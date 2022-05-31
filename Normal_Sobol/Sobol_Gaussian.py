@@ -338,7 +338,7 @@ def sobol_norm_rand6(size,n_modes,scramble=False):  # **** Diegom_test ****
     size_new = 2**size_sobol
     sample = sampler.random_base2(m=size_sobol)
     random = [0]
-    for i in range(1,size_new):
+    for i in range(1,size_new,2):
         #print(i,sample[i][0],sample[i][1])
         r = -np.sqrt(-2.0 * np.log(sample[i][0]))         #<=== usa esto para crear la gaussiana
         theta = 2.0 * np.pi * sample[i][1]
@@ -346,7 +346,7 @@ def sobol_norm_rand6(size,n_modes,scramble=False):  # **** Diegom_test ****
         random.append(r * np.cos(theta))
         random.append(r * np.sin(theta))
     #print (random1)
-    #print (random2)
+    print (random)
     #random = (random1+random2)*n_modes
     random = np.resize(random*n_modes,(size_new,n_modes))
     plt.hist(random, bins=50)
@@ -362,7 +362,7 @@ def main(args):
     # calculos.sobol_NEW_normal(scramble=False) !!!!!hay que terminarlo....
     # calculos.random_normal()
     # calculos.random_numpy_normal()
-    sobol_norm_rand6(10,1,scramble=False)
+    sobol_norm_rand6(100,2,scramble=False)
     return 0
 
 if __name__ == '__main__':
