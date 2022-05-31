@@ -57,11 +57,11 @@ class Random_generador(object):
 
         plt.hist(data1, bins=50)
         print("Sobol graphics")
-        #plt.savefig('Sobol_hist_{}.png'.format(self.size))
+        plt.savefig('Sobol_hist_{}.png'.format(self.size))
         plt.show()
         plt.scatter(data1,range(len(data1)))
         print("Sobol graphics")
-        #plt.savefig('Sobol_scatter_{}.png'.format(self.size))
+        plt.savefig('Sobol_scatter_{}.png'.format(self.size))
         plt.show()
         return data1
         ###########################################################
@@ -79,11 +79,11 @@ class Random_generador(object):
 
         plt.hist(data1, bins=50)
         print("random normal graphics")
-        #plt.savefig('random_hist_{}.png'.format(self.size))
+        plt.savefig('random_hist_{}.png'.format(self.size))
         plt.show()
         plt.scatter(data1,range(len(data1)))
         print("random normal graphics")
-        #plt.savefig('random_scatter_{}.png'.format(self.size))
+        plt.savefig('random_scatter_{}.png'.format(self.size))
         plt.show()
         return data1
         ###########################################################
@@ -93,11 +93,11 @@ class Random_generador(object):
              data1.append(np.random.normal())
         plt.hist(data1, bins=50)
         print("numpy normal graphics")
-        #plt.savefig('numpy_normal_hist_{}.png'.format(self.size))
+        plt.savefig('numpy_normal_hist_{}.png'.format(self.size))
         plt.show()
         plt.scatter(data1,range(len(data1)))
         print("numpy normal graphics")
-        #plt.savefig('numpy_normal_scatter_{}.png'.format(self.size))
+        plt.savefig('numpy_normal_scatter_{}.png'.format(self.size))
         plt.show()
         return data1
         ###########################################################
@@ -143,23 +143,23 @@ def sobol_norm_rand2(size,n_modes,scramble=True):  # **** Diegom_test ****
         plt.hist(data4[:,i], bins=50)
     #plt.hist(data1, bins=50)
     print("Sobol SSCHA graphics")
-    #plt.savefig('numpy_normal_hist_{}.png'.format(size))
+    plt.savefig('New_Sobol_hist_{}.png'.format(size))
     plt.show()
     plt.scatter(data4[:,0],range(len(data4[:,0])))
     #plt.scatter(data1,range(len(data1)))
     print("Sobol SSCHA graphics")
-    #plt.savefig('numpy_normal_scatter_{}.png'.format(size))
+    plt.savefig('New_Sobol_scatter_{}.png'.format(size))
     plt.show()
     return np.resize(data1,(size,n_modes))
 
 
 
 def main(args):
-    calculos = Random_generador(50)
+    calculos = Random_generador(100)
     calculos.sobol_normal(scramble=False)
     calculos.random_normal()
     calculos.random_numpy_normal()
-    sobol_norm_rand2(50,3,scramble=False)
+    sobol_norm_rand2(100,3,scramble=False)
     return 0
 
 if __name__ == '__main__':
