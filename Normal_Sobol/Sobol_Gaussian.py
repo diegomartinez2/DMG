@@ -159,6 +159,7 @@ def sobol_norm_rand3(size,n_modes,scramble=False):  # **** Diegom_test ****
         sample = sampler.random_base2(m=size_sobol)
 
         data1=[]
+        i=0
         while (len(data1)<size):
          # data = sampler.random()
          # v1=2.0*data[0][0]-1.0
@@ -166,6 +167,7 @@ def sobol_norm_rand3(size,n_modes,scramble=False):  # **** Diegom_test ****
 
          v1=2.0*sample[i][0]-1.0
          v2=2.0*sample[i][1]-1.0
+         i += 1
          Riq=v1**2+v2**2
 #         if(0 <= Riq <= 1):
          if(0 < Riq <= 1):
@@ -176,13 +178,14 @@ def sobol_norm_rand3(size,n_modes,scramble=False):  # **** Diegom_test ****
 #         else:
 #             print('Riq=',Riq)
 
+
         plt.hist(data1, bins=50)
         print("Sobol3 graphics")
-        plt.savefig('Sobol3_hist_{}.png'.format(self.size))
+        plt.savefig('Sobol3_hist_{}.png'.format(size))
         plt.show()
         plt.scatter(data1,range(len(data1)))
         print("Sobol3 graphics")
-        plt.savefig('Sobol3_scatter_{}.png'.format(self.size))
+        plt.savefig('Sobol3_scatter_{}.png'.format(size))
         plt.show()
         return data1
 
