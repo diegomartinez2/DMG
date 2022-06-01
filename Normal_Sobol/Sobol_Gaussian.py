@@ -104,27 +104,31 @@ class Random_generador(object):
         return data1
         ###########################################################
     def sobol_NEW_normal(self,scramble=False):
-        sampler = qmc.Sobol(d=1, scramble=scramble)
-        size_sobol = int(np.log(self.size)/np.log(2))
+        sampler = qmc.Sobol(d=2, scramble=scramble)
+        size_sobol = int(math.ceil(np.log(self.size/2)/np.log(2))) #int(np.log(self.size)/np.log(2))
         print("size = ",self.size," ;size Sobol = ",size_sobol)
-        sample1 = sampler.random_base2(m=size_sobol)
-        sample2 = sampler.random_base2(m=size_sobol)
+        sample = sampler.random_base2(m=size_sobol)
 
-        data1=[]
-        for u1,u2 in sample1,sample2:
+
+        data1=[0,0]
+        for i in (range(1,len(sample))):
+            u1 = sample[i][0]
+            u2 = sample[i][1]
             r = -np.sqrt(-2*np.log(u1))
             theta = 2*np.pi*u2
             data1.append(r*np.cos(theta))
             data1.append(r*np.sin(theta))
 
-
+        for i in (range(1,len(sample))):
+            plt.scatter(sample[i][0],sample[i][1])
+        plt.show()
         plt.hist(data1, bins=50)
-        print("Sobol graphics")
-        plt.savefig('Sobol_hist_{}.png'.format(self.size))
+        print("Sobol graphics:size=",self.size,'size_sobol=',size_sobol,'len data1=',len(data1))
+        plt.savefig('Sobol_NEW_hist_{}.png'.format(self.size))
         plt.show()
         plt.scatter(data1,range(len(data1)))
         print("Sobol graphics")
-        plt.savefig('Sobol_scatter_{}.png'.format(self.size))
+        plt.savefig('Sobol_NEW_scatter_{}.png'.format(self.size))
         plt.show()
         return data1
 # -------
@@ -357,12 +361,12 @@ def sobol_norm_rand6(size,n_modes,scramble=False):  # **** Diegom_test ****
 ################################################################################
 ################################################################################
 def main(args):
-    # calculos = Random_generador(500)
-    # calculos.sobol_normal(scramble=False)
-    # calculos.sobol_NEW_normal(scramble=False) !!!!!hay que terminarlo....
-    # calculos.random_normal()
-    # calculos.random_numpy_normal()
-    sobol_norm_rand6(100,2,scramble=False)
+    calculos = Random_generador(50)
+    calculos.sobol_normal(scramble=False)
+    calculos.sobol_NEW_normal(scramble=False) #!!!!!hay que terminarlo....
+    calculos.random_normal()
+    calculos.random_numpy_normal()
+    #sobol_norm_rand6(100,2,scramble=False)
     return 0
 
 if __name__ == '__main__':
