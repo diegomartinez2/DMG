@@ -130,6 +130,9 @@ class Random_generador(object):
         print("Sobol graphics")
         plt.savefig('Sobol_NEW_scatter_{}.png'.format(self.size))
         plt.show()
+        print (np.resize(data1,(len(data1),3)))
+        plt.hist(np.resize(data1,(len(data1),3)), bins=50)
+        plt.show()
         return data1
 # -------
 # Functions
@@ -350,9 +353,9 @@ def sobol_norm_rand6(size,n_modes,scramble=False):  # **** Diegom_test ****
         random.append(r * np.cos(theta))
         random.append(r * np.sin(theta))
     #print (random1)
-    print (random)
+    print (random,len(random))
     #random = (random1+random2)*n_modes
-    random = np.resize(random*n_modes,(size_new,n_modes))
+    random = np.resize(random,(size_new,n_modes))
     plt.hist(random, bins=50)
     plt.show()
     print ('size=',size,'size_new=',size_new,'return=',len(random))
