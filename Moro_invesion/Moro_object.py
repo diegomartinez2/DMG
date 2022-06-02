@@ -1,0 +1,84 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#  untitled.py
+#
+#  Copyright 2022 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+#
+#
+# ---------------------------
+# Importación de los módulos
+# ---------------------------
+
+# -------
+# Clases
+# -------
+class Moro(object):
+    def __init__(self):
+        self.a0 =   2.50662823884
+        self.a1 = -18.61500062529
+        self.a2 =  41.39119773534
+        self.a3 = -25.44106049637
+        self.b0 =  -8.47351093090
+        self.b1 =  23.08336743743
+        self.b2 = -21.06224101826
+        self.b3 =   3.13082909833
+        self.c0 =   0.3374754822726147
+        self.c1 =   0.9761690190917186
+        self.c2 =   0.1607979714918209
+        self.c3 =   0.0276438810333863
+        self.c4 =   0.0038405729373609
+        self.c5 =   0.0003951896511919
+        self.c6 =   0.0000321767881768
+        self.c7 =   0.0000002888167364
+        self.c8 =   0.0000003960315187
+
+    def gauss(self,u):
+        y = u - 0.5
+        if (abs(y) < 0.42):
+            r = y * y
+            #x = y * (((self.a3*r+self.a2)*r+self.a1)*r+self.a0)/((((self.b3*r+self.b2)*r+self.b1)*r+self.b0)*r+1)
+            x = y * np.polyval([self.a3,self.a2,self.a1,self.a0],r)/
+                    np.polyval([self.b3,self.b2,self.b1,self.b0,1],r)
+        else:
+            r = u
+            if (y > 0):
+                r = 1-u
+            r = np.log(-np.log(r))
+            #x = self.c0+r*(self.c1+r*(self.c2+r*(self.c3+r*(self.c4+r*(self.c5+r*(self.c6+r*(self.c7+r*self.c8))))))
+            x = np.polyval([self.c8,self.c7,self.c6,self.c5,self.c4,self.c3,self.c2,self.c1,self.c0],r)
+            if (y < 0):
+                x = -x
+        return x
+
+    def normalize(self,u):
+        x = np.zeros(len(u))
+        for i in range(len(u)):
+            x[i] = self.gauss(u)
+        return x
+# ----------
+# Funciones
+# ----------
+
+def main(args):
+
+    return 0
+
+if __name__ == '__main__':
+    import sys
+    sys.exit(main(sys.argv))
