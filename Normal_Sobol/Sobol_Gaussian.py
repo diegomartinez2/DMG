@@ -110,8 +110,8 @@ class Random_generador(object):
         sample = sampler.random_base2(m=size_sobol)
 
 
-        data1=[0,0]
-        for i in (range(1,len(sample))):
+        data1=[]
+        for i in (range(len(sample))):
             u1 = (sample[i][0]+0.01)%1 #****Diegom_test****
             u2 = (sample[i][1]+0.01)%1 # adding random number and modulus to avoid zeros
             r = -np.sqrt(-2*np.log(u1))
@@ -122,6 +122,9 @@ class Random_generador(object):
         for i in (range(1,len(sample))):
             plt.scatter(sample[i][0],sample[i][1])
         plt.show()
+        for i in (range(1,len(sample))):
+            plt.scatter((sample[i][0]+0.01)%1,(sample[i][1]+0.01)%1)
+        plt.show()
         plt.hist(data1, bins=50)
         print("Sobol graphics:size=",self.size,'size_sobol=',size_sobol,'len data1=',len(data1))
         plt.savefig('Sobol_NEW_hist_{}.png'.format(self.size))
@@ -130,8 +133,10 @@ class Random_generador(object):
         print("Sobol graphics")
         plt.savefig('Sobol_NEW_scatter_{}.png'.format(self.size))
         plt.show()
-        print (np.resize(data1,(len(data1),3)))
-        plt.hist(np.resize(data1,(len(data1),3)), bins=50)
+        # print (np.resize(data1,(len(data1),3)))
+        # plt.hist(np.resize(data1,(len(data1),3)), bins=50)
+        print (np.resize(data1,(3,len(data1))).T)
+        plt.hist(np.resize(data1,(3,len(data1))).T, bins=50)
         plt.show()
         return data1
 # -------
@@ -369,10 +374,10 @@ def sobol_norm_rand7(size,n_modes,scramble=False):  # **** Diegom_test ****
         sample = sampler.random_base2(m=size_sobol)
 
 
-        data1=[0,0]
-        for i in (range(1,len(sample))):
-            u1 = sample[i][0]
-            u2 = sample[i][1]
+        data1=[]
+        for i in (range(len(sample))):
+            u1 = (sample[i][0]+0.01)%1
+            u2 = (sample[i][1]+0.01)%1
             r = -np.sqrt(-2*np.log(u1))
             theta = 2*np.pi*u2
             data1.append(r*np.cos(theta))
@@ -380,7 +385,7 @@ def sobol_norm_rand7(size,n_modes,scramble=False):  # **** Diegom_test ****
         m = len(data1)-size
         data2 = data1[m:]
         print (len(data1),len(data2),size)
-        data = np.resize(data2,(n_modes,size))
+        data = np.resize(data2,(n_modes,size)).T
 
         for i in (range(1,len(sample))):
             plt.scatter(sample[i][0],sample[i][1])
@@ -399,12 +404,12 @@ def sobol_norm_rand7(size,n_modes,scramble=False):  # **** Diegom_test ****
 ################################################################################
 ################################################################################
 def main(args):
-    # calculos = Random_generador(50)
+    calculos = Random_generador(50)
     # calculos.sobol_normal(scramble=False)
-    # calculos.sobol_NEW_normal(scramble=False) #!!!!!hay que terminarlo....
+    calculos.sobol_NEW_normal(scramble=False) #!!!!!hay que terminarlo....
     # calculos.random_normal()
     # calculos.random_numpy_normal()
-    sobol_norm_rand7(100,2,scramble=False)
+    # sobol_norm_rand7(100,1,scramble=False)
     return 0
 
 if __name__ == '__main__':
