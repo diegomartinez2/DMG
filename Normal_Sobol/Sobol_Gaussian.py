@@ -112,8 +112,8 @@ class Random_generador(object):
 
         data1=[0,0]
         for i in (range(1,len(sample))):
-            u1 = sample[i][0]
-            u2 = sample[i][1]
+            u1 = (sample[i][0]+0.01)%1 #****Diegom_test****
+            u2 = (sample[i][1]+0.01)%1 # adding random number and modulus to avoid zeros
             r = -np.sqrt(-2*np.log(u1))
             theta = 2*np.pi*u2
             data1.append(r*np.cos(theta))
