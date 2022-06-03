@@ -72,21 +72,32 @@ class Moro(object):
             x[i] = self.gauss(u)
         return x
 
-    def Sobol(self,size,n_modes):
+    def sobol(self,size,n_modes):
         sampler = qmc.Sobol(d=1, scramble=scramble)
         size_sobol = int(np.log(size)/np.log(2))
         sample = sampler.random_base2(m=size_sobol)
         data = self.normalize(sample)
-        x = np.resize(data,(n_modes,size).T
+        x = np.resize(data,(n_modes,size)).T
         return x
 # ----------
 # Funciones
 # ----------
 
 def main(args):
+    size = 50
+    n_modes = 3
     Sobol = Moro()
-    data = Sobol.Sobol(50,3)
-    
+    data = Sobol.sobol(size,n_modes)
+    for i in (range(n_modes)):
+            plt.hist(data[i], bins=50)
+    print("Sobol graphics:size=",size,'size_sobol=',size_sobol,'len data1=',len(data))
+    #plt.savefig('Sobol_NEW_hist_{}.png'.format(self.size))
+    plt.show()
+    for i in (range(n_modes)):
+            plt.scatter(data[i],range(len(data[0])))
+    print("Sobol graphics")
+    #plt.savefig('Sobol_NEW_scatter_{}.png'.format(self.size))
+    plt.show()
 
     return 0
 
