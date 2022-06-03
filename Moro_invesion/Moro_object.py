@@ -76,7 +76,7 @@ class Moro(object):
         sampler = qmc.Sobol(d=1, scramble=scramble)
         size_sobol = int(np.log(size)/np.log(2))
         sample = sampler.random_base2(m=size_sobol)
-        data = normalize(sample)
+        data = self.normalize(sample)
         x = np.resize(data,(n_modes,size).T
         return x
 # ----------
@@ -84,6 +84,9 @@ class Moro(object):
 # ----------
 
 def main(args):
+    Sobol = Moro()
+    data = Sobol.Sobol(50,3)
+    
 
     return 0
 
