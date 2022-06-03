@@ -24,7 +24,10 @@
 # ---------------------------
 # Importación de los módulos
 # ---------------------------
-
+import numpy as np
+from scipy.stats import qmc
+import matplotlib.pyplot as plt
+#import itertools, math
 # -------
 # Clases
 # -------
