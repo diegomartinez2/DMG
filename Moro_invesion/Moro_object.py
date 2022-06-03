@@ -71,6 +71,14 @@ class Moro(object):
         for i in range(len(u)):
             x[i] = self.gauss(u)
         return x
+
+    def Sobol(self,size,n_modes):
+        sampler = qmc.Sobol(d=1, scramble=scramble)
+        size_sobol = int(np.log(size)/np.log(2))
+        sample = sampler.random_base2(m=size_sobol)
+        data = normalize(sample)
+        x = np.resize(data,(n_modes,size).T
+        return x
 # ----------
 # Funciones
 # ----------
