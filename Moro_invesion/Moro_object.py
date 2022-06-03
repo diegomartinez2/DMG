@@ -27,7 +27,7 @@
 import numpy as np
 from scipy.stats import qmc
 import matplotlib.pyplot as plt
-#import itertools, math
+import math
 # -------
 # Clases
 # -------
@@ -56,8 +56,7 @@ class Moro(object):
         if (abs(y) < 0.42):
             r = y * y
             #x = y * (((self.a3*r+self.a2)*r+self.a1)*r+self.a0)/((((self.b3*r+self.b2)*r+self.b1)*r+self.b0)*r+1)
-            x = y * np.polyval([self.a3,self.a2,self.a1,self.a0],r)/
-                    np.polyval([self.b3,self.b2,self.b1,self.b0,1],r)
+            x = y * np.polyval([self.a3,self.a2,self.a1,self.a0],r)/np.polyval([self.b3,self.b2,self.b1,self.b0,1],r)
         else:
             r = u
             if (y > 0):
@@ -72,35 +71,50 @@ class Moro(object):
     def normalize(self,u):
         x = np.zeros(len(u))
         for i in range(len(u)):
-            x[i] = self.gauss(u)
+            x[i] = self.gauss(u[i])
         return x
 
     def sobol(self,size,n_modes):
-        sampler = qmc.Sobol(d=1, scramble=scramble)
-        size_sobol = int(np.log(size)/np.log(2))
+        sampler = qmc.Sobol(d=1, scramble=False)
+        size_sobol = int(math.ceil(np.log(size)/np.log(2)))
+        print ('size=',size,'size_sobol=',size_sobol,'ss=',2**size_sobol)
+        # x = []
+        # for i in range(n_modes):
+        #     x.append(data)
+        sample0 = sampler.random_base2(m=size_sobol)
         sample = sampler.random_base2(m=size_sobol)
+        print ('sample=',sample)
+        plt.hist(sample, bins=int(size/2))
+        plt.show()
+        plt.scatter(sample,range(len(sample)))
+        plt.show()
+#        data = self.normalize((sample+0.01)%1)
         data = self.normalize(sample)
-        x = np.resize(data,(n_modes,size)).T
+        print ('data=',data)
+        plt.hist(data, bins=int(size/2))
+        plt.show()
+        plt.scatter(data,range(len(data)))
+        plt.show()
+        m = len(data)-size      #****Diegom_test**** cut extra points (may work?)
+        data1 = data[m:]
+        x = np.resize(data1,(n_modes,size))
+        print ('exit data:')
+        print (x)
         return x
 # ----------
 # Funciones
 # ----------
 
 def main(args):
-    size = 50
+    size = 32
     n_modes = 3
     Sobol = Moro()
     data = Sobol.sobol(size,n_modes)
     for i in (range(n_modes)):
-            plt.hist(data[i], bins=50)
-    print("Sobol graphics:size=",size,'size_sobol=',size_sobol,'len data1=',len(data))
-    #plt.savefig('Sobol_NEW_hist_{}.png'.format(self.size))
-    plt.show()
-    for i in (range(n_modes)):
-            plt.scatter(data[i],range(len(data[0])))
-    print("Sobol graphics")
-    #plt.savefig('Sobol_NEW_scatter_{}.png'.format(self.size))
-    plt.show()
+             plt.hist(data[i], bins=20)#int(size/2))
+             plt.show()
+             plt.scatter(data[i],range(len(data[i])))
+             plt.show()
 
     return 0
 
