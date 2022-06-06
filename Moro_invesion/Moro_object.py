@@ -106,10 +106,17 @@ class Moro(object):
 # ----------
 
 def main(args):
-    size = 32
+    size = 512
     n_modes = 3
+    salt = 0.01
     Sobol = Moro()
     data = Sobol.sobol(size,n_modes)
+    for i in range(n_modes):
+        #rand = (np.random.rand()-0.5)*salt
+        #print ('rand=',rand)
+        for j in range(size):
+            #data[i][j]=data[i][j]+rand
+            data[i][j]=data[i][j]+(np.random.rand()-0.5)*salt
     for i in (range(n_modes)):
              plt.hist(data[i], bins=20)#int(size/2))
              plt.show()
