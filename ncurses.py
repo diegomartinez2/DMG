@@ -26,7 +26,7 @@ def main(stdscr):
     win.erase()
 
     win = create_centered_window(5, 20, 'Saludo')
-    win.addstr('hello, ' + name)
+    win.addstr(name)
 
     stdscr.refresh()
     win.getch()
