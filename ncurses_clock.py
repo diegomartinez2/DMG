@@ -42,7 +42,7 @@ def run(stdscr):
     stdscr.addstr( 1, 0, "This is sample text\n\n")
     stdscr.addstr(18, 0, "This is more sample text\n\n")
     clock1 = Clock(stdscr)
-    clock2 = Clock(stdscr, seconds=False)
+    clock2 = Clock(stdscr, show_seconds=False)
 
     # End with any key
 
