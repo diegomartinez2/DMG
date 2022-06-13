@@ -801,7 +801,11 @@ def main(args):
     #Las temperaturas de los otros calculos
     Temperatura_i = np.linspace(50, 300, 6)
 #    Configuraciones_i = [2**4,2**5,2**6,2**7,2**8,2**9,2**10]
-    Configuraciones_i = range(32,8192,32) #range(32, 512, 2)
+#    Configuraciones_i = range(32,8192,32) #range(32, 512, 2)
+    Configuraciones_i = np.linspace(2**4,2**10,60,dtype=int)#range(2**14, 2**4, -512)#range(1024,32,-32) #range(32, 512, 2)
+    for i in range(len(Configuraciones_i)):
+         if (Configuraciones_i[i]%2!=0):
+             Configuraciones_i[i]+=1
 #    Temperatura_i = np.linspace(300, 50, 6)
     #El fichero de la matrix dinámica para el campo de fuerzas (entrada)
     Fichero_ForceFields = "ffield_dynq"
