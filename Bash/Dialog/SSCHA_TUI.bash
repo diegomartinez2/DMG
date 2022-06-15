@@ -5,32 +5,74 @@ DIALOG_CANCEL=1
 DIALOG_ESC=255
 HEIGHT=0
 WIDTH=0
+# ------------------------------------------------------------------------------
 # scha input
-__SCHA_NAMELIST__= "inputscha"
-__SCHA_LAMBDA_A__= "lambda_a"
-__SCHA_LAMBDA_W__= "lambda_w"
-__SCHA_MINSTRUC__= "minim_struc"
-__SCHA_PRECOND_WYCK__= "precond_wyck"
-__SCHA_PRECOND_DYN__= "preconditioning"
-__SCHA_ROOTREP__= "root_representation"
-__SCHA_NEGLECT_SYMMETRIES__= "neglect_symmetries"
-__SCHA_NRANDOM_EFF__= "n_random_eff"
-__SCHA_NRANDOM__= "n_random"
-__SCHA_MEANINGFUL__= "meaningful_factor"
-__SCHA_EQENERGY__= "eq_energy"
-__SCHA_FILDYN__= "fildyn_prefix"
-__SCHA_NQIRR__= "nqirr"
-__SCHA_DATADIR__= "data_dir"
-__SCHA_ISBIN__= "load_bin"
-__SCHA_T__= "t"
-__SCHA_TG__= "tg"
-__SCHA_SUPERCELLSIZE__= "supercell_size"
-__SCHA_MAXSTEPS__= "max_ka"
-__SCHA_STRESSOFFSET__= "stress_offset"
-__SCHA_GRADIOP__= "gradi_op"
-__SCHA_POPULATION__= "population"
-__SCHA_PRINTSTRESS__= "print_stress"
-__SCHA_USESPGLIB__= "use_spglib"
+__SCHA_NAMELIST__="inputscha"
+__SCHA_LAMBDA_A__="lambda_a"
+__SCHA_LAMBDA_W__="lambda_w"
+__SCHA_MINSTRUC__="minim_struc"
+__SCHA_PRECOND_WYCK__="precond_wyck"
+__SCHA_PRECOND_DYN__="preconditioning"
+__SCHA_ROOTREP__="root_representation"
+__SCHA_NEGLECT_SYMMETRIES__="neglect_symmetries"
+__SCHA_NRANDOM_EFF__="n_random_eff"
+__SCHA_NRANDOM__="n_random"
+__SCHA_MEANINGFUL__="meaningful_factor"
+__SCHA_EQENERGY__="eq_energy"
+__SCHA_FILDYN__="fildyn_prefix"
+__SCHA_NQIRR__="nqirr"
+__SCHA_DATADIR__="data_dir"
+__SCHA_ISBIN__="load_bin"
+__SCHA_T__="t"
+__SCHA_TG__="tg"
+__SCHA_SUPERCELLSIZE__="supercell_size"
+__SCHA_MAXSTEPS__="max_ka"
+__SCHA_STRESSOFFSET__="stress_offset"
+__SCHA_GRADIOP__="gradi_op"
+__SCHA_POPULATION__="population"
+__SCHA_PRINTSTRESS__="print_stress"
+__SCHA_USESPGLIB__="use_spglib"
+display_Scha_input() {
+  # open fd
+  exec 3>&1
+
+  # Store data to $VALUES variable
+  CALCULATOR_VALUES=$(dialog --ok-label "Submit" \
+	  --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
+	  --title "SCHA parameters" \
+	  --form "Fildyn, nqirr and T are mandatory." \
+    30 50 0 \
+     "fildyn_prefix:"      1 1	"$__SCHA_FILDYN__"	                 1 20 30 0 \
+     "nqirr:"              2 1  "$__SCHA_NQIRR__"                    2 20 30 0 \
+     "T:"                  3 1  "$__SCHA_T__"                        3 20 30 0 \
+     "lambda_a"            4 1  "$__SCHA_LAMBDA_A__"                 4 20 30 0 \
+     "lambda_w"            5 1  "$__SCHA_LAMBDA_W__"                 5 20 30 0 \
+     "minim_struc"         6 1  "$__SCHA_MINSTRUC__"                 6 20 30 0 \
+     "precond_wyck"        7 1  "$__SCHA_PRECOND_WYCK__"             7 20 30 0 \
+     "preconditioning"     8 1  "$__SCHA_PRECOND_DYN__"              8 20 30 0 \
+     "root_representation" 9 1  "$__SCHA_ROOTREP__"                  9 20 30 0 \
+     "neglect_symmetries" 10 1  "$__SCHA_NEGLECT_SYMMETRIES__"      10 20 30 0 \
+     "n_random_eff"       11 1  "$__SCHA_NRANDOM_EFF__"             11 20 30 0 \
+     "n_random"           12 1  "$__SCHA_NRANDOM__"                 12 20 30 0 \
+     "meaningful_factor"  13 1  "$__SCHA_MEANINGFUL__"              13 20 30 0 \
+     "eq_energy"          14 1  "$__SCHA_EQENERGY__"                14 20 30 0 \
+     "data_dir"           15 1  "$__SCHA_DATADIR__"                 15 20 30 0 \
+     "load_bin"           16 1  "$__SCHA_ISBIN__"                   16 20 30 0 \
+     "tg"                 17 1  "$__SCHA_TG__"                      17 20 30 0 \
+     "supercell_size"     18 1  "$__SCHA_SUPERCELLSIZE__"           18 20 30 0 \
+     "max_ka"             19 1  "$__SCHA_MAXSTEPS__"                19 20 30 0 \
+     "stress_offset"      20 1  "$__SCHA_STRESSOFFSET__"            20 20 30 0 \
+     "gradi_op"           21 1  "$__SCHA_GRADIOP__"                 21 20 30 0 \
+     "population"         22 1  "$__SCHA_POPULATION__"              22 20 30 0 \
+     "print_stress"       23 1  "$__SCHA_PRINTSTRESS__"             23 20 30 0 \
+     "use_spglib"         24 1  "$__SCHA_USESPGLIB__"               24 20 30 0 \
+    2>&1 1>&3)
+
+# close fd
+exec 3>&-
+}
+
+# ------------------------------------------------------------------------------
 # relax parameters
 __RELAX_TYPE__="relax"
 __RELAX_NCONFIGS__=1000
@@ -42,62 +84,12 @@ __RELAX_TARGET_PRESSURE__=0
 __RELAX_FIXVOLUME__=".false."
 __RELAX_BULK_MODULUS__=15
 
-display_result() {
-  dialog --title "$1" \
-    --no-collapse \
-    --msgbox "$result" 0 0
-}
-
-display_help() {
-  dialog --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
-  --title "SSCHA Help" --no-collapse --textbox sscha_help.txt 0 0
-}
-
-display_SCHA_input() {
-  # open fd
-  exec 3>&1
-
-  # Store data to $VALUES variable
-  VALUES=$(dialog --ok-label "Submit" \
-	  --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
-	  --title "SCHA input" \
-	  --form "Fildyn, nqirr and T are mandatory." \
-    15 50 0 \
-     "fildyn_prefix:"       1 1	"$__SCHA_FILDYN__"	                 1 15 30 0 \
-     "nqirr:"               2 1 "$__SCHA_NQIRR__"                    2 15 30 0 \
-     "T:"                   3 1 "$__SCHA_T__"                        3 15 30 0 \
-     "lambda_a"             4 1 "$__SCHA_LAMBDA_A__"                4 15 30 0 \
-     "lambda_w"             5 1 "$__SCHA_LAMBDA_W__"                5 15 30 0 \
-     "minim_struc"          6 1 "$__SCHA_MINSTRUC__"                6 15 30 0 \
-     "precond_wyck"         7 1 "$__SCHA_PRECOND_WYCK__"            7 15 30 0 \
-     "preconditioning"      8 1 "$__SCHA_PRECOND_DYN__"             8 15 30 0 \
-     "root_representation"  9 1 "$__SCHA_ROOTREP__"                 9 15 30 0 \
-     "neglect_symmetries"  10 1 "$__SCHA_NEGLECT_SYMMETRIES__"     10 15 30 0 \
-     "n_random_eff"        11 1 "$__SCHA_NRANDOM_EFF__"            11 15 30 0 \
-     "n_random"            12 1 "$__SCHA_NRANDOM__"                 12 15 30 0 \
-     "meaningful_factor"   13 1 "$__SCHA_MEANINGFUL__"              13 15 30 0 \
-     "eq_energy"           14 1 "$__SCHA_EQENERGY__"                14 15 30 0 \
-     "data_dir"            15 1 "$__SCHA_DATADIR__"                 15 15 30 0 \
-     "load_bin"            16 1 "$__SCHA_ISBIN__"                   16 15 30 0 \
-     "tg"                  17 1 "$__SCHA_TG__"                      17 15 30 0 \
-     "supercell_size"      18 1 "$__SCHA_SUPERCELLSIZE__"           18 15 30 0 \
-     "max_ka"              19 1 "$__SCHA_MAXSTEPS__"                19 15 30 0 \
-     "stress_offset"       20 1 "$__SCHA_STRESSOFFSET__"            20 15 30 0 \
-     "gradi_op"            21 1 "$__SCHA_GRADIOP__"                 21 15 30 0 \
-     "population"          22 1 "$__SCHA_POPULATION__"              22 15 30 0 \
-     "print_stress"        23 1 "$__SCHA_PRINTSTRESS__"             23 15 30 0 \
-     "use_spglib"          24 1 "$__SCHA_USESPGLIB__"               24 15 30 0 \
-2>&1 1>&3)
-
-# close fd
-exec 3>&-
-}
 display_Relax_input() {
   # open fd
   exec 3>&1
 
   # Store data to $VALUES variable
-  VALUES=$(dialog --ok-label "Submit" \
+  RELAX_VALUES=$(dialog --ok-label "Submit" \
 	  --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
 	  --title "Relax parameters" \
 	  --form "are mandatory." \
@@ -111,11 +103,88 @@ display_Relax_input() {
      "target_pressure:"    7 1  "$__RELAX_TARGET_PRESSURE__"         7 20 30 0 \
      "fix_volume:"         8 1  "$__RELAX_FIXVOLUME__"               8 20 30 0 \
      "bulk_modulus:"       9 1  "$__RELAX_BULK_MODULUS__"            9 20 30 0 \
-2>&1 1>&3)
+    2>&1 1>&3)
 
 # close fd
 exec 3>&-
 }
+
+# ------------------------------------------------------------------------------
+# Calculator parameters
+
+
+
+display_Calculator_input() {
+  # open fd
+  exec 3>&1
+
+  # Store data to $VALUES variable
+  CALCULATOR_VALUES=$(dialog --ok-label "Submit" \
+	  --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
+	  --title "Relax parameters" \
+	  --form "are mandatory." \
+    15 50 0 \
+	   "type:"               1 1	"$__RELAX_TYPE__"      	             1 20 30 0 \
+	   "n_configs:"          2 1	"$__RELAX_NCONFIGS__"  	             2 20 30 0 \
+	   "max_pop_id:"         3 1	"$__RELAX_MAX_POP__"	               3 20 30 0 \
+	   "start_pop:"          4 1	"$__RELAX_START_POP__"	             4 20 30 0 \
+     "ensemble_datadir:"   5 1  "$__RELAX_SAVE_ENSEMBLE__"           5 20 30 0 \
+     "generate_ensemble:"  6 1  "$__RELAX_GENERATE_FIRST_ENSEMBLE__" 6 20 30 0 \
+     "target_pressure:"    7 1  "$__RELAX_TARGET_PRESSURE__"         7 20 30 0 \
+     "fix_volume:"         8 1  "$__RELAX_FIXVOLUME__"               8 20 30 0 \
+     "bulk_modulus:"       9 1  "$__RELAX_BULK_MODULUS__"            9 20 30 0 \
+    2>&1 1>&3)
+
+# close fd
+exec 3>&-
+}
+# ------------------------------------------------------------------------------
+# Utilities parameters
+
+
+
+
+
+display_Utilities_input() {
+  # open fd
+  exec 3>&1
+
+  # Store data to $VALUES variable
+  UTILITIES_VALUES=$(dialog --ok-label "Submit" \
+	  --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
+	  --title "Relax parameters" \
+	  --form "are mandatory." \
+    15 50 0 \
+	   "type:"               1 1	"$__RELAX_TYPE__"      	             1 20 30 0 \
+	   "n_configs:"          2 1	"$__RELAX_NCONFIGS__"  	             2 20 30 0 \
+	   "max_pop_id:"         3 1	"$__RELAX_MAX_POP__"	               3 20 30 0 \
+	   "start_pop:"          4 1	"$__RELAX_START_POP__"	             4 20 30 0 \
+     "ensemble_datadir:"   5 1  "$__RELAX_SAVE_ENSEMBLE__"           5 20 30 0 \
+     "generate_ensemble:"  6 1  "$__RELAX_GENERATE_FIRST_ENSEMBLE__" 6 20 30 0 \
+     "target_pressure:"    7 1  "$__RELAX_TARGET_PRESSURE__"         7 20 30 0 \
+     "fix_volume:"         8 1  "$__RELAX_FIXVOLUME__"               8 20 30 0 \
+     "bulk_modulus:"       9 1  "$__RELAX_BULK_MODULUS__"            9 20 30 0 \
+    2>&1 1>&3)
+
+# close fd
+exec 3>&-
+}
+# ------------------------------------------------------------------------------
+
+display_result() {
+  dialog --title "$1" \
+    --no-collapse \
+    --msgbox "$result" 0 0
+}
+
+display_help() {
+  dialog --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
+  --title "SSCHA Help" --no-collapse --textbox sscha_help.txt 0 0
+}
+
+
+
+
 while true; do
   exec 3>&1
   selection=$(dialog \
@@ -147,18 +216,16 @@ while true; do
   esac
   case $selection in
     1 )
-      display_SCHA_input
+      display_Scha_input
       ;;
     2 )
-      result=$(df -h)
-      display_result "Disk Space"
+      display_Calculator_input
       ;;
     3 )
         display_Relax_input
       ;;
     4)
-        result=$(echo "Hostname: $HOSTNAME"; uptime)
-        display_result "System Information"
+        display_Utilities_input
       ;;
     5)
         display_help
