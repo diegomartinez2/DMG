@@ -36,8 +36,8 @@ display_Scha_input() {
   # open fd
   exec 3>&1
 
-  # Store data to $VALUES variable
-  CALCULATOR_VALUES=$(dialog --ok-label "Submit" \
+  # Store data to $SCHA_VALUES variable  later put into array with myarray=($myvar)  or  read -a myarray <<< $myvar
+  SCHA_VALUES=$(dialog --ok-label "Submit" \
 	  --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
 	  --title "SCHA parameters" \
 	  --form "Fildyn, nqirr and T are mandatory." \
@@ -112,6 +112,12 @@ exec 3>&-
 # ------------------------------------------------------------------------------
 # Calculator parameters
 
+__KPTS_HEAD__="k_points"
+__KOFF_HEAD__="k_offset"
+__DISABLE_CHECK__="disable_check"
+__CALCULATOR_TYPE__="program"
+__BINARY__="binary"
+
 
 
 display_Calculator_input() {
@@ -122,17 +128,13 @@ display_Calculator_input() {
   CALCULATOR_VALUES=$(dialog --ok-label "Submit" \
 	  --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
 	  --title "Relax parameters" \
-	  --form "are mandatory." \
+	  --form "program and k_points are mandatory." \
     15 50 0 \
-	   "type:"               1 1	"$__RELAX_TYPE__"      	             1 20 30 0 \
-	   "n_configs:"          2 1	"$__RELAX_NCONFIGS__"  	             2 20 30 0 \
-	   "max_pop_id:"         3 1	"$__RELAX_MAX_POP__"	               3 20 30 0 \
-	   "start_pop:"          4 1	"$__RELAX_START_POP__"	             4 20 30 0 \
-     "ensemble_datadir:"   5 1  "$__RELAX_SAVE_ENSEMBLE__"           5 20 30 0 \
-     "generate_ensemble:"  6 1  "$__RELAX_GENERATE_FIRST_ENSEMBLE__" 6 20 30 0 \
-     "target_pressure:"    7 1  "$__RELAX_TARGET_PRESSURE__"         7 20 30 0 \
-     "fix_volume:"         8 1  "$__RELAX_FIXVOLUME__"               8 20 30 0 \
-     "bulk_modulus:"       9 1  "$__RELAX_BULK_MODULUS__"            9 20 30 0 \
+	   "program:"            1 1	"$__CALCULATOR_TYPE__"               1 20 30 0 \
+	   "k_points:"           2 1	"$__KPTS_HEAD__"  	                 2 20 30 0 \
+	   "k_offset:"           3 1	"$__KOFF_HEAD__"	                   3 20 30 0 \
+	   "binary:"             4 1	"$__BINARY__"	                       4 20 30 0 \
+     "disable_check:"      5 1  "$__DISABLE_CHECK__"                 5 20 30 0 \
     2>&1 1>&3)
 
 # close fd
@@ -141,7 +143,14 @@ exec 3>&-
 # ------------------------------------------------------------------------------
 # Utilities parameters
 
-
+__UTILS_SAVEFREQ_FILENAME__="save_freq_filename"
+__UTILS_SAVERHO_FILENAME__="save_rho_filename"
+__UTILS_LOCKMODE_START__="mu_lock_start"
+__UTILS_LOCKMODE_END__="mu_lock_end"
+__UTILS_FREEMODE_START__="mu_free_start"
+__UTILS_FREEMODE_END__="mu_free_end"
+__UTILS_PROJECT_DYN__="project_dyn"
+__UTILS_PROJECT_STRUCTURE__="project_structure"
 
 
 
@@ -155,15 +164,14 @@ display_Utilities_input() {
 	  --title "Relax parameters" \
 	  --form "are mandatory." \
     15 50 0 \
-	   "type:"               1 1	"$__RELAX_TYPE__"      	             1 20 30 0 \
-	   "n_configs:"          2 1	"$__RELAX_NCONFIGS__"  	             2 20 30 0 \
-	   "max_pop_id:"         3 1	"$__RELAX_MAX_POP__"	               3 20 30 0 \
-	   "start_pop:"          4 1	"$__RELAX_START_POP__"	             4 20 30 0 \
-     "ensemble_datadir:"   5 1  "$__RELAX_SAVE_ENSEMBLE__"           5 20 30 0 \
-     "generate_ensemble:"  6 1  "$__RELAX_GENERATE_FIRST_ENSEMBLE__" 6 20 30 0 \
-     "target_pressure:"    7 1  "$__RELAX_TARGET_PRESSURE__"         7 20 30 0 \
-     "fix_volume:"         8 1  "$__RELAX_FIXVOLUME__"               8 20 30 0 \
-     "bulk_modulus:"       9 1  "$__RELAX_BULK_MODULUS__"            9 20 30 0 \
+	   "save freq filename:" 1 1	"$__UTILS_SAVEFREQ_FILENAME__"       1 20 30 0 \
+	   "save_rho_filename:"  2 1	"$__UTILS_SAVERHO_FILENAME__"  	     2 20 30 0 \
+	   "mu_lock_start:"      3 1	"$__UTILS_LOCKMODE_START__"	         3 20 30 0 \
+	   "mu_lock_end:"        4 1	"$__UTILS_LOCKMODE_END__"	           4 20 30 0 \
+     "mu_free_start:"      5 1  "$__UTILS_FREEMODE_START__"          5 20 30 0 \
+     "mu_free_end:"        6 1  "$__UTILS_FREEMODE_END__"            6 20 30 0 \
+     "project_dyn:"        7 1  "$__UTILS_PROJECT_DYN__"             7 20 30 0 \
+     "project_structure:"  8 1  "$__UTILS_PROJECT_STRUCTURE__"       8 20 30 0 \
     2>&1 1>&3)
 
 # close fd
@@ -231,8 +239,22 @@ while true; do
         display_help
       ;;
     6)
-        result=$(echo "Hostname: $HOSTNAME"; uptime)
+        result=$(echo "Scha:\n $SCHA_VALUES"; uptime)
         display_result "System Information"
       ;;
   esac
 done
+
+# ---escribe en fichero----
+# var="text to append";
+# destdir=/some/directory/path/filename
+#
+# if [ -f "$destdir" ]
+# then
+#     echo "$var" > "$destdir"
+# fi
+
+# working with arrays
+# for (( i=0; i<=${#myarray[@]}; i++ )); do
+#      echo "${myarray[$i]}"
+# done
