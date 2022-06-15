@@ -14,7 +14,6 @@ display_result() {
 
 display_help() {
   dialog --title "SSCHA Help" --no-collapse --textbox sscha_help.txt 0 0
-
 }
 
 while true; do
@@ -69,8 +68,7 @@ while true; do
         display_result "System Information"
       ;;
     5)
-        result=$(echo "Hostname: $HOSTNAME"; uptime)
-        display_result "System Information"
+        display_help
       ;;
     6)
         result=$(echo "Hostname: $HOSTNAME"; uptime)
