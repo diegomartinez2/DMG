@@ -1,12 +1,4 @@
 #!/usr/bin/env bash
-# creamos la funcion fundialog
-# fundialog = ${fundialog=dialog}
-# intro = `$fundialog --stdout --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
-#  --ok-label "Continue" --title "Welcome" --msgbox "This is the SSCHA code." 0 0`
-# menu = `$fundialog --stdout --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
-#  --ok-label "Set" --cancel-label "Exit" --title "Main Menu" --menu "SSCHA input." 0 0 0 \
-#  1 "SSCHA" 2 "Calculator" 3 "Relax" 4 "Utilities" 5 "Help" 6 "Run calculation"`
-# echo $fecha
 # while-menu-dialog: a menu driven system information program
 
 DIALOG_CANCEL=1
@@ -20,6 +12,11 @@ display_result() {
     --msgbox "$result" 0 0
 }
 
+display_help() {
+  dialog --title "SSCHA Help" --no-collapse --textbox sscha_help.txt 0 0
+
+}
+
 while true; do
   exec 3>&1
   selection=$(dialog \
@@ -27,14 +24,13 @@ while true; do
     --title "Menu" \
     --clear \
     --cancel-label "Exit" \
-    --menu "Please select:" $HEIGHT $WIDTH 4 \
+    --menu "Please select:" $HEIGHT $WIDTH 6 \
     "1" "SCHA input" \
     "2" "Calculator parameters" \
     "3" "Relax parameters" \
     "4" "Utilities" \
     "5" "Help" \
-    "6" "Run calculation"
-
+    "6" "Run calculation" \
     2>&1 1>&3)
   exit_status=$?
   exec 3>&-
@@ -69,16 +65,16 @@ while true; do
       fi
       ;;
     4)
-    result=$(echo "Hostname: $HOSTNAME"; uptime)
-    display_result "System Information"
+        result=$(echo "Hostname: $HOSTNAME"; uptime)
+        display_result "System Information"
       ;;
     5)
-    result=$(echo "Hostname: $HOSTNAME"; uptime)
-    display_result "System Information"
+        result=$(echo "Hostname: $HOSTNAME"; uptime)
+        display_result "System Information"
       ;;
     6)
-    result=$(echo "Hostname: $HOSTNAME"; uptime)
-    display_result "System Information"
+        result=$(echo "Hostname: $HOSTNAME"; uptime)
+        display_result "System Information"
       ;;
   esac
 done
