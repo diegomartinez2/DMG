@@ -92,7 +92,7 @@ display_Relax_input() {
   RELAX_VALUES=$(dialog --ok-label "Submit" \
 	  --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
 	  --title "Relax parameters" \
-	  --form "are mandatory." \
+	  --form "Type and n_confings are mandatory." \
     15 50 0 \
 	   "type:"               1 1	"$__RELAX_TYPE__"      	             1 20 30 0 \
 	   "n_configs:"          2 1	"$__RELAX_NCONFIGS__"  	             2 20 30 0 \
@@ -127,7 +127,7 @@ display_Calculator_input() {
   # Store data to $VALUES variable
   CALCULATOR_VALUES=$(dialog --ok-label "Submit" \
 	  --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
-	  --title "Relax parameters" \
+	  --title "Calculator parameters" \
 	  --form "program and k_points are mandatory." \
     15 50 0 \
 	   "program:"            1 1	"$__CALCULATOR_TYPE__"               1 20 30 0 \
@@ -161,8 +161,8 @@ display_Utilities_input() {
   # Store data to $VALUES variable
   UTILITIES_VALUES=$(dialog --ok-label "Submit" \
 	  --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
-	  --title "Relax parameters" \
-	  --form "are mandatory." \
+	  --title "Utilities parameters" \
+	  --form "Optional" \
     15 50 0 \
 	   "save freq filename:" 1 1	"$__UTILS_SAVEFREQ_FILENAME__"       1 20 30 0 \
 	   "save_rho_filename:"  2 1	"$__UTILS_SAVERHO_FILENAME__"  	     2 20 30 0 \
