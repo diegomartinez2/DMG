@@ -7,31 +7,31 @@ HEIGHT=0
 WIDTH=0
 # ------------------------------------------------------------------------------
 # scha input
-__SCHA_NAMELIST__="inputscha"
-__SCHA_LAMBDA_A__="lambda_a"
-__SCHA_LAMBDA_W__="lambda_w"
-__SCHA_MINSTRUC__="minim_struc"
-__SCHA_PRECOND_WYCK__="precond_wyck"
-__SCHA_PRECOND_DYN__="preconditioning"
-__SCHA_ROOTREP__="root_representation"
-__SCHA_NEGLECT_SYMMETRIES__="neglect_symmetries"
-__SCHA_NRANDOM_EFF__="n_random_eff"
-__SCHA_NRANDOM__="n_random"
-__SCHA_MEANINGFUL__="meaningful_factor"
-__SCHA_EQENERGY__="eq_energy"
-__SCHA_FILDYN__="fildyn_prefix"
-__SCHA_NQIRR__="nqirr"
-__SCHA_DATADIR__="data_dir"
-__SCHA_ISBIN__="load_bin"
-__SCHA_T__="t"
-__SCHA_TG__="tg"
-__SCHA_SUPERCELLSIZE__="supercell_size"
-__SCHA_MAXSTEPS__="max_ka"
-__SCHA_STRESSOFFSET__="stress_offset"
-__SCHA_GRADIOP__="gradi_op"
-__SCHA_POPULATION__="population"
-__SCHA_PRINTSTRESS__="print_stress"
-__SCHA_USESPGLIB__="use_spglib"
+
+__SCHA_LAMBDA_A__=0.5
+__SCHA_LAMBDA_W__=0.5
+__SCHA_MINSTRUC__=.false.
+__SCHA_PRECOND_WYCK__=.true.
+__SCHA_PRECOND_DYN__=.true.
+__SCHA_ROOTREP__="normal"
+__SCHA_NEGLECT_SYMMETRIES__=.false.
+__SCHA_NRANDOM_EFF__=500
+__SCHA_NRANDOM__=1000
+__SCHA_MEANINGFUL__=1e-4
+__SCHA_EQENERGY__=-144.40680397
+__SCHA_FILDYN__="../ensemble_data_test/dyn"
+__SCHA_NQIRR__=1
+__SCHA_DATADIR__="../ensemble_data_test"
+__SCHA_ISBIN__=
+__SCHA_T__=0.0d0
+__SCHA_TG__=0
+__SCHA_SUPERCELLSIZE__=" 1 1 1 "
+__SCHA_MAXSTEPS__=80
+__SCHA_STRESSOFFSET__=
+__SCHA_GRADIOP__="all"
+__SCHA_POPULATION__=1
+__SCHA_PRINTSTRESS__=.true.
+__SCHA_USESPGLIB__=.false.
 display_Scha_input() {
   # open fd
   exec 3>&1
@@ -45,27 +45,27 @@ display_Scha_input() {
      "fildyn_prefix:"      1 1	"$__SCHA_FILDYN__"	                 1 20 30 0 \
      "nqirr:"              2 1  "$__SCHA_NQIRR__"                    2 20 30 0 \
      "T:"                  3 1  "$__SCHA_T__"                        3 20 30 0 \
-     "lambda_a"            4 1  "$__SCHA_LAMBDA_A__"                 4 20 30 0 \
-     "lambda_w"            5 1  "$__SCHA_LAMBDA_W__"                 5 20 30 0 \
-     "minim_struc"         6 1  "$__SCHA_MINSTRUC__"                 6 20 30 0 \
-     "precond_wyck"        7 1  "$__SCHA_PRECOND_WYCK__"             7 20 30 0 \
-     "preconditioning"     8 1  "$__SCHA_PRECOND_DYN__"              8 20 30 0 \
-     "root_representation" 9 1  "$__SCHA_ROOTREP__"                  9 20 30 0 \
-     "neglect_symmetries" 10 1  "$__SCHA_NEGLECT_SYMMETRIES__"      10 20 30 0 \
-     "n_random_eff"       11 1  "$__SCHA_NRANDOM_EFF__"             11 20 30 0 \
-     "n_random"           12 1  "$__SCHA_NRANDOM__"                 12 20 30 0 \
-     "meaningful_factor"  13 1  "$__SCHA_MEANINGFUL__"              13 20 30 0 \
-     "eq_energy"          14 1  "$__SCHA_EQENERGY__"                14 20 30 0 \
-     "data_dir"           15 1  "$__SCHA_DATADIR__"                 15 20 30 0 \
-     "load_bin"           16 1  "$__SCHA_ISBIN__"                   16 20 30 0 \
-     "tg"                 17 1  "$__SCHA_TG__"                      17 20 30 0 \
-     "supercell_size"     18 1  "$__SCHA_SUPERCELLSIZE__"           18 20 30 0 \
-     "max_ka"             19 1  "$__SCHA_MAXSTEPS__"                19 20 30 0 \
-     "stress_offset"      20 1  "$__SCHA_STRESSOFFSET__"            20 20 30 0 \
-     "gradi_op"           21 1  "$__SCHA_GRADIOP__"                 21 20 30 0 \
-     "population"         22 1  "$__SCHA_POPULATION__"              22 20 30 0 \
-     "print_stress"       23 1  "$__SCHA_PRINTSTRESS__"             23 20 30 0 \
-     "use_spglib"         24 1  "$__SCHA_USESPGLIB__"               24 20 30 0 \
+     "lambda_a:"           4 1  "$__SCHA_LAMBDA_A__"                 4 20 30 0 \
+     "lambda_w:"           5 1  "$__SCHA_LAMBDA_W__"                 5 20 30 0 \
+     "minim_struc:"        6 1  "$__SCHA_MINSTRUC__"                 6 20 30 0 \
+     "precond_wyck:"       7 1  "$__SCHA_PRECOND_WYCK__"             7 20 30 0 \
+     "preconditioning:"    8 1  "$__SCHA_PRECOND_DYN__"              8 20 30 0 \
+     "root_representation:" 9 1  "$__SCHA_ROOTREP__"                  9 20 30 0 \
+     "neglect_symmetries:" 10 1  "$__SCHA_NEGLECT_SYMMETRIES__"      10 20 30 0 \
+     "n_random_eff:"       11 1  "$__SCHA_NRANDOM_EFF__"             11 20 30 0 \
+     "n_random:"           12 1  "$__SCHA_NRANDOM__"                 12 20 30 0 \
+     "meaningful_factor:"  13 1  "$__SCHA_MEANINGFUL__"              13 20 30 0 \
+     "eq_energy:"          14 1  "$__SCHA_EQENERGY__"                14 20 30 0 \
+     "data_dir:"           15 1  "$__SCHA_DATADIR__"                 15 20 30 0 \
+     "load_bin:"           16 1  "$__SCHA_ISBIN__"                   16 20 30 0 \
+     "Tg:"                 17 1  "$__SCHA_TG__"                      17 20 30 0 \
+     "supercell_size:"     18 1  "$__SCHA_SUPERCELLSIZE__"           18 20 30 0 \
+     "max_ka:"             19 1  "$__SCHA_MAXSTEPS__"                19 20 30 0 \
+     "stress_offset:"      20 1  "$__SCHA_STRESSOFFSET__"            20 20 30 0 \
+     "gradi_op:"           21 1  "$__SCHA_GRADIOP__"                 21 20 30 0 \
+     "population:"         22 1  "$__SCHA_POPULATION__"              22 20 30 0 \
+     "print_stress:"       23 1  "$__SCHA_PRINTSTRESS__"             23 20 30 0 \
+     "use_spglib:"         24 1  "$__SCHA_USESPGLIB__"               24 20 30 0 \
     2>&1 1>&3)
 
 # close fd
@@ -112,12 +112,12 @@ exec 3>&-
 # ------------------------------------------------------------------------------
 # Calculator parameters
 
-__KPTS_HEAD__="k_points"
-__KOFF_HEAD__="k_offset"
-__DISABLE_CHECK__="disable_check"
-__CALCULATOR_TYPE__="program"
-__BINARY__="binary"
-
+__KPTS_HEAD__=" 2 2 1 "
+__KOFF_HEAD__=" 0 0 1 "
+__DISABLE_CHECK__=.true.
+__CALCULATOR_TYPE__="quantum-espresso"
+__BINARY__=.false.
+__QE_ALLOWED_KEYS__=
 
 
 display_Calculator_input() {
@@ -131,10 +131,11 @@ display_Calculator_input() {
 	  --form "program and k_points are mandatory." \
     15 50 0 \
 	   "program:"            1 1	"$__CALCULATOR_TYPE__"               1 20 30 0 \
-	   "k_points:"           2 1	"$__KPTS_HEAD__"  	                 2 20 30 0 \
-	   "k_offset:"           3 1	"$__KOFF_HEAD__"	                   3 20 30 0 \
+	   "k points:"           2 1	"$__KPTS_HEAD__"  	                 2 20 30 0 \
+	   "k offset:"           3 1	"$__KOFF_HEAD__"	                   3 20 30 0 \
 	   "binary:"             4 1	"$__BINARY__"	                       4 20 30 0 \
-     "disable_check:"      5 1  "$__DISABLE_CHECK__"                 5 20 30 0 \
+     "disable check:"      5 1  "$__DISABLE_CHECK__"                 5 20 30 0 \
+     "QE extra keys:"      6 1  "$__QE_ALLOWED_KEYS__"               6 20 30 0 \
     2>&1 1>&3)
 
 # close fd
@@ -143,14 +144,14 @@ exec 3>&-
 # ------------------------------------------------------------------------------
 # Utilities parameters
 
-__UTILS_SAVEFREQ_FILENAME__="save_freq_filename"
-__UTILS_SAVERHO_FILENAME__="save_rho_filename"
-__UTILS_LOCKMODE_START__="mu_lock_start"
-__UTILS_LOCKMODE_END__="mu_lock_end"
-__UTILS_FREEMODE_START__="mu_free_start"
-__UTILS_FREEMODE_END__="mu_free_end"
-__UTILS_PROJECT_DYN__="project_dyn"
-__UTILS_PROJECT_STRUCTURE__="project_structure"
+__UTILS_SAVEFREQ_FILENAME__="frequencies.dat"
+__UTILS_SAVERHO_FILENAME__=
+__UTILS_LOCKMODE_START__=
+__UTILS_LOCKMODE_END__=
+__UTILS_FREEMODE_START__=30
+__UTILS_FREEMODE_END__=36
+__UTILS_PROJECT_DYN__=.true.
+__UTILS_PROJECT_STRUCTURE__=.false.
 
 
 
@@ -239,7 +240,7 @@ while true; do
         display_help
       ;;
     6)
-        result=$(echo "Scha:\n $SCHA_VALUES"; uptime)
+        result=$(echo "Scha:\n $SCHA_VALUES";uptime)
         display_result "System Information"
       ;;
   esac
@@ -258,3 +259,7 @@ done
 # for (( i=0; i<=${#myarray[@]}; i++ )); do
 #      echo "${myarray[$i]}"
 # done
+
+# program output to window
+# program | dialog --programbox 30 100
+# --prgbox command height width   <--- mejor esto.
