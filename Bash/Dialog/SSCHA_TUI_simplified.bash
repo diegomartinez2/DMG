@@ -5,6 +5,7 @@ DIALOG_CANCEL=1
 DIALOG_ESC=255
 HEIGHT=0
 WIDTH=0
+FILENAME="sscha_help.txt"
 # ------------------------------------------------------------------------------
 display_load_file() {
 FILENAME=$(dialog --stdout --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
@@ -20,7 +21,7 @@ display_result() {
 
 display_help() {
   dialog --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
-  --title "SSCHA Help" --no-collapse --textbox sscha_help.txt 0 0
+  --title "SSCHA Help" --no-collapse --textbox $FILENAME 0 0
 }
 
 display_edit_file() {
@@ -31,22 +32,23 @@ display_edit_file() {
   exec 3>&-;
 }
 
-# display_save_file() {
-#   dialog --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
-#   --title "Save file" \
-# --yesno {"Are you sure you want to overwrite " + $FILENAME + "?"} 7 60
-#
-# # Get exit status
-# # 0 means user hit [yes] button.
-# # 1 means user hit [no] button.
-# # 255 means user hit [Esc] key.
-# response=$?
-# case $response in
-#    0) cp ${INPUT} $FILENAME;;
-#    1) echo "File not deleted.";;
-#    255) echo "[ESC] key pressed.";;
-# esac
-# }
+display_save_file() {
+  exec 3>&1
+  response=$(dialog --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
+  --title "Save file" --yesno "Are you sure you want to overwrite:\n ${FILE} ?" 0 0 \
+2>&1 1>&3)
+  exit_status=$?
+  exec 3>&-
+# Get exit status
+# 0 means user hit [yes] button.
+# 1 means user hit [no] button.
+# 255 means user hit [Esc] key.
+case $response in
+   0) dialog --title "Hello" --msgbox ${FILE} 6 20;; # cp ${FILE} $FILENAME;;
+   1) dialog --title "Hello" --msgbox "File not deleted." 0 0;;
+   255) dialog --title "Hello" --msgbox "ESC" 0 0;;
+esac
+}
 
 while true; do
   exec 3>&1
@@ -60,6 +62,7 @@ while true; do
     "2" "Load SSCHA input file" \
     "3" "Edit input file" \
     "4" "Run calculation" \
+    "5" "Save File" \
     2>&1 1>&3)
   exit_status=$?
   exec 3>&-
@@ -88,6 +91,9 @@ while true; do
     4)
         result=$(echo "Scha:";uptime)
         display_result "System Information"
+      ;;
+    5)
+      display_save_file
       ;;
   esac
 done
