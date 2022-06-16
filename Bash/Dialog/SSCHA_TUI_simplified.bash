@@ -24,8 +24,11 @@ display_help() {
 }
 
 display_edit_file() {
-  dialog --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
-  --title "Edit file content" --editbox sscha_help.txt 30 70 2> "${INPUT}"
+  exec 3>&1;
+  FILE=$(dialog --backtitle "The Stochastic Self-Consistent Harmonic Approximation (SSCHA)" \
+  --title "Edit file content" --editbox sscha_help.txt 0 0 2>&1 1>&3)
+  exitcode=$?;
+  exec 3>&-;
 }
 
 # display_save_file() {
@@ -83,10 +86,7 @@ while true; do
       display_edit_file
       ;;
     4)
-      display_save_file
-      ;;
-    5)
-        result=$(echo "Scha:\n $FILENAME";uptime)
+        result=$(echo "Scha:";uptime)
         display_result "System Information"
       ;;
   esac
