@@ -15,7 +15,7 @@ esac
 1)
 dialog --sleep 4 --infobox "Escogistes
 la opcion de cancelar" 8 45
-dialog --pause "Saliento del Sistema"
+dialog --pause "Saliendo del Sistema"
 10 30 5
 ;;
 esac
