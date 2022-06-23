@@ -1,10 +1,10 @@
 #     t k P h o n e . p y
 #
-from Tkinter import *
+from tkinter import *
 from phones  import *
 
 def whichSelected () :
-    print "At %s of %d" % (select.curselection(), len(phonelist))
+    print ("At %s of %d") % (select.curselection(), len(phonelist))
     return int(select.curselection()[0])
 
 def addEntry () :
