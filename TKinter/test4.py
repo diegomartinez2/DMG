@@ -57,6 +57,8 @@ class UI(tk.Frame):
     def init_ui(self):
         """Aqui colocariamos los widgets."""
         self.parent.title("Un titulo para la ventana")
+        etiqueta = tk.Label(self.parent, text="Ejemplo simple de Label")
+        etiqueta.pack()
 
 # ----------
 # Funciones
