@@ -1,4 +1,5 @@
 # taken from https://github.com/raoofnaushad/sample-tkinter-application-structure/blame/main/app.py
+# note this code will not work as is now (there is no utils or icon images)
 import tkinter as tk
 from tkinter import *
 
