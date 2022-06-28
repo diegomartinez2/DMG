@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="gtkhello2" />
+	<File name="examples_src\gtkhello2.f90" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3694" topLine="104" />
+		</Cursor>
+	</File>
+	<File name="gtk_src\gtk-hl-chooser.f90" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="14676" topLine="331" />
+		</Cursor>
+	</File>
+	<File name="gtk_src\gdk-auto.f90" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="21847" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="gtk_src\gtk-hl-assistant.f90" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="11878" topLine="303" />
+		</Cursor>
+	</File>
+	<File name="plplot\hl_plplot1e.f90" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1582" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="gtk_src\gtk-hl-tree.f90" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="102231" topLine="2696" />
+		</Cursor>
+	</File>
+	<File name="plplot\hl_plplot8e.f90" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1533" topLine="29" />
+		</Cursor>
+	</File>
+	<File name="gtk_src\gtk-hl-accelerator.f90" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3135" topLine="66" />
+		</Cursor>
+	</File>
+	<File name="plplot\plplot_extra.f90" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1044" topLine="74" />
+		</Cursor>
+	</File>
+	<File name="gtk_src\gtk-sup.f90" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1467" topLine="23" />
+		</Cursor>
+	</File>
+	<File name="examples_src\bazaar.f90" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="12748" topLine="246" />
+		</Cursor>
+	</File>
+	<File name="gtk_src\gtk-auto.f90" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="634546" topLine="16520" />
+		</Cursor>
+	</File>
+	<File name="gtk_src\glib-auto.f90" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1090987" topLine="28064" />
+		</Cursor>
+	</File>
+	<File name="gtk_src\gtk-hl-menu.f90" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8813" topLine="149" />
+		</Cursor>
+	</File>
+	<File name="examples_src\cairo-tests.f90" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="9076" topLine="238" />
+		</Cursor>
+	</File>
+	<File name="examples_src\hl_menu.f90" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3652" topLine="104" />
+		</Cursor>
+	</File>
+	<File name="gtk_src\gtk.f90" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1105" topLine="16" />
+		</Cursor>
+	</File>
+</CodeBlocks_layout_file>

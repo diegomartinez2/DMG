@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="gtk_fortran_examples" />
+		<Option pch_mode="2" />
+		<Option compiler="gfortran" />
+		<Build>
+			<Target title="gtkhello2_release">
+				<Option output="bin/Release/gtkhello2" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+			<Target title="gtkhello2">
+				<Option output="bin/examples/gtkhello2" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/examples/" />
+				<Option type="1" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="bazaar">
+				<Option output="bin/examples/bazaar" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/examples/" />
+				<Option type="1" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="gdk_pixbuf-2.0" />
+					<Add library="gdk-win32-2.0" />
+					<Add library="cairo" />
+				</Linker>
+			</Target>
+			<Target title="cairo-tests">
+				<Option output="bin/examples/cairo-tests" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/examples/" />
+				<Option type="1" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="gdk_pixbuf-2.0" />
+					<Add library="gdk-win32-2.0" />
+					<Add library="cairo" />
+				</Linker>
+			</Target>
+			<Target title="julia_pixbuf">
+				<Option output="bin/examples/julia_pixbuf" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/examples/" />
+				<Option type="1" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="gdk_pixbuf-2.0" />
+					<Add library="gdk-win32-2.0" />
+					<Add library="cairo" />
+				</Linker>
+			</Target>
+			<Target title="hl_menu">
+				<Option output="bin/examples/hl_menu" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/examples/" />
+				<Option type="1" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="gdk_pixbuf-2.0" />
+					<Add library="gdk-win32-2.0" />
+					<Add library="cairo" />
+				</Linker>
+			</Target>
+			<Target title="hl_textview">
+				<Option output="bin/examples/hl_textview" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/examples/" />
+				<Option type="1" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="gdk_pixbuf-2.0" />
+					<Add library="gdk-win32-2.0" />
+					<Add library="cairo" />
+				</Linker>
+			</Target>
+			<Target title="hl_cairo1">
+				<Option output="bin/examples/hl_cairo1" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/examples/" />
+				<Option type="1" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="gdk_pixbuf-2.0" />
+					<Add library="gdk-win32-2.0" />
+					<Add library="cairo" />
+				</Linker>
+			</Target>
+			<Target title="hl_plplot1e">
+				<Option output="bin/examples/hl_plplot1e" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/examples/" />
+				<Option type="1" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="$(#plplot)/lib/fortran/modules/plplot" />
+				</Compiler>
+				<Linker>
+					<Add library="gdk_pixbuf-2.0" />
+					<Add library="gdk-win32-2.0" />
+					<Add library="cairo" />
+					<Add library="plplotf95d" />
+					<Add library="plplotf95cd" />
+					<Add library="libplplotd" />
+					<Add directory="$(#plplot)/lib" />
+				</Linker>
+			</Target>
+			<Target title="hl_plplot4e">
+				<Option output="bin/examples/hl_plplot4e" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/examples/" />
+				<Option type="1" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="$(#plplot)/lib/fortran/modules/plplot" />
+				</Compiler>
+				<Linker>
+					<Add library="gdk_pixbuf-2.0" />
+					<Add library="gdk-win32-2.0" />
+					<Add library="cairo" />
+					<Add library="plplotf95d" />
+					<Add library="plplotf95cd" />
+					<Add library="libplplotd" />
+					<Add directory="$(#plplot)/lib" />
+				</Linker>
+			</Target>
+			<Target title="hl_plplot17e">
+				<Option output="bin/examples/hl_plplot17e" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/examples/" />
+				<Option type="1" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="$(#plplot)/lib/fortran/modules/plplot" />
+				</Compiler>
+				<Linker>
+					<Add library="gdk_pixbuf-2.0" />
+					<Add library="gdk-win32-2.0" />
+					<Add library="cairo" />
+					<Add library="plplotf95d" />
+					<Add library="plplotf95cd" />
+					<Add library="libplplotd" />
+					<Add directory="$(#plplot)/lib" />
+				</Linker>
+			</Target>
+			<Target title="hl_plplot30e">
+				<Option output="bin/examples/hl_plplot30e" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/examples/" />
+				<Option type="1" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="$(#plplot)/lib/fortran/modules/plplot" />
+				</Compiler>
+				<Linker>
+					<Add library="gdk_pixbuf-2.0" />
+					<Add library="gdk-win32-2.0" />
+					<Add library="cairo" />
+					<Add library="plplotf95d" />
+					<Add library="plplotf95cd" />
+					<Add library="libplplotd" />
+					<Add directory="$(#plplot)/lib" />
+				</Linker>
+			</Target>
+			<Target title="hl_plplot8e">
+				<Option output="bin/examples/hl_plplot8e" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/examples/" />
+				<Option type="1" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="$(#plplot)/lib/fortran/modules/plplot" />
+				</Compiler>
+				<Linker>
+					<Add library="gdk_pixbuf-2.0" />
+					<Add library="gdk-win32-2.0" />
+					<Add library="cairo" />
+					<Add library="plplotf95d" />
+					<Add library="plplotf95cd" />
+					<Add library="libplplotd" />
+					<Add directory="$(#plplot)/lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-mms-bitfields" />
+			<Add directory="$(#gtk)/include" />
+			<Add directory="$(#gtk)/include/gtk-2.0" />
+			<Add directory="$(#gtk)/include/cairo" />
+			<Add directory="$(#gtk)/include/gdk" />
+			<Add directory="$(#gtk)/include/glib-2.0" />
+			<Add directory="$(#gtk)/lib/glib-2.0/include" />
+			<Add directory="$(#gtk)/include/pango-1.0" />
+			<Add directory="$(#gtk)/lib/gtk-2.0/include" />
+			<Add directory="$(#gtk)/include/atk-1.0" />
+			<Add directory="$(#gtk)/include/gdk-pixbuf-2.0" />
+		</Compiler>
+		<Linker>
+			<Add library="gtk-win32-2.0" />
+			<Add library="gobject-2.0" />
+			<Add library="glib-2.0" />
+			<Add directory="$(#gtk.lib)" />
+		</Linker>
+		<Unit filename="examples_src/bazaar.f90">
+			<Option weight="8" />
+			<Option target="bazaar" />
+		</Unit>
+		<Unit filename="examples_src/cairo-tests.f90">
+			<Option weight="8" />
+			<Option target="cairo-tests" />
+			<Option target="hl_cairo1" />
+		</Unit>
+		<Unit filename="examples_src/gtkhello2.f90">
+			<Option weight="8" />
+			<Option target="gtkhello2_release" />
+			<Option target="gtkhello2" />
+		</Unit>
+		<Unit filename="examples_src/hl_menu.f90">
+			<Option weight="7" />
+			<Option target="hl_menu" />
+		</Unit>
+		<Unit filename="examples_src/hl_textview.f90">
+			<Option weight="8" />
+			<Option target="hl_textview" />
+		</Unit>
+		<Unit filename="examples_src/julia_pixbuf.f90">
+			<Option weight="8" />
+			<Option target="julia_pixbuf" />
+		</Unit>
+		<Unit filename="gtk_src/cairo-auto.f90">
+			<Option weight="0" />
+			<Option target="bazaar" />
+			<Option target="cairo-tests" />
+			<Option target="julia_pixbuf" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gdk-auto.f90">
+			<Option weight="0" />
+			<Option target="bazaar" />
+			<Option target="cairo-tests" />
+			<Option target="julia_pixbuf" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gdk-pixbuf-auto.f90">
+			<Option weight="0" />
+			<Option target="bazaar" />
+			<Option target="cairo-tests" />
+			<Option target="julia_pixbuf" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gdk-pixbuf-hl.f90">
+			<Option weight="3" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/glib-auto.f90">
+			<Option weight="0" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-auto.f90">
+			<Option compile="0" />
+			<Option link="0" />
+			<Option weight="0" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-draw-hl.f90">
+			<Option weight="3" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-accelerator.f90">
+			<Option weight="2" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-assistant.f90">
+			<Option weight="2" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-button.f90">
+			<Option weight="4" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-chooser.f90">
+			<Option weight="5" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-combobox.f90">
+			<Option weight="3" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-container.f90">
+			<Option weight="3" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-dialog.f90">
+			<Option weight="3" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-entry.f90">
+			<Option weight="3" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-infobar.f90">
+			<Option weight="3" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-menu.f90">
+			<Option weight="4" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-misc.f90">
+			<Option weight="3" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-progress.f90">
+			<Option weight="3" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-spin-slider.f90">
+			<Option weight="3" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl-tree.f90">
+			<Option weight="3" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-hl.f90">
+			<Option weight="6" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk-sup.f90">
+			<Option weight="2" />
+			<Option target="hl_menu" />
+			<Option target="hl_textview" />
+			<Option target="hl_cairo1" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="gtk_src/gtk.f90">
+			<Option weight="1" />
+		</Unit>
+		<Unit filename="gtk_src/gtkenums-auto.f90">
+			<Option compile="0" />
+			<Option link="0" />
+			<Option weight="0" />
+			<Option target="gtkhello2" />
+		</Unit>
+		<Unit filename="gtk_src/mswindowsonly-auto.f90">
+			<Option weight="0" />
+		</Unit>
+		<Unit filename="plplot/hl_plplot17e.f90">
+			<Option weight="7" />
+			<Option target="hl_plplot17e" />
+		</Unit>
+		<Unit filename="plplot/hl_plplot1e.f90">
+			<Option weight="7" />
+			<Option target="hl_plplot1e" />
+		</Unit>
+		<Unit filename="plplot/hl_plplot30e.f90">
+			<Option weight="7" />
+			<Option target="hl_plplot30e" />
+		</Unit>
+		<Unit filename="plplot/hl_plplot4e.f90">
+			<Option weight="7" />
+			<Option target="hl_plplot4e" />
+		</Unit>
+		<Unit filename="plplot/hl_plplot8e.f90">
+			<Option weight="7" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Unit filename="plplot/plplot_extra.f90">
+			<Option weight="0" />
+			<Option target="hl_plplot1e" />
+			<Option target="hl_plplot4e" />
+			<Option target="hl_plplot17e" />
+			<Option target="hl_plplot30e" />
+			<Option target="hl_plplot8e" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
