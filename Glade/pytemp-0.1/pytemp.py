@@ -19,6 +19,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 # Importamos los módulos necesarios
+import sys
 try:
     import pygtk
     pygtk.require('2.0') # Intenta usar la versión2
@@ -96,7 +97,7 @@ class MainGui:
         signals = { "on_button1_clicked" : self.on_button1_clicked,
                     "on_about1_activate" : self.on_about1_activate,
                     "gtk_main_quit" : gtk.main_quit }
-        
+
         # y se autoconectan las signals.
         self.widgets.signal_autoconnect(signals)
 
@@ -153,7 +154,7 @@ class MainGui:
 
     # Ahora declaramos las acciones a realizar (por menús, botones, etc.):
 
-    # Definimos la ventana about (help > About) 
+    # Definimos la ventana about (help > About)
     def on_about1_activate(self, widget):
         "Open the About windows"
         self.about_info()
@@ -173,7 +174,7 @@ class MainGui:
             # de fallar (por ejemplo falla si lo ingresado son letras) se
             # lanza la excepción, si es exitoso se continua con la conversión
             temp_ini = float(valor)
-            
+
             # Inicia la conversión adecuada dependiendo de la opción
             # escogida en los 2 ComboBoxs (selec1 y selec2)
             if selec1 == "Celsius" and selec2 == "Fahrenheit":
@@ -195,11 +196,11 @@ class MainGui:
             else:
                 # Se produce cuando las dos selecciones son iguales
                 self.error("The initial and target units are the same")
-            
+
             # Luego se fija (muestra) el buffer (que contiene la temperatura
             # convertida) en textview1 (el cuadro la lado del botón)
             self.textview1.set_buffer(text_buffer)
-        
+
         except:
             if (len(valor) == 0):
                 # Se produce si no se ingresa nada en la entry1
