@@ -62,7 +62,8 @@ class Signos(object):
 # ----------
 
 def main(args):
-    Signos()
+    Calculo=Signos()
+    Calculo.cut_2()
     return 0
 
 if __name__ == '__main__':
