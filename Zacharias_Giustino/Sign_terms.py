@@ -30,23 +30,30 @@ import itertools
 # -------
 # Clases
 # -------
+class Signos(object):
+    """docstring for Signos."""
 
+    def __init__(self, arg):
+        super(Signos, self).__init__()
+        self.arg = arg
+        self.tabla = []
+        for v in itertools.product([+1,-1], repeat=6):
+            #print(numpy.asarray(v))
+            self.tabla.append(np.asarray(v))
+        return 0
+
+    def cut():
+        for i in range(len(tabla)):
+            for j in range(i,len(tabla)):
+                if ((tabla[i]*(-1)==tabla[j]).all()):
+                    tabla = np.delete(tabla,j)  #does this work??
+        return 0
 # ----------
 # Funciones
 # ----------
-def Signos():
-    tabla = []
-    for v in itertools.product([+1,-1], repeat=6):
-        print(numpy.asarray(v))
-        tabla.append(numpy.asarray(v))
-    for i in range(len(tabla)):
-        for j in range(i,len(tabla)):
-            if ((tabla[i]*(-1)==tabla[j]).all()):
-                tabla = np.delete(tabla,j)  #does this work??
-    return 0
-
 
 def main(args):
+    Signos()
     return 0
 
 if __name__ == '__main__':
