@@ -25,7 +25,7 @@
 # Importación de los módulos
 # ---------------------------
 import numpy as np
-
+import itertools
 
 # -------
 # Clases
@@ -34,6 +34,17 @@ import numpy as np
 # ----------
 # Funciones
 # ----------
+def Signos():
+    tabla = []
+    for v in itertools.product([+1,-1], repeat=6):
+        print(numpy.asarray(v))
+        tabla.append(numpy.asarray(v))
+    for i in range(len(tabla)):
+        for j in range(i,len(tabla)):
+            if ((tabla[i]*(-1)==tabla[j]).all()):
+                tabla = np.delete(tabla,j)  #does this work??
+    return 0
+
 
 def main(args):
     return 0
