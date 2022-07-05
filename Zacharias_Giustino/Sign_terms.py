@@ -62,7 +62,7 @@ class Signos(object):
          new_array = [tuple(row) for row in data]
          return np.unique(new_array)
 
-    def lexsort_based(data):
+    def lexsort_based(data): #according to stackoverflow this is the fastest option.
          sorted_data =  data[np.lexsort(data.T),:]
          row_mask = np.append([True],np.any(np.diff(sorted_data,axis=0),1))
          return sorted_data[row_mask]
