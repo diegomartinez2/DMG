@@ -57,6 +57,20 @@ class Signos(object):
         new_array = [tuple(row) for row in self.tabla]
         uniques = np.unique(new_array)
         return uniques
+
+    def tuple_based(data):
+         new_array = [tuple(row) for row in data]
+         return np.unique(new_array)
+
+    def lexsort_based(data):
+         sorted_data =  data[np.lexsort(data.T),:]
+         row_mask = np.append([True],np.any(np.diff(sorted_data,axis=0),1))
+         return sorted_data[row_mask]
+
+    def unique_based(a):
+         a = np.ascontiguousarray(a)
+         unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
+         return unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1])
 # ----------
 # Funciones
 # ----------
