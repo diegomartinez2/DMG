@@ -43,11 +43,16 @@ class Signos(object):
         return 0
 
     def cut():
+        """we will try to remove the antithetic conbinations """
         for i in range(len(tabla)):
             for j in range(i,len(tabla)):
                 if ((tabla[i]*(-1)==tabla[j]).all()):
                     tabla = np.delete(tabla,j)  #does this work??
         return 0
+    def unicos():
+        new_array = [tuple(row) for row in tabla]
+        uniques = np.unique(new_array)
+        return uniques
 # ----------
 # Funciones
 # ----------
