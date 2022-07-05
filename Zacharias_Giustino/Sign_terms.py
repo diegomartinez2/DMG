@@ -55,7 +55,7 @@ class Signos(object):
             self.tabla=unicos()
     def unicos():
         new_array = [tuple(row) for row in self.tabla]
-        uniques = np.unique(new_array)
+        uniques = np.unique(new_array,axis=0)
         return uniques
 
     def tuple_based(data):
