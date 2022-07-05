@@ -49,8 +49,12 @@ class Signos(object):
                 if ((tabla[i]*(-1)==tabla[j]).all()):
                     tabla = np.delete(tabla,j)  #does this work??
         return 0
+    def cut_2():
+        for i in range(len(self.tabla)):
+            self.tabla[i]=self.tabla[i]*(-1)
+            self.tabla=unicos()
     def unicos():
-        new_array = [tuple(row) for row in tabla]
+        new_array = [tuple(row) for row in self.tabla]
         uniques = np.unique(new_array)
         return uniques
 # ----------
