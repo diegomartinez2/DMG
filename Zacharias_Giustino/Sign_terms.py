@@ -53,6 +53,8 @@ class Signos(object):
         for i in range(len(self.tabla)):
             self.tabla[i]=self.tabla[i]*(-1)
             self.tabla=unicos()
+            self.tabla[i]=self.tabla[i]*(-1)
+        return 0
     def unicos():
         new_array = [tuple(row) for row in self.tabla]
         uniques = np.unique(new_array,axis=0)
