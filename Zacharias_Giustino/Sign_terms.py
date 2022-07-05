@@ -49,27 +49,27 @@ class Signos(object):
                 if ((tabla[i]*(-1)==tabla[j]).all()):
                     tabla = np.delete(tabla,j)  #does this work??
         return 0
-    def cut_2():
+    def cut_2(self):
         for i in range(len(self.tabla)):
             self.tabla[i]=self.tabla[i]*(-1)
-            self.tabla=unicos()
+            self.tabla=self.unicos()
             self.tabla[i]=self.tabla[i]*(-1)
         return 0
-    def unicos():
+    def unicos(self):
         new_array = [tuple(row) for row in self.tabla]
         uniques = np.unique(new_array,axis=0)
         return uniques
 
-    def tuple_based(data):
+    def tuple_based(self,data):
          new_array = [tuple(row) for row in data]
          return np.unique(new_array)
 
-    def lexsort_based(data): #according to stackoverflow this is the fastest option.
+    def lexsort_based(self,data): #according to stackoverflow this is the fastest option.
          sorted_data =  data[np.lexsort(data.T),:]
          row_mask = np.append([True],np.any(np.diff(sorted_data,axis=0),1))
          return sorted_data[row_mask]
 
-    def unique_based(a):
+    def unique_based(self,a):
          a = np.ascontiguousarray(a)
          unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
          return unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1])
