@@ -76,6 +76,10 @@ class Signos(object):
 # ----------
 # Funciones
 # ----------
+def term_A(Pol):
+    """Aqui se calcula el termino Re(e*kav(q)ek'a'v'(q)) para la minimización que permita obtener los signos."""
+    A = ((Pol[].getH)*(Pol[])).real #mirar que forma tiene Pol
+    return A
 
 def main(args):
     Calculo=Signos()
