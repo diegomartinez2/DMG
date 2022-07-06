@@ -28,10 +28,18 @@
 # -------
 # Clases
 # -------
+class NombredeClase(object):
+    """docstring for NombredeClase."""
+
+    def __init__(self, arg):
+        super(NombredeClase, self).__init__()
+        self.arg = arg
 
 # ----------
 # Funciones
 # ----------
+def NombredeFuncion(arg):
+    pass
 
 def main(args):
     return 0
