@@ -82,6 +82,15 @@ def term_A(Pol):
     return A
 
 def main(args):
+
+    """
+    Zacharias-Giustino displacement steps:
+    1) Computing the vibrational eigenmodes and eigenfrequencies.
+    2) Interpolation on q-points grid of eigenmodes and eigenfrequencies.
+    3) Set the Berry connection.
+    4) Calculate KG-displacement with formula.
+    """
+
     Calculo=Signos()
     Calculo.cut_2()
     return 0
