@@ -88,7 +88,7 @@ def main(args):
     1) Computing the vibrational eigenmodes and eigenfrequencies.
     2) Interpolation on q-points grid of eigenmodes and eigenfrequencies.
     3) Set the Berry connection.
-    4) Calculate KG-displacement with formula.
+    4) Calculate KG-displacement with known formula.
     """
 
     Calculo=Signos()
