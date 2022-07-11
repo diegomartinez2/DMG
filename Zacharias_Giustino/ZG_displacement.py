@@ -35,12 +35,12 @@ class ZG_displacement(object):
         3) Set the Berry connection.
         4) Calculate KG-displacement with known formula."""
 
-    def __init__(self, arg):
+    def __init__(self, dyn):
         super(ZG_displacement, self).__init__()
-        self.arg = arg
+        self.new_dynamical_matrix = dyn.Copy()
 
     def ZG_eigen(self,new_dynamical_matrix):
-        w, pols = new_dynamical_matrix.DiagonalizeSupercell()
+        w, pols = self.new_dynamical_matrix.DiagonalizeSupercell()
         return w, pols
 
     def Interpolation(self, arg):
@@ -52,8 +52,13 @@ class ZG_displacement(object):
     def Signs(self, arg):
         pass
 
-    def KG_displacement(self, arg):
-        pass
+    def ZG_displacement(self, arg):
+        """
+        \Delta Tau_{p,k}=\sum_{q\in \mathcal{B},\nu} S_{q,\nu}[\frac{\hbar}{2N_p M_k w_{q\nu}}(2n_{q\nu,T}+1)]^{1/2}
+        \times 2 Re[e^{iq\cdot R_p} pols_{k,\nu}(q)]
+        """
+
+        return Tau
 
 # ----------
 # Funciones
@@ -62,6 +67,7 @@ def NombredeFuncion(arg):
     pass
 
 def main(args):
+    ZG_displace = ZG_displacement(dyn) 
     return 0
 
 if __name__ == '__main__':
