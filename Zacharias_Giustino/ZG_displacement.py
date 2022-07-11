@@ -43,7 +43,8 @@ class ZG_displacement(object):
         w, pols = self.new_dynamical_matrix.DiagonalizeSupercell()
         return w, pols
 
-    def Interpolation(self, arg):
+    def Interpolation(self, mesh_dim):
+        self.dyn = self.new_dynamical_matrix.InterpolateMesh(mesh_dim)
         pass
 
     def Berry_connection(self,arg):
@@ -67,7 +68,7 @@ def NombredeFuncion(arg):
     pass
 
 def main(args):
-    ZG_displace = ZG_displacement(dyn) 
+    ZG_displace = ZG_displacement(dyn)
     return 0
 
 if __name__ == '__main__':
