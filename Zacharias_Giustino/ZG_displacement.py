@@ -39,8 +39,9 @@ class ZG_displacement(object):
         super(ZG_displacement, self).__init__()
         self.arg = arg
 
-    def ZG_eigen(self):
-        return 0
+    def ZG_eigen(self,new_dynamical_matrix):
+        w, pols = new_dynamical_matrix.DiagonalizeSupercell()
+        return w, pols
 
     def Interpolation(self, arg):
         pass
