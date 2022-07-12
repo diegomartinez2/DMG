@@ -31,7 +31,9 @@ import itertools
 # Clases
 # -------
 class Signos(object):
-    """docstring for Signos."""
+    """
+    This calculates the signs + or - in order to recover the correct William-Lax rate.
+    """
 
     def __init__(self, arg):
         super(Signos, self).__init__()
