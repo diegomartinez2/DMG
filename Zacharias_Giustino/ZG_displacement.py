@@ -47,7 +47,13 @@ class ZG_displacement(object):
         self.dyn = self.new_dynamical_matrix.InterpolateMesh(mesh_dim)
         pass
 
-    def Berry_connection(self,arg):
+    def Smooth_connection(self,arg):
+        """
+        Equivalent to enforcing a smooth Berry connection.
+        We determine unitary transformations for each q-point along a space filling curve,
+        by evaluating overlap matrices M between each pair of succesive q-points. We apply the transformation
+        U to the later term q of the pair and repeat with a new pair of that q and the next. 
+        """
         pass
 
     def Signs(self, arg):
