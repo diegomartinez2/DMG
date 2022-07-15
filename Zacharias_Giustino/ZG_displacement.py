@@ -24,6 +24,7 @@
 # ---------------------------
 # Importación de los módulos
 # ---------------------------
+import numpy as np
 
 # -------
 # Clases
@@ -40,8 +41,8 @@ class ZG_displacement(object):
         self.new_dynamical_matrix = dyn.Copy()
 
     def ZG_eigen(self,new_dynamical_matrix):
-        w, pols = self.new_dynamical_matrix.DiagonalizeSupercell()
-        return w, pols
+        self.w, self.pols = self.new_dynamical_matrix.DiagonalizeSupercell()
+        return 0
 
     def Interpolation(self, mesh_dim):
         self.dyn = self.new_dynamical_matrix.InterpolateMesh(mesh_dim)
@@ -52,8 +53,13 @@ class ZG_displacement(object):
         Equivalent to enforcing a smooth Berry connection.
         We determine unitary transformations for each q-point along a space filling curve,
         by evaluating overlap matrices M between each pair of succesive q-points. We apply the transformation
-        U to the later term q of the pair and repeat with a new pair of that q and the next. 
+        U to the later term q of the pair and repeat with a new pair of that q and the next.
         """
+        sgn_pol=np.sign(self.pols[0])
+        for i in range(len(self.pols)):
+            if (sgn_pol!=np.sign(self.pols[i])):
+                break # change the signs of self.pols[i] to match self.pols[0]
+
         pass
 
     def Signs(self, arg):
