@@ -69,7 +69,7 @@ class ZG_displacement(object):
         for v in itertools.product([+1,-1], repeat=nu):
             #print(numpy.asarray(v))
             self.tabla.append(np.asarray(v))
-        pass
+        return 0
 
     def ZG_displacement(self, arg):
         """
