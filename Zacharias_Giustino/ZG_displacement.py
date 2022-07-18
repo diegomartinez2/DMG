@@ -55,8 +55,8 @@ class ZG_displacement(object):
         by evaluating overlap matrices M between each pair of succesive q-points. We apply the transformation
         U to the later term q of the pair and repeat with a new pair of that q and the next.
         """
-        sgn_pol=np.sign(self.pols[0])
-        for i in range(len(self.pols)):
+        sgn_pol=np.sign(self.pols[0]) #This is a test, a simple transformation of the eigenmodes
+        for i in range(len(self.pols)): 
             if (sgn_pol!=np.sign(self.pols[i])):
                 #break # change the signs of self.pols[i] to match self.pols[0]
                 for j in range(len(self.pols[i])):
