@@ -25,7 +25,7 @@
 # Importación de los módulos
 # ---------------------------
 import numpy as np
-
+import itertools
 # -------
 # Clases
 # -------
@@ -61,10 +61,14 @@ class ZG_displacement(object):
                 #break # change the signs of self.pols[i] to match self.pols[0]
                 for j in range(len(self.pols[i])):
                     self.pols[i][j]*=-1 #check if this is OK
+        return 0
+        #pass
 
-        pass
-
-    def Signs(self, arg):
+    def Signs(self, nu):
+        self.tabla = []
+        for v in itertools.product([+1,-1], repeat=nu):
+            #print(numpy.asarray(v))
+            self.tabla.append(np.asarray(v))
         pass
 
     def ZG_displacement(self, arg):
