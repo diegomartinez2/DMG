@@ -58,7 +58,9 @@ class ZG_displacement(object):
         sgn_pol=np.sign(self.pols[0])
         for i in range(len(self.pols)):
             if (sgn_pol!=np.sign(self.pols[i])):
-                break # change the signs of self.pols[i] to match self.pols[0]
+                #break # change the signs of self.pols[i] to match self.pols[0]
+                for j in range(len(self.pols[i])):
+                    self.pols[i][j]*=-1 #check if this is OK
 
         pass
 
