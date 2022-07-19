@@ -1,0 +1,227 @@
+\part*{Einleitung}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\chapter{Gebrauchsanleitung für diese Vorlage}
+
+Willkommen in deiner Vorlage für dein Schwangerschaftstagebuch! Ich gehe davon aus, dass du mit der Software \LaTeX{} bisher nichts zu tun hattest und auch nicht in die wunderbare Welt des Programmierens einsteigen willst. Deshalb habe ich mir zum Ziel gesetzt, diese Vorlage nicht nur als Endergebnis optisch schön zu gestalten, sondern auch den Code möglichst so einfach zu halten, dass du immer weißt, was gerade zu tun ist.
+
+Ich führe dich deshalb an dieser Stelle nur sehr oberflächlich durch das Dokument. Wann immer du Hilfe benötigst, sende mir gerne eine Mail an \href{mailto:meine@geburtsgeschichte.de}{meine@geburtsgeschichte.de}.
+
+\section{Sich in Overleaf zurechtfinden}
+
+Normalerweise ist dein Overleaf-Bildschirm dreigeteilt. Links siehst du die Dateien im Projekt, in der Mitte den Code und rechts das PDF-Ergebnis.
+
+\subsection{PDF-Ergebnis}
+Um zu sehen, wie das Ergebnis deiner Codierung als PDF aussieht, kannst du einfach rechts oben auf den grünen Button \emph{Recompile} drücken. Overleaf lädt dann eine aktuelle Version deines PDFs. Du kannst nach oben und unten scrollen, um zu sehen, wie die einzelnen Seiten aussehen.
+
+\subsection{Code-Eingabe}
+In der Mitte ist die Code-Eingabe. Wenn du dieses Dokument das erste Mal öffnest, müsste dort die Code-Eingabe für das Dokument \emph{main} liegen, also die Hauptdatei. Hast du eine Datei angeklickt und startest Overleaf später neu, siehst du jeweils den Code der Datei, die du zuletzt links im Bereich der Projektdateien ausgewählt hast.
+
+
+\subsection{Projektdateien}
+Die Projektdateien ganz links kannst du dir wie einzelne Dateien in einem Ordner vorstellen. Erst aus dem Zusammenspiel dieser einzelnen Dateien kann Overleaf dein PDF generieren. Lösche also keine der Dateien vorschnell.
+
+Die meisten der Dateien kannst du ignorieren. Sie beinhalten Code, den du nicht verändern willst. \newline
+\textbf{Dateien, die du nicht anrühren brauchst}
+\begin{itemize}
+       \item pgfornament
+    \item tikz
+    \    \item DASTpackages
+    \item DASTsec
+     \item latexmkrc
+\end{itemize}
+\textbf{Dateien, die du verändern kannst
+}\begin{itemize}
+    \item Ordner \textbf{img}: Hier liegen Bilder. Ich habe ein paar Beispiele hochgeladen. Das Bild "Strand" ist das aktuelle Titelbild.
+    \item Ordner \textbf{Inhalt}: In diesem Ordner liegen die Dateien, in die du die einzelnen Tagebucheinträge schreibst.
+    \item \textbf{DASTmeta}: Hier kannst du die PDF-Daten ändern. Wenn du also dein Dokument als PDF speicherst, werden diese Dinge in den Meta-Daten angegeben.
+    \item \textbf{main}: Hier kannst du Teile aus dem PDF nehmen, z.B., wenn du keine Kapitel über das Wochenbett schreiben willst.
+    \item \textbf{DASTmacros}: Hier kannst du genau eine Sache verändern, nämlich deinen Fußzeilentext.
+    \item \textbf{titlepage}: Hier gibt es eine Menge zu bearbeiten. Wir schauen uns das später noch genauer an.
+
+\end{itemize}
+
+
+
+Wenn du eine der entsprechenden Dateien links anklickst, öffnet sich ein neues mittleres Fenster. Sprich: Du siehst den Code, der in diesem Ordner liegt. Damit du dich möglichst wenig mit Code zurechtfinden musst, habe ich in die Ordner, die dich hauptsächlich interessieren, kaum Code gepackt. Du kannst dort vielmehr direkt anfangen, zu schreiben. Wie das geht, zeige ich dir jetzt!
+
+\section{Deine persönlichen Daten und die Titelseite ändern}
+Du willst natürlich kein Schwangerschaftstagebuch, auf dem nur plump "Tagebuch" steht. Es soll DEIN Name da stehen! Deshalb solltest du deine persönlichen Daten entsprechend eingeben.\newline
+
+Damit du in den entsprechenden Dokumenten schnell die Stellen findest, die du ändern willst, habe ich sie immer mit \emph{XXX} markiert. Du kannst also einfach die Suchfunktion nutzen. Wichtig: Klicke erst den Code-Teil deines Bildschirmes an, sonst erkennt \LaTeX{} nicht, wo es suchen soll. Dann drückst du gleichzeitig STRG+F, also die normale Suchfunktion. Du kannst dann in das Feld \emph{XXX} eingeben und auf Suchen klicken. Das funktioniert wie im Internetbrowser oder in Word oder Writer.\newline
+
+Es gibt schwarzen und blauen Code. Der schwarze Code wird tatsächlich als Code ausgelesen. Der blaue Code steht immer hinter einem \% und wird nicht ausgelesen. Das sind also Notizen -- so ähnlich, wie Kommentare, die du am Ende nicht mit druckst. Diese Kommentare zeigen dir, was ein bestimmter Codeabschnitt bewirkt.
+
+Das kannst du in den folgenden Dokumenten tun:
+
+\begin{itemize}
+\item Titlepage (engl., für Deckblatt oder Titelseite)
+\begin{description}
+\item[Deckblatttitel] Du kannst dir einen eigenen Titel aussuchen.
+\item[Innentitel] Auch hier kannst du den Text ändern
+\item[Als Teil der Familienchronik] Kannst du löschen oder ändern
+\item[Geschrieben von] Trage den oder die Hauptautor*innen ein
+\item[Mitarbeit] Wenn du nichts einträgst, kannst du das löschen.
+\item[Fotos von] Auch das kannst du löschen, wenn du niemanden einträgst
+\item[Jahr] Das kannst du aktualisieren oder löschen
+\end{description}
+    \item IMG: Lade ein neues Bild in den Ordner hoch, um es als Titelbild zu verwenden
+\end{itemize}
+
+
+\section{Fußzeilentext ändern}
+Wenn du den Fußzeilentext ändern möchtest, klick das Dokument \emph{DASTmacros} an. In Zeile 70 findest du den Fußzeilentext.
+
+\section{Bilder hochladen}
+Wenn du ein Bild hochladen möchtest, kannst du das ganz einfach über den Button \emph{Upload} in der linken oberen Ecke tun. Die Bilder landen dann im Ordner \textit{img}. Um ein Bild ins Dokument einzufügen, gibst du folgenden Code an der entsprechenden Stelle ein: \textbackslash includegraphics $\{Bildname\}$. Hierbei ersetzt du \emph{Bildname} durch den Namen deines Bildes.
+
+\section{Meta-Daten des PDFs anpassen}
+In dieser Datei kannst du anpassen, welche Daten das PDF nachher als Metadaten übernimmt.
+
+\section{Auswählen, welche Kapitel im PDF angezeigt werden sollen}
+Im Dokument \emph{main} kannst du zum einen auswählen, ob du ein Inhaltsverzeichnis haben möchtest, oder nicht. \newline
+
+Außerdem kannst du auswählen, welche Teile des Dokuments überhaupt im PDF auftauchen sollen. Dafür setzt du vor alle Teile, die nicht auftauchen sollen, ein \%. Zum Beispiel vor diese Einleitung, damit mein Text nicht mit in deinem PDF landet!
+
+
+\section{Inhalt schreiben}
+Nach so viel Einführung kommen wir nun zum Inhalt! Darum bist du schließlich hier... Den Inhalt zu schreiben, wird die vermutlich jetzt total einfach vorkommen. Das ist es nämlich auch. Du klickst einfach das gewünscht Kapitel links in der Auswahl an, z.B. das Kapitel \emph{Vorgeschichte}. Sobald sich der Codeeingabebereich geöffnet hat, kannst du lostippen.
+
+\subsection{Gliederung}
+Du kannst verschiedene Typen von Überschriften nutzen. Folgende Befehle sind dafür nötig. (Setzte immer erst den \textbackslash und dann das Wort direkt dahinter -- ohne Leerzeichen! In die geschweiften Klammern trägst du dann den Text ein, der als entsprechende Überschrift angezeigt werden soll.
+\begin{itemize}
+    \item \textbackslash \textit{part}: Das sind die obersten Kapitel. Ich habe sie für die Abgrenzung zwischen Einleitung, Schwangerschaft, Geburt und Wochenbett genutzt.
+    \item \textbackslash \textit{chapter}: Das ist die nächst höhere Gliederungsebende. Ich habe zum Beispiel jeden Schwangerschaftsmonat als ein Chapter bezeichnet.
+    \item \textbackslash se\textit{}ction: Das ist die nächste Gliederungsebene. Beispiel: Die Überschrift \emph{Stillen} im Kapitel \emph{Erste Tage}
+    \item \textbackslash \textit{subsection}: Beispiel: Die Überschrift \emph{Oma und Opa} im Kapitel \emph{Erste Tage}
+    \item \textbackslash \textit{subsubsection}: Beispiel: Die Überschrift \emph{der ältere Bruder} im Kapitel im Kapitel \emph{Erste Tage}
+\end{itemize}
+
+\subsubsection{Paragraphenüberschriften}
+Mit dem Befehl \textbackslash paragraph kannst du auch innerhalb eines Abschnittes noch fett gedruckte Abschnittsüberschriften einfügen.
+
+
+\subsubsection{Mit oder ohne Numerierung}
+Wenn du zwischen den Befehl und die geschweifte Klammer ein Sternchen setzt, so wie dieses \*, werden die Kapitel nicht nummeriert. Ohne Sternchen werden sie nummeriert.
+
+\subsubsection{Absätze}
+Wenn du im Code einfach nur einen Zeilenumsprung nutzt \textit{(ENTER-Taste)}, wird \LaTeX{} eine neue Zeile anfangen, aber ohne Leerzeile. Wenn du noch eine Leerzeile dazwischen haben willst, gib am Ende des vorigen Absatzes den Befehl \textbackslash \textit{newline} ein.
+
+\subsection{Kalligrafie zum Kapitelanfang}
+
+Wenn du die kalligrafischen Buchstaben als Kapiteleinstieg nutzen willst, brauchst du folgenden Code (direkt hintereinander, ohne Zeilenumbruch!):
+
+\begin{verbatim}
+    \lettrine[lines=2, loversize=0.3, lraise=0]
+    {\initfamily I}{ch}
+\end{verbatim}
+
+Diesen Code kopierst du an die entsprechende Stelle. Den ersten Buchstaben des Wortes gibst du dann anstatt des \emph{I} ein, die weiteren Buchstaben statt \emph{ch}.
+
+\subsection{Text}
+Nicht umsonst sind ganze Bücher über \LaTeX{} geschrieben worden. Dies hier ist also lediglich eine ganz ganz kurze Liste der häufigsten Befehle, die du beim Schreiben brauchst:
+
+
+
+
+\paragraph{Text Fett drucken} \textbf{Ergebnis}
+\begin{verbatim}
+    \textbf{Text} \end{verbatim}
+\paragraph{Text kursiv drucken} \textit{Ergebnis} \begin{verbatim}
+    \textit{Text} \end{verbatim}
+\paragraph{Aufzählungen mit Punkten}  \begin{itemize}
+        \item Ergebnis Zeile 1
+        \item Ergebnis Zeile 2
+    \end{itemize}
+    \begin{verbatim}\begin{itemize}
+\item Hier trägst du Text ein.
+\item Für jeden neuen Punkt nutzt du wieder "\item"
+\end{itemize}    \end{verbatim}
+\paragraph{Aufzählungen mit Nummern}
+\begin{enumerate}
+        \item Ergebnis Zeile 1
+        \item Ergebnis Zeile 2
+    \end{enumerate}
+\begin{verbatim}\begin{enumerate}
+\item Hier trägst du Text ein.
+\item Für jeden neuen Punkt nutzt du wieder "\item"
+\end{enumerate}
+\end{verbatim}
+\paragraph{Zeilenumbrüche} \begin{verbatim}
+    \newline
+\end{verbatim}
+\paragraph{Direkte Rede} Damit die Anführungszeichen korrekt angezeigt werden, kannst du nicht einfach das Gänsefüßchen oberhalb der 2 auf der Tastatur nutzen. "Dabei kommt das hier raus: Korrekte englische Zeichensetzung." Du willst aber deutsche Zeichensetzung, \glqq so wie in diesem Beispiel.\grqq~ Um das zu erreichen, setzt du den folgenden Code vor die wörtliche Rede: \textit{\textbackslash glqq} und diesen dahinter: \textit{\textbackslash grqq}. Hierzu gibt es eine Eselsbrücke: gl steht für \textit{Gänsefüßchen links} und gr steht für \textit{Gänsefüßchen rechts}. Die zwei kleinen q hintereinander sehen fast aus wie Gänsefüßchen.
+\paragraph{Kalligrafie}
+\begin{quote} \calli
+Dies ist ein Beispiel für einen Paragraph geschrieben mit dem Befehl CALLI. Es ist etwas schwierig zu lesen, aber vielleicht sinnvoll für kurze Abschnitte.\newline
+
+Der Befehl ist zusammen mit dem QUOTE-Befehl genutzt, so dass auch die Formatierung anders ist.
+\end{quote}
+\begin{verbatim}
+\begin{quote}
+\calli
+TEXT
+\end{quote}
+\end{verbatim}
+
+\paragraph{Verlinkungen ins Internet}
+Wenn du einen Link einfach als Text einfügst, wird dieser unter Umständen falsch ausgegeben. \href{www.online-geburtsvorbereitungskurse.de}{Ansprechende Links sehen so aus}. Und so bekommst du sie hin:
+
+\begin{verbatim}
+\href{www.beispiel.de}{Der angezeigte Text}
+\end{verbatim}
+
+
+\section{Fehlerbehebung}
+
+manchmal schreibt man einfach einen Text, ist fertig, klickt auf \emph{recompile} und \LaTeX{} spuckt irgendeinen Fehler aus. Das ist frustrierend -- erst recht, weil es für Einsteiger*innen nicht immer einfach ist, den Fehler schnell zu beheben. Manchmal hast du einfach nur eine geschweifte Klammer vergessen; manchmal ist der Fehler tiefer versteckt.
+
+Folgende Ideen habe ich, wie du Fehler beheben kannst:
+\begin{enumerate}
+    \item Noch mal neu kompilieren: Falls der Fehler aufgrund eines Abbruchs des Kompilierungsprozesses zu Stande kam, hilft es, einfach neu zu kompilieren.
+    \item Schau dir die Fehlermeldung an. Neben dem \emph{Recompile}-Button siehst du in roter Schrift die Anzahl der Fehler. Wenn du sie anklickst, kannst du nachlesen, wo \LaTeX{} den Fehler gefunden hat. Da steht dann zum einen, in welchem Teildokument der Fehler auftrat (z.B. \textit{Inhalt/01-}) und auch, in welcher Zeile. Du weißt also, wo du suchen musst.
+    \item Falls du tatsächlich vorhest, dich eigehender mit \LaTeX{} auseinanderzusetzen, bietet es sich an, einen der vielen kostenlosen Einstiegskurse zu nutzen. \begin{itemize}
+        \item Auf deutsch finde ich diese Anleitung hier als Einstieg sinnvoll: \href{https://www.heise.de/download/blog/Einfuehrung-in-LaTeX-3599742}{\LaTeX-Einleitung auf heise.de}
+        \item Es gibt aber auch ein ganzes Wiki: \href{https://en.wikibooks.org/wiki/LaTeX}{Enlisches \LaTeX-Wiki}, \href{https://de.wikibooks.org/wiki/LaTeX-Kompendium}{Deutsches \LaTeX-Wiki}
+         \item Auf Englisch gibt es auf dem Overleaf-Blog eine gute Zusammenfassung: \href{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes}{Learn \LaTeX{} in 30 minutes}
+         \end{itemize}
+         \item Bei ganz speziellen Fragen und Problemen empfehle ich das spezialisierte Forum auf Stackoverflow. Dort helfen dir erfahrene Nutzer*innen. Die Forumsregeln sind streng. Lies dich ein, nutz Minimalbeispiele und sei bereit, selber dein Hirn anzuschalten. Dann wirst du dort auf alles eine Antwort bekommen. Nachteil: Das Forum ist auf Englisch. \href{https://tex.stackexchange.com/}{Hier geht es zum \LaTeX-Forum auf Stackeverflow}.
+         \item Frag mich. Ich bin im Vergleich zu den Expter*innen, die sich auf Stackoverflow tummeln, immer noch grün hinter den Ohren. Aber wer weiß, vielleicht kann ich dir helfen. Schreib mir eine Email an \href{mailto:meine@geburtsgeschichte.de}{meine@geburtsgeschichte.de}. Ich schaue, was ich tun kann.
+\end{enumerate}
+
+\section{Speichern und Drucken}
+Oberhalb der PDF-Ansicht findest du den Button zum Herunterladen deines PDF-Dokuments. Du kannst es dann abspeichern, drucken und per Email an alle Menschen verschicken, die du magst.
+
+\section{Du magst nicht mehr}
+Vielleicht hast du es zuerst versucht, oder du hast von vornherein entschieden, dass dir \LaTeX{} nicht liegt. Du möchtest lieber dein Tagebuch anders schreiben. Ärger dich nicht. Genauso ging es mir auch.\newline
+
+Überleg dir, was der richtige Weg für dich ist:
+\begin{itemize}
+    \item Vielleicht wirst du lieber ein handschriftliches Tagebuch führen. Ich stelle dir auf hierzu eine Vorlage zur Verfügung. Schau einfach auf \href{www.ichgebaere.com/schwangerschaftstagebuch}{Ich Gebäre} nach der Vorlage zum Ausdrucken.
+    \item Vielleicht möchtest du aber auch, dass ich das Buch für dich schreibe oder formatiere. Melde dich in diesem Fall gern unter \href{mailto:meine@geburtsgeschichte.de}{meine@geburtsgeschichte.de}
+\end{itemize}
+
+Wie auch immer du dich entscheidest. Die Zeit der Schwangerschaft und Geburt ist einzigartig. Ich wünsche dir viel Spaß. Lass dich von niemandem verrückt machen. Tu, was euch gut tut. Genieße. \newline
+
+Hör auf dein Herz.\newline
+
+{\LARGE{\calli Deine Katharina}}
+
+\chapter*{Widmung}
+
+
+\lettrine[lines=2, loversize=0.3, lraise=0]{\initfamily I}{ch} widme diese Vorlage als erstes allen Menschen in der wunderbaren LaTeX-Community, die mich in den letzten zehn Jahren vor Nervenzusammenbrüchen wegen nahender Abgabetermine bewahrt haben. Ihr seid großartig, und das wisst ihr hoffentlich auch. Namentlich zu nennen sind an dieser Stelle \href{http://www.noatamir.com/}{Noa Tamir} und \href{https://www.zib.de/de/members/drachmann}{Marcel Drachmann}, die zwar mit diesem Projekt nichts zu tun hatten, aber die Grundlagen dafür legten, dass ich mich überhaupt an so etwas traue.
+
+\initial*{D}{iese} Vorlage entstand im Jahr 2020 auf Grundlage der grandiosen Arbeit von Daniel Studzinski. Er nutzt seine Vorlage für \emph{Krieg und Frieden} von Leo Tolstoi. Krieg und Frieden ist \href{https://www.overleaf.com/articles/war-and-peace/kdgcwgqzrrfd}{hier}\ zum Download verfügbar. \
