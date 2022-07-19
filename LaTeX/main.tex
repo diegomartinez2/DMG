@@ -1,0 +1,54 @@
+\newif\iftablet    %\tablettrue % format for tablets/screen
+\newif\ifcalli     \callitrue  % calligraphy for letters
+\newif\ifaudio     \audiotrue  % link for audio files
+
+
+\iftablet
+\documentclass[12pt]{book}
+\else
+\documentclass[twoside,12pt]{book}
+
+\fi
+
+\title{Vorlage Schwangerschaftstagebuch}
+
+\input{DASTpackages}
+\input{DASTmacros}
+\input{DASTmeta}
+
+\begin{document}
+
+\selectlanguage{ngerman}
+\pagestyle{empty}
+%test\newpage
+\input{titelpage}\iftablet \newpage \else \cleardoublepage \fi
+
+\pagestyle{fancy}
+\pagenumbering{roman}
+\tableofcontents \iftablet \newpage \else \cleardoublepage \fi
+% XXX Wenn du kein Inhaltsverzeichnis haben möchtest, kannst du diese Zeile ab \tableofcontents löschen.
+
+\pagenumbering{arabic}
+\input{DASTsec}
+
+% XXX Setze vor die Teile, die nicht im PDF auftauchen sollen, ein %. Dadurch wird die ganze Zeile blau. Der Code wird nicht mehr gelesen.
+\input{Inhalt/01- Einleitung}
+\input{Inhalt/02- Vorgeschichte}
+\input{Inhalt/03- mehr Vorgeschichte}
+\input{Inhalt/04- 1. Schwangerschaftsmonat}
+ \input{Inhalt/05- 2. Schwangerschaftsmonat}
+ \input{Inhalt/06- 3.Schwangerschaftsmonat}
+ \input{Inhalt/07- 4.Schwangerschaftsmonat}
+ \input{Inhalt/08- 5. Schwangerschaftsmonat}
+ \input{Inhalt/09- 6. Schwangerschaftsmonat}
+ \input{Inhalt/10- 7. Schwangerschaftsmonat}
+ \input{Inhalt/11- 8.Schwangerschaftsmonat}
+ \input{Inhalt/12- 9.Schwangerschaftsmonat}
+ \input{Inhalt/13- 10.Schwangerschaftsmonat}
+ \input{Inhalt/14- Die Geburt}
+ \input{Inhalt/15- Das Wochenbett}
+
+
+
+
+\end{document}
