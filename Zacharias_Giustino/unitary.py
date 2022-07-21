@@ -24,10 +24,12 @@ print ("UB(IV)(X)",four)
 IVT=np.transpose(IV.real)
 c=np.squeeze(np.asarray(four))
 d=np.squeeze(np.asarray(IVT))
-five=c*d print ("IVT(UB(IV)(X))=UB(X)",five)
+five=c*d
+print ("IVT(UB(IV)(X))=UB(X)",five)
 UBT=np.transpose(UB.real)
 e=np.squeeze(np.asarray(UBT))
 f=np.squeeze(np.asarray(five))
-six=e*f print ("UBTUB(X)=X",six)
+six=e*f
+print ("UBTUB(X)=X",six)
 
 #Reference: https://www.physicsforums.com/threads/unitary-transformation-using-python.951680/
