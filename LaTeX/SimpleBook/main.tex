@@ -1,0 +1,305 @@
+\documentclass[12pt]{book}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+%%%%%%%%%% Español %%%%%%%%%%
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%% Portada %%%%%%%%%%
+\usepackage[textwidth = 16cm]{geometry}
+\usepackage[x11names]{xcolor}
+\usepackage{adjustbox}
+\definecolor{titlepagecolor}{cmyk}{75,68,67,90}
+\definecolor{titlepagecolor2}{rgb}{1.0, 0.08, 0.58}
+\definecolor{emerald}{rgb}{0.31, 0.78, 0.47}
+\definecolor{deeppink}{HTML}{D14064}
+\definecolor{lowpink}{HTML}{ffe6ec}
+
+\usepackage{geometry}
+
+% command to provide stretchy vertical space in proportion
+\newcommand\nbvspace[1][3]{\vspace*{\stretch{#1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%% Licencia %%%%%%%
+\usepackage{ccicons}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%% Vínculos %%%%%%%%%%
+\usepackage{hyperref}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%% Línea del tiempo %%%%%%
+\usepackage{chronosys}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%% Colofón %%%%%%%%%%
+\usepackage[%
+title={Colofón}, titlestyle=scshape, titlesize=30pt, titlealign=c, parstyle=itshape, parsize=12pt, parlead=15pt, noclrdblpg ]{colophon}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{graphicx}
+
+
+\begin{document}
+\frontmatter
+
+% ---------- Portada ----------
+\begin{titlepage}
+\newgeometry{top=1in,bottom=1in,right=0in,left=0in}
+\thispagestyle{empty}
+
+\begin{center}
+\pagecolor{titlepagecolor}
+\color{white}
+\nbvspace[0.5]
+\noindent
+{\fontsize{55}{0}\selectfont  Calladium}
+\nbvspace[2]
+\vskip\baselineskip
+\adjincludegraphics[width=\paperwidth]{cover.png}
+\vskip\baselineskip
+\nbvspace[2]
+\noindent{\fontsize{28}{0}\selectfont Sueños Pandémicos}
+\nbvspace[0.5]
+\end{center}
+\end{titlepage}
+% --------------------
+
+% ---------- Forros  ----------
+\pagecolor{titlepagecolor}
+\newpage
+\thispagestyle{empty}
+\includegraphics{cal_rosa.png}
+% --------------------
+\clearpage
+
+
+% ---------- Guarda 1 ----------
+\pagecolor{lowpink}
+\newpage
+\thispagestyle{empty}
+\includegraphics{cal_rosa.png}
+% --------------------
+
+% ---------- Guarda 2 ----------
+\newpage
+\thispagestyle{empty}
+\includegraphics{cal_rosa.png}
+% --------------------
+
+
+% ---------- Cubierta ----------
+\clearpage
+
+\nopagecolor% Use this to restore the color pages to white
+
+\thispagestyle{empty}
+\begin{center}
+
+\nbvspace[1]
+
+{\fontsize{40}{0}\selectfont
+Calladium}
+\vskip\baselineskip
+\vskip\baselineskip
+
+{\fontsize{28}{0}\selectfont
+Sueños Pandémicos}\\
+\nbvspace[2]
+\includegraphics[width=230px]{cubierta_int.png}
+\nbvspace[2]
+\normalsize
+
+{\fontsize{28}{0}\selectfont
+ Libertad Pantoja}
+\nbvspace[1]
+\end{center}
+% --------------------
+
+% ---------- Licencias ----------
+\newpage
+\thispagestyle{empty}
+~\vfill
+\noindent
+\textsc{\textbf{Calladium. Sueños pandémicos}} % Nombre
+\vskip\baselineskip
+\noindent Primera versión, 2021
+\\
+\noindent  \copyright  2021, del texto e ilustraciones: Libertad Pantoja\\ % Copyright notice
+Licencia de la plantilla \noindent Creative Commons \ccby \\
+\vskip\baselineskip
+\includegraphics{cal_negro.png}
+\vskip\baselineskip
+\noindent \textsc{Edición:} \textit{Edgar Ramírez Ruíz, Aaron Martínez Casillas y José Sánchez Sayago}\\ % License information
+\noindent \textsc{Diseño:} \textit{Carlo Fabrizzio Moncada}\\
+\noindent Primera versión elaborada en agosto de 2021  % Printing/edition date
+\vskip\baselineskip
+\noindent \textsc{Calladium}\\
+\noindent \textsc{ISBN: Pendiente de trámite}
+\vskip\baselineskip
+\noindent \small{
+Se permite la reproducción total o parcial de este libro, así
+como su transmisión sin fines de lucro por cualquier medio,
+ respetando los derechos de autor con respecto al texto e ilustraciones.\\
+La plantilla de Calladium se puede copiar y redistribuir en cualquier formato. Eres libre
+de remezclar, transformar y construir a partir de esta obra para cualquier propósito, incluso uno comercial siempre y cuando des crédito a Calladium, el proyecto original.
+\\
+\\
+\textbf{Hecho en la Web}
+
+ }
+% --------------------
+
+
+\mainmatter
+
+\tableofcontents
+
+% ---------- Prólogo ----------
+\chapter{Prólogo}
+
+Los sueños, como un mundo alterno nocturno y como fuente de la que abreva nuestra creatividad son un tema que nos ha fascinado a lo largo de nuestra historia. Jacobo Siruela en su libro, el mundo bajo los párpados, afirma que los sueños van más allá de fascinarse, son parte esencial de lo que somos.
+En este mundo alterno, como afirma Rafael Villegas, rara vez hay ficción. No existe la duda ante lo que vemos y vivimos.
+
+En la Capítulo \ref{prepandemia} Pre-pandemia, se encuentran algunos sueños que van desde un año antes del inicio de la pandemia hasta el primero de marzo del 2020.
+\vfill
+\hfill {\textbf{Libertad Pantoja}, Agosto 2021}
+% --------------------
+
+% ---------- Línea del tiempo ----------
+\chapter{Línea del tiempo}
+
+\catcode `\@=11
+\def\chron@selectmonth#1{\ifcase#1\or enero\or febrero\or
+marzo\or abril \or mayo \or junio \or julio \or agosto \or
+septiembre \or octubre \or noviembre \or diciembre\fi}
+\startchronology
+[startyear=2019,stopyear=2022, color=lowpink]
+\definechronoperiode{MyPeriod}[color=deeppink, textdepth=0.35cm]
+\chronoMyPeriod{2020}{2022}{Pandemia}
+\chronoevent{17/11/2019}{Primer caso de COVID documentado}
+\chronoevent{1/03/2021}{Inicia la pandemia en méxico}
+\stopchronology
+% --------------------
+
+% ---------- Contenido del libro de sueños ----------
+
+\chapter{Pre-pandemia}
+\label{prepandemia}
+\subsection*{\hfill 15 de abril 2019}
+
+Tengo un jardín amplio en el techo del edificio lleno de helechos y plantas que debo cuidar.
+
+\subsection*{\hfill 20 de abril 2019}
+
+Voy a visitar a mi tío, el rey de Inglaterra, con mi familia y con mi amigo Humberto. El rey y su familia cercana tienen un perro grande que al nacer fue bautizado. El perro está por morir. Le han puesto sus condecoraciones en casa de mis abuelos para mostrárnoslas.
+\\
+El rey es grande, gordo, barbón. Trae puestos varios collares, uno de ellos de cuentas largas y rojas como chiles. A pesar de que el rey es blanco su hijo mayor, mi primo, es de piel negra. Él es mi compañero y tiene una novia igual a él.
+
+\subsection*{\hfill 21 de abril 2019}
+
+Vivo en un departamento pequeño con mis padres y mi hermana. Hay poco espacio. Esta mañana solo estamos mi mamá, mi hermana y yo. No nos hemos peinado y seguimos en piyama.
+\\
+Por la ventana vemos a la vecina del departamento de al lado sentada en su cama, cargando a su bebé. Entra mucha luz por ahí. Decidimos cerrar la ventana para poder dormir.
+\\
+-Maravilloso, voy a salir despeinada en televisión- dice mi mamá. Ella sabe que estaban grabando en casa de la vecina.
+
+
+\chapter{Pandemia}
+
+\section{Inicio}
+
+\subsection*{\hfill 22 de abril 2020}
+
+Estoy en un museo con Esther y con sus amigos. El museo es una combinación entre Papalote museo del niño y el Museo de historia natural de la Ciudad de México. Les pido que se adelanten al concierto. Me quedo observando al dinosaurio. El museo está casi vacío. Me detengo a ver hacia un patio interno similar al del Universum.\\
+Vamos por un camino sinuoso de tierra en un cañón. El cielo y la tierra son rojizos. Está atardeciendo.
+
+\subsection*{\hfill 28 de junio 2020}
+Voy a visitar a Atenea a Durango junto con unas amigas. Durango está a la orilla del mar.
+Atenea es bióloga y nos pide que, antes de ir al evento,
+la ayudemos a sacar los cadáveres que quedaron después del accidente del barco chino.
+Caminamos por las calles de Durango.
+\\
+Durango tiene un cielo muy azul, muchos ríos y plantas. Las tiendas chinas son muy populares.
+Nos detenemos un rato a comprar plumas de gel y a pasar al baño.
+Hemos caminado mucho y seguiremos caminando hasta el mar.
+\\
+Pasamos por un río lleno de insectos de colores,
+ bordeado de zacate amarillo y plantas acuáticas.
+ Atenea nos dice que lo malo es que casi todos los insectos
+ que se pueden ver son machos porque las hembras son muy pequeñas.
+ \\
+Cuando llegamos a la playa, se está haciendo de noche. Hay redes tendidas en la arena. La luz viene de los barcos, los hoteles y el atardecer. Una de mis amigas y Atenea se ponen a sacar los cadáveres mientras yo cuido las lanchas donde los pondremos. Me quedo dormida. Despierto cuando acaban de terminar de sacar el primer listado de cadáveres. Entonces, llega un señor a preguntar si podemos sacar el segundo listado de cadáveres también. Atenea dice que de ninguna manera y nos vamos. \\
+En la playa la gente está pescando. Tienen una charola larga llena de pescados donde se ven algunas tortugas bebés pequeñísimas, moradas con amarillo.
+
+
+\subsection*{\hfill 16 de noviembre de 2020}
+Yo soy caníbal, toda mi familia es caníbal. Me oculto en un supermercado para poder alimentarme y sobrevivir. Ya asesinaron a toda mi familia, sólo quedo yo. Me van a descubrir. Alguien, un señor grande y regordete, me ve. Él se da cuenta de lo que yo soy: una especie de vampiro que no envejece y mata. Él y los humanos que quedan deciden acabar conmigo. Le pido que sea rápido.
+Me llevan a un parque fuera del centro comercial y me ponen de rodillas. Me van a matar de un golpe.
+
+\subsection*{\hfill 21 de noviembre de 2020}
+Rafa abre y cierra una cortina. Entre más la cierra, más trabajo me cuesta respirar. Cada vez que la abre entra una luz anaranjada en la habitación.
+
+\subsection*{\hfill27 de diciembre 2020}
+Quiero dominar los puertos para pescar camarones especiales para hacer un platillo delicioso.
+\\
+\\
+Estoy en C.U. Salgo hacia Copilco para ir a una cafebrería que me gusta mucho. Quiero comprar libros, pero ya tienen muy pocos y no me interesan los que hay. Saludo a un chico que está sentado comiendo. Me da la impresión de que es Mario González Suárez, pero al verlo bien me doy cuenta de mi error y me da mucha pena. Él me saluda con extrañeza, pero con una sonrisa. Yo le pido que me disculpe, le digo que lo confundí con alguien más. Él es barbón y joven.
+Salgo de ahí. Voy a buscar otra librería que ya ha salido en mis sueños, pero está cerrada. Hay una mujer en un suéter gris de lana. Es la dueña de una de las librerías.
+
+\subsection*{\hfill 24 de julio 2021}
+Yo tomo las clases en Literaria con mi tío Mau. Moni, su hermana, trabaja para literaria y nos consigue las sesiones antes. \\
+En el trabajo tengo que convertir muchos sitios web en sitios rusos y me siento abrumada porque tal vez tenga que estudiar matemáticas avanzadas.\\
+Mau es un niñito. Hay un murciélago.
+% --------------------
+
+
+% ---------- Agradecimientos ----------
+\newpage
+\chapter*{Agradecimientos}
+\thispagestyle{empty}
+Muchas gracias a todo el equipo de Calladium (Aaron, Edgar, Fabrizzio, Pepe y Santi) por sus esfuerzos y sugerencias para que este proyecto llegará a buen fin en su primera etapa. Gracias a Rafael Villegas por sus generosos consejos acerca de cómo formular los sueños para acercarlos al lector. Gracias a Mariana Orantes por toda la retroalimentación durante la primera etapa de este proyecto. Gracias a Rafa Verduzco por la paciencia y la retroalimentación.Gracias a Samantha Pantoja y a Erick Mejía por sus observaciones.
+% --------------------
+
+% ---------- Colofón (guarda 3) ----------
+\newpage
+\thispagestyle{empty}
+
+\pagecolor{lowpink}
+\color{deeppink}
+
+\begin{colophon}
+Calladium. Sueños pandémicos.
+\end{colophon}
+
+
+% --------------------
+% ---------- Guarda 4 ----------
+\newpage
+\thispagestyle{empty}
+
+\includegraphics{cal_rosa.png}
+% --------------------
+
+% ---------- Contraportada forros----------
+\newpage
+\pagecolor{titlepagecolor}
+\includegraphics{cal_rosa.png}
+% --------------------
+% ---------- Contraportada----------
+\newpage
+
+\pagecolor{titlepagecolor}
+\nbvspace[3]
+\hfill\includegraphics{cal-blanco-texto.png}\hfill
+\nbvspace[3]
+
+% --------------------
+
+\end{document}
