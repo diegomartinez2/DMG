@@ -1,0 +1,15 @@
+ &input
+asr='simple',
+amass(1)=65.0409,
+amass(2)=32.065,
+flfrc='ZS444.fc',
+flfrq='ZS444.freq',
+dos=.false.
+q_in_cryst_coord=.true.,
+/
+150
+0.00000000 0.00000000 0.00000000 1.0
+0.01020408 0.00000000 0.00000000 1.0
+.
+.
+.
