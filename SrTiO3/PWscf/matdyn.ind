@@ -1,0 +1,13 @@
+ &input
+asr='simple',
+amass(1)=65.0409,
+amass(2)=32.065,
+flfrc='ZS444.fc',
+flfrq='ZS444.freq',
+dos=.true.,
+fldos='ZS444.dos',
+nk1=24,
+nk2=24,
+nk3=24,
+ndos=500
+/
