@@ -163,7 +163,7 @@ class Calculo_inicial(object):
         self.relax = sscha.Relax.SSCHA(self.minim,
                           ase_calculator = self.espresso_calc,
                           N_configs = self.configuraciones,
-                          max_pop = 50)
+                          max_pop = 50, cluster = my_hpc)
 
         # Setup the custom function to print the frequencies at each step of the minimization
         self.io_func = sscha.Utilities.IOInfo()
@@ -385,7 +385,7 @@ class Hessiano_Vs_Temperatura(object):
 
             # Prepare the relaxer (through many population)
 #            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)
-            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.espresso_calc, N_configs=self.configuraciones, max_pop=20)
+            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.espresso_calc, N_configs=self.configuraciones, max_pop=20, cluster = my_hpc)
 
             # Relax
             self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
@@ -899,7 +899,7 @@ class Hessiano_Vs_Configurations(object):
             self.minim.enforce_sum_rule = True  # Lorenzo's solution to the error
 
             # Prepare the relaxer (through many population)
-            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.espresso_calc, N_configs=Configuracion, max_pop=20)
+            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.espresso_calc, N_configs=Configuracion, max_pop=20, cluster = my_hpc)
 
             # Relax
             self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
