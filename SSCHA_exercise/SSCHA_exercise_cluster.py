@@ -80,7 +80,7 @@ class Calculo_inicial(object):
                         kpts = k_points, koffset = k_offset)
         my_hpc = sscha.Cluster.Cluster(pwd = None)
         # We setup the connection info
-        my_hpc.hostname = "ekhi" # The command to connect via ssh to the cluster
+        my_hpc.hostname = "ekhi" # The command to connect via ssh to the cluster (pippo@login.cineca.marconi.it)
         #my_hpc.account_name = "IscrB_COMRED" # The name of the project for the computation
         my_hpc.workdir = "/scratch/lorenzo/my_calculation" # the directory in which the calculations are performed
 
