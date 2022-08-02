@@ -59,6 +59,25 @@ class Calculo_inicial(object):
         # self.ff_calculator.p4 = -0.022
         # self.ff_calculator.p4x = -0.014
         #-----------------------------------------------------------------------
+        pseudo = {"H": "H.pbe-rrkjus_psl.1.0.0.UPF",
+            "La" : "La.pbe-spfn-rrkjus_psl.1.0.0.UPF"}
+         input_params = {"tstress" : True, # Print the stress in the output
+                "tprnfor" : True, # Print the forces in the output
+                "ecutwfc" : 35,  #The wavefunction energy cutoff for plane-waves (Ry)
+                "ecutrho" : 350, # The density energy cutoff (Ry)
+                "mixing_beta" : 0.2,  # The mixing parameter in the self-consistent calculation
+                "conv_thr" : 1e-9,    # The energy convergence threshold (Ry)
+                "degauss" : 0.02,  # Smearing temperature (Ry)
+                "smearing" : "mp",
+                "pseudo_dir" : ".",
+                "occupations" : "smearing",
+               "disk_io" : "none"}
+
+        k_points = (8,8,8) # The k points grid (you can alternatively specify a kspacing)
+        k_offset = (1,1,1) # The offset of the grid (can increase convergence)
+
+        self.espresso_calc = Espresso(pseudopotentials = pseudo, input_data = input_params,
+                        kpts = k_points, koffset = k_offset)
         my_hpc = sscha.Cluster.Cluster(pwd = None)
         # We setup the connection info
         my_hpc.hostname = "ekhi" # The command to connect via ssh to the cluster
@@ -142,7 +161,7 @@ class Calculo_inicial(object):
 #                          N_configs = 100,
 #                          max_pop = 200)
         self.relax = sscha.Relax.SSCHA(self.minim,
-                          ase_calculator = self.ff_calculator,
+                          ase_calculator = self.espresso_calc,
                           N_configs = self.configuraciones,
                           max_pop = 50)
 
@@ -366,7 +385,7 @@ class Hessiano_Vs_Temperatura(object):
 
             # Prepare the relaxer (through many population)
 #            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)
-            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=self.configuraciones, max_pop=20)
+            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.espresso_calc, N_configs=self.configuraciones, max_pop=20)
 
             # Relax
             self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
@@ -880,7 +899,7 @@ class Hessiano_Vs_Configurations(object):
             self.minim.enforce_sum_rule = True  # Lorenzo's solution to the error
 
             # Prepare the relaxer (through many population)
-            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=Configuracion, max_pop=20)
+            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.espresso_calc, N_configs=Configuracion, max_pop=20)
 
             # Relax
             self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
