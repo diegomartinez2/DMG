@@ -1,7 +1,8 @@
  &input
 asr='simple',
-amass(1)=65.0409,
-amass(2)=32.065,
+amass(1)         = 15.9994 ,
+amass(2)         = 87.62 ,
+amass(3)         = 47.867 ,
 flfrc='SrTiO3222.fc',
 flfrq='SrTiO3222.freq',
 dos=.true.,
