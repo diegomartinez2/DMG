@@ -5,23 +5,26 @@
 &inputscha
   n_random = 100
   n_random_eff = 50
-
+! data_dir = "../ensemble_data_SrTiO3"
   fildyn_prefix = "../ensemble_data_SrTiO3/dyn"
   nqirr = 1  !cambiar esto
   supercell_size = 1 1 1 ! cambiar esto por 2 2 2 o 3 3 3 o 4 4 4
 
   T=0.0d0
+!  Tg = 0  ![K]
 
   lambda_a = 0.01
-  lambda_w = 0
+  lambda_w = 0.01
   minim_struct = .false.
 
-  meaningful_factor = 1
+  meaningful_factor = 1e-4
   preconditioning = .true.
   root_representation = "normal"
-
+! gradi_op = "all"
+! population = 2
   print_stress = .true.
-
+! eq_energy = ![Ry]
+! max_ka = 20
 &end
 
 &relax
@@ -29,7 +32,12 @@
 
   type = "relax"
 ! type = "vc-relax"
+! start_pop = 2
 !  max_pop_id = 4
+! generate_ensemble = .false.
+! fix_volume = .false.
+! target_pressure = 0  ![GPa]
+! bulk_modulus = 15 ![GPa]
 
   ensemble_datadir = "data"
 &end
@@ -73,3 +81,13 @@
   conv_thr = 1d-8
   disk_io = "none"
 &end
+
+&utils
+  mu_free_start = 30
+  mu_free_end = 36
+
+  project_dyn = .true.
+  project_structure = .false.
+
+  save_freq_filename = "frequencies.dat"
+&end  
