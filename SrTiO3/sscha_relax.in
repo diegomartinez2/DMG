@@ -1,0 +1,75 @@
+! AUTOMATIC SCHA relaxation
+!run with:
+!sscha -i sscha_relax.in > sscha_relax.out 2> sscha_relax.err
+!
+&inputscha
+  n_random = 100
+  n_random_eff = 50
+
+  fildyn_prefix = "../ensemble_data_SrTiO3/dyn"
+  nqirr = 1  !cambiar esto
+  supercell_size = 1 1 1 ! cambiar esto por 2 2 2 o 3 3 3 o 4 4 4
+
+  T=0.0d0
+
+  lambda_a = 0.01
+  lambda_w = 0
+  minim_struct = .false.
+
+  meaningful_factor = 1
+  preconditioning = .true.
+  root_representation = "normal"
+
+  print_stress = .true.
+
+&end
+
+&relax
+  n_configs = 100
+
+  type = "relax"
+! type = "vc-relax"
+!  max_pop_id = 4
+
+  ensemble_datadir = "data"
+&end
+
+&cluster
+  hostname = "ekhi"
+  account = "diegom"
+! pwd = "password"
+  partition_name = "knl_usr_prod"
+
+  workdir = "$WORK/SrTiO3"
+
+  binary_path = $HOME/qe-6.2.1/bin/pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo
+  mpicmd = "srun --mpi=mpi2 -n NPROC"
+
+  n_nodes = 1
+  n_cpu = 32
+  n_pools = 4
+  n_time = "00:20:00"
+
+  job_numbers = 10
+
+  n_together = 1
+  timeout = 120
+&end
+
+&calculator
+  program = "quantum-espresso"
+
+  k_points = 2 2 2
+  k_offset = 0 0 0
+
+  pseudo_Sr = ""
+  pseudo_Ti = ""
+  pseudo_O = ""
+
+  tprnfor = .true.
+  tstress = .true.
+  ecutwfc = 45
+  ecutrho = 360
+  conv_thr = 1d-8
+  disk_io = "none"
+&end
