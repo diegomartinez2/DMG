@@ -7,8 +7,8 @@
   n_random_eff = 50
 ! data_dir = "../ensemble_data_SrTiO3"
   fildyn_prefix = "../ensemble_data_SrTiO3/dyn"
-  nqirr = 1  !cambiar esto 2x2x2 es 4; 3x3x3 es 4;4x4x4 es 10
-  supercell_size = 1 1 1 ! cambiar esto por 2 2 2 o 3 3 3 o 4 4 4
+  nqirr = 4  !cambiar esto 2x2x2 es 4; 3x3x3 es 4;4x4x4 es 10
+  supercell_size = 2 2 2 ! cambiar esto por 2 2 2 o 3 3 3 o 4 4 4
 
   T=0.0d0
 !  Tg = 0  ![K]
