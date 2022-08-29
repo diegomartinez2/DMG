@@ -138,11 +138,12 @@ class LD():
             epsilon_D = np.zeros(len(omega_light), dtype=complex)
             for i, w in enumerate(omega_light):
                 epsilon_D[i] = 1 - (f[0] * omega_p ** 2 / (w ** 2 + 1j * (Gamma[0]) * w))
-            epsilon_L = np.zeros(len(omega_light), dtype=complex)
 
+            epsilon_L = np.zeros(len(omega_light), dtype=complex)
             for i, w in enumerate(omega_light):
                 for k in xrange(1, order):
                     epsilon_L[i] += (f[k] * omega_p ** 2) / (omega[k] ** 2 - w ** 2 - 1j * Gamma[k] * w)
+
             self.epsilon = epsilon_D + epsilon_L
 
         self.refractive_index = np.sqrt(self.epsilon)
