@@ -182,6 +182,9 @@ class LD():
 
         plt.show()
 
+def Plasma_frequency_SI(n_e):
+    omega_p_SI=np.sqrt((n_e*1.602176462e-19)/(9.10938188e-31*8.854187813e-12))
+    return omega_p
 
 if __name__ == '__main__':
     import numpy as np
