@@ -186,7 +186,7 @@ def Plasma_frequency_SI(n_e):
     """
     Plasma frequency for 'cold' electrons approximation.
     """
-    omega_p_SI=np.sqrt((n_e*1.602176462e-19)/(9.10938188e-31*8.854187813e-12))
+    omega_p_SI = np.sqrt((n_e*1.602176462e-19)/(9.10938188e-31*8.854187813e-12))
     return omega_p
 
 def Resonant_frequency_SI():
