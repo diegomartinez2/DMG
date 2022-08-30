@@ -194,7 +194,7 @@ def Resonant_frequency_SI():
     Look if this is OK
     """
     omega_0 = 1/(2*np.pi*np.sqrt((4*np.pi*(n_e*1.602176462e-19)**2)/(3*9.10938188e-31))
-    return 0
+    return omega_0
 
 if __name__ == '__main__':
     import numpy as np
