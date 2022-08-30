@@ -185,9 +185,9 @@ class LD():
 def Plasma_frequency_SI(n_e):
     """
     Plasma frequency for 'cold' electrons approximation.
-    e = 1.602176462e-19             (Electronic Charge)
-    epsilon_0 = 8.854187813e-12     (Permittivity of Vaccum)
-    m_e = 9.10938188e-31            (Mass of Electron)
+    e = 1.602176462e-19  C             (Electronic Charge)
+    epsilon_0 = 8.854187813e-12  F⋅m−1 (Permittivity of Vaccum)
+    m_e = 9.10938188e-31  Kg           (Mass of Electron)
     """
     omega_p_SI = np.sqrt((n_e*1.602176462e-19)/(9.10938188e-31*8.854187813e-12))
     return omega_p
