@@ -126,7 +126,7 @@ class LD():
         Gamma = [_ * ehbar for _ in Gamma]
         omega = [_ * ehbar for _ in omega]
 
-        if self.model == 'D':
+        if self.model == 'D':   #Drude mode is valid only for metals (highly conducting materials approximation)
 
             epsilon_D = np.zeros(len(omega_light), dtype=complex)
             for i, w in enumerate(omega_light):
