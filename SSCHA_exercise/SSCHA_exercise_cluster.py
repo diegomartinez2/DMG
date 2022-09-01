@@ -300,7 +300,7 @@ class Busca_inestabilidades(object):
 #        self.ensemble.generate(1000,sobol = True)
     def calcula1(self):
         # We now compute forces and energies using the force field calculator
-        self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #test compute_stress = True no puede con este potencial...
+        self.ensemble.get_energy_forces(self.espresso_calc, compute_stress = False) #test compute_stress = True no puede con este potencial...
     def hessiano(self,T):
         #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
 
@@ -444,7 +444,7 @@ class Hessiano_Vs_Temperatura(object):
             self.ensemble.generate(self.configuraciones, sobol = self.sobol, sobol_scramble = self.sobol_scatter)
 #            self.ensemble.generate(100, sobol = False)
 #            self.ensemble.generate(5000,sobol = True)
-            self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #gets the energies and forces from ff_calculator
+            self.ensemble.get_energy_forces(self.espresso_calc, compute_stress = False) #gets the energies and forces from ff_calculator
 
             #update weights!!! es posible que este sea el motivo por el que no obtengo buenos resultados?
             self.ensemble.update_weights(self.relax.minim.dyn, Temperatura)
@@ -976,7 +976,7 @@ class Hessiano_Vs_Configurations(object):
             self.ensemble = sscha.Ensemble.Ensemble(self.relax.minim.dyn, T0 = self.Temp, supercell = self.dyn.GetSupercell())
             self.ensemble.generate(Configuracion, sobol = self.sobol, sobol_scramble = self.sobol_scatter)
 
-            self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #gets the energies and forces from ff_calculator
+            self.ensemble.get_energy_forces(self.espresso_calc, compute_stress = False) #gets the energies and forces from ff_calculator
 
             #update weights!!! es posible que este sea el motivo por el que no obtengo buenos resultados?
             self.ensemble.update_weights(self.relax.minim.dyn, self.Temp)
