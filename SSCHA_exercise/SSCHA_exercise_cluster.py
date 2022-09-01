@@ -101,7 +101,7 @@ class Calculo_inicial(object):
         # Now we need some more specific info, like the number of processors, pools and other stuff
         my_hpc.n_cpu = 40 # We will use 32 processors
         my_hpc.n_nodes = 1 #In 1 node
-        my_hpc.n_pool = 16 # This is an espresso specific tool, the parallel CPU are divided in 4 pools
+        my_hpc.n_pool = 10 # This is an espresso specific tool, the parallel CPU are divided in 4 pools
 
         # We can also choose in how many batch of jobs we want to submit simultaneously, and how many configurations for each job
         my_hpc.batch_size = 20
@@ -112,7 +112,7 @@ class Calculo_inicial(object):
         my_hpc.set_timeout(25)
 
         # We can specify the time limit for each job,
-        my_hpc.time = "00:10:00" # 5 minutes
+        my_hpc.time = "01:00:00" # 5 minutes
 
         # Create the working directory if none on the cluster
         # And check the connection
