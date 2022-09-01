@@ -81,9 +81,9 @@ class Calculo_inicial(object):
                         kpts = k_points, koffset = k_offset)
         my_hpc = sscha.Cluster.Cluster(pwd = None)
         # We setup the connection info
-        my_hpc.hostname = "ekhi" # The command to connect via ssh to the cluster (pippo@login.cineca.marconi.it)
+        my_hpc.hostname = "diegom@ekhi.cfm.ehu.es" # The command to connect via ssh to the cluster (pippo@login.cineca.marconi.it)
         #my_hpc.account_name = "IscrB_COMRED" # The name of the project for the computation
-        my_hpc.workdir = "/scratch/lorenzo/my_calculation" # the directory in which the calculations are performed
+        my_hpc.workdir = "/scratch/diegom/my_calculation" # the directory in which the calculations are performed
 
         # Now we need to setup the espresso
         # First we must tell the cluster where to find him:
@@ -99,7 +99,7 @@ class Calculo_inicial(object):
 
         # All these information are independent from the calculation
         # Now we need some more specific info, like the number of processors, pools and other stuff
-        my_hpc.n_cpu = 32 # We will use 32 processors
+        my_hpc.n_cpu = 40 # We will use 32 processors
         my_hpc.n_nodes = 1 #In 1 node
         my_hpc.n_pool = 16 # This is an espresso specific tool, the parallel CPU are divided in 4 pools
 
