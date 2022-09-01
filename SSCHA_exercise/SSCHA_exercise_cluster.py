@@ -220,11 +220,31 @@ class Busca_inestabilidades(object):
         # self.ff_calculator.p4 = -0.022
         # self.ff_calculator.p4x = -0.014
         #-----------------------------------------------------------------------
+        pseudo = {"Sr": "pseudo/sr_pbesol_v1.uspp.F.UPF",
+                  "Ti": "ti_pbesol_v1.4.uspp.F.UPF",
+                  "O" : "O.pbesol-n-kjpaw_psl.0.1.UPF"}
+         input_params = {"tstress" : True, # Print the stress in the output
+                "tprnfor" : True, # Print the forces in the output
+                "ecutwfc" : 35,  #The wavefunction energy cutoff for plane-waves (Ry)
+                "ecutrho" : 350, # The density energy cutoff (Ry)
+                "mixing_beta" : 0.2,  # The mixing parameter in the self-consistent calculation
+                "conv_thr" : 1e-9,    # The energy convergence threshold (Ry)
+                "degauss" : 0.02,  # Smearing temperature (Ry)
+                "smearing" : "mp",
+                "pseudo_dir" : ".",
+                "occupations" : "smearing",
+               "disk_io" : "none"}
+
+        k_points = (8,8,8) # The k points grid (you can alternatively specify a kspacing)
+        k_offset = (1,1,1) # The offset of the grid (can increase convergence)
+
+        self.espresso_calc = Espresso(pseudopotentials = pseudo, input_data = input_params,
+                        kpts = k_points, koffset = k_offset)
         my_hpc = sscha.Cluster.Cluster(pwd = None)
         # We setup the connection info
-        my_hpc.hostname = "ekhi" # The command to connect via ssh to the cluster
+        my_hpc.hostname = "diegom@ekhi.cfm.ehu.es" # The command to connect via ssh to the cluster (pippo@login.cineca.marconi.it)
         #my_hpc.account_name = "IscrB_COMRED" # The name of the project for the computation
-        my_hpc.workdir = "/scratch/lorenzo/my_calculation" # the directory in which the calculations are performed
+        my_hpc.workdir = "/scratch/diegom/my_calculation" # the directory in which the calculations are performed
 
         # Now we need to setup the espresso
         # First we must tell the cluster where to find him:
@@ -240,9 +260,9 @@ class Busca_inestabilidades(object):
 
         # All these information are independent from the calculation
         # Now we need some more specific info, like the number of processors, pools and other stuff
-        my_hpc.n_cpu = 32 # We will use 32 processors
+        my_hpc.n_cpu = 40 # We will use 32 processors
         my_hpc.n_nodes = 1 #In 1 node
-        my_hpc.n_pool = 16 # This is an espresso specific tool, the parallel CPU are divided in 4 pools
+        my_hpc.n_pool = 10 # This is an espresso specific tool, the parallel CPU are divided in 4 pools
 
         # We can also choose in how many batch of jobs we want to submit simultaneously, and how many configurations for each job
         my_hpc.batch_size = 20
@@ -253,7 +273,7 @@ class Busca_inestabilidades(object):
         my_hpc.set_timeout(25)
 
         # We can specify the time limit for each job,
-        my_hpc.time = "00:10:00" # 5 minutes
+        my_hpc.time = "01:00:00" # 5 minutes
 
         # Create the working directory if none on the cluster
         # And check the connection
@@ -311,11 +331,31 @@ class Hessiano_Vs_Temperatura(object):
         # self.ff_calculator.p4 = -0.022
         # self.ff_calculator.p4x = -0.014
         #-----------------------------------------------------------------------
+        pseudo = {"Sr": "pseudo/sr_pbesol_v1.uspp.F.UPF",
+                  "Ti": "ti_pbesol_v1.4.uspp.F.UPF",
+                  "O" : "O.pbesol-n-kjpaw_psl.0.1.UPF"}
+         input_params = {"tstress" : True, # Print the stress in the output
+                "tprnfor" : True, # Print the forces in the output
+                "ecutwfc" : 35,  #The wavefunction energy cutoff for plane-waves (Ry)
+                "ecutrho" : 350, # The density energy cutoff (Ry)
+                "mixing_beta" : 0.2,  # The mixing parameter in the self-consistent calculation
+                "conv_thr" : 1e-9,    # The energy convergence threshold (Ry)
+                "degauss" : 0.02,  # Smearing temperature (Ry)
+                "smearing" : "mp",
+                "pseudo_dir" : ".",
+                "occupations" : "smearing",
+               "disk_io" : "none"}
+
+        k_points = (8,8,8) # The k points grid (you can alternatively specify a kspacing)
+        k_offset = (1,1,1) # The offset of the grid (can increase convergence)
+
+        self.espresso_calc = Espresso(pseudopotentials = pseudo, input_data = input_params,
+                        kpts = k_points, koffset = k_offset)
         my_hpc = sscha.Cluster.Cluster(pwd = None)
         # We setup the connection info
-        my_hpc.hostname = "ekhi" # The command to connect via ssh to the cluster
+        my_hpc.hostname = "diegom@ekhi.cfm.ehu.es" # The command to connect via ssh to the cluster (pippo@login.cineca.marconi.it)
         #my_hpc.account_name = "IscrB_COMRED" # The name of the project for the computation
-        my_hpc.workdir = "/scratch/lorenzo/my_calculation" # the directory in which the calculations are performed
+        my_hpc.workdir = "/scratch/diegom/my_calculation" # the directory in which the calculations are performed
 
         # Now we need to setup the espresso
         # First we must tell the cluster where to find him:
@@ -331,9 +371,9 @@ class Hessiano_Vs_Temperatura(object):
 
         # All these information are independent from the calculation
         # Now we need some more specific info, like the number of processors, pools and other stuff
-        my_hpc.n_cpu = 32 # We will use 32 processors
+        my_hpc.n_cpu = 40 # We will use 32 processors
         my_hpc.n_nodes = 1 #In 1 node
-        my_hpc.n_pool = 16 # This is an espresso specific tool, the parallel CPU are divided in 4 pools
+        my_hpc.n_pool = 10 # This is an espresso specific tool, the parallel CPU are divided in 4 pools
 
         # We can also choose in how many batch of jobs we want to submit simultaneously, and how many configurations for each job
         my_hpc.batch_size = 20
@@ -344,7 +384,7 @@ class Hessiano_Vs_Temperatura(object):
         my_hpc.set_timeout(25)
 
         # We can specify the time limit for each job,
-        my_hpc.time = "00:10:00" # 5 minutes
+        my_hpc.time = "01:00:00" # 5 minutes
 
         # Create the working directory if none on the cluster
         # And check the connection
@@ -826,11 +866,31 @@ class Hessiano_Vs_Configurations(object):
         # self.ff_calculator.p4 = -0.022
         # self.ff_calculator.p4x = -0.014
         #-----------------------------------------------------------------------
+        pseudo = {"Sr": "pseudo/sr_pbesol_v1.uspp.F.UPF",
+                  "Ti": "ti_pbesol_v1.4.uspp.F.UPF",
+                  "O" : "O.pbesol-n-kjpaw_psl.0.1.UPF"}
+         input_params = {"tstress" : True, # Print the stress in the output
+                "tprnfor" : True, # Print the forces in the output
+                "ecutwfc" : 35,  #The wavefunction energy cutoff for plane-waves (Ry)
+                "ecutrho" : 350, # The density energy cutoff (Ry)
+                "mixing_beta" : 0.2,  # The mixing parameter in the self-consistent calculation
+                "conv_thr" : 1e-9,    # The energy convergence threshold (Ry)
+                "degauss" : 0.02,  # Smearing temperature (Ry)
+                "smearing" : "mp",
+                "pseudo_dir" : ".",
+                "occupations" : "smearing",
+               "disk_io" : "none"}
+
+        k_points = (8,8,8) # The k points grid (you can alternatively specify a kspacing)
+        k_offset = (1,1,1) # The offset of the grid (can increase convergence)
+
+        self.espresso_calc = Espresso(pseudopotentials = pseudo, input_data = input_params,
+                        kpts = k_points, koffset = k_offset)
         my_hpc = sscha.Cluster.Cluster(pwd = None)
         # We setup the connection info
-        my_hpc.hostname = "ekhi" # The command to connect via ssh to the cluster
+        my_hpc.hostname = "diegom@ekhi.cfm.ehu.es" # The command to connect via ssh to the cluster (pippo@login.cineca.marconi.it)
         #my_hpc.account_name = "IscrB_COMRED" # The name of the project for the computation
-        my_hpc.workdir = "/scratch/lorenzo/my_calculation" # the directory in which the calculations are performed
+        my_hpc.workdir = "/scratch/diegom/my_calculation" # the directory in which the calculations are performed
 
         # Now we need to setup the espresso
         # First we must tell the cluster where to find him:
@@ -846,9 +906,9 @@ class Hessiano_Vs_Configurations(object):
 
         # All these information are independent from the calculation
         # Now we need some more specific info, like the number of processors, pools and other stuff
-        my_hpc.n_cpu = 32 # We will use 32 processors
+        my_hpc.n_cpu = 40 # We will use 32 processors
         my_hpc.n_nodes = 1 #In 1 node
-        my_hpc.n_pool = 16 # This is an espresso specific tool, the parallel CPU are divided in 4 pools
+        my_hpc.n_pool = 10 # This is an espresso specific tool, the parallel CPU are divided in 4 pools
 
         # We can also choose in how many batch of jobs we want to submit simultaneously, and how many configurations for each job
         my_hpc.batch_size = 20
@@ -859,7 +919,7 @@ class Hessiano_Vs_Configurations(object):
         my_hpc.set_timeout(25)
 
         # We can specify the time limit for each job,
-        my_hpc.time = "00:10:00" # 5 minutes
+        my_hpc.time = "01:00:00" # 5 minutes
 
         # Create the working directory if none on the cluster
         # And check the connection
