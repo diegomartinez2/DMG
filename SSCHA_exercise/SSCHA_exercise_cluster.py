@@ -50,7 +50,7 @@ import timeit
 class Calculo_inicial(object):
     def __init__(self,fichero_ForceFields,fichero_dyn,nqirr,configuraciones,sobol,sobol_scatter):
         # Load the dynamical matrix for the force field
-        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
+        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 4)
 
         # Setup the forcefield with the correct parameters
         # self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
@@ -59,8 +59,9 @@ class Calculo_inicial(object):
         # self.ff_calculator.p4 = -0.022
         # self.ff_calculator.p4x = -0.014
         #-----------------------------------------------------------------------
-        pseudo = {"H": "H.pbe-rrkjus_psl.1.0.0.UPF",
-            "La" : "La.pbe-spfn-rrkjus_psl.1.0.0.UPF"}
+        pseudo = {"Sr": "pseudo/sr_pbesol_v1.uspp.F.UPF",
+                  "Ti": "ti_pbesol_v1.4.uspp.F.UPF",
+                  "O" : "O.pbesol-n-kjpaw_psl.0.1.UPF"}
          input_params = {"tstress" : True, # Print the stress in the output
                 "tprnfor" : True, # Print the forces in the output
                 "ecutwfc" : 35,  #The wavefunction energy cutoff for plane-waves (Ry)
@@ -978,8 +979,8 @@ class Hessiano_Vs_Configurations(object):
 
 def main(args):
     #La temperatura del primer calculo
-#    T0 = 0
-    T0 = 250
+    T0 = 0
+#    T0 = 250
     #Las temperaturas de los otros calculos
     Temperatura_i = np.linspace(50, 300, 6)
 #    Configuraciones_i = [2**4,2**5,2**6,2**7,2**8,2**9,2**10]
@@ -990,12 +991,12 @@ def main(args):
              Configuraciones_i[i]+=1
 #    Temperatura_i = np.linspace(300, 50, 6)
     #El fichero de la matrix dinámica para el campo de fuerzas (entrada)
-    Fichero_ForceFields = "ffield_dynq"
+    Fichero_ForceFields = "harmonic_dyn"
     #El fichero de la matriz dinamica del sistema SnTe
-    Fichero_dyn_SnTe = "ffield_dynq"
+    Fichero_dyn_SnTe = "harmonic_dyn"
 #    Fichero_dyn_SnTe = "final_sscha_T300_"
     #y el numero de ficheros, relacionado con q mesh del quantum espresso (y a su vez relacionado con la supercelda)
-    nqirr = 3
+    nqirr = 4
     #El fichero de las frecuencias (salida)
     Fichero_frecuencias = "frequencies.dat"
     #Los ficheros de la matriz dinamica (salida)
