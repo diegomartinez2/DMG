@@ -82,6 +82,7 @@ class Calculo_inicial(object):
         my_hpc = sscha.Cluster.Cluster(pwd = None)
         # We setup the connection info
         my_hpc.hostname = "diegom@ekhi.cfm.ehu.es" # The command to connect via ssh to the cluster (pippo@login.cineca.marconi.it)
+        #my_hpc.hostname = "diegom@atlas-fdr.sw.ehu.es"
         #my_hpc.account_name = "IscrB_COMRED" # The name of the project for the computation
         my_hpc.workdir = "/scratch/diegom/my_calculation" # the directory in which the calculations are performed
 
@@ -1065,10 +1066,10 @@ def main(args):
     sobol = False
     sobol_scatter = False
 
-#    Calculo = Calculo_inicial(Fichero_ForceFields,Fichero_dyn_SnTe,nqirr,configuraciones,sobol,sobol_scatter)
-#    Calculo.ensambla(T0)
-#    Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(T0)))
-#    Calculo.dibuja(Fichero_frecuencias)
+    Calculo = Calculo_inicial(Fichero_ForceFields,Fichero_dyn_SnTe,nqirr,configuraciones,sobol,sobol_scatter)
+    Calculo.ensambla(T0)
+    Calculo.minimiza(Fichero_frecuencias,Fichero_final_matriz_dinamica.format(int(T0)))
+    Calculo.dibuja(Fichero_frecuencias)
 
 #    Inestable = Busca_inestabilidades(Fichero_ForceFields,Fichero_dyn_SnTe,nqirr)
 #    Inestable.load_dyn(Fichero_final_matriz_dinamica.format(int(T0)),nqirr)
@@ -1080,9 +1081,9 @@ def main(args):
 #    HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,nqirr)
 #    HessianoVsTemperatura.dibuja()
 
-    HessianoVsConfiguraciones = Hessiano_Vs_Configurations(T0,Temperatura_i,Fichero_ForceFields,Configuraciones_i,sobol,sobol_scatter)
-    HessianoVsConfiguraciones.ciclo_C(Fichero_final_matriz_dinamica,nqirr)
-    HessianoVsConfiguraciones.dibuja()
+#    HessianoVsConfiguraciones = Hessiano_Vs_Configurations(T0,Temperatura_i,Fichero_ForceFields,Configuraciones_i,sobol,sobol_scatter)
+#    HessianoVsConfiguraciones.ciclo_C(Fichero_final_matriz_dinamica,nqirr)
+#    HessianoVsConfiguraciones.dibuja()
 
 #    Espectro =  Funcion_espectral(Fichero_dyn_SnTe,nqirr)
 #    Espectro.prepara_tensor()
