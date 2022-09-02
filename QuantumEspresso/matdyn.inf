@@ -1,0 +1,17 @@
+ &input
+asr='simple',
+amass(1)         = 15.9994 ,
+amass(2)         = 87.62 ,
+amass(3)         = 47.867 ,
+flfrc='SrTiO3222.fc',
+flfrq='SrTiO3222_GXGMGR.freq',
+dos=.false.
+q_in_band_form=.true.,
+/
+6
+0.0 0.0 0.0 100
+0.0 0.0 0.5 100
+0.0 0.0 0.0 100
+0.5 0.5 0.0 100
+0.0 0.0 0.0 100
+0.5 0.5 0.5 100

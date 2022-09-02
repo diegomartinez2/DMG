@@ -1,0 +1,5 @@
+ &input
+zasr='simple',
+fildyn="harmonic_dyn",
+flfrc='SrTiO3222.fc'
+/
