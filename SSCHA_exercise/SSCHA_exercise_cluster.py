@@ -844,7 +844,7 @@ class Funcion_espectral(object):
         Y = data[:,1]
         Z = data[:,2]
         z = [Z[i] for i in np.lexsort((Y,X))]
-        data1 = np.resize(z,(int(len(X)/1450),1450))
+        data1 = np.resize(z,(int(len(X)/1450),1450))  # el 1450 sale de e1=145 y de=0.1??
         cax = ax1.imshow(data1.transpose(), cmap=cm.coolwarm, origin='lower')
         ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
         plt.xticks(ticks=[0,499,999], labels=['X','G','X'])
