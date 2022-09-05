@@ -204,7 +204,7 @@ def dielectric_as1(omega,w_vector):
     epsilon_as = epsilon_as/omega
     return epsilon_as
 
-def dielectric_as2(omega):
+def dielectric_as2(omega,epsilon_inf,epsilon_0,omega_T):
     epsilon_as = epsilon_inf + (epsilon_inf-epsilon_0)/((omega**2/omega_T**2)-1)
     return epsilon_as2
 
