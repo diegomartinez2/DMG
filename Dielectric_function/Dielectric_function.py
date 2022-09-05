@@ -199,7 +199,7 @@ def Resonant_frequency_SI():
     omega_0 = 1/(2*np.pi*np.sqrt((4*np.pi*(n_e*1.602176462e-19)**2)/(3*9.10938188e-31))
     return omega_0
 
-def dielectric_as1(omega):
+def dielectric_as1(omega,w_vector):
     epsilon_as = w_vector*w_vector*8.988e16     #c in SI m/s c**2 in J/Kg
     epsilon_as = epsilon_as/omega
     return epsilon_as
