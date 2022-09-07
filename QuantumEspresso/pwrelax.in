@@ -15,7 +15,7 @@
   degauss = 0.03
   ecutwfc = 70
   ecutrho = 700
-
+  input_dft = "pbesol"
   ibrav = 0
   nat = 5
   nosym = .false.
