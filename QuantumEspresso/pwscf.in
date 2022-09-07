@@ -39,4 +39,4 @@ K_POINTS automatic
 CELL_PARAMETERS angstrom
       3.9451300000       0.0000000000       0.0000000000
       0.0000000000       3.9451300000       0.0000000000
-      0.0000000000       0.0000000000       3.9451300000      <----poner los valores obtenidos en relax
+      0.0000000000       0.0000000000       3.9451300000      <----poner los valores obtenidos en relax mirar en "Begin final coordinates"
