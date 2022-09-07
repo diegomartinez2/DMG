@@ -43,7 +43,7 @@
 &end
 
 &cluster
-  hostname = "ekhi"
+  hostname = "ekhi.cfm.ehu.es"
   account = "diegom"
 ! pwd = "password"
   partition_name = "knl_usr_prod"
