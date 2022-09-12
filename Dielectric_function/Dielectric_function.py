@@ -209,7 +209,7 @@ def dielectric_as2(omega,epsilon_inf,epsilon_0,omega_T):
     return epsilon_as2
 
 def lydanne_sachs_teller(omega_T,epsilon_0,epsilon_inf):
-    Omega_l = omega_T*(epsilon_0/epsilon_inf)
+    Omega_l = np.sqrt(omega_T*omega_T*(epsilon_0/epsilon_inf))
     return Omega_l
 
 if __name__ == '__main__':
