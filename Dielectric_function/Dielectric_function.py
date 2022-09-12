@@ -213,7 +213,7 @@ def lydanne_sachs_teller(omega_T,epsilon_0,epsilon_inf):
     return Omega_l
 
 def Displacent_polarizability_omega_T(omega,epsilon_0,epsilon_inf):
-    omega_T=np.sqrt(omega*omega*(epsilon_inf+2)/(epsilon_0+2))
+    omega_T=np.sqrt(omega*omega*(epsilon_inf+2)/(epsilon_0+2)) # omega_T depends on omega??
     return omega_T
 
 if __name__ == '__main__':
