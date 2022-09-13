@@ -28,7 +28,7 @@ export NPROCS=$SLURM_NTASKS
 rm slurm*.out
 
 ##########################################################################
-
+##export PYTHONPATH=~/.local/software/sscha-foss-2021a/lib/python3.6/site-packages:$PYTHONPATH
 echo "put your jobs here"
 echo "Run job 1"
 mpirun -np 40 pw.x < scf.in > scf.out
