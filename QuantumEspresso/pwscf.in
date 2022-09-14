@@ -18,6 +18,7 @@
   nat = 5
   nosym = .false.
   ntyp = 3
+  input_dft = "pbesol"  !!!"pbesol","pbe","pz"  
 /
 &ELECTRONS
   conv_thr =   1.0000000000d-09
