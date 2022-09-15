@@ -59,9 +59,9 @@ class Calculo_inicial(object):
         # self.ff_calculator.p4 = -0.022
         # self.ff_calculator.p4x = -0.014
         #-----------------------------------------------------------------------
-        pseudo = {"Sr": "pseudo/sr_pbesol_v1.uspp.F.UPF",
-                  "Ti": "ti_pbesol_v1.4.uspp.F.UPF",
-                  "O" : "O.pbesol-n-kjpaw_psl.0.1.UPF"}
+        pseudo = {"Sr": "pseudo/Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF",
+                  "Ti": "pseudo/Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF",
+                  "O" : "pseudo/O.pbesol-n-kjpaw_psl.1.0.0.UPF"}
          input_params = {"tstress" : True, # Print the stress in the output
                 "tprnfor" : True, # Print the forces in the output
                 "ecutwfc" : 35,  #The wavefunction energy cutoff for plane-waves (Ry)
