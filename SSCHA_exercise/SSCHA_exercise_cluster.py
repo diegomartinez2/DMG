@@ -67,12 +67,12 @@ class Calculo_inicial(object):
                 "tstress" : True, #output stresses
                 "ecutwfc" : 70,  #The wavefunction energy cutoff for plane-waves (Ry)
                 "ecutrho" : 700, # The density energy cutoff (Ry)
-                "mixing_beta" : 0.2,  # The mixing parameter in the self-consistent calculation
+                "mixing_beta" : 0.4,  # The mixing parameter in the self-consistent calculation
                 "conv_thr" : 1e-9,    # The energy convergence threshold (Ry)
                 "degauss" : 0.03,  # Smearing temperature (Ry)
                 "smearing" : "mp",
                 "pseudo_dir" : "./pseudo/",
-                "occupations" : "smearing",
+                "occupations" : "fixed", #smearing or fixed
                "disk_io" : "none"}
 
         k_points = (8,8,8) # The k points grid (you can alternatively specify a kspacing)
