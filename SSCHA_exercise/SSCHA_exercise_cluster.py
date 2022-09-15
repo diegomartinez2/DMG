@@ -64,11 +64,12 @@ class Calculo_inicial(object):
                   "O" : "pseudo/O.pbesol-n-kjpaw_psl.1.0.0.UPF"}
          input_params = {"tstress" : True, # Print the stress in the output
                 "tprnfor" : True, # Print the forces in the output
-                "ecutwfc" : 35,  #The wavefunction energy cutoff for plane-waves (Ry)
-                "ecutrho" : 350, # The density energy cutoff (Ry)
+                "tstress" : True, #output stresses
+                "ecutwfc" : 70,  #The wavefunction energy cutoff for plane-waves (Ry)
+                "ecutrho" : 700, # The density energy cutoff (Ry)
                 "mixing_beta" : 0.2,  # The mixing parameter in the self-consistent calculation
                 "conv_thr" : 1e-9,    # The energy convergence threshold (Ry)
-                "degauss" : 0.02,  # Smearing temperature (Ry)
+                "degauss" : 0.03,  # Smearing temperature (Ry)
                 "smearing" : "mp",
                 "pseudo_dir" : ".",
                 "occupations" : "smearing",
