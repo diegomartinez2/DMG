@@ -59,9 +59,9 @@ class Calculo_inicial(object):
         # self.ff_calculator.p4 = -0.022
         # self.ff_calculator.p4x = -0.014
         #-----------------------------------------------------------------------
-        pseudo = {"Sr": "pseudo/Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF",
-                  "Ti": "pseudo/Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF",
-                  "O" : "pseudo/O.pbesol-n-kjpaw_psl.1.0.0.UPF"}
+        pseudo = {"Sr": "Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF",
+                  "Ti": "Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF",
+                  "O" : "O.pbesol-n-kjpaw_psl.1.0.0.UPF"}
          input_params = {"tstress" : True, # Print the stress in the output
                 "tprnfor" : True, # Print the forces in the output
                 "tstress" : True, #output stresses
@@ -71,7 +71,7 @@ class Calculo_inicial(object):
                 "conv_thr" : 1e-9,    # The energy convergence threshold (Ry)
                 "degauss" : 0.03,  # Smearing temperature (Ry)
                 "smearing" : "mp",
-                "pseudo_dir" : ".",
+                "pseudo_dir" : "./pseudo/",
                 "occupations" : "smearing",
                "disk_io" : "none"}
 
