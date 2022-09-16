@@ -30,8 +30,10 @@ import cellconstructor.Structure
 import cellconstructor.Spectral
 
 # Import the modules of the force field
-import fforces as ff
-import fforces.Calculator
+#import fforces as ff
+#import fforces.Calculator
+import ase
+from ase.calculators.espresso import Espresso
 
 # Import the modules to run the sscha
 import sscha, sscha.Ensemble, sscha.SchaMinimizer
