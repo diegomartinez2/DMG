@@ -216,6 +216,14 @@ def Displacent_polarizability_omega_T(omega,epsilon_0,epsilon_inf):
     omega_T=np.sqrt(omega*omega*(epsilon_inf+2)/(epsilon_0+2)) # omega_T depends on omega??
     return omega_T
 
+def dielectric_ha():
+    epsilon=epsilon_inf+4*np.pi*response_function()
+    def response_function():
+        response1 = -(N/omega) * e**2
+        response2 =
+        return response1*response2
+     
+
 if __name__ == '__main__':
     import numpy as np
 
