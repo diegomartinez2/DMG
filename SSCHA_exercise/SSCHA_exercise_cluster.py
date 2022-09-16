@@ -70,10 +70,10 @@ class Calculo_inicial(object):
                 "mixing_beta" : 0.4,  # The mixing parameter in the self-consistent calculation
                 "conv_thr" : 1e-9,    # The energy convergence threshold (Ry)
                 "degauss" : 0.03,  # Smearing temperature (Ry)
-                "smearing" : "mp",
+#                "smearing" : "mp",
                 "pseudo_dir" : "./pseudo/",
-                "occupations" : "fixed", #smearing or fixed
-               "disk_io" : "none"}
+                "occupations" : "fixed", #smearing or fixed (fixed for insulators with a gap; gaussian smearing for metals; )
+                "disk_io" : "none"}
 
         k_points = (8,8,8) # The k points grid (you can alternatively specify a kspacing)
         k_offset = (1,1,1) # The offset of the grid (can increase convergence)
@@ -114,7 +114,7 @@ class Calculo_inicial(object):
         my_hpc.set_timeout(25)
 
         # We can specify the time limit for each job,
-        my_hpc.time = "01:00:00" # 5 minutes
+        my_hpc.time = "03:00:00" # 5 minutes
 
         # Create the working directory if none on the cluster
         # And check the connection
@@ -222,20 +222,21 @@ class Busca_inestabilidades(object):
         # self.ff_calculator.p4 = -0.022
         # self.ff_calculator.p4x = -0.014
         #-----------------------------------------------------------------------
-        pseudo = {"Sr": "pseudo/sr_pbesol_v1.uspp.F.UPF",
-                  "Ti": "ti_pbesol_v1.4.uspp.F.UPF",
-                  "O" : "O.pbesol-n-kjpaw_psl.0.1.UPF"}
+        pseudo = {"Sr": "Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF",
+                  "Ti": "Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF",
+                  "O" : "O.pbesol-n-kjpaw_psl.1.0.0.UPF"}
          input_params = {"tstress" : True, # Print the stress in the output
                 "tprnfor" : True, # Print the forces in the output
-                "ecutwfc" : 35,  #The wavefunction energy cutoff for plane-waves (Ry)
-                "ecutrho" : 350, # The density energy cutoff (Ry)
-                "mixing_beta" : 0.2,  # The mixing parameter in the self-consistent calculation
+                "tstress" : True, #output stresses
+                "ecutwfc" : 70,  #The wavefunction energy cutoff for plane-waves (Ry)
+                "ecutrho" : 700, # The density energy cutoff (Ry)
+                "mixing_beta" : 0.4,  # The mixing parameter in the self-consistent calculation
                 "conv_thr" : 1e-9,    # The energy convergence threshold (Ry)
-                "degauss" : 0.02,  # Smearing temperature (Ry)
-                "smearing" : "mp",
-                "pseudo_dir" : ".",
-                "occupations" : "smearing",
-               "disk_io" : "none"}
+                "degauss" : 0.03,  # Smearing temperature (Ry)
+#                "smearing" : "mp",
+                "pseudo_dir" : "./pseudo/",
+                "occupations" : "fixed", #smearing or fixed (fixed for insulators with a gap; gaussian smearing for metals; )
+                "disk_io" : "none"}
 
         k_points = (8,8,8) # The k points grid (you can alternatively specify a kspacing)
         k_offset = (1,1,1) # The offset of the grid (can increase convergence)
@@ -275,7 +276,7 @@ class Busca_inestabilidades(object):
         my_hpc.set_timeout(25)
 
         # We can specify the time limit for each job,
-        my_hpc.time = "01:00:00" # 5 minutes
+        my_hpc.time = "03:00:00" # 5 minutes
 
         # Create the working directory if none on the cluster
         # And check the connection
@@ -333,20 +334,21 @@ class Hessiano_Vs_Temperatura(object):
         # self.ff_calculator.p4 = -0.022
         # self.ff_calculator.p4x = -0.014
         #-----------------------------------------------------------------------
-        pseudo = {"Sr": "pseudo/sr_pbesol_v1.uspp.F.UPF",
-                  "Ti": "ti_pbesol_v1.4.uspp.F.UPF",
-                  "O" : "O.pbesol-n-kjpaw_psl.0.1.UPF"}
+        pseudo = {"Sr": "Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF",
+                  "Ti": "Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF",
+                  "O" : "O.pbesol-n-kjpaw_psl.1.0.0.UPF"}
          input_params = {"tstress" : True, # Print the stress in the output
                 "tprnfor" : True, # Print the forces in the output
-                "ecutwfc" : 35,  #The wavefunction energy cutoff for plane-waves (Ry)
-                "ecutrho" : 350, # The density energy cutoff (Ry)
-                "mixing_beta" : 0.2,  # The mixing parameter in the self-consistent calculation
+                "tstress" : True, #output stresses
+                "ecutwfc" : 70,  #The wavefunction energy cutoff for plane-waves (Ry)
+                "ecutrho" : 700, # The density energy cutoff (Ry)
+                "mixing_beta" : 0.4,  # The mixing parameter in the self-consistent calculation
                 "conv_thr" : 1e-9,    # The energy convergence threshold (Ry)
-                "degauss" : 0.02,  # Smearing temperature (Ry)
-                "smearing" : "mp",
-                "pseudo_dir" : ".",
-                "occupations" : "smearing",
-               "disk_io" : "none"}
+                "degauss" : 0.03,  # Smearing temperature (Ry)
+#                "smearing" : "mp",
+                "pseudo_dir" : "./pseudo/",
+                "occupations" : "fixed", #smearing or fixed (fixed for insulators with a gap; gaussian smearing for metals; )
+                "disk_io" : "none"}
 
         k_points = (8,8,8) # The k points grid (you can alternatively specify a kspacing)
         k_offset = (1,1,1) # The offset of the grid (can increase convergence)
@@ -386,7 +388,7 @@ class Hessiano_Vs_Temperatura(object):
         my_hpc.set_timeout(25)
 
         # We can specify the time limit for each job,
-        my_hpc.time = "01:00:00" # 5 minutes
+        my_hpc.time = "03:00:00" # 5 minutes
 
         # Create the working directory if none on the cluster
         # And check the connection
@@ -868,20 +870,21 @@ class Hessiano_Vs_Configurations(object):
         # self.ff_calculator.p4 = -0.022
         # self.ff_calculator.p4x = -0.014
         #-----------------------------------------------------------------------
-        pseudo = {"Sr": "pseudo/sr_pbesol_v1.uspp.F.UPF",
-                  "Ti": "ti_pbesol_v1.4.uspp.F.UPF",
-                  "O" : "O.pbesol-n-kjpaw_psl.0.1.UPF"}
+        pseudo = {"Sr": "Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF",
+                  "Ti": "Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF",
+                  "O" : "O.pbesol-n-kjpaw_psl.1.0.0.UPF"}
          input_params = {"tstress" : True, # Print the stress in the output
                 "tprnfor" : True, # Print the forces in the output
-                "ecutwfc" : 35,  #The wavefunction energy cutoff for plane-waves (Ry)
-                "ecutrho" : 350, # The density energy cutoff (Ry)
-                "mixing_beta" : 0.2,  # The mixing parameter in the self-consistent calculation
+                "tstress" : True, #output stresses
+                "ecutwfc" : 70,  #The wavefunction energy cutoff for plane-waves (Ry)
+                "ecutrho" : 700, # The density energy cutoff (Ry)
+                "mixing_beta" : 0.4,  # The mixing parameter in the self-consistent calculation
                 "conv_thr" : 1e-9,    # The energy convergence threshold (Ry)
-                "degauss" : 0.02,  # Smearing temperature (Ry)
-                "smearing" : "mp",
-                "pseudo_dir" : ".",
-                "occupations" : "smearing",
-               "disk_io" : "none"}
+                "degauss" : 0.03,  # Smearing temperature (Ry)
+#                "smearing" : "mp",
+                "pseudo_dir" : "./pseudo/",
+                "occupations" : "fixed", #smearing or fixed (fixed for insulators with a gap; gaussian smearing for metals; )
+                "disk_io" : "none"}
 
         k_points = (8,8,8) # The k points grid (you can alternatively specify a kspacing)
         k_offset = (1,1,1) # The offset of the grid (can increase convergence)
@@ -921,7 +924,7 @@ class Hessiano_Vs_Configurations(object):
         my_hpc.set_timeout(25)
 
         # We can specify the time limit for each job,
-        my_hpc.time = "01:00:00" # 5 minutes
+        my_hpc.time = "03:00:00" # 5 minutes
 
         # Create the working directory if none on the cluster
         # And check the connection
@@ -1058,7 +1061,7 @@ def main(args):
     Fichero_dyn_SnTe = "harmonic_dyn"
 #    Fichero_dyn_SnTe = "final_sscha_T300_"
     #y el numero de ficheros, relacionado con q mesh del quantum espresso (y a su vez relacionado con la supercelda)
-    nqirr = 4
+    nqirr = 10
     #El fichero de las frecuencias (salida)
     Fichero_frecuencias = "frequencies.dat"
     #Los ficheros de la matriz dinamica (salida)
