@@ -7,8 +7,8 @@
   n_random_eff = 50
 ! data_dir = "../ensemble_data_SrTiO3"
   fildyn_prefix = "../ensemble_data_SrTiO3/dyn"
-  nqirr = 4  !cambiar esto 2x2x2 es 4; 3x3x3 es 4;4x4x4 es 10; es fácil de deducir a partír del número de ficheros dyn
-  supercell_size = 2 2 2 ! cambiar esto por 2 2 2 o 3 3 3 o 4 4 4
+  nqirr = 10  !cambiar esto 2x2x2 es 4; 3x3x3 es 4;4x4x4 es 10; es fácil de deducir a partír del número de ficheros dyn
+  supercell_size = 4 4 4 ! cambiar esto por 2 2 2 o 3 3 3 o 4 4 4
 
   T=0.0d0
 !  Tg = 0  ![K]
@@ -33,13 +33,14 @@
   type = "relax"
 ! type = "vc-relax"
 ! start_pop = 2
-!  max_pop_id = 4
+! max_pop_id = 4
 ! generate_ensemble = .false.
 ! fix_volume = .false.
 ! target_pressure = 0  ![GPa]
 ! bulk_modulus = 15 ![GPa]
 
   ensemble_datadir = "data"
+  sobol_sampling = .true.
 &end
 
 &cluster
@@ -67,7 +68,7 @@
 &calculator
   program = "quantum-espresso"
 
-  k_points = 2 2 2
+  k_points = 8 8 8
   k_offset = 0 0 0
 
   pseudo_Sr = "Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF"
