@@ -62,7 +62,7 @@ class Calculo_inicial(object):
         pseudo = {"Sr": "Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF",
                   "Ti": "Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF",
                   "O" : "O.pbesol-n-kjpaw_psl.1.0.0.UPF"}
-         input_params = {"tstress" : True, # Print the stress in the output
+        input_params = {"tstress" : True, # Print the stress in the output
                 "tprnfor" : True, # Print the forces in the output
                 "tstress" : True, #output stresses
                 "ecutwfc" : 70,  #The wavefunction energy cutoff for plane-waves (Ry)
@@ -225,7 +225,7 @@ class Busca_inestabilidades(object):
         pseudo = {"Sr": "Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF",
                   "Ti": "Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF",
                   "O" : "O.pbesol-n-kjpaw_psl.1.0.0.UPF"}
-         input_params = {"tstress" : True, # Print the stress in the output
+        input_params = {"tstress" : True, # Print the stress in the output
                 "tprnfor" : True, # Print the forces in the output
                 "tstress" : True, #output stresses
                 "ecutwfc" : 70,  #The wavefunction energy cutoff for plane-waves (Ry)
@@ -337,7 +337,7 @@ class Hessiano_Vs_Temperatura(object):
         pseudo = {"Sr": "Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF",
                   "Ti": "Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF",
                   "O" : "O.pbesol-n-kjpaw_psl.1.0.0.UPF"}
-         input_params = {"tstress" : True, # Print the stress in the output
+        input_params = {"tstress" : True, # Print the stress in the output
                 "tprnfor" : True, # Print the forces in the output
                 "tstress" : True, #output stresses
                 "ecutwfc" : 70,  #The wavefunction energy cutoff for plane-waves (Ry)
@@ -873,7 +873,7 @@ class Hessiano_Vs_Configurations(object):
         pseudo = {"Sr": "Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF",
                   "Ti": "Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF",
                   "O" : "O.pbesol-n-kjpaw_psl.1.0.0.UPF"}
-         input_params = {"tstress" : True, # Print the stress in the output
+        input_params = {"tstress" : True, # Print the stress in the output
                 "tprnfor" : True, # Print the forces in the output
                 "tstress" : True, #output stresses
                 "ecutwfc" : 70,  #The wavefunction energy cutoff for plane-waves (Ry)
