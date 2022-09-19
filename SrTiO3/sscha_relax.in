@@ -15,7 +15,7 @@
 
   lambda_a = 0.01
   lambda_w = 0.01
-  minim_struct = .false.
+  minim_struc = .false.
 
   meaningful_factor = 1e-4
   preconditioning = .true.
