@@ -58,6 +58,8 @@ class Gold_free_energy(object):
 
         # Get the force field for gold
         self.calculator = EMT()
+        #self.Calculadora = Dft_calculator()
+        #self.calculator = self.Calculadora.calculator
         return 0
 
     def relax(self):
