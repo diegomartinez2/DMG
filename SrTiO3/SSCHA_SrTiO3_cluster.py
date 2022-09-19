@@ -146,7 +146,9 @@ class  Thermal_expansion(object):
 
         # Import the gold force field
         self.calculator = EMT()
-
+        #self.Calculadora = Dft_calculator()
+        #self.calculator = self.Calculadora.calculator
+        
         # Import the starting dynamical matrix (final result of get_gold_free_energy.py)
         self.dyn = CC.Phonons.Phonons("sscha_T300_dyn", nqirr = 13)
 
