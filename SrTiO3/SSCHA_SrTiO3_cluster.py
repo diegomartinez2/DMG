@@ -230,6 +230,8 @@ class Dft_calculator(object):
         kpts = (1,1,1)
         koffset = (1,1,1)
 
+        # Specify the command to call quantum espresso
+        command = 'pw.x -i PREFIX.pwi > PREFIX.pwo'
 
         # Prepare the quantum espresso calculator
         calculator = CC.calculators.Espresso(input_data,
