@@ -60,7 +60,6 @@ class Gold_free_energy(object):
         self.calculator = EMT()
         #self.Calculadora = Dft_calculator()
         #self.calculator = self.Calculadora.calculator
-        return 0
 
     def relax(self):
         # Relax the gold structure (useless since for symmetries it is already relaxed)
@@ -148,7 +147,7 @@ class  Thermal_expansion(object):
         self.calculator = EMT()
         #self.Calculadora = Dft_calculator()
         #self.calculator = self.Calculadora.calculator
-        
+
         # Import the starting dynamical matrix (final result of get_gold_free_energy.py)
         self.dyn = CC.Phonons.Phonons("sscha_T300_dyn", nqirr = 13)
 
@@ -242,7 +241,7 @@ class Dft_calculator(object):
                                              pseudopotentials,
                                              kpts = kpts,
                                              koffset = koffset)
-        return 0
+
 
 def plot_dispersion():
     NQIRR = 13
