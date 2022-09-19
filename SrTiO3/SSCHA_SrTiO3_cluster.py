@@ -53,23 +53,23 @@ class Gold_free_energy(object):
         The phonons are computed on a q-mesh 4x4x4
         """
 
-        gold_structure = CC.Structure.Structure()
-        gold_structure.read_generic_file("Au.cif")
+        self.gold_structure = CC.Structure.Structure()
+        self.gold_structure.read_generic_file("Au.cif")
 
         # Get the force field for gold
-        calculator = EMT()
+        self.calculator = EMT()
         return 0
 
     def relax(self):
         # Relax the gold structure (useless since for symmetries it is already relaxed)
         relax = CC.calculators.Relax(gold_structure, calculator)
-        gold_structure_relaxed = relax.static_relax()
+        self.gold_structure_relaxed = relax.static_relax()
         return 0
 
     def harmonic(self):
         # Compute the harmonic phonons
         # NOTE: if the code is run with mpirun, the calculation goes in parallel
-        gold_harmonic_dyn = CC.Phonons.compute_phonons_finite_displacements(gold_structure_relaxed, calculator, supercell = (4,4,4))
+        gold_harmonic_dyn = CC.Phonons.compute_phonons_finite_displacements(self.gold_structure_relaxed, self.calculator, supercell = (4,4,4))
 
         # Impose the symmetries and
         # save the dynamical matrix in the quantum espresso format
@@ -99,7 +99,7 @@ class Gold_free_energy(object):
         minim.set_minimization_step(0.01)
 
         # Initialize the NVT simulation
-        relax = sscha.Relax.SSCHA(minim, calculator, N_configs = N_CONFIGS,
+        relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
                                   max_pop = MAX_ITERATIONS)
 
         # Define the I/O operations
@@ -135,43 +135,43 @@ class  Thermal_expansion(object):
         """
 
         # Define the temperature range (in K)
-        T_START = 300
-        T_END = 1000
-        DT = 50
+        self.T_START = 300
+        self.T_END = 1000
+        self.DT = 50
 
-        N_CONFIGS = 50
-        MAX_ITERATIONS = 10
+        self.N_CONFIGS = 50
+        self.MAX_ITERATIONS = 10
 
         # Import the gold force field
-        calculator = EMT()
+        self.calculator = EMT()
 
         # Import the starting dynamical matrix (final result of get_gold_free_energy.py)
-        dyn = CC.Phonons.Phonons("sscha_T300_dyn", nqirr = 13)
+        self.dyn = CC.Phonons.Phonons("sscha_T300_dyn", nqirr = 13)
 
         # Create the directory on which to store the output
-        DIRECTORY = "thermal_expansion"
-        if not os.path.exists(DIRECTORY):
+        self.DIRECTORY = "thermal_expansion"
+        if not os.path.exists(self.DIRECTORY):
             os.makedirs("thermal_expansion")
 
     def temperature_cycle(self):
         # We cycle over several temperatures
-        t = T_START
+        t = self.T_START
 
 
         volumes = []
         temperatures = []
-        while t <= T_END:
+        while t <= self.T_END:
             # Change the temperature
-            ensemble = sscha.Ensemble.Ensemble(dyn, t)
+            ensemble = sscha.Ensemble.Ensemble(self.dyn, t)
             minim = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
             minim.set_minimization_step(0.1)
 
-            relax = sscha.Relax.SSCHA(minim, calculator, N_configs = N_CONFIGS,
-                                      max_pop = MAX_ITERATIONS)
+            relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = self.N_CONFIGS,
+                                      max_pop = self.MAX_ITERATIONS)
 
             # Setup the I/O
             ioinfo = sscha.Utilities.IOInfo()
-            ioinfo.SetupSaving( os.path.join(DIRECTORY, "minim_t{}".format(t)))
+            ioinfo.SetupSaving( os.path.join(self.DIRECTORY, "minim_t{}".format(t)))
             relax.setup_custom_functions( custom_function_post = ioinfo.CFP_SaveAll)
 
 
@@ -183,15 +183,15 @@ class  Thermal_expansion(object):
             temperatures.append(t)
 
             # Start the next simulation from the results
-            relax.minim.dyn.save_qe( os.path.join(DIRECTORY, "sscha_T{}_dyn".format(t)))
+            relax.minim.dyn.save_qe( os.path.join(self.DIRECTORY, "sscha_T{}_dyn".format(t)))
             dyn = relax.minim.dyn
             relax.minim.finalize()
 
             # Update the temperature
-            t += DT
+            t += self.DT
 
         # Save the thermal expansion
-        np.savetxt(os.path.join(DIRECTORY, "thermal_expansion.dat"),
+        np.savetxt(os.path.join(self.DIRECTORY, "thermal_expansion.dat"),
                    np.transpose([temperatures, volumes]),
                    header = "Temperature [K]; Volume [A^3]")
         return 0
@@ -231,10 +231,10 @@ class Dft_calculator(object):
         koffset = (1,1,1)
 
         # Specify the command to call quantum espresso
-        command = 'pw.x -i PREFIX.pwi > PREFIX.pwo'
+        self.command = 'pw.x -i PREFIX.pwi > PREFIX.pwo'
 
         # Prepare the quantum espresso calculator
-        calculator = CC.calculators.Espresso(input_data,
+        self.calculator = CC.calculators.Espresso(input_data,
                                              pseudopotentials,
                                              kpts = kpts,
                                              koffset = koffset)
