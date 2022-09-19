@@ -51,7 +51,7 @@
 
   workdir = "$WORK/SrTiO3"
   init_script = "./Quantum_espresso.text"
-  binary_path = $HOME/qe-6.2.1/bin/pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo
+  binary_path = "$HOME/qe-6.2.1/bin/pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo"
   mpicmd = "srun --mpi=mpi2 -n NPROC"
 
   n_nodes = 1
