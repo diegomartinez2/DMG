@@ -71,9 +71,9 @@
   k_points = 8 8 8
   k_offset = 0 0 0
 
-  pseudo_Sr = "Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF"
-  pseudo_Ti = "Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF"
-  pseudo_O = "O.pbesol-n-kjpaw_psl.1.0.0.UPF"
+  pseudo_Sr = "./pseudo/Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF"
+  pseudo_Ti = "./pseudo/Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF"
+  pseudo_O = "./pseudo/O.pbesol-n-kjpaw_psl.1.0.0.UPF"
 
   tprnfor = .true.
   tstress = .true.
