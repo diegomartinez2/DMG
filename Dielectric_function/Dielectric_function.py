@@ -192,7 +192,7 @@ def Plasma_frequency_SI(n_e):
     omega_p_SI = np.sqrt((n_e*1.602176462e-19)/(9.10938188e-31*8.854187813e-12))
     return omega_p
 
-def Resonant_frequency_SI():
+def Resonant_frequency_SI(n_e):
     """
     Look if this is OK
     """
@@ -222,7 +222,7 @@ def dielectric_ha():
         response1 = -(N/omega) * e**2
         response2 =
         return response1*response2
-     
+
 
 if __name__ == '__main__':
     import numpy as np
