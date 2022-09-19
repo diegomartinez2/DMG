@@ -37,6 +37,13 @@ import numpy as np, matplotlib.pyplot as plt
 import sys, os
 
 
+import cellconstructor.ForceTensor
+import ase.dft.kpoints
+
+import matplotlib.cm as cm
+import matplotlib.colors as colors
+
+import scipy, scipy.optimize
 
 class Gold_free_energy(object):
     def __init__(self):
@@ -187,6 +194,147 @@ class  Thermal_expansion(object):
         np.savetxt(os.path.join(DIRECTORY, "thermal_expansion.dat"),
                    np.transpose([temperatures, volumes]),
                    header = "Temperature [K]; Volume [A^3]")
+
+def plot_dispersion():
+    NQIRR = 13
+    #CMAP = "Spectral_r"
+    PATH = "GXWXKGL"
+    N_POINTS = 1000
+
+    SPECIAL_POINTS = {"G": [0,0,0],
+                      "X": [0, .5, .5],
+                      "L": [.5, .5, .5],
+                      "W": [.25, .75, .5],
+                      "K": [3/8., 3/4., 3/8.]}
+
+    # Load the harmonic and sscha phonons
+    harmonic_dyn = CC.Phonons.Phonons('harmonic_dyn', NQIRR)
+    sscha_dyn = CC.Phonons.Phonons('sscha_T300_dyn', NQIRR)
+
+    # Get the band path
+    qpath, data = CC.Methods.get_bandpath(harmonic_dyn.structure.unit_cell,
+                                          PATH,
+                                          SPECIAL_POINTS,
+                                          N_POINTS)
+    xaxis, xticks, xlabels = data # Info to plot correclty the x axis
+
+    # Get the phonon dispersion along the path
+    harmonic_dispersion = CC.ForceTensor.get_phonons_in_qpath(harmonic_dyn, qpath)
+    sscha_dispersion = CC.ForceTensor.get_phonons_in_qpath(sscha_dyn, qpath)
+
+    nmodes = harmonic_dyn.structure.N_atoms * 3
+
+    # Plot the two dispersions
+    plt.figure(dpi = 150)
+    ax = plt.gca()
+
+    for i in range(nmodes):
+        lbl=None
+        lblsscha = None
+        if i == 0:
+            lbl = 'Harmonic'
+            lblsscha = 'SSCHA'
+
+        ax.plot(xaxis, harmonic_dispersion[:,i], color = 'k', ls = 'dashed', label = lbl)
+        ax.plot(xaxis, sscha_dispersion[:,i], color = 'r', label = lblsscha)
+
+    # Plot vertical lines for each high symmetry points
+    for x in xticks:
+        ax.axvline(x, 0, 1, color = "k", lw = 0.4)
+    ax.axhline(0, 0, 1, color = 'k', ls = ':', lw = 0.4)
+
+    ax.legend()
+
+    # Set the x labels to the high symmetry points
+    ax.set_xticks(xticks)
+    ax.set_xticklabels(xlabels)
+
+    ax.set_xlabel("Q path")
+    ax.set_ylabel("Phonons [cm-1]")
+
+    plt.tight_layout()
+    plt.savefig("dispersion.png")
+    plt.show()
+    return 0
+
+def plot_thermal_expansion():
+    """
+    This simple scripts plot the thermal expansion.
+    It either directly plots the file produced at the end of thermal_expansion.py
+    or it processes the dynamical matrices generated throughout the minimization.
+
+    It also fits the V(T) cuve and estimates the volumetric thermal expansion coefficient
+
+    alpha = dV/dT / V
+
+    At 300 K
+    """
+
+
+    # Load all the dynamical matrices and compute volume
+    DIRECTORY = "thermal_expansion"
+    FILE = os.path.join(DIRECTORY, "thermal_expansion.dat")
+
+
+    # Check if the file with the thermal expansion data exists
+    if not os.path.exists( FILE):
+        # If the simulation is not ended, load the volume from the dynamical matrices
+
+        # Get the dynamical matrices
+        all_dyn_files = [x for x in os.listdir(DIRECTORY) if "sscha" in x and x.endswith("dyn1")]
+        temperatures = [float(x.split("_")[-2].replace("T", "")) for x in all_dyn_files]
+
+        # Now sort in order of temperature
+        sortmask = np.argsort(temperatures)
+        all_dyn_files = [all_dyn_files[x] for x in sortmask]
+        temperatures = np.sort(temperatures)
+
+        volumes = np.zeros_like(temperatures)
+
+        for i, fname in enumerate(all_dyn_files):
+            # Load the dynamical matrix
+            # The full_name means that we specify the name including the tail 1
+            dyn = CC.Phonons.Phonons(os.path.join(DIRECTORY, fname), full_name = True)
+            volumes[i] = dyn.get_volumes()
+
+    else:
+        # Load the data from the final data file
+        temperatures, volumes = np.loadtxt(FILE, unpack = True)
+
+
+    # Prepare the figure and plot the V(T) from the sscha data
+    plt.figure(dpi = 150)
+    plt.scatter(temperatures, volumes, label = "SSCHA data", color = 'r')
+
+    # Fit the data with a quadratic curve
+    def parabola(x, a, b, c):
+        return a + b*x + c*x**2
+    def diff_parab(x, a, b, c):
+        return b + 2*c*x
+
+    popt, pcov = scipy.optimize.curve_fit(parabola, temperatures, volumes,
+                                          p0 = [0,0,0])
+
+    # Evaluate the volume thermal expansion
+    vol_thermal_expansion = diff_parab(300, *popt) / parabola(300, *popt)
+    print("Vol thermal expansion: {} x 10^6  K^-1".format(vol_thermal_expansion * 1e6))
+    plt.text(0.6, 0.2, r"$\alpha_v = "+"{:.1f}".format(vol_thermal_expansion*1e6)+r"\times 10^6 $ K$^{-1}$",
+             transform = plt.gca().transAxes)
+
+
+    # Plot the fit
+    _t_ = np.linspace(np.min(temperatures), np.max(temperatures), 1000)
+    plt.plot(_t_, parabola(_t_, *popt), label = "Fit", color = 'k', zorder = 0)
+
+    # Adjust the plot adding labels, legend, and saving in eps
+    plt.xlabel("Temperature [K]")
+    plt.ylabel(r"Volume [$\AA^3$]")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig("thermal_expansion.png")
+    plt.show()
+    return 0
+
 
 
 def main(args):
