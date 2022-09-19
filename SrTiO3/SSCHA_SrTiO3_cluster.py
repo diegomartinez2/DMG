@@ -65,7 +65,7 @@ class Gold_free_energy(object):
         # Relax the gold structure (useless since for symmetries it is already relaxed)
         relax = CC.calculators.Relax(self.gold_structure, self.calculator)
         self.gold_structure_relaxed = relax.static_relax()
-        return 0
+        #return 0
 
     def harmonic(self):
         # Compute the harmonic phonons
@@ -197,7 +197,7 @@ class  Thermal_expansion(object):
         np.savetxt(os.path.join(self.DIRECTORY, "thermal_expansion.dat"),
                    np.transpose([temperatures, volumes]),
                    header = "Temperature [K]; Volume [A^3]")
-        return 0
+        #return 0
 
 class Dft_calculator(object):
     def __init__(self):
@@ -387,8 +387,8 @@ def plot_thermal_expansion():
 
 def main(args):
     Gold_calculation = Gold_free_energy()
-    Gold_free_energy.relax()
-    Gold_free_energy.harmonic()
+    Gold_calculation.relax()
+    Gold_calculation.harmonic()
     Gold_thermal_expansion = Thermal_expansion()
     Gold_thermal_expansion.temperature_cycle()
     return 0
