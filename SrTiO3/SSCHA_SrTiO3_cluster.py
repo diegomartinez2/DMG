@@ -63,7 +63,7 @@ class Gold_free_energy(object):
 
     def relax(self):
         # Relax the gold structure (useless since for symmetries it is already relaxed)
-        relax = CC.calculators.Relax(gold_structure, calculator)
+        relax = CC.calculators.Relax(self.gold_structure, self.calculator)
         self.gold_structure_relaxed = relax.static_relax()
         return 0
 
