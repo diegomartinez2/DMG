@@ -194,6 +194,49 @@ class  Thermal_expansion(object):
         np.savetxt(os.path.join(DIRECTORY, "thermal_expansion.dat"),
                    np.transpose([temperatures, volumes]),
                    header = "Temperature [K]; Volume [A^3]")
+        return 0
+
+class Dft_calculator(object):
+    def __init__(self):
+
+        # Initialize the DFT (Quantum Espresso) calculator for gold
+        # The input data is a dictionary that encodes the pw.x input file namelist
+        input_data = {
+            'control' : {
+                # Avoid writing wavefunctions on the disk
+                'disk_io' : 'None',
+                # Where to find the pseudopotential
+                'pseudo_dir' : '.'
+            },
+            'system' : {
+                # Specify the basis set cutoffs
+                'ecutwfc' : 45,   # Cutoff for wavefunction
+                'ecutrho' : 45*4, # Cutoff for the density
+                # Information about smearing (it is a metal)
+                'occupations' : 'smearing',
+                'smearing' : 'mv',
+                'degauss' : 0.03
+            },
+            'electrons' : {
+                'conv_thr' : 1e-8
+            }
+        }
+
+        # the pseudopotential for each chemical element
+        # In this case just Gold
+        pseudopotentials = {'Au' : 'Au_ONCV_PBE-1.0.oncvpsp.upf'}
+
+        # the kpoints mesh and the offset
+        kpts = (1,1,1)
+        koffset = (1,1,1)
+
+
+        # Prepare the quantum espresso calculator
+        calculator = CC.calculators.Espresso(input_data,
+                                             pseudopotentials,
+                                             kpts = kpts,
+                                             koffset = koffset)
+        return 0
 
 def plot_dispersion():
     NQIRR = 13
