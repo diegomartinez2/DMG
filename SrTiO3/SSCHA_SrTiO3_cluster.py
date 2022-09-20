@@ -480,6 +480,9 @@ def main(args):
     Gold_thermal_expansion = Thermal_expansion()
     Gold_thermal_expansion.temperature_cycle()
     plot_thermal_expansion()
+    Gold_calculation_dft = Gold_free_energy_ab_initio()
+    Gold_calculation_dft.relax()
+    plot_dispersion()
     #return 0
     #raise SystemExit
     #sys.exit()
