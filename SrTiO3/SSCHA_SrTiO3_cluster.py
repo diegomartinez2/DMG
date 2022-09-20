@@ -111,7 +111,7 @@ class Gold_free_energy(object):
 
 
         # Run the NVT simulation (save the stress to compute the pressure)
-        relax.relax(get_stress = True)
+        relax.relax(get_stress = True,sobol = True)
 
         # If instead you want to run a NPT simulation, use
         # The target pressure is given in GPa.
@@ -179,7 +179,7 @@ class  Thermal_expansion(object):
 
 
             # Run the NPT simulation
-            relax.vc_relax(target_press = 0)
+            relax.vc_relax(target_press = 0, sobol = True)
 
             # Save the volume and temperature
             volumes.append(relax.minim.dyn.structure.get_volume())
@@ -393,6 +393,8 @@ def main(args):
     #Gold_thermal_expansion = Thermal_expansion()
     #Gold_thermal_expansion.temperature_cycle()
     #return 0
+    raise SystemExit
+    sys.exit()
 
 if __name__ == '__main__':
     import sys
