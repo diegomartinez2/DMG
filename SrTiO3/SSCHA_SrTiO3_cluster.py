@@ -389,9 +389,10 @@ def main(args):
     Gold_calculation = Gold_free_energy()
     Gold_calculation.relax()
     Gold_calculation.harmonic()
-    Gold_thermal_expansion = Thermal_expansion()
-    Gold_thermal_expansion.temperature_cycle()
-    return 0
+    plot_dispersion()
+    #Gold_thermal_expansion = Thermal_expansion()
+    #Gold_thermal_expansion.temperature_cycle()
+    #return 0
 
 if __name__ == '__main__':
     import sys
