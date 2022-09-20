@@ -390,9 +390,9 @@ def main(args):
     Gold_calculation.relax()
     Gold_calculation.harmonic()
     plot_dispersion()
-    #Gold_thermal_expansion = Thermal_expansion()
-    #Gold_thermal_expansion.temperature_cycle()
-    #plot_thermal_expansion()
+    Gold_thermal_expansion = Thermal_expansion()
+    Gold_thermal_expansion.temperature_cycle()
+    plot_thermal_expansion()
     #return 0
     #raise SystemExit
     #sys.exit()
