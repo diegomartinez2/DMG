@@ -159,7 +159,7 @@ class  Gold_free_energy_ab_initio(object):
         koffset = (1,1,1)
 
         # Specify the command to call quantum espresso
-        command = 'pw.x -i PREFIX.pwi > PREFIX.pwo'
+        command = 'mpirun -np 8 pw.x -i PREFIX.pwi > PREFIX.pwo'
 
 
         # Prepare the quantum espresso calculator
