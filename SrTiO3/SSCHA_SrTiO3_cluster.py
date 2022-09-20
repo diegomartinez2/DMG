@@ -392,9 +392,10 @@ def main(args):
     plot_dispersion()
     #Gold_thermal_expansion = Thermal_expansion()
     #Gold_thermal_expansion.temperature_cycle()
+    #plot_thermal_expansion()
     #return 0
-    raise SystemExit
-    sys.exit()
+    #raise SystemExit
+    #sys.exit()
 
 if __name__ == '__main__':
     import sys
