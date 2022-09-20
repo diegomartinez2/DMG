@@ -169,7 +169,7 @@ class  Gold_free_energy_ab_initio(object):
                                              kpts = kpts,
                                              koffset = koffset)
 
-    def relax():
+    def relax(self):
 
         TEMPERATURE = 300
         N_CONFIGS = 50
