@@ -49,7 +49,7 @@ import sscha.Cluster
 
 class Send_to_cluster():
     def __init__(self,hosthame = 'ekhi.cfm.ehu.es', pwd = None, account_name = 's1073', n_nodes = 1, time = '02:30:00', n_pool = 1):
-        self.cluster = sscha.Custer.Cluster(hosthame = hostname, pwd = pwd)  # Put the password in pwd if needed
+        self.cluster = sscha.Cluster.Cluster(hosthame = hostname, pwd = pwd)  # Put the password in pwd if needed
 
         # Configure the submission strategy
         #self.cluster.account_name = account_name  # Name of the account on which to subtract nodes
