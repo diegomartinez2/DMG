@@ -45,6 +45,63 @@ import matplotlib.colors as colors
 
 import scipy, scipy.optimize
 
+import sscha.Cluster
+
+class Send_to_cluster():
+    def __init__(self,hosthame = 'daint', pwd = None, account_name = 's1073', n_nodes = 1, time = '02:30:00', n_pool = 1):
+        self.cluster = sscha.Custer.Cluster(hosthame = hostname, pwd = pwd)  # Put the password in pwd if needed
+
+        # Configure the submission strategy
+        self.cluster.account_name = account_name  # Name of the account on which to subtract nodes
+        self.cluster.n_nodes = n_nodes            # Number of nodes requested for each job
+        self.cluster.time = time                  # Total time requested for each job
+        self.cluster.n_pool = n_pool              # Number of pools for the Quantum ESPRESSO calculation
+
+        # Here some custom parameters for the clusters
+        # These are specific for daint, but you can easily figure out those for your machine
+        self.cluster.custom_params["--constraint"] = "gpu"      # Run on the GPU partition
+        self.cluster.custom_params["--ntasks-per-node"] = '2'
+        self.cluster.custom_params["--cpus-per-task"] = '6'
+
+        # Since daint specify the partition with a custom option,
+        # Lets remove the specific partition option of SLURM
+        # Neither we want to specify the total number of cpus (automatically determined by the node)
+        self.cluster.use_partition = False
+        self.cluster.use_cpu = False
+
+
+        # Now, we need to tell daint which modules to load to run quantum espresso
+        # Also this is cluster specific, but very simple to figure it out for you
+        self.cluster.load_modules = """
+        # Load the quantum espresso modules
+        module load daint-gpu
+        module load QuantumESPRESSO
+
+        # Configure the environmental variables of the job
+        export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
+        export NO_STOP_MESSAGE=1
+        export CRAY_CUDA_MPS=1
+
+        ulimit -s unlimited
+        """
+
+        # Now, what is the command to run quantum espresso on the cluster?
+        self.cluster.binary = pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo"
+        # NOTE that NPOOL will be replaced automatically with the cluster.n_pool variable
+
+
+        # Let us setup the working directory (directory in which the jobs runs)
+        self.cluster.workdir =  "$SCRATCH/Gold_NVT_300k"
+        self.cluster.setup_workdir()  # Login to the cluster and creates the working directory if it does not exist
+
+
+        # Last but not least:
+        #  How many jobs do you want to submit simultaneously?
+        self.cluster.batch_size = 10
+
+        #  Now many DFT calculation do you want to run inside each job?
+        self.cluster.job_number = 5
+
 class Gold_free_energy(object):
     def __init__(self):
         """
