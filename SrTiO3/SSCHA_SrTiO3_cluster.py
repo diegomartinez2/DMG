@@ -157,8 +157,9 @@ class Gold_free_energy(object):
         minim.set_minimization_step(0.01)
 
         # Initialize the NVT simulation
+        mi_cluster = Send_to_cluster()
         relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
-                                  max_pop = MAX_ITERATIONS)
+                                  max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster, save_ensemble = True)
 
         # Define the I/O operations
         # To save info about the free energy minimization after each step
@@ -245,8 +246,9 @@ class  Gold_free_energy_ab_initio(object):
         minim.set_minimization_step(0.01)
 
         # Initialize the NVT simulation
+        mi_cluster = Send_to_cluster()
         relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
-                                  max_pop = MAX_ITERATIONS)
+                                  max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster, save_ensemble = True)
 
         # Define the I/O operations
         # To save info about the free energy minimization after each step
@@ -312,9 +314,9 @@ class  Thermal_expansion(object):
             ensemble = sscha.Ensemble.Ensemble(self.dyn, t)
             minim = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
             minim.set_minimization_step(0.1)
-
+            mi_cluster = Send_to_cluster()
             relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = self.N_CONFIGS,
-                                      max_pop = self.MAX_ITERATIONS)
+                                      max_pop = self.MAX_ITERATIONS, cluster = mi_cluster.cluster, save_ensemble = True)
 
             # Setup the I/O
             ioinfo = sscha.Utilities.IOInfo()
