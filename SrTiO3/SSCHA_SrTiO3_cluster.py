@@ -48,7 +48,9 @@ import scipy, scipy.optimize
 import sscha.Cluster
 
 class Send_to_cluster(object):
-    def __init__(self,hostname = 'ekhi.cfm.ehu.es', pwd = None, label = "SrTiO3_", account_name = '', n_nodes = 1, time = '02:30:00', n_pool = 1, workdir = "scratch/diegom/SrTiO3"):
+    def __init__(self,hostname = 'ekhi.cfm.ehu.es', pwd = None,
+           label = "SrTiO3_", account_name = '', n_nodes = 1,
+           time = '12:00:00', n_pool = 1, workdir = "scratch/diegom/SrTiO3"):
         self.cluster = sscha.Cluster.Cluster(hostname = hostname, pwd = pwd)  # Put the password in pwd if needed
 
         # Configure the submission strategy
@@ -131,7 +133,8 @@ class Gold_free_energy(object):
     def harmonic(self):
         # Compute the harmonic phonons
         # NOTE: if the code is run with mpirun, the calculation goes in parallel
-        gold_harmonic_dyn = CC.Phonons.compute_phonons_finite_displacements(self.gold_structure_relaxed, self.calculator, supercell = (4,4,4))
+        gold_harmonic_dyn = CC.Phonons.compute_phonons_finite_displacements(
+              self.gold_structure_relaxed, self.calculator, supercell = (4,4,4))
 
         # Impose the symmetries and
         # save the dynamical matrix in the quantum espresso format
@@ -163,7 +166,8 @@ class Gold_free_energy(object):
         # Initialize the NVT simulation
         mi_cluster = Send_to_cluster()
         relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
-                                  max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster, save_ensemble = True)
+                         max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster,
+                         save_ensemble = True)
 
         # Define the I/O operations
         # To save info about the free energy minimization after each step
@@ -252,7 +256,8 @@ class  Gold_free_energy_ab_initio(object):
         # Initialize the NVT simulation
         mi_cluster = Send_to_cluster()
         relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
-                                  max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster, save_ensemble = True)
+                         max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster,
+                         save_ensemble = True)
 
         # Define the I/O operations
         # To save info about the free energy minimization after each step
@@ -319,8 +324,11 @@ class  Thermal_expansion(object):
             minim = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
             minim.set_minimization_step(0.1)
             mi_cluster = Send_to_cluster()
-            relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = self.N_CONFIGS,
-                                      max_pop = self.MAX_ITERATIONS, cluster = mi_cluster.cluster, save_ensemble = True)
+            relax = sscha.Relax.SSCHA(minim, self.calculator,
+                                        N_configs = self.N_CONFIGS,
+                                        max_pop = self.MAX_ITERATIONS,
+                                        cluster = mi_cluster.cluster,
+                                        save_ensemble = True)
 
             # Setup the I/O
             ioinfo = sscha.Utilities.IOInfo()
@@ -604,7 +612,8 @@ class  SrTiO3_free_energy_ab_initio(object):
         # Initialize the NVT simulation
         mi_cluster = Send_to_cluster()
         relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
-                                  max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster, save_ensemble = True)
+                        max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster,
+                        save_ensemble = True)
 
         # Define the I/O operations
         # To save info about the free energy minimization after each step
