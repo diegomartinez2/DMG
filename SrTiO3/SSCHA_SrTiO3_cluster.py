@@ -48,11 +48,12 @@ import scipy, scipy.optimize
 import sscha.Cluster
 
 class Send_to_cluster():
-    def __init__(self,hostname = 'ekhi.cfm.ehu.es', pwd = None, account_name = 's1073', n_nodes = 1, time = '02:30:00', n_pool = 1):
+    def __init__(self,hostname = 'ekhi.cfm.ehu.es', pwd = None, account_name = 'diegom', n_nodes = 1, time = '02:30:00', n_pool = 1):
         self.cluster = sscha.Cluster.Cluster(hostname = hostname, pwd = pwd)  # Put the password in pwd if needed
 
         # Configure the submission strategy
         #self.cluster.account_name = account_name  # Name of the account on which to subtract nodes
+        self.cluster.use_account = False
         self.cluster.n_nodes = n_nodes            # Number of nodes requested for each job
         self.cluster.time = time                  # Total time requested for each job
         self.cluster.n_pool = n_pool              # Number of pools for the Quantum ESPRESSO calculation
@@ -66,8 +67,8 @@ class Send_to_cluster():
         # Since daint specify the partition with a custom option,
         # Lets remove the specific partition option of SLURM
         # Neither we want to specify the total number of cpus (automatically determined by the node)
-        #self.cluster.use_partition = False
-        #self.cluster.use_cpu = False
+        self.cluster.use_partition = False
+        self.cluster.use_cpu = False
 
 
         # Now, we need to tell daint which modules to load to run quantum espresso
@@ -78,8 +79,8 @@ class Send_to_cluster():
         module load QuantumESPRESSO
 
         # Configure the environmental variables of the job
-        ## export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
-        ## export NO_STOP_MESSAGE=1
+        export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
+        export NO_STOP_MESSAGE=1
         ## export CRAY_CUDA_MPS=1
 
         ## ulimit -s unlimited
