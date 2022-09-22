@@ -48,7 +48,7 @@ import scipy, scipy.optimize
 import sscha.Cluster
 
 class Send_to_cluster(object):
-    def __init__(self,hostname = 'ekhi.cfm.ehu.es', pwd = None, label = "SrTiO3_", account_name = '', n_nodes = 1, time = '02:30:00', n_pool = 1):
+    def __init__(self,hostname = 'ekhi.cfm.ehu.es', pwd = None, label = "SrTiO3_", account_name = '', n_nodes = 1, time = '02:30:00', n_pool = 1, workdir = "scratch/diegom/SrTiO3"):
         self.cluster = sscha.Cluster.Cluster(hostname = hostname, pwd = pwd)  # Put the password in pwd if needed
 
         # Configure the submission strategy
@@ -94,7 +94,8 @@ class Send_to_cluster(object):
 
 
         # Let us setup the working directory (directory in which the jobs runs)
-        self.cluster.workdir =  "$SCRATCH/diegom/Gold_NVT_300k"       # <--- Esto falla, se puede usar "/scratch/[...]" en su lugar
+        #self.cluster.workdir =  "$SCRATCH/diegom/Gold_NVT_300k"       # <--- Esto falla, se puede usar "/scratch/[...]" en su lugar
+        self.cluster.workdir = workdir
         self.cluster.setup_workdir()  # Login to the cluster and creates the working directory if it does not exist
 
 
