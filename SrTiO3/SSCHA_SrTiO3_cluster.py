@@ -47,7 +47,7 @@ import scipy, scipy.optimize
 
 import sscha.Cluster
 
-class Send_to_cluster():
+class Send_to_cluster(object):
     def __init__(self,hostname = 'ekhi.cfm.ehu.es', pwd = None, account_name = 'diegom', n_nodes = 1, time = '02:30:00', n_pool = 1):
         self.cluster = sscha.Cluster.Cluster(hostname = hostname, pwd = pwd)  # Put the password in pwd if needed
 
@@ -80,7 +80,7 @@ class Send_to_cluster():
 
         # Configure the environmental variables of the job
         export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
-        export NO_STOP_MESSAGE=1
+        ## export NO_STOP_MESSAGE=1
         ## export CRAY_CUDA_MPS=1
 
         ## ulimit -s unlimited
