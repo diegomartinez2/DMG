@@ -649,6 +649,9 @@ def main(args):
     Gold_calculation_dft = Gold_free_energy_ab_initio()
     Gold_calculation_dft.relax()
     plot_dispersion()
+    SrTiO3_calculation = SrTiO3_free_energy_ab_initio()
+    SrTiO3_calculation.relax()
+    plot_dispersion()
     #return 0
     #raise SystemExit
     #sys.exit()
