@@ -533,6 +533,100 @@ def plot_thermal_expansion():
     plt.show()
     return 0
 
+class  SrTiO3_free_energy_ab_initio(object):
+    def __init__(self):
+        # Initialize the DFT (Quantum Espresso) calculator for SrTiO3
+        # The input data is a dictionary that encodes the pw.x input file namelist
+        input_data = {
+            'control' : {
+                # Avoid writing wavefunctions on the disk
+                'disk_io' : 'None',
+                # Where to find the pseudopotential
+                #'pseudo_dir' : '.'
+            },
+            'system' : {
+                # Specify the basis set cutoffs
+                'ecutwfc' : 70,   # Cutoff for wavefunction
+                'ecutrho' : 70*10, # Cutoff for the density
+                # Information about smearing (it is a metal)
+                'occupations' : 'fixed', # 'fixed' or 'smearing', smearing for conductors
+                #'smearing' : 'mv',
+                'degauss' : 0.03,
+                'nosym' : '.false.'
+            },
+            'electrons' : {
+                'conv_thr' : 1e-8,
+                'conv_thr' : 1.0000000000d-09,
+                'electron_maxstep' : 80,
+                'mixing_beta' : 4.0000000000d-01
+            }
+        }
+
+        # the pseudopotential for each chemical element
+        # In this case O, Sr and Ti
+        pseudopotentials = {'O' : 'O.pbesol-n-kjpaw_psl.1.0.0.UPF',
+                            'Sr' : 'Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF',
+                            'Ti' : 'Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF'}
+
+        # the kpoints mesh and the offset
+        kpts = (8,8,8)
+        koffset = (0,0,0)
+
+        # Specify the command to call quantum espresso
+        command = 'mpirun -np 8 pw.x -i PREFIX.pwi > PREFIX.pwo'
+
+
+        # Prepare the quantum espresso calculator
+        self.calculator = CC.calculators.Espresso(input_data,
+                                             pseudopotentials,
+                                             command = command,
+                                             kpts = kpts,
+                                             koffset = koffset)
+
+    def relax(self):
+
+        TEMPERATURE = 300
+        N_CONFIGS = 32
+        MAX_ITERATIONS = 20
+        START_DYN = 'harmonic_dyn'
+        NQIRR = 10
+
+        # Let us load the starting dynamical matrix
+        gold_dyn = CC.Phonons.Phonons(START_DYN, NQIRR)
+
+        # Initialize the random ionic ensemble
+        ensemble = sscha.Ensemble.Ensemble(gold_dyn, TEMPERATURE)
+
+        # Initialize the free energy minimizer
+        minim = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
+        minim.set_minimization_step(0.01)
+
+        # Initialize the NVT simulation
+        mi_cluster = Send_to_cluster()
+        relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
+                                  max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster, save_ensemble = True)
+
+        # Define the I/O operations
+        # To save info about the free energy minimization after each step
+        ioinfo = sscha.Utilities.IOInfo()
+        ioinfo.SetupSaving("minim_info")
+        relax.setup_custom_functions(custom_function_post = ioinfo.CFP_SaveAll)
+
+
+        # Run the NVT simulation (save the stress to compute the pressure)
+        relax.relax(get_stress = True, sobol = True)
+
+        # If instead you want to run a NPT simulation, use
+        # The target pressure is given in GPa.
+        #relax.vc_relax(target_press = 0)
+
+        # You can also run a mixed simulation (NVT) but with variable lattice parameters
+        #relax.vc_relax(fix_volume = True)
+
+        # Now we can save the final dynamical matrix
+        # And print in stdout the info about the minimization
+        relax.minim.finalize()
+        relax.minim.dyn.save_qe("sscha_T{}_dyn".format(TEMPERATURE))
 
 
 def main(args):
