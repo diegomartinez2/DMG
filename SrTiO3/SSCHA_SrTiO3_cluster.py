@@ -48,16 +48,18 @@ import scipy, scipy.optimize
 import sscha.Cluster
 
 class Send_to_cluster(object):
-    def __init__(self,hostname = 'ekhi.cfm.ehu.es', pwd = None, account_name = 'diegom', n_nodes = 1, time = '02:30:00', n_pool = 1):
+    def __init__(self,hostname = 'ekhi.cfm.ehu.es', pwd = None, label = "SrTiO3_", account_name = '', n_nodes = 1, time = '02:30:00', n_pool = 1):
         self.cluster = sscha.Cluster.Cluster(hostname = hostname, pwd = pwd)  # Put the password in pwd if needed
 
         # Configure the submission strategy
-        #self.cluster.account_name = account_name  # Name of the account on which to subtract nodes
-        self.cluster.use_account = False
+        if (account_name != ''):
+            self.cluster.account_name = account_name  # Name of the account on which to subtract nodes
+        if (account_name == ''):
+            self.cluster.use_account = False
         self.cluster.n_nodes = n_nodes            # Number of nodes requested for each job
         self.cluster.time = time                  # Total time requested for each job
         self.cluster.n_pool = n_pool              # Number of pools for the Quantum ESPRESSO calculation
-
+        self.cluster.label = label
         # Here some custom parameters for the clusters
         # These are specific for daint, but you can easily figure out those for your machine
         #self.cluster.custom_params["--constraint"] = "gpu"      # Run on the GPU partition
