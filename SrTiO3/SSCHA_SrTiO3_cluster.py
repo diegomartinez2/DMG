@@ -600,10 +600,10 @@ class  SrTiO3_free_energy_ab_initio(object):
         NQIRR = 10
 
         # Let us load the starting dynamical matrix
-        gold_dyn = CC.Phonons.Phonons(START_DYN, NQIRR)
-
+        SrTiO3_dyn = CC.Phonons.Phonons(START_DYN, NQIRR)
+        SrTiO3_dyn.ForcePositiveDefinite()
         # Initialize the random ionic ensemble
-        ensemble = sscha.Ensemble.Ensemble(gold_dyn, TEMPERATURE)
+        ensemble = sscha.Ensemble.Ensemble(SrTiO3_dyn, TEMPERATURE)
 
         # Initialize the free energy minimizer
         minim = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
