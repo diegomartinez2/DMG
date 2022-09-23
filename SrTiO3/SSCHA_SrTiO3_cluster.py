@@ -48,7 +48,7 @@ import scipy, scipy.optimize
 import sscha.Cluster
 
 class Send_to_cluster(object):
-    def __init__(self,hostname = 'ekhi.cfm.ehu.es', pwd = None,
+    def __init__(self,hostname = 'diegom@ekhi.cfm.ehu.es', pwd = None,
            label = "SrTiO3_", account_name = '', n_nodes = 1,
            time = '12:00:00', n_pool = 1, workdir = "scratch/diegom/SrTiO3"):
         self.cluster = sscha.Cluster.Cluster(hostname = hostname, pwd = pwd)  # Put the password in pwd if needed
@@ -238,7 +238,7 @@ class  Gold_free_energy_ab_initio(object):
     def relax(self):
 
         TEMPERATURE = 300
-        N_CONFIGS = 50
+        N_CONFIGS = 32
         MAX_ITERATIONS = 20
         START_DYN = 'start_dyn'
         NQIRR = 13
@@ -295,7 +295,7 @@ class  Thermal_expansion(object):
         self.T_END = 1000
         self.DT = 50
 
-        self.N_CONFIGS = 50
+        self.N_CONFIGS = 32
         self.MAX_ITERATIONS = 10
 
         # Import the gold force field
@@ -602,6 +602,7 @@ class  SrTiO3_free_energy_ab_initio(object):
         # Let us load the starting dynamical matrix
         SrTiO3_dyn = CC.Phonons.Phonons(START_DYN, NQIRR)
         SrTiO3_dyn.ForcePositiveDefinite()
+        SrTiO3_dyn.Symmetrize()
         # Initialize the random ionic ensemble
         ensemble = sscha.Ensemble.Ensemble(SrTiO3_dyn, TEMPERATURE)
 
