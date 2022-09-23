@@ -564,9 +564,9 @@ class  SrTiO3_free_energy_ab_initio(object):
             },
             'electrons' : {
                 'conv_thr' : 1e-8,
-                'conv_thr' : 1.0000000000d-09,
+                'conv_thr' : 1.e-09,
                 'electron_maxstep' : 80,
-                'mixing_beta' : 4.0000000000d-01
+                'mixing_beta' : 4.e-01
             }
         }
 
@@ -610,7 +610,7 @@ class  SrTiO3_free_energy_ab_initio(object):
         minim.set_minimization_step(0.01)
 
         # Initialize the NVT simulation
-        mi_cluster = Send_to_cluster()
+        mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es')
         relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
                         max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster,
                         save_ensemble = True)
