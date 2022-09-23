@@ -49,7 +49,7 @@ import sscha.Cluster
 
 class Send_to_cluster(object):
     def __init__(self,hostname = 'diegom@ekhi.cfm.ehu.es', pwd = None,
-           label = "SrTiO3_", account_name = '', n_nodes = 1,
+           label = "", account_name = '', n_nodes = 1,
            time = '12:00:00', n_pool = 1, workdir = "/scratch/diegom/SrTiO3"):
         self.cluster = sscha.Cluster.Cluster(hostname = hostname, pwd = pwd)  # Put the password in pwd if needed
 
@@ -559,8 +559,7 @@ class  SrTiO3_free_energy_ab_initio(object):
                 # Information about smearing (it is a metal)
                 'occupations' : 'fixed', # 'fixed' or 'smearing', smearing for conductors
                 #'smearing' : 'mv',
-                'degauss' : 0.03,
-                'nosym' : '.false.'
+                'degauss' : 0.03
             },
             'electrons' : {
                 'conv_thr' : 1e-8,
@@ -611,7 +610,7 @@ class  SrTiO3_free_energy_ab_initio(object):
         minim.set_minimization_step(0.01)
 
         # Initialize the NVT simulation
-        mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es')
+        mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es',label = "SrTiO3_", n_pool = 5) #test with 5 pools for QE
         relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
                         max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster,
                         save_ensemble = True)
