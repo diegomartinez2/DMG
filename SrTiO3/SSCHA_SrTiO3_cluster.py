@@ -50,7 +50,7 @@ import sscha.Cluster
 class Send_to_cluster(object):
     def __init__(self,hostname = 'diegom@ekhi.cfm.ehu.es', pwd = None,
            label = "SrTiO3_", account_name = '', n_nodes = 1,
-           time = '12:00:00', n_pool = 1, workdir = "scratch/diegom/SrTiO3"):
+           time = '12:00:00', n_pool = 1, workdir = "/scratch/diegom/SrTiO3"):
         self.cluster = sscha.Cluster.Cluster(hostname = hostname, pwd = pwd)  # Put the password in pwd if needed
 
         # Configure the submission strategy
@@ -200,7 +200,7 @@ class  Gold_free_energy_ab_initio(object):
                 # Avoid writing wavefunctions on the disk
                 'disk_io' : 'None',
                 # Where to find the pseudopotential
-                'pseudo_dir' : '.'
+                #'pseudo_dir' : '.'
             },
             'system' : {
                 # Specify the basis set cutoffs
@@ -367,7 +367,7 @@ class Dft_calculator(object):
                 # Avoid writing wavefunctions on the disk
                 'disk_io' : 'None',
                 # Where to find the pseudopotential
-                'pseudo_dir' : '.'
+                #'pseudo_dir' : '.'
             },
             'system' : {
                 # Specify the basis set cutoffs
