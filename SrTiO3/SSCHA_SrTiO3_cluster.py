@@ -93,6 +93,7 @@ class Send_to_cluster(object):
         # Now, what is the command to run quantum espresso on the cluster?
         self.cluster.binary = "pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo"  #<--- ¿Parece que no hace falta poner mpirun?
         #self.cluster.binary = "mpirun -np %d pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo" % mpi_kernels #<--- ¿Parece que no hace falta poner mpirun?
+        #self.cluster.binary = "mpirun -np {np} pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo".format(np = 8)
         # NOTE that NPOOL will be replaced automatically with the cluster.n_pool variable
 
 
@@ -107,7 +108,7 @@ class Send_to_cluster(object):
         self.cluster.batch_size = 10
 
         #  Now many DFT calculation do you want to run inside each job?
-        self.cluster.job_number = 5
+        self.cluster.job_number = 1 #5 before
 
 class Gold_free_energy(object):
     def __init__(self):
