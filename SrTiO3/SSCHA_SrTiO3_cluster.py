@@ -578,7 +578,7 @@ class  SrTiO3_free_energy_ab_initio(object):
                             'Ti' : 'Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF'}
 
         # the kpoints mesh and the offset
-        kpts = (8,8,8)
+        kpts = (6,6,6)
         koffset = (0,0,0)
 
         # Specify the command to call quantum espresso
