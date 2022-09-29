@@ -556,8 +556,8 @@ class  SrTiO3_free_energy_ab_initio(object):
             },
             'system' : {
                 # Specify the basis set cutoffs
-                'ecutwfc' : 70,   # Cutoff for wavefunction
-                'ecutrho' : 70*10, # Cutoff for the density
+                'ecutwfc' : 70,   # Cutoff for wavefunction from 70
+                'ecutrho' : 70*10, # Cutoff for the density ecutwfc*10
                 # Information about smearing (it is a metal)
                 'occupations' : 'fixed', # 'fixed' or 'smearing', smearing for conductors
                 #'smearing' : 'mv',
