@@ -219,10 +219,10 @@ def Displacent_polarizability_omega_T(omega,epsilon_0,epsilon_inf):
 def dielectric_ha(omega, epsilon_inf, N):
     #electric_charge = 4.803e-10 #Fr (CGS)
     electric_charge = 1.602176462e-19 #C (SI)
-    epsilon=epsilon_inf+4*np.pi*response_function()
+    epsilon=epsilon_inf+4*np.pi*response_function(omega)
     def response_function():
         response1 = -(N/omega) * electric_charge**2
-        response2 = 
+        response2 =
         return response1*response2
 
 
