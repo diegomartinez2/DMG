@@ -91,14 +91,14 @@ class Send_to_cluster(object):
         """
 
         # Now, what is the command to run quantum espresso on the cluster?
-        self.cluster.binary = "pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo"  #<--- ¿Parece que no hace falta poner mpirun?
-        #self.cluster.binary = "mpirun -np %d pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo" % mpi_kernels #<--- ¿Parece que no hace falta poner mpirun?
+        self.cluster.binary = "pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo"  #<--- No need for mpirun??
+        #self.cluster.binary = "mpirun -np %d pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo" % mpi_kernels
         #self.cluster.binary = "mpirun -np {np} pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo".format(np = 8)
         # NOTE that NPOOL will be replaced automatically with the cluster.n_pool variable
 
 
         # Let us setup the working directory (directory in which the jobs runs)
-        #self.cluster.workdir =  "$SCRATCH/diegom/Gold_NVT_300k"       # <--- Esto falla, se puede usar "/scratch/[...]" en su lugar
+        #self.cluster.workdir =  "$SCRATCH/diegom/Gold_NVT_300k"       # <--- IOf this fails just use "/scratch/[...]" instead
         self.cluster.workdir = workdir
         self.cluster.setup_workdir()  # Login to the cluster and creates the working directory if it does not exist
 
