@@ -223,7 +223,7 @@ def dielectric_ha(omega, epsilon_inf, N):
     def response_function():
         response1 = -(N/omega) * electric_charge**2
         for i in range():
-            temp = (Z(a)*Z(b))/np.sqrt(M(a)*M(b))
+            temp = ()(Z(a)*Z(b))/np.sqrt(M(a)*M(b)))*G(a,b,omega,nu)
             response2 += temp
         return response1*response2
 
