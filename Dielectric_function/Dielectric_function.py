@@ -216,7 +216,7 @@ def Displacent_polarizability_omega_T(omega,epsilon_0,epsilon_inf):
     omega_T=np.sqrt(omega*omega*(epsilon_inf+2)/(epsilon_0+2)) # omega_T depends on omega??
     return omega_T
 
-def dielectric_ha(omega, epsilon_inf, N, a, b):
+def dielectric_ha(omega, epsilon_inf, N, a, b, nu):
     """
     Input data:
      omega = Frequency
@@ -224,6 +224,7 @@ def dielectric_ha(omega, epsilon_inf, N, a, b):
      N =
      a = atom a -> M(a) mass of atom a
      b = atom b -> Z(b) atomic number of atom b
+     nu = 
     """
     #electric_charge = 4.803e-10 #Fr (CGS)
     electric_charge = 1.602176462e-19 #C (SI)
