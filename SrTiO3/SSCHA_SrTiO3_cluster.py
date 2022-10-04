@@ -51,9 +51,9 @@ class Send_to_cluster(object):
     def __init__(self,hostname = 'diegom@ekhi.cfm.ehu.es', pwd = None,
            label = 'SrTiO3_', account_name = '', n_nodes = 1, n_cpu = 40,
            time = '00:20:00', n_pool = 20, workdir = '/scratch/diegom/SrTiO3',
-           mpi_cmd=r"srun --mpi=pmi2 -n NPROC"):
-        self.cluster = sscha.Cluster.Cluster(hostname = hostname, pwd = pwd,
-            mpi_cmd = mpi_cmd)  # Put the password in pwd if needed
+           mpi_cmd=r"srun --mpi=pmi2 -n NPROC"):    #note the r"..." means that "..." is literate.
+        self.cluster = sscha.Cluster.Cluster(hostname = hostname, pwd = pwd,  # Put the password in pwd if needed
+            mpi_cmd = mpi_cmd)
 
         # Configure the submission strategy
         if (account_name != ''):
@@ -617,7 +617,7 @@ class  SrTiO3_free_energy_ab_initio(object):
 
         # Initialize the NVT simulation
         mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3_', n_pool = 20,
-           time = '00:20:00', mpi_cmd = 'mpirun -np NPROC' ) #test with 5 pools for QE
+           n_cpu = 40, time = '00:20:00', mpi_cmd = 'mpirun -np NPROC' ) #test with 5 pools for QE
         relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
                         max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster,
                         save_ensemble = True)
