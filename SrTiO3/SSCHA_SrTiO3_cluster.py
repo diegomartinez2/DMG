@@ -100,7 +100,7 @@ class Send_to_cluster(object):
 
 
         # Let us setup the working directory (directory in which the jobs runs)
-        #self.cluster.workdir =  "$SCRATCH/diegom/Gold_NVT_300k"       # <--- IOf this fails just use "/scratch/[...]" instead
+        #self.cluster.workdir =  "$SCRATCH/diegom/Gold_NVT_300k"       # <--- If this fails just use "/scratch/[...]" instead of $SCRATCH/[...]
         self.cluster.workdir = workdir
         self.cluster.setup_workdir()  # Login to the cluster and creates the working directory if it does not exist
 
