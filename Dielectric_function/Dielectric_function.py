@@ -224,18 +224,23 @@ def dielectric_ha(omega, epsilon_inf, N, a, b, nu):
      N =
      a = atom a -> M(a) mass of atom a
      b = atom b -> Z(b) atomic number of atom b
-     nu = 
+     nu =
     """
     #electric_charge = 4.803e-10 #Fr (CGS)
     electric_charge = 1.602176462e-19 #C (SI)
-    epsilon=epsilon_inf+4*np.pi*response_function(omega)
-    def response_function():
-        response1 = -(N/omega) * electric_charge**2
-        for i in range():
-            temp = ()(Z(a)*Z(b))/np.sqrt(M(a)*M(b)))*G(a,b,omega,nu)
-            response2 += temp
-        return response1*response2
 
+    response1 = -(N/omega) * electric_charge**2
+    for i in range():
+        temp = ()(Z(a)*Z(b))/np.sqrt(M(a)*M(b)))*G(a,b,omega,nu)
+        response2 += temp
+    response_function = response1*response2
+
+    epsilon=epsilon_inf+4*np.pi*response_function
+
+def G(a,b,omega,nu):
+    for i in range(mu):
+        G += e(a,mu)*e(b,mu)*(1/2*omega_nu(mu))*((1/(omega-omega_nu(mu)+i*nu))-(1/(omega+omega_nu(mu)+i*nu)))
+    return G
 
 if __name__ == '__main__':
     import numpy as np
