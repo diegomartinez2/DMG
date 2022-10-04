@@ -61,7 +61,8 @@ class Send_to_cluster(object):
         self.cluster.n_nodes = n_nodes            # Number of nodes requested for each job
         self.cluster.time = time                  # Total time requested for each job
         self.cluster.n_pool = n_pool              # Number of pools for the Quantum ESPRESSO calculation
-        self.cluster.label = label
+        self.cluster.label = label                # label, change it if you are going to submit
+                                                  # two different calculations in the same working directory
         # Here some custom parameters for the clusters
         # These are specific for daint, but you can easily figure out those for your machine
         #self.cluster.custom_params["--constraint"] = "gpu"      # Run on the GPU partition
@@ -613,7 +614,7 @@ class  SrTiO3_free_energy_ab_initio(object):
         minim.set_minimization_step(0.01)
 
         # Initialize the NVT simulation
-        mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3_', n_pool = 20, 
+        mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3_', n_pool = 20,
            time = '00:20:00' ) #test with 5 pools for QE
         relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
                         max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster,
