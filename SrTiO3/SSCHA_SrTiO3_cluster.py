@@ -49,8 +49,8 @@ import sscha.Cluster
 
 class Send_to_cluster(object):
     def __init__(self,hostname = 'diegom@ekhi.cfm.ehu.es', pwd = None,
-           label = "", account_name = '', n_nodes = 1,
-           time = '12:00:00', n_pool = 1, workdir = "/scratch/diegom/SrTiO3"):
+           label = 'SrTiO3_', account_name = '', n_nodes = 1, n_cpu = 40,
+           time = '00:20:00', n_pool = 20, workdir = '/scratch/diegom/SrTiO3'):
         self.cluster = sscha.Cluster.Cluster(hostname = hostname, pwd = pwd)  # Put the password in pwd if needed
 
         # Configure the submission strategy
@@ -72,7 +72,8 @@ class Send_to_cluster(object):
         # Lets remove the specific partition option of SLURM
         # Neither we want to specify the total number of cpus (automatically determined by the node)
         self.cluster.use_partition = False
-        self.cluster.use_cpu = False
+        self.cluster.use_cpu = True #False
+        self.cluster.n_cpu = n_cpu
 
 
         # Now, we need to tell daint which modules to load to run quantum espresso
@@ -83,7 +84,7 @@ class Send_to_cluster(object):
         module load QuantumESPRESSO
 
         # Configure the environmental variables of the job
-        export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
+        ##export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
         ## export NO_STOP_MESSAGE=1
         ## export CRAY_CUDA_MPS=1
 
@@ -612,7 +613,8 @@ class  SrTiO3_free_energy_ab_initio(object):
         minim.set_minimization_step(0.01)
 
         # Initialize the NVT simulation
-        mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es',label = "SrTiO3_", n_pool = 5) #test with 5 pools for QE
+        mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3_', n_pool = 20, 
+           time = '00:20:00' ) #test with 5 pools for QE
         relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
                         max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster,
                         save_ensemble = True)
@@ -716,7 +718,7 @@ def main(args):
     plot_dispersion()
     SrTiO3_calculation = SrTiO3_free_energy_ab_initio()
     SrTiO3_calculation.relax()
-    plot_dispersion()
+    plot_dispersion_SrTiO3(PATH = "GX")
     #return 0
     #raise SystemExit
     #sys.exit()
