@@ -112,7 +112,7 @@ class Send_to_cluster(object):
         self.cluster.batch_size = 10
 
         #  Now many DFT calculation do you want to run inside each job?
-        self.cluster.job_number = 1 #5 before
+        self.cluster.job_number = 5 #5 before
 
 class Gold_free_energy(object):
     def __init__(self):
