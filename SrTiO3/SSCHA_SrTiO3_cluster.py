@@ -95,9 +95,7 @@ class Send_to_cluster(object):
         """
 
         # Now, what is the command to run quantum espresso on the cluster?
-        self.cluster.binary = "pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo"  #<--- No need for mpirun??
-        #self.cluster.binary = "mpirun -np %d pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo" % mpi_kernels
-        #self.cluster.binary = "mpirun -np {np} pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo".format(np = 8)
+        self.cluster.binary = "pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo"  #<--- No need for mpirun it's set with mpi_cmd
         # NOTE that NPOOL will be replaced automatically with the cluster.n_pool variable
 
 
