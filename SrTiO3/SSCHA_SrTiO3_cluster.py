@@ -82,16 +82,16 @@ class Send_to_cluster(object):
         # Now, we need to tell daint which modules to load to run quantum espresso
         # Also this is cluster specific, but very simple to figure it out for you
         self.cluster.load_modules = """
-        # Load the quantum espresso modules
-        ## module load daint-gpu
-        module load QuantumESPRESSO
+# Load the quantum espresso modules
+## module load daint-gpu
+module load QuantumESPRESSO
 
-        # Configure the environmental variables of the job
-        ##export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
-        ## export NO_STOP_MESSAGE=1
-        ## export CRAY_CUDA_MPS=1
+# Configure the environmental variables of the job
+##export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
+export NO_STOP_MESSAGE=1
+## export CRAY_CUDA_MPS=1
 
-        ## ulimit -s unlimited
+## ulimit -s unlimited
         """
 
         # Now, what is the command to run quantum espresso on the cluster?
