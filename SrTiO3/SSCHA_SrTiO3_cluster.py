@@ -123,6 +123,8 @@ class  SrTiO3_free_energy_ab_initio(object):
                 'disk_io' : 'None',
                 # Where to find the pseudopotential
                 #'pseudo_dir' : '.'
+                'tstress' : True,
+                'tprnfor' : True
             },
             'system' : {
                 # Specify the basis set cutoffs
