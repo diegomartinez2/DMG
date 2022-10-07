@@ -196,7 +196,7 @@ class  SrTiO3_free_energy_ab_initio(object):
 
 
         # Run the NVT simulation (save the stress to compute the pressure)
-        relax.relax(get_stress = True, sobol = True)
+        relax.relax(get_stress = False, sobol = True)
 
         # If instead you want to run a NPT simulation, use
         # The target pressure is given in GPa.
