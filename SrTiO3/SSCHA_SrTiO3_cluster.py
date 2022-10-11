@@ -74,7 +74,7 @@ class Send_to_cluster(object):
         # Since daint specify the partition with a custom option,
         # Lets remove the specific partition option of SLURM
         # Neither we want to specify the total number of cpus (automatically determined by the node)
-        self.cluster.use_partition = False 
+        self.cluster.use_partition = False
         self.cluster.partition_name = ""
         self.cluster.use_cpu = True #False
         self.cluster.n_cpu = n_cpu
@@ -185,7 +185,7 @@ class  SrTiO3_free_energy_ab_initio(object):
         minim.set_minimization_step(0.01)
 
         # Initialize the NVT simulation
-        mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3_', n_pool = 20,
+        mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3_', n_pool = 20, # n_pool must be a divisor of the k_points example 5x5x5=125 n_pool= 5 or 25 
            n_cpu = 40, time = '00:20:00', mpi_cmd = 'mpirun -np NPROC' ) #test with 5 pools for QE; note reducing the n_pool reduces the memory usage in the k points calculation.
         relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
                         max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster,
