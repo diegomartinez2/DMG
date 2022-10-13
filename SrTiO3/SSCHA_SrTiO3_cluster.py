@@ -151,7 +151,7 @@ class  SrTiO3_free_energy_ab_initio(object):
                             'Ti' : 'Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF'}
 
         # the kpoints mesh and the offset
-        kpts = (6,6,6)
+        kpts = (4,4,4)    #With the supercell the number of k points in effect are multiplied
         koffset = (0,0,0)
 
         # Specify the command to call quantum espresso
@@ -185,7 +185,7 @@ class  SrTiO3_free_energy_ab_initio(object):
         minim.set_minimization_step(0.01)
 
         # Initialize the NVT simulation
-        mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3_', n_pool = 20, # n_pool must be a divisor of the k_points example 5x5x5=125 n_pool= 5 or 25 
+        mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3_', n_pool = 20, # n_pool must be a divisor of the k_points example 5x5x5=125 n_pool= 5 or 25
            n_cpu = 40, time = '00:20:00', mpi_cmd = 'mpirun -np NPROC' ) #test with 5 pools for QE; note reducing the n_pool reduces the memory usage in the k points calculation.
         relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
                         max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster,
