@@ -228,6 +228,8 @@ def dielectric_harmonic(omega, epsilon_inf, N, atom_a, atom_b, nu):
      ---------
      Z() = Born effective charge
      M() = Atomic masses
+     e() =
+     omega_nu =
     """
     #electric_charge = 4.803e-10 #Fr (CGS)
     electric_charge = 1.602176462e-19 #C (SI)
