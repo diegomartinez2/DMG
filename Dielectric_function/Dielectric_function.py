@@ -230,11 +230,12 @@ def dielectric_harmonic(omega, epsilon_inf, N, atom_a, atom_b, nu):
      M() = Atomic masses
      e() =
      omega_nu =
+     Big_omega = 
     """
     #electric_charge = 4.803e-10 #Fr (CGS)
     electric_charge = 1.602176462e-19 #C (SI)
 
-    response1 = -(N/omega) * electric_charge**2
+    response1 = -(N/Big_omega) * electric_charge**2
     for a in range(atom_a):
         for b in range(atom_b):
             temp = ()(Z(a)*Z(b))/np.sqrt(M(a)*M(b)))*G(a,b,omega,nu)
