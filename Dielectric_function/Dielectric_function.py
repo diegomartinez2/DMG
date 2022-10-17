@@ -251,10 +251,10 @@ def G(a,b,omega,nu):
 
 def Dielectric_function_SI(kappa,omega):
     return epsilon_0*np.identity()+1.j*electric_conductivity(kappa,omega)/omega
-    return epsilon_0*np.identity()+epsilon_0*electric_susceptibility(kappa,omega)
+    #return epsilon_0*np.identity()+epsilon_0*electric_susceptibility(kappa,omega)
 def Dielectric_function_G_CGS():
     return np.identity()+4*np.pi()*electric_conductivity(kappa,omega)/omega
-    return np.identity()+4*np.pi()*electric_susceptibility(kappa,omega)
+    #return np.identity()+4*np.pi()*electric_susceptibility(kappa,omega)
 
 
 if __name__ == '__main__':
