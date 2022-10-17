@@ -230,7 +230,7 @@ def dielectric_harmonic(omega, epsilon_inf, N, atom_a, atom_b, nu):
      M() = Atomic masses
      e() =
      omega_nu =
-     Big_omega = 
+     Big_omega =
     """
     #electric_charge = 4.803e-10 #Fr (CGS)
     electric_charge = 1.602176462e-19 #C (SI)
@@ -248,6 +248,14 @@ def G(a,b,omega,nu):
     for mu_index in range(mu):
         G += e(a,mu_index)*e(b,mu_index)*(1/(2*omega_nu(mu_index)))*((1/(omega-omega_nu(mu_index)+1.j*nu))-(1/(omega+omega_nu(mu_index)+1.j*nu)))
     return G
+
+def Dielectric_function_SI(kappa,omega):
+    return epsilon_0*np.identity()+1.j*electric_conductivity(kappa,omega)/omega
+    return epsilon_0*np.identity()+epsilon_0*electric_susceptibility(kappa,omega)
+def Dielectric_function_G_CGS():
+    return np.identity()+4*np.pi()*electric_conductivity(kappa,omega)/omega
+    return np.identity()+4*np.pi()*electric_susceptibility(kappa,omega)
+
 
 if __name__ == '__main__':
     import numpy as np
