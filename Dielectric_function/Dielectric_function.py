@@ -258,9 +258,11 @@ def Dielectric_function_G_CGS():
     #return np.identity()+4*np.pi()*electric_susceptibility(kappa,omega)
 
 def electric_conductivity(kappa,omega):
-    return (1.j*omega/(4*np.pi))*(1-epsilon) #this epsilon is the dielectric function?!!   
+    return (1.j*omega/(4*np.pi))*(1-epsilon) #this epsilon is the dielectric function?!!
 def electric_susceptibility(kappa,omega):
-    return 0
+    for i in range(atoms):
+        sum_polarizability+=polarizability(atom_type(i))
+    return sum_polarizability/(epsilon_0*Delta_V)*E_loc/E #S.I. <- note that the local field E_loc is defined by th dielectric function!!
 
 if __name__ == '__main__':
     import numpy as np
