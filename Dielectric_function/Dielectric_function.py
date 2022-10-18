@@ -257,6 +257,10 @@ def Dielectric_function_G_CGS():
     return np.identity()+4*np.pi()*electric_conductivity(kappa,omega)/omega
     #return np.identity()+4*np.pi()*electric_susceptibility(kappa,omega)
 
+def electric_conductivity(kappa,omega):
+    return (1.j*omega/(4*np.pi))*(1-epsilon) #this epsilon is the dielectric function?!!   
+def electric_susceptibility(kappa,omega):
+    return 0
 
 if __name__ == '__main__':
     import numpy as np
