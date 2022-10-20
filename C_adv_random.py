@@ -104,10 +104,26 @@ def main(args):
     'StreetSecurityMilitia (SSM): ',
     'StreetSecurityMilitia (SSM): ',
     'StreetSecurityMilitia (SSM): ',
-    ''
+    'MEGACORPORACIÓN:',
+    'DETECTIVE/OJO PRIVADO: ',
+    'REPORTERO/PRESENTADOR: ',
+    'MIEMBRO DE UNA BANDA: '
+    ]
+    Tipo_de_mision_list = [
+    'PROTEGER: ',
+    'INTELIGENCIA DE: ',
+    'ANIQUILACIÓN: ',
+    'EL HURTO: ',
+    'RECUPERAR: ',
+    'RESCATAR: ',
+    'COMPRA-VENTA (50/50): ',
+    'CAPTURAR: ',
+    'OCULTAR: ',
+    'PROTEGER: '
     ]
     Trabajo = random.choice(Facilitador_de_mision_list)
-    print (Trabajo)
+    Mision = random.choice(Tipo_de_mision_list)
+    print (Trabajo+' quiere '+Mision)
     return 0
 
 if __name__ == '__main__':
