@@ -224,13 +224,13 @@ def dielectric_harmonic(omega, epsilon_inf, N, atom_a, atom_b, nu):
      N =
      a = atom a -> M(a) mass of atom a
      b = atom b -> Z(b) atomic number of atom b
-     nu =
+     nu = damping constant
      ---------
      Z() = Born effective charge
      M() = Atomic masses
      e() =
-     omega_nu =
-     Big_omega =
+     omega_nu = resonant frequency
+     Big_omega = 
     """
     #electric_charge = 4.803e-10 #Fr (CGS)
     electric_charge = 1.602176462e-19 #C (SI)
