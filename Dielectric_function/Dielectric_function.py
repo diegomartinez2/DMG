@@ -230,7 +230,7 @@ def dielectric_harmonic(omega, epsilon_inf, N, atom_a, atom_b, nu):
      M() = Atomic masses
      e() =
      omega_nu = resonant frequency
-     Big_omega = 
+     Big_omega =
     """
     #electric_charge = 4.803e-10 #Fr (CGS)
     electric_charge = 1.602176462e-19 #C (SI)
@@ -238,13 +238,13 @@ def dielectric_harmonic(omega, epsilon_inf, N, atom_a, atom_b, nu):
     response1 = -(N/Big_omega) * electric_charge**2
     for a in range(atom_a):
         for b in range(atom_b):
-            temp = ()(Z(a)*Z(b))/np.sqrt(M(a)*M(b)))*G(a,b,omega,nu)
+            temp = ()(Z(a)*Z(b))/np.sqrt(M(a)*M(b)))*G(a,b,omega,nu,mu)
             response2 += temp
     response_function = response1*response2
 
     epsilon=epsilon_inf+4*np.pi*response_function
 
-def G(a,b,omega,nu):
+def G(a,b,omega,nu,mu):
     for mu_index in range(mu):
         G += e(a,mu_index)*e(b,mu_index)*(1/(2*omega_nu(mu_index)))*((1/(omega-omega_nu(mu_index)+1.j*nu))-(1/(omega+omega_nu(mu_index)+1.j*nu)))
     return G
