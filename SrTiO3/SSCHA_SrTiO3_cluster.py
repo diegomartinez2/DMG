@@ -47,6 +47,48 @@ import scipy, scipy.optimize
 
 import sscha.Cluster
 
+class Busca_inestabilidades(object):
+    def __init__(self,fichero_ForceFields,fichero_dyn,nqirr):
+
+        # Initialization of the SSCHA matrix
+        self.dyn_sscha = CC.Phonons.Phonons(fichero_dyn, nqirr)
+        self.dyn_sscha.ForcePositiveDefinite()
+
+        # Apply also the ASR and the symmetry group
+        self.dyn_sscha.Symmetrize()
+    def load_dyn(self,Fichero_final_matriz_dinamica,nqirr):
+        # We reload the final result (no need to rerun the sscha minimization)
+        self.dyn_sscha_final = CC.Phonons.Phonons(Fichero_final_matriz_dinamica, nqirr)
+    def ensambla(self,T):
+        # We reset the ensemble
+        self.ensemble = sscha.Ensemble.Ensemble(self.dyn_sscha_final, T0 = T, supercell = self.dyn_sscha_final.GetSupercell())
+
+        # We need a bigger ensemble to properly compute the hessian
+        # Here we will use 10000 configurations
+        self.ensemble.generate(1024, sobol = True, sobol_scramble = False)
+#        self.ensemble.generate(50, sobol = False)
+#        self.ensemble.generate(1000,sobol = True)
+    def calcula1(self):
+        # We now compute forces and energies using the force field calculator
+        self.ensemble.get_energy_forces(self.calculator, compute_stress = False) #test compute_stress = True no puede con este potencial...
+    def hessiano(self,T):
+        #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
+
+        print("Updating the importance sampling...")
+        self.ensemble.update_weights(self.dyn_sscha_final, T)
+
+        print("Computing the free energy hessian...")
+       #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
+        self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = True,
+                                                  get_full_hessian = True,verbose = True) # Full calculus
+        # We can save it
+        self.dyn_hessian.save_qe("hessian")
+
+        w_hessian, pols_hessian = self.dyn_hessian.DiagonalizeSupercell()
+
+        # Print all the frequency converting them into cm-1 (They are in Ry)
+        print("\n".join(["{:16.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in w_hessian]))
+
 class Send_to_cluster(object):
     def __init__(self,hostname = 'diegom@ekhi.cfm.ehu.es', pwd = None,
            label = 'SrTiO3_', account_name = '', n_nodes = 1, n_cpu = 40,
