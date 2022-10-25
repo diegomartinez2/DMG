@@ -207,13 +207,13 @@ class  SrTiO3_free_energy_ab_initio(object):
                                              kpts = kpts,
                                              koffset = koffset)
 
-    def relax(self):
+    def relax(self, TEMPERATURE, N_CONFIGS, NQIRR):
 
-        TEMPERATURE = 300
-        N_CONFIGS = 32
+        # TEMPERATURE = T0
+        # N_CONFIGS = 32
         MAX_ITERATIONS = 20
         START_DYN = 'harmonic_dyn'
-        NQIRR = 10
+        # NQIRR = 10
 
         # Let us load the starting dynamical matrix
         SrTiO3_dyn = CC.Phonons.Phonons(START_DYN, NQIRR)
@@ -320,17 +320,20 @@ def plot_dispersion_SrTiO3(PATH = "GX"):
     return 0
 
 def main(args):
+    TEMPERATURE = 300
+    N_CONFIGS = 32
+    NQIRR = 10
     SrTiO3_calculation = SrTiO3_free_energy_ab_initio()
-    SrTiO3_calculation.relax()
+    SrTiO3_calculation.relax(TEMPERATURE, N_CONFIGS, NQIRR)
     plot_dispersion_SrTiO3(PATH = "GX")
     plot_dispersion_SrTiO3(PATH = "GM")
     plot_dispersion_SrTiO3(PATH = "GR")
-    Inestable = Busca_inestabilidades('sscha_T300_dyn', SrTiO3_calculation.relax.NQIRR)
+    Inestable = Busca_inestabilidades("sscha_T{}_dyn".format(TEMPERATURE), NQIRR)
     Inestable.calculator = SrTiO3_calculation.calculator
-    Inestable.load_dyn('sscha_T300_dyn',SrTiO3_calculation.relax.NQIRR)
-    Inestable.ensambla(300)
+    Inestable.load_dyn("sscha_T{}_dyn".format(TEMPERATURE), NQIRR)
+    Inestable.ensambla(TEMPERATURE)
     Inestable.calcula1()
-    Inestable.hessiano(300)
+    Inestable.hessiano(TEMPERATURE)
     #return 0
     #raise SystemExit
     #sys.exit()
