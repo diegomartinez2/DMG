@@ -48,7 +48,7 @@ import scipy, scipy.optimize
 import sscha.Cluster
 
 class Busca_inestabilidades(object):
-    def __init__(self,fichero_ForceFields,fichero_dyn,nqirr):
+    def __init__(self,fichero_dyn,nqirr):
 
         # Initialization of the SSCHA matrix
         self.dyn_sscha = CC.Phonons.Phonons(fichero_dyn, nqirr)
@@ -256,7 +256,7 @@ class  SrTiO3_free_energy_ab_initio(object):
         relax.minim.dyn.save_qe("sscha_T{}_dyn".format(TEMPERATURE))
 
 def plot_dispersion_SrTiO3(PATH = "GX"):
-    NQIRR = 10
+    NQIRR = SrTiO3_calculation.relax.NQIRR #10
     #CMAP = "Spectral_r"
     #PATH = "GX"
     #PATH = "GM"
@@ -325,6 +325,12 @@ def main(args):
     plot_dispersion_SrTiO3(PATH = "GX")
     plot_dispersion_SrTiO3(PATH = "GM")
     plot_dispersion_SrTiO3(PATH = "GR")
+    Inestable = Busca_inestabilidades('sscha_T300_dyn', SrTiO3_calculation.relax.NQIRR)
+    Inestable.calculator = SrTiO3_calculation.calculator
+    Inestable.load_dyn('sscha_T300_dyn',SrTiO3_calculation.relax.NQIRR)
+    Inestable.ensambla(300)
+    Inestable.calcula1()
+    Inestable.hessiano(300)
     #return 0
     #raise SystemExit
     #sys.exit()
