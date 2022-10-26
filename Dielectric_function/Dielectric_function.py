@@ -292,6 +292,6 @@ class Dielectric_function_RPA_Jellium(object):
         epsilon = 1 + self.k2_FT/(q**2) * (
         0.5*self.k_F/(4*q) * part_1*np.log(part_3) + part_2 *np.log(part_4)
         )
-        return 0
+        return epsilon
     def imaginary_part():
         return 0
