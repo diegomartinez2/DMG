@@ -293,19 +293,23 @@ class Dielectric_function_RPA_Jellium(object):
         0.5*self.k_F/(4*q) * part_1*np.log(part_3) + part_2 *np.log(part_4)
         )
         return epsilon
-    def imaginary_part(self, q, omega, m):
+    def imaginary_part(sel(np.pi/4) * ((self.k2_FT*self.k_F)/q**3) * part_1f, q, omega, m):
+        part_1 = 1-(((omega-((self.hbar*(q**2))/(2*m)))**2)/((q**2)*(self.v_0**2)))
         if (q <= (2*self.k_F)):
             if (0.0 <= omega <= (q*self.v_0-(self.hbar*q**2)/(2*m))):
-                return 0
+                epsilon = (np.pi/2) * (self.k2_FT/self.v_0) * (omega/(q**3))
+                return epsilon
             elif ((q*self.v_0-(self.hbar*q**2)/(2*m)) <= omega <= (q*self.v_0+(self.hbar*q**2)/(2*m))):
-                return 0
+                epsilon = (np.pi/4) * ((self.k2_FT*self.k_F)/q**3) * part_1
+                return epsilon
             else:
                 return 0
         if  (q >= (2*self.k_F)):
             if ((-q*self.v_0+(self.hbar*q**2)/(2*m)) <= omega <= (q*self.v_0+(self.hbar*q**2)/(2*m))):
-                return 0
+                epsilon = (np.pi/4) * ((self.k2_FT*self.k_F)/q**3) * part_1
+                return epsilon
             else:
                 return 0
         else:
-            raise RuntimeError("Something bad happened")     
+            raise RuntimeError("Something bad happened")
         return 0
