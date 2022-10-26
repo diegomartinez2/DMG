@@ -275,3 +275,24 @@ if __name__ == '__main__':
     print silver.k
     silver.plot_epsilon()
     silver.plot_n_k()
+
+class Dielectric_function_RPA_Jellium(object):
+    def __init__(self,m):
+        self.e =
+        self.k_F =
+        self.hbar =
+        k2_FT = (4.0*m*(e**2)*k_F)/(np.pi*(hbar**2))  #Fermi-Thomas wavenumber
+        v_0 = (hbar*k_F)/m #Fermi velocity
+        return 0
+    def real_part(self, q, omega):
+        part_1 = 1-(omega-((hbar*(q**2))/(2*m)))**2/()(q**2)*(v_0**2))
+        part_2 = 1-(omega+((hbar*(q**2))/(2*m)))**2/()(q**2)*(v_0**2))
+        part_3 = (omega-q*v_0-(hbar*q/(2*m)))/(omega+q*v_0-(hbar*q/(2*m)))
+        part_4 = (omega+q*v_0+(hbar*q/(2*m)))/(omega-q*v_0+(hbar*q/(2*m)))
+        epsilon = 1 + k2_FT/(q**2) * (
+        0.5*k_F/(4*q) * part_1*np.log() 
+
+        )
+        return 0
+    def imaginary_part():
+        return 0
