@@ -36,9 +36,7 @@ class NombredeClase(object):
         super(NombredeClase, self).__init__()
         self.arg = arg
 class Dielectric_function_RPA_Jellium(object):
-    """Dielectric Function Random Path Approximation with Jellium models
-
-     """
+    """Dielectric Function Random Path Approximation with Jellium model"""
     def __init__(self,m):
         self.e = 1.602176462e-19 #C (SI)
         self.k_F = 4.5437957e14 #J-1 (SI) 1.1663787(6)e-5 GeV-2
