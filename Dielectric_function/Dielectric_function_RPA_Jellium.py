@@ -79,8 +79,39 @@ class Dielectric_function_RPA_Jellium(object):
 # ----------
 # Funciones
 # ----------
-def NombredeFuncion(arg):
-    pass
+def Plasma_frequency_SI(n_e):
+    """
+    Plasma frequency for 'cold' electrons approximation.
+    e = 1.602176462e-19  C             (Electronic Charge)
+    epsilon_0 = 8.854187813e-12  F⋅m−1 (Permittivity of Vaccum)
+    m_e = 9.10938188e-31  Kg           (Mass of Electron)
+    """
+    omega_p_SI = np.sqrt((n_e*1.602176462e-19)/(9.10938188e-31*8.854187813e-12))
+    return omega_p_SI
+
+def Resonant_frequency_SI(n_e):
+    """
+    Look if this is OK
+    """
+    omega_0 = 1/(2*np.pi*np.sqrt((4*np.pi*(n_e*1.602176462e-19)**2)/(3*9.10938188e-31))
+    return omega_0
+
+def dielectric_as1(omega,w_vector):
+    epsilon_as = w_vector*w_vector*8.988e16     #c in SI m/s c**2 in J/Kg
+    epsilon_as = epsilon_as/omega
+    return epsilon_as
+
+def dielectric_as2(omega,epsilon_inf,epsilon_0,omega_T):
+    epsilon_as = epsilon_inf + (epsilon_inf-epsilon_0)/((omega**2/omega_T**2)-1)
+    return epsilon_as2
+
+def lydanne_sachs_teller(omega_T,epsilon_0,epsilon_inf):
+    Omega_l = np.sqrt(omega_T*omega_T*(epsilon_0/epsilon_inf))
+    return Omega_l
+
+def Displacent_polarizability_omega_T(omega,epsilon_0,epsilon_inf):
+    omega_T=np.sqrt(omega*omega*(epsilon_inf+2)/(epsilon_0+2)) # omega_T depends on omega??
+    return omega_T
 
 def dielectric_harmonic(omega, epsilon_inf, N, atom_a, atom_b, nu):
     """
