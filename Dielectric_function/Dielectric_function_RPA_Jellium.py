@@ -24,6 +24,7 @@
 # ---------------------------
 # Importación de los módulos
 # ---------------------------
+import numpy as np
 
 # -------
 # Clases
@@ -80,7 +81,7 @@ class Dielectric_function_RPA_Jellium(object):
 # ----------
 def NombredeFuncion(arg):
     pass
-    
+
 def dielectric_harmonic(omega, epsilon_inf, N, atom_a, atom_b, nu):
     """
     Input data:
