@@ -141,7 +141,7 @@ class LD():
 
             epsilon_L = np.zeros(len(omega_light), dtype=complex)
             for i, w in enumerate(omega_light):
-                for k in xrange(1, order):
+                for k in range(1, order):
                     epsilon_L[i] += (f[k] * omega_p ** 2) / (omega[k] ** 2 - w ** 2 - 1j * Gamma[k] * w)
 
             self.epsilon = epsilon_D + epsilon_L
@@ -238,7 +238,7 @@ def dielectric_harmonic(omega, epsilon_inf, N, atom_a, atom_b, nu):
     response1 = -(N/Big_omega) * electric_charge**2
     for a in range(atom_a):
         for b in range(atom_b):
-            temp = ()(Z(a)*Z(b))/np.sqrt(M(a)*M(b)))*G(a,b,omega,nu,mu)
+            temp = ((Z(a)*Z(b))/np.sqrt(M(a)*M(b)))*G(a,b,omega,nu,mu)
             response2 += temp
     response_function = response1*response2
 
@@ -269,10 +269,10 @@ if __name__ == '__main__':
 
     lamda = np.linspace(200E-9, 2000E-9, 300)  # Creates a wavelength vector from 300 nm to 1000 nm of length 100
     silver = LD(lamda, material='Ag', model='LD')
-    print silver.epsilon_real
-    print silver.epsilon_imag
-    print silver.n
-    print silver.k
+    print (silver.epsilon_real)
+    print (silver.epsilon_imag)
+    print (silver.n)
+    print (silver.k)
     silver.plot_epsilon()
     silver.plot_n_k()
 
