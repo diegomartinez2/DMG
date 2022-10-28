@@ -91,7 +91,7 @@ def Resonant_frequency_SI(n_e):
     """
     Look if this is OK
     """
-    omega_0 = 1/(2*np.pi*np.sqrt((4*np.pi*(n_e*1.602176462e-19)**2)/(3*9.10938188e-31))
+    omega_0 = 1/(2*np.pi*np.sqrt((4*np.pi*(n_e*1.602176462e-19)**2)/(3*9.10938188e-31)))
     return omega_0
 
 def dielectric_as1(omega,w_vector):
@@ -133,7 +133,7 @@ def dielectric_harmonic(omega, epsilon_inf, N, atom_a, atom_b, nu):
     response1 = -(N/Big_omega) * electric_charge**2
     for a in range(atom_a):
         for b in range(atom_b):
-            temp = ()(Z(a)*Z(b))/np.sqrt(M(a)*M(b)))*G(a,b,omega,nu,mu)
+            temp = ((Z(a)*Z(b))/np.sqrt(M(a)*M(b)))*G(a,b,omega,nu,mu)
             response2 += temp
     response_function = response1*response2
 
