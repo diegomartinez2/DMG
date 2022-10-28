@@ -196,7 +196,7 @@ def Resonant_frequency_SI(n_e):
     """
     Look if this is OK
     """
-    omega_0 = 1/(2*np.pi*np.sqrt((4*np.pi*(n_e*1.602176462e-19)**2)/(3*9.10938188e-31))
+    omega_0 = 1/(2*np.pi*np.sqrt((4*np.pi*(n_e*1.602176462e-19)**2)/(3*9.10938188e-31)))
     return omega_0
 
 def dielectric_as1(omega,w_vector):
