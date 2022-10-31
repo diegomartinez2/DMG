@@ -245,6 +245,8 @@ def dielectric_harmonic(omega, epsilon_inf, N, atom_a, atom_b, nu):
     epsilon=epsilon_inf+4*np.pi*response_function
 
 def G(a,b,omega,nu,mu):
+    """
+    """
     for mu_index in range(mu):
         G += e(a,mu_index)*e(b,mu_index)*(1/(2*omega_nu(mu_index)))*((1/(omega-omega_nu(mu_index)+1.j*nu))-(1/(omega+omega_nu(mu_index)+1.j*nu)))
     return G
