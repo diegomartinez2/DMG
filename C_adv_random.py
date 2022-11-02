@@ -166,6 +166,18 @@ def main(args):
     'OCULTAR: ',
     'PROTEGER: '
     ]
+    Objetivo_list = [
+    'LOCALIZACIÓN: ',
+    'PERSONA: ',
+    'MEGACORPORACONES: ',
+    'INTELIGENCIA: ',
+    'OBJETO: ',
+    'DATOS (50/50 DL O ELIMINADOS): ',
+    'TECNOLOGÍA AVANZADA: ',
+    'CAMPAÑA POLÍTICA: ',
+    'FIESTAS: ',
+    'EXTRAÑO: '
+    ]
     Trabajo = random.choice(Facilitador_de_mision_list)
     Mision = random.choice(Tipo_de_mision_list)
     print (Trabajo+' quiere '+Mision)
