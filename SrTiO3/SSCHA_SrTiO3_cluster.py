@@ -328,6 +328,7 @@ def main(args):
     plot_dispersion_SrTiO3(PATH = "GX")
     plot_dispersion_SrTiO3(PATH = "GM")
     plot_dispersion_SrTiO3(PATH = "GR")
+    plot_dispersion_SrTiO3()
     Inestable = Busca_inestabilidades("sscha_T{}_dyn".format(TEMPERATURE), NQIRR)
     Inestable.calculator = SrTiO3_calculation.calculator
     Inestable.load_dyn("sscha_T{}_dyn".format(TEMPERATURE), NQIRR)
