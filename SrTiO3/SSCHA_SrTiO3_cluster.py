@@ -255,7 +255,7 @@ class  SrTiO3_free_energy_ab_initio(object):
         relax.minim.finalize()
         relax.minim.dyn.save_qe("sscha_T{}_dyn".format(TEMPERATURE))
 
-def plot_dispersion_SrTiO3(PATH = "GX"):
+def plot_dispersion_SrTiO3(PATH = "GXMGRX"):
     NQIRR = SrTiO3_calculation.relax.NQIRR #10
     #CMAP = "Spectral_r"
     #PATH = "GX"
