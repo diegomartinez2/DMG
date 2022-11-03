@@ -50,14 +50,14 @@ import sscha.Cluster
 class Hessiano_Vs_Temperatura(object):
     def __init__(self,T0,temperatura_i,fichero_ForceFields,configuraciones,sobol,sobol_scatter):
         # Load the dynamical matrix for the force field
-        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
+        # self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
 
         # Setup the forcefield with the correct parameters
-        self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
-        self.ff_calculator.type_cal = "pbtex"
-        self.ff_calculator.p3 = 0.036475
-        self.ff_calculator.p4 = -0.022
-        self.ff_calculator.p4x = -0.014
+        # self.calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
+        # self.ff_calculator.type_cal = "pbtex"
+        # self.ff_calculator.p3 = 0.036475
+        # self.ff_calculator.p4 = -0.022
+        # self.ff_calculator.p4x = -0.014
         # Define the temperatures, from 50 to 300 K, 6 temperatures
         #self.temperatures = np.linspace(50, 300, 6)
         self.temperatures = temperatura_i
@@ -93,7 +93,7 @@ class Hessiano_Vs_Temperatura(object):
 
             # Prepare the relaxer (through many population)
 #            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)
-            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=self.configuraciones, max_pop=20)
+            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.calculator, N_configs=self.configuraciones, max_pop=20)
 
             # Relax
             self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
@@ -111,7 +111,7 @@ class Hessiano_Vs_Temperatura(object):
             self.ensemble.generate(self.configuraciones, sobol = self.sobol, sobol_scramble = self.sobol_scatter)
 #            self.ensemble.generate(100, sobol = False)
 #            self.ensemble.generate(5000,sobol = True)
-            self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #gets the energies and forces from ff_calculator
+            self.ensemble.get_energy_forces(self.calculator, compute_stress = False) #gets the energies and forces from ff_calculator
 
             #update weights!!! es posible que este sea el motivo por el que no obtengo buenos resultados?
             self.ensemble.update_weights(self.relax.minim.dyn, Temperatura)
