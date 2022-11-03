@@ -91,7 +91,7 @@ class Busca_inestabilidades(object):
 
 class Send_to_cluster(object):
     def __init__(self,hostname = 'diegom@ekhi.cfm.ehu.es', pwd = None,
-           label = 'SrTiO3_', account_name = '', n_nodes = 1, n_cpu = 40,
+           label = 'SrTiO3', account_name = '', n_nodes = 1, n_cpu = 40,
            time = '00:20:00', n_pool = 20, workdir = '/scratch/diegom/SrTiO3',
            mpi_cmd=r"srun --mpi=pmi2 -n NPROC"):    #note the r"..." means that "..." is literate.
         self.cluster = sscha.Cluster.Cluster(hostname = hostname, pwd = pwd,  # Put the password in pwd if needed
