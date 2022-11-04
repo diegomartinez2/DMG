@@ -48,7 +48,7 @@ import scipy, scipy.optimize
 import sscha.Cluster
 
 class Hessiano_Vs_Temperatura(object):
-    def __init__(self,T0,temperatura_i,fichero_ForceFields,configuraciones,sobol,sobol_scatter):
+    def __init__(self,T0,temperatura_i,configuraciones,sobol,sobol_scatter):
         # Load the dynamical matrix for the force field
         # self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
 
@@ -460,6 +460,10 @@ def main(args):
     Inestable.ensambla(TEMPERATURE)
     Inestable.calcula1()
     Inestable.hessiano(TEMPERATURE)
+    HessianoVsTemperatura = Hessiano_Vs_Temperatura(T0,temperatura_i,configuraciones,sobol,sobol_scatter)
+    HessianoVsTemperatura.calculator = SrTiO3_calculation.calculator
+    HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,nqirr)
+    HessianoVsTemperatura.dibuja()
     #return 0
     #raise SystemExit
     #sys.exit()
