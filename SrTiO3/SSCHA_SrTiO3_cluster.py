@@ -460,7 +460,9 @@ def main(args):
     Inestable.ensambla(TEMPERATURE)
     Inestable.calcula1()
     Inestable.hessiano(TEMPERATURE)
-    HessianoVsTemperatura = Hessiano_Vs_Temperatura(T0,temperatura_i,configuraciones,sobol,sobol_scatter)
+    Temperatura_i = np.linspace(50, 300, 6)
+    Fichero_final_matriz_dinamica = "final_sscha_T{}_".format(int(Temperatura_i[-1]))
+    HessianoVsTemperatura = Hessiano_Vs_Temperatura(TEMPERATURE,temperatura_i,configuraciones,sobol,sobol_scatter)
     HessianoVsTemperatura.calculator = SrTiO3_calculation.calculator
     HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,nqirr)
     HessianoVsTemperatura.dibuja()
