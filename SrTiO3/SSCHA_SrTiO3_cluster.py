@@ -366,7 +366,7 @@ class  SrTiO3_free_energy_ab_initio(object):
 
 
         # Run the NVT simulation (save the stress to compute the pressure)
-        relax.relax(get_stress = False, sobol = True, sobol_scatter = 0.0)
+        relax.relax(get_stress = True, sobol = True, sobol_scatter = 0.0)
 
         # If instead you want to run a NPT simulation, use
         # The target pressure is given in GPa.
@@ -462,7 +462,7 @@ def main(args):
     Inestable.hessiano(TEMPERATURE)
     Temperatura_i = np.linspace(50, 300, 6)
     Fichero_final_matriz_dinamica = "final_sscha_T{}_".format(int(Temperatura_i[-1]))
-    HessianoVsTemperatura = Hessiano_Vs_Temperatura(TEMPERATURE,temperatura_i,configuraciones,sobol,sobol_scatter)
+    HessianoVsTemperatura = Hessiano_Vs_Temperatura(TEMPERATURE,temperatura_i,configuraciones = N_CONFIGS,sobol = True,sobol_scatter = 0.0)
     HessianoVsTemperatura.calculator = SrTiO3_calculation.calculator
     HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,nqirr)
     HessianoVsTemperatura.dibuja()
