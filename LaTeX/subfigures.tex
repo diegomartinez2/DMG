@@ -1,0 +1,35 @@
+% Create subfigures in LaTeX
+\documentclass{article}
+
+\usepackage{subcaption}
+\usepackage{graphicx}
+
+\begin{document}
+
+\begin{figure}
+
+\centering
+\begin{subfigure}{0.4\textwidth}
+    \includegraphics[width=\textwidth]{example-image}
+    \caption{Firts subfigure.}
+    \label{fig:first}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.4\textwidth}
+    \includegraphics[width=\textwidth]{example-image}
+    \caption{Second subfigure.}
+    \label{fig:second}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.4\textwidth}
+    \includegraphics[width=\textwidth]{example-image}
+    \caption{Third subfigure.}
+    \label{fig:third}
+\end{subfigure}
+
+\caption{Creating subfigures in \LaTeX.}
+\label{fig:figures}
+
+\end{figure}
+
+\end{document}
