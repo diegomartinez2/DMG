@@ -62,8 +62,8 @@ class Hessiano_Vs_Temperatura(object):
             },
             'system' : {
                 # Specify the basis set cutoffs
-                'ecutwfc' : 60,   # Cutoff for wavefunction from 70
-                'ecutrho' : 60*10, # Cutoff for the density ecutwfc*10
+                'ecutwfc' : 50,   # Cutoff for wavefunction from 70
+                'ecutrho' : 50*10, # Cutoff for the density ecutwfc*10
                 # Information about smearing (it is a metal)
                 'occupations' : 'fixed', # 'fixed' or 'smearing', smearing for conductors
                 #'smearing' : 'mv',
@@ -132,7 +132,7 @@ class Hessiano_Vs_Temperatura(object):
             self.minim.enforce_sum_rule = True  # Lorenzo's solution to the error
 
             # Prepare the relaxer (through many population)
-           mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3_', n_pool = 20, # n_pool must be a divisor of the k_points example 5x5x5=125 n_pool= 5 or 25
+            mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3_', n_pool = 20, # n_pool must be a divisor of the k_points example 5x5x5=125 n_pool= 5 or 25
                 n_cpu = 40, time = '00:20:00', mpi_cmd = 'mpirun -np NPROC' ) #test with 5 pools for QE; note reducing the n_pool reduces the memory usage in the k points calculation.
 
             self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.calculator,
@@ -232,8 +232,8 @@ class Busca_inestabilidades(object):
             },
             'system' : {
                 # Specify the basis set cutoffs
-                'ecutwfc' : 60,   # Cutoff for wavefunction from 70
-                'ecutrho' : 60*10, # Cutoff for the density ecutwfc*10
+                'ecutwfc' : 50,   # Cutoff for wavefunction from 70
+                'ecutrho' : 50*10, # Cutoff for the density ecutwfc*10
                 # Information about smearing (it is a metal)
                 'occupations' : 'fixed', # 'fixed' or 'smearing', smearing for conductors
                 #'smearing' : 'mv',
@@ -287,9 +287,9 @@ class Busca_inestabilidades(object):
 
         # We need a bigger ensemble to properly compute the hessian
         # Here we will use 10000 configurations
-#        self.ensemble.generate(1024, sobol = True, sobol_scramble = False)
+        self.ensemble.generate(1024, sobol = True, sobol_scatter = 0.0)
 #        self.ensemble.generate(50, sobol = False)
-        self.ensemble.generate(1000,sobol = True)
+#        self.ensemble.generate(1000,sobol = True)
     def calcula1(self):
         # We now compute forces and energies using the force field calculator
         self.ensemble.get_energy_forces(self.calculator, compute_stress = False) #test compute_stress = True no puede con este potencial...
@@ -393,8 +393,8 @@ class  SrTiO3_free_energy_ab_initio(object):
             },
             'system' : {
                 # Specify the basis set cutoffs
-                'ecutwfc' : 60,   # Cutoff for wavefunction from 70
-                'ecutrho' : 60*10, # Cutoff for the density ecutwfc*10
+                'ecutwfc' : 50,   # Cutoff for wavefunction from 70
+                'ecutrho' : 50*10, # Cutoff for the density ecutwfc*10
                 # Information about smearing (it is a metal)
                 'occupations' : 'fixed', # 'fixed' or 'smearing', smearing for conductors
                 #'smearing' : 'mv',
@@ -477,8 +477,8 @@ class  SrTiO3_free_energy_ab_initio(object):
         relax.minim.finalize()
         relax.minim.dyn.save_qe("sscha_T{}_dyn".format(TEMPERATURE))
 
-def plot_dispersion_SrTiO3(PATH = "GXMGRX"):
-    NQIRR = SrTiO3_calculation.relax.NQIRR #10
+def plot_dispersion_SrTiO3(PATH = "GXMGRX", NQIRR = 4):
+    #NQIRR = SrTiO3_calculation.relax.NQIRR #10
     #CMAP = "Spectral_r"
     #PATH = "GX"
     #PATH = "GM"
@@ -543,27 +543,25 @@ def plot_dispersion_SrTiO3(PATH = "GXMGRX"):
 
 def main(args):
     TEMPERATURE = 300
-    N_CONFIGS = 32
-    NQIRR = 10
-    SrTiO3_calculation = SrTiO3_free_energy_ab_initio()
-    SrTiO3_calculation.relax(TEMPERATURE, N_CONFIGS, NQIRR)
-    plot_dispersion_SrTiO3(PATH = "GX")
-    plot_dispersion_SrTiO3(PATH = "GM")
-    plot_dispersion_SrTiO3(PATH = "GR")
-    plot_dispersion_SrTiO3()
-    Inestable = Busca_inestabilidades("sscha_T{}_dyn".format(TEMPERATURE), NQIRR)
-    Inestable.calculator = SrTiO3_calculation.calculator
-    Inestable.load_dyn("sscha_T{}_dyn".format(TEMPERATURE), NQIRR)
-    Inestable.ensambla(TEMPERATURE)
-    Inestable.calcula1()
-    Inestable.hessiano(TEMPERATURE)
+    N_CONFIGS = 128
+    NQIRR = 4
+#    SrTiO3_calculation = SrTiO3_free_energy_ab_initio()
+#    SrTiO3_calculation.relax(TEMPERATURE, N_CONFIGS, NQIRR)
+#    plot_dispersion_SrTiO3(PATH = "GX", NQIRR = NQIRR)
+#    plot_dispersion_SrTiO3(PATH = "GM", NQIRR = NQIRR)
+#    plot_dispersion_SrTiO3(PATH = "GR", NQIRR = NQIRR)
+#    plot_dispersion_SrTiO3(NQIRR = NQIRR)
+##    Inestable = Busca_inestabilidades("sscha_T{}_dyn".format(TEMPERATURE), NQIRR)
+##    Inestable.load_dyn("sscha_T{}_dyn".format(TEMPERATURE), NQIRR)
+##    Inestable.ensambla(TEMPERATURE)
+##    Inestable.calcula1()
+##    Inestable.hessiano(TEMPERATURE)
     Temperatura_i = np.linspace(50, 300, 6)
-    Fichero_final_matriz_dinamica = "final_sscha_T{}_".format(int(Temperatura_i[-1]))
-    HessianoVsTemperatura = Hessiano_Vs_Temperatura(TEMPERATURE,temperatura_i,configuraciones = N_CONFIGS,sobol = True,sobol_scatter = 0.0)
-    HessianoVsTemperatura.calculator = SrTiO3_calculation.calculator
-    HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,nqirr)
+    Fichero_final_matriz_dinamica = "sscha_T{}_dyn".format(int(Temperatura_i[-1]))
+    HessianoVsTemperatura = Hessiano_Vs_Temperatura(TEMPERATURE,Temperatura_i,configuraciones = N_CONFIGS,sobol = True,sobol_scatter = 0.0)
+    HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,NQIRR)
     HessianoVsTemperatura.dibuja()
-    #return 0
+    return 0
     #raise SystemExit
     #sys.exit()
 
