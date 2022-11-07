@@ -49,15 +49,54 @@ import sscha.Cluster
 
 class Hessiano_Vs_Temperatura(object):
     def __init__(self,T0,temperatura_i,configuraciones,sobol,sobol_scatter):
-        # Load the dynamical matrix for the force field
-        # self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
+        # Initialize the DFT (Quantum Espresso) calculator for SrTiO3
+        # The input data is a dictionary that encodes the pw.x input file namelist
+        input_data = {
+            'control' : {
+                # Avoid writing wavefunctions on the disk
+                'disk_io' : 'None',
+                # Where to find the pseudopotential
+                #'pseudo_dir' : '.'
+                'tstress' : True,
+                'tprnfor' : True
+            },
+            'system' : {
+                # Specify the basis set cutoffs
+                'ecutwfc' : 60,   # Cutoff for wavefunction from 70
+                'ecutrho' : 60*10, # Cutoff for the density ecutwfc*10
+                # Information about smearing (it is a metal)
+                'occupations' : 'fixed', # 'fixed' or 'smearing', smearing for conductors
+                #'smearing' : 'mv',
+                'degauss' : 0.03
+            },
+            'electrons' : {
+                'conv_thr' : 1e-8,
+                'conv_thr' : 1.e-09,
+                'electron_maxstep' : 80,
+                'mixing_beta' : 4.e-01
+            }
+        }
 
-        # Setup the forcefield with the correct parameters
-        # self.calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
-        # self.ff_calculator.type_cal = "pbtex"
-        # self.ff_calculator.p3 = 0.036475
-        # self.ff_calculator.p4 = -0.022
-        # self.ff_calculator.p4x = -0.014
+        # the pseudopotential for each chemical element
+        # In this case O, Sr and Ti
+        pseudopotentials = {'O' : 'O.pbesol-n-kjpaw_psl.1.0.0.UPF',
+                            'Sr' : 'Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF',
+                            'Ti' : 'Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF'}
+
+        # the kpoints mesh and the offset
+        kpts = (4,4,4)    #With the supercell the number of k points in effect are multiplied
+        koffset = (0,0,0)
+
+        # Specify the command to call quantum espresso
+        command = 'mpirun -np 8 pw.x -i PREFIX.pwi > PREFIX.pwo'
+
+
+        # Prepare the quantum espresso calculator
+        self.calculator = CC.calculators.Espresso(input_data,
+                                             pseudopotentials,
+                                             command = command,
+                                             kpts = kpts,
+                                             koffset = koffset)
         # Define the temperatures, from 50 to 300 K, 6 temperatures
         #self.temperatures = np.linspace(50, 300, 6)
         self.temperatures = temperatura_i
@@ -174,7 +213,54 @@ class Hessiano_Vs_Temperatura(object):
 
 class Busca_inestabilidades(object):
     def __init__(self,fichero_dyn,nqirr):
+        # Initialize the DFT (Quantum Espresso) calculator for SrTiO3
+        # The input data is a dictionary that encodes the pw.x input file namelist
+        input_data = {
+            'control' : {
+                # Avoid writing wavefunctions on the disk
+                'disk_io' : 'None',
+                # Where to find the pseudopotential
+                #'pseudo_dir' : '.'
+                'tstress' : True,
+                'tprnfor' : True
+            },
+            'system' : {
+                # Specify the basis set cutoffs
+                'ecutwfc' : 60,   # Cutoff for wavefunction from 70
+                'ecutrho' : 60*10, # Cutoff for the density ecutwfc*10
+                # Information about smearing (it is a metal)
+                'occupations' : 'fixed', # 'fixed' or 'smearing', smearing for conductors
+                #'smearing' : 'mv',
+                'degauss' : 0.03
+            },
+            'electrons' : {
+                'conv_thr' : 1e-8,
+                'conv_thr' : 1.e-09,
+                'electron_maxstep' : 80,
+                'mixing_beta' : 4.e-01
+            }
+        }
 
+        # the pseudopotential for each chemical element
+        # In this case O, Sr and Ti
+        pseudopotentials = {'O' : 'O.pbesol-n-kjpaw_psl.1.0.0.UPF',
+                            'Sr' : 'Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF',
+                            'Ti' : 'Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF'}
+
+        # the kpoints mesh and the offset
+        kpts = (4,4,4)    #With the supercell the number of k points in effect are multiplied
+        koffset = (0,0,0)
+
+        # Specify the command to call quantum espresso
+        command = 'mpirun -np 8 pw.x -i PREFIX.pwi > PREFIX.pwo'
+
+
+        # Prepare the quantum espresso calculator
+        self.calculator = CC.calculators.Espresso(input_data,
+                                             pseudopotentials,
+                                             command = command,
+                                             kpts = kpts,
+                                             koffset = koffset)
         # Initialization of the SSCHA matrix
         self.dyn_sscha = CC.Phonons.Phonons(fichero_dyn, nqirr)
         self.dyn_sscha.ForcePositiveDefinite()
