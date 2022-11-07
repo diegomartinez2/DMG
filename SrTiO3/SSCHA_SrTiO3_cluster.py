@@ -111,6 +111,7 @@ class Hessiano_Vs_Temperatura(object):
         self.sobol_scatter = sobol_scatter
 
     def ciclo_T(self,Fichero_final_matriz_dinamica,nqirr):
+        MAX_ITERATIONS = 20
         for Temperatura in self.temperatures:
             # Load the starting dynamical matrix
             self.dyn = CC.Phonons.Phonons(Fichero_final_matriz_dinamica.format(int(self.t_old)), nqirr)
@@ -131,8 +132,13 @@ class Hessiano_Vs_Temperatura(object):
             self.minim.enforce_sum_rule = True  # Lorenzo's solution to the error
 
             # Prepare the relaxer (through many population)
-#            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)
-            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.calculator, N_configs=self.configuraciones, max_pop=20)
+           mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3_', n_pool = 20, # n_pool must be a divisor of the k_points example 5x5x5=125 n_pool= 5 or 25
+                n_cpu = 40, time = '00:20:00', mpi_cmd = 'mpirun -np NPROC' ) #test with 5 pools for QE; note reducing the n_pool reduces the memory usage in the k points calculation.
+
+            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.calculator,
+                             N_configs=self.configuraciones, max_pop = MAX_ITERATIONS,
+                             cluster = mi_cluster.cluster)
+        # Initialize the NVT simulation
 
             # Relax
             self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
@@ -281,9 +287,9 @@ class Busca_inestabilidades(object):
 
         # We need a bigger ensemble to properly compute the hessian
         # Here we will use 10000 configurations
-        self.ensemble.generate(1024, sobol = True, sobol_scramble = False)
+#        self.ensemble.generate(1024, sobol = True, sobol_scramble = False)
 #        self.ensemble.generate(50, sobol = False)
-#        self.ensemble.generate(1000,sobol = True)
+        self.ensemble.generate(1000,sobol = True)
     def calcula1(self):
         # We now compute forces and energies using the force field calculator
         self.ensemble.get_energy_forces(self.calculator, compute_stress = False) #test compute_stress = True no puede con este potencial...
