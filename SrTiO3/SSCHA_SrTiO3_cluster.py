@@ -44,7 +44,7 @@ import matplotlib.cm as cm
 import matplotlib.colors as colors
 
 import scipy, scipy.optimize
-
+import spglib
 import sscha.Cluster
 
 class Hessiano_Vs_Temperatura(object):
