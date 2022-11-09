@@ -156,7 +156,7 @@ class Hessiano_Vs_Temperatura(object):
             self.ensemble.generate(self.configuraciones, sobol = self.sobol, sobol_scramble = self.sobol_scatter)
 #            self.ensemble.generate(100, sobol = False)
 #            self.ensemble.generate(5000,sobol = True)
-            self.ensemble.get_energy_forces(self.calculator, compute_stress = False) #gets the energies and forces from ff_calculator
+            self.ensemble.get_energy_forces(self.calculator, compute_stress = True) #gets the energies and forces from ff_calculator
 
             #update weights!!! es posible que este sea el motivo por el que no obtengo buenos resultados?
             self.ensemble.update_weights(self.relax.minim.dyn, Temperatura)
@@ -216,100 +216,6 @@ class Hessiano_Vs_Temperatura(object):
         plt.tight_layout()
         plt.savefig('{}_Temp_Omeg.png'.format(self.configuraciones))
         #plt.show()
-
-class Busca_inestabilidades(object):
-    def __init__(self,fichero_dyn,nqirr):
-        # Initialize the DFT (Quantum Espresso) calculator for SrTiO3
-        # The input data is a dictionary that encodes the pw.x input file namelist
-        input_data = {
-            'control' : {
-                # Avoid writing wavefunctions on the disk
-                'disk_io' : 'None',
-                # Where to find the pseudopotential
-                #'pseudo_dir' : './pseudo'
-                'tstress' : True,
-                'tprnfor' : True
-            },
-            'system' : {
-                # Specify the basis set cutoffs
-                'ecutwfc' : 50,   # Cutoff for wavefunction from 70
-                'ecutrho' : 50*10, # Cutoff for the density ecutwfc*10
-                # Information about smearing (it is a metal)
-                'occupations' : 'fixed', # 'fixed' or 'smearing', smearing for conductors
-                #'smearing' : 'mv',
-                'degauss' : 0.03
-            },
-            'electrons' : {
-                'conv_thr' : 1e-8,
-                'conv_thr' : 1.e-09,
-                'electron_maxstep' : 80,
-                'mixing_beta' : 4.e-01
-            }
-        }
-
-        # the pseudopotential for each chemical element
-        # In this case O, Sr and Ti
-        pseudopotentials = {'O' : 'O.pbesol-n-kjpaw_psl.1.0.0.UPF',
-                            'Sr' : 'Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF',
-                            'Ti' : 'Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF'}
-
-        # the kpoints mesh and the offset
-        kpts = (4,4,4)    #With the supercell the number of k points in effect are multiplied
-        koffset = (0,0,0)
-
-        # Specify the command to call quantum espresso
-        command = 'mpirun -np 8 pw.x -i PREFIX.pwi > PREFIX.pwo'
-
-
-        # Prepare the quantum espresso calculator
-        self.calculator = CC.calculators.Espresso(input_data,
-                                             pseudopotentials,
-                                             command = command,
-                                             kpts = kpts,
-                                             koffset = koffset)
-        #self.mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3_', n_pool = 20, # n_pool must be a divisor of the k_points example 5x5x5=125 n_pool= 5 or 25
-        #   n_cpu = 40, time = '00:20:00', mpi_cmd = 'mpirun -np NPROC' ) #test with 5 pools for QE; note reducing the n_pool reduces the memory usage in the k points calculation.
-        #relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
-        #                max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster,
-        #                save_ensemble = True)
-        # Initialization of the SSCHA matrix
-        self.dyn_sscha = CC.Phonons.Phonons(fichero_dyn, nqirr)
-        self.dyn_sscha.ForcePositiveDefinite()
-
-        # Apply also the ASR and the symmetry group
-        self.dyn_sscha.Symmetrize()
-    def load_dyn(self,Fichero_final_matriz_dinamica,nqirr):
-        # We reload the final result (no need to rerun the sscha minimization)
-        self.dyn_sscha_final = CC.Phonons.Phonons(Fichero_final_matriz_dinamica, nqirr)
-    def ensambla(self,T):
-        # We reset the ensemble
-        self.ensemble = sscha.Ensemble.Ensemble(self.dyn_sscha_final, T0 = T, supercell = self.dyn_sscha_final.GetSupercell())
-
-        # We need a bigger ensemble to properly compute the hessian
-        # Here we will use 10000 configurations
-        self.ensemble.generate(1024, sobol = True, sobol_scatter = 0.0)
-#        self.ensemble.generate(50, sobol = False)
-#        self.ensemble.generate(1000,sobol = True)
-    def calcula1(self):
-        # We now compute forces and energies using the force field calculator
-        self.ensemble.get_energy_forces(self.calculator, compute_stress = False) #test compute_stress = True no puede con este potencial...
-    def hessiano(self,T):
-        #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
-
-        print("Updating the importance sampling...")
-        self.ensemble.update_weights(self.dyn_sscha_final, T)
-
-        print("Computing the free energy hessian...")
-       #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
-        self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = True,
-                                                  get_full_hessian = True,verbose = True) # Full calculus
-        # We can save it
-        self.dyn_hessian.save_qe("hessian")
-
-        w_hessian, pols_hessian = self.dyn_hessian.DiagonalizeSupercell()
-
-        # Print all the frequency converting them into cm-1 (They are in Ry)
-        print("\n".join(["{:16.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in w_hessian]))
 
 class Send_to_cluster(object):
     def __init__(self,hostname = 'diegom@ekhi.cfm.ehu.es', pwd = None,
@@ -545,17 +451,13 @@ def main(args):
     TEMPERATURE = 300
     N_CONFIGS = 128
     NQIRR = 4
-#    SrTiO3_calculation = SrTiO3_free_energy_ab_initio()
-#    SrTiO3_calculation.relax(TEMPERATURE, N_CONFIGS, NQIRR)
-#    plot_dispersion_SrTiO3(PATH = "GX", NQIRR = NQIRR)
-#    plot_dispersion_SrTiO3(PATH = "GM", NQIRR = NQIRR)
-#    plot_dispersion_SrTiO3(PATH = "GR", NQIRR = NQIRR)
-#    plot_dispersion_SrTiO3(NQIRR = NQIRR)
-##    Inestable = Busca_inestabilidades("sscha_T{}_dyn".format(TEMPERATURE), NQIRR)
-##    Inestable.load_dyn("sscha_T{}_dyn".format(TEMPERATURE), NQIRR)
-##    Inestable.ensambla(TEMPERATURE)
-##    Inestable.calcula1()
-##    Inestable.hessiano(TEMPERATURE)
+    SrTiO3_calculation = SrTiO3_free_energy_ab_initio()
+    SrTiO3_calculation.relax(TEMPERATURE, N_CONFIGS, NQIRR)
+    plot_dispersion_SrTiO3(PATH = "GX", NQIRR = NQIRR)
+    plot_dispersion_SrTiO3(PATH = "GM", NQIRR = NQIRR)
+    plot_dispersion_SrTiO3(PATH = "GR", NQIRR = NQIRR)
+    plot_dispersion_SrTiO3(NQIRR = NQIRR)
+
     Temperatura_i = np.linspace(50, 300, 6)
     Fichero_final_matriz_dinamica = "sscha_T{}_dyn".format(int(Temperatura_i[-1]))
     HessianoVsTemperatura = Hessiano_Vs_Temperatura(TEMPERATURE,Temperatura_i,configuraciones = N_CONFIGS,sobol = True,sobol_scatter = 0.0)
