@@ -141,7 +141,7 @@ class Hessiano_Vs_Temperatura(object):
         # Initialize the NVT simulation
 
             # Relax
-            self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
+            self.relax.relax(sobol = self.sobol, sobol_scatter = self.sobol_scatter)
 #            self.relax.relax(sobol = False)
 
             # Save the dynamical matrix
