@@ -336,12 +336,12 @@ class  SrTiO3_free_energy_ab_initio(object):
                                              koffset = koffset)
 
     def relax(self, TEMPERATURE, N_CONFIGS, NQIRR):
-
+        # NQIRR = 10
         # TEMPERATURE = T0
         # N_CONFIGS = 32
         MAX_ITERATIONS = 20
         START_DYN = 'harmonic_dyn'
-        # NQIRR = 10
+
 
         # Let us load the starting dynamical matrix
         SrTiO3_dyn = CC.Phonons.Phonons(START_DYN, NQIRR)
@@ -384,7 +384,7 @@ class  SrTiO3_free_energy_ab_initio(object):
         relax.minim.dyn.save_qe("sscha_T{}_dyn".format(TEMPERATURE))
 
 def plot_dispersion_SrTiO3(PATH = "GXMGRX", NQIRR = 4):
-    #NQIRR = SrTiO3_calculation.relax.NQIRR #10
+
     #CMAP = "Spectral_r"
     #PATH = "GX"
     #PATH = "GM"
@@ -464,8 +464,6 @@ def main(args):
     HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,NQIRR)
     HessianoVsTemperatura.dibuja()
     return 0
-    #raise SystemExit
-    #sys.exit()
 
 if __name__ == '__main__':
     import sys
