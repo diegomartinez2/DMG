@@ -383,7 +383,7 @@ class  SrTiO3_free_energy_ab_initio(object):
         relax.minim.finalize()
         relax.minim.dyn.save_qe("sscha_T{}_dyn".format(TEMPERATURE))
 
-def plot_dispersion_SrTiO3(PATH = "GXMGRX", NQIRR = 4):
+def plot_dispersion_SrTiO3(PATH = "GXMGRX", NQIRR = 4, Temperatura = 300):
 
     #CMAP = "Spectral_r"
     #PATH = "GX"
@@ -399,7 +399,7 @@ def plot_dispersion_SrTiO3(PATH = "GXMGRX", NQIRR = 4):
 
     # Load the harmonic and sscha phonons
     harmonic_dyn = CC.Phonons.Phonons('harmonic_dyn', NQIRR)
-    sscha_dyn = CC.Phonons.Phonons('sscha_T300_dyn', NQIRR)
+    sscha_dyn = CC.Phonons.Phonons('sscha_T{}_dyn'.format(Temperatura), NQIRR)
 
     # Get the band path
     qpath, data = CC.Methods.get_bandpath(harmonic_dyn.structure.unit_cell,
@@ -453,10 +453,10 @@ def main(args):
     NQIRR = 4
     SrTiO3_calculation = SrTiO3_free_energy_ab_initio()
     SrTiO3_calculation.relax(TEMPERATURE, N_CONFIGS, NQIRR)
-    plot_dispersion_SrTiO3(PATH = "GX", NQIRR = NQIRR)
-    plot_dispersion_SrTiO3(PATH = "GM", NQIRR = NQIRR)
-    plot_dispersion_SrTiO3(PATH = "GR", NQIRR = NQIRR)
-    plot_dispersion_SrTiO3(NQIRR = NQIRR)
+    plot_dispersion_SrTiO3(PATH = "GX", NQIRR = NQIRR, Temperatura = TEMPERATURE)
+    plot_dispersion_SrTiO3(PATH = "GM", NQIRR = NQIRR, Temperatura = TEMPERATURE)
+    plot_dispersion_SrTiO3(PATH = "GR", NQIRR = NQIRR, Temperatura = TEMPERATURE)
+    plot_dispersion_SrTiO3(NQIRR = NQIRR, Temperatura = TEMPERATURE)
 
     Temperatura_i = np.linspace(50, 300, 6)
     Fichero_final_matriz_dinamica = "sscha_T{}_dyn".format(int(Temperatura_i[-1]))
