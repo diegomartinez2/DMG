@@ -23,7 +23,10 @@ dyn_hessian.save_qe("free_energy_hessian")
 
 w_hessian, pols_hessian = dyn_hessian.DiagonalizeSupercell()
     # Discard the acoustic modes
-acoustic_modes = CC.Methods.get_translations(pols_hessian, superstructure.get_masses_array())
+ss = dyn_hessian.structure.generate_supercell(dyn_hessian.GetSupercell())
+
+acoustic_modes = CC.Methods.get_translations(pols_hessian, ss.get_masses_array())
+
 w_hessian = w_hessian[~acoustic_modes]
 ##lowest_hessian_mode.append(np.min(w_hessian) * CC.Units.RY_TO_CM) # Convert from Ry to cm-1
 # Print all the frequency converting them into cm-1 (They are in Ry)
