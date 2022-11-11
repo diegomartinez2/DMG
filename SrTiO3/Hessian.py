@@ -20,3 +20,8 @@ dyn_hessian = ensemble.get_free_energy_hessian()
 
 # We can save the free energy hessian as a dynamical matrix in quantum espresso format
 dyn_hessian.save_qe("free_energy_hessian")
+
+w_hessian, pols_hessian = dyn_hessian.DiagonalizeSupercell()
+
+# Print all the frequency converting them into cm-1 (They are in Ry)
+print("\n".join(["{:16.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in w_hessian]))

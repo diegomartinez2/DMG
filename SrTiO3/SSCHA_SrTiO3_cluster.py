@@ -156,12 +156,14 @@ class Hessiano_Vs_Temperatura(object):
             self.ensemble.generate(self.configuraciones, sobol = self.sobol, sobol_scramble = self.sobol_scatter)
 #            self.ensemble.generate(100, sobol = False)
 #            self.ensemble.generate(5000,sobol = True)
-            self.ensemble.get_energy_forces(self.calculator, compute_stress = True) #gets the energies and forces from ff_calculator
+            self.ensemble.get_energy_forces(self.calculator, compute_stress = False) #gets the energies and forces from calculator
 
             #update weights!!! es posible que este sea el motivo por el que no obtengo buenos resultados?
             self.ensemble.update_weights(self.relax.minim.dyn, Temperatura)
             # Get the free energy hessian
             dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) #free energy hessian as in Bianco paper 2017
+            # dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = True,
+            #                             get_full_hessian = True,verbose = True) # Full calculus
             dyn_hessian.save_qe("hessian_T{}_".format(int(Temperatura)))
 
             # Get the lowest frequencies for the sscha and the free energy hessian
