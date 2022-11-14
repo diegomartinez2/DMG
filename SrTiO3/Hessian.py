@@ -5,8 +5,9 @@ import sscha, sscha.Ensemble
 # We load the SSCHA dynamical matrix for the PbTe (the one after convergence)
 #dyn_sscha = CC.Phonons.Phonons("dyn_sscha", nqirr = 4)
 dyn_sscha = CC.Phonons.Phonons("sscha_T300_dyn", nqirr = 4)
+dyn_sscha2 = CC.Phonons.Phonons("dyn_pop4_", nqirr = 4) # <- la de la ultima poblacion
 # Now we load the ensemble
-ensemble = sscha.Ensemble.Ensemble(dyn_sscha, T0 = 300, supercell=dyn_sscha.GetSupercell())
+ensemble = sscha.Ensemble.Ensemble(dyn_sscha2, T0 = 300, supercell=dyn_sscha.GetSupercell()) #<- la de la ultima poblacion??? 
 #ensemble.load("data_ensemble_final", N = 1024, population = 5)
 ensemble.generate(1000,sobol = True)
 # If the SSCHA matrix was not the one used to compute the ensemble
