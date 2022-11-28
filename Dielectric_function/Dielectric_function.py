@@ -288,7 +288,7 @@ class Dielectric_function_RPA_Jellium(object):
         return 0
     def real_part(self, q, omega, m):
         part_1 = 1-(((omega-((self.hbar*(q**2))/(2*m)))**2)/((q**2)*(self.v_0**2)))
-        part_2 = 1-(omega+((self.hbar*(q**2))/(2*m)))**2/()(q**2)*(self.v_0**2))
+        part_2 = 1-(((omega+((self.hbar*(q**2))/(2*m)))**2/()(q**2)*(self.v_0**2)))
         part_3 = (omega-q*v_0-(self.hbar*q/(2*m)))/(omega+q*self.v_0-(slef.hbar*q/(2*m)))
         part_4 = (omega+q*v_0+(self.hbar*q/(2*m)))/(omega-q*self.v_0+(slef.hbar*q/(2*m)))
         epsilon = 1 + self.k2_FT/(q**2) * (
