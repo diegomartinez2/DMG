@@ -226,7 +226,16 @@ def main(args):
     'CAPTURAR: Traficante callejero',
     'CAPTURAR: Satélite en órbita',
     'CAPTURAR: Ciberfriki',
-    'OCULTAR: ',
+    'OCULTAR: Información privilegiada',
+    'OCULTAR: Jefe anarquista',
+    'OCULTAR: Reportero en problemas',
+    'OCULTAR: Mercancías ilegales',
+    'OCULTAR: Vehículo',
+    'OCULTAR: Localización de los escáners de la milicia',
+    'OCULTAR: Tu propia cibernética',
+    'OCULTAR: Niños que se planea capturar para trabajar en centrales eléctricas',
+    'OCULTAR: Una I.A. que a traicionado a una megacorporación',
+    'OCULTAR: ¡Tú mismo!',
     'PROTEGER: '
     ]
     Objetivo_list = [
