@@ -283,8 +283,11 @@ def main(args):
     'PERSONAL MEGACORPORATIVO: ',
     'RAROS: '
     ]
-    Localizacion_list =[
-    
+    Localizacion_list = [
+
+    ]
+    Antagonistas_list = [
+
     ]
     Trabajo = random.choice(Facilitador_de_mision_list)
     Mision = random.choice(Tipo_de_mision_list)
