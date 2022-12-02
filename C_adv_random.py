@@ -236,7 +236,16 @@ def main(args):
     'OCULTAR: Niños que se planea capturar para trabajar en centrales eléctricas',
     'OCULTAR: Una I.A. que a traicionado a una megacorporación',
     'OCULTAR: ¡Tú mismo!',
-    'PROTEGER: '
+    'PROTEGER: Tu propio bloque',
+    'PROTEGER: Reportero en una misión arriesgada',
+    'PROTEGER: Anarquista que quiere atentar contra una megacorporación',
+    'PROTEGER: Esquina privada de matones',
+    'PROTEGER: Contrabandista que trafica para los pobres',
+    'PROTEGER: Hacker pirateando archivos de una megacorporación',
+    'PROTEGER: Planta de energía objetivo de anarquistas',
+    'PROTEGER: Gente de la milicia',
+    'PROTEGER: Raro animal vivo',
+    'PROTEGER: Satélite en órbita terrestre. Quieren destruirlo para que no emita publicidad anticorporativa.'
     ]
     Objetivo_list = [
     'LOCALIZACIÓN: ',
