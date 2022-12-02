@@ -259,6 +259,33 @@ def main(args):
     'FIESTAS: ',
     'EXTRAÑO: '
     ]
+    En_posesion_de_list = [
+    'DESCONOCIDO: ',
+    'ROBADO: ',
+    'MEGACORPORACIÓN: ',
+    'PANDILLA: ',
+    'SEGURO: ',
+    'COMÚN: ',
+    Facilitador_de_mision_list,
+    Profesiones_list,
+    Antagonistas_list,
+    'EL PROPIO DONANTE DE MISIÓN'
+    ]
+    Profesiones_list = [
+    'GUERRERO CALLEJERO: ',
+    'ROCKSTAR: ',
+    'GUANTE BLANCO: ',
+    'MERCENARIO: ',
+    'PERIODISTA: ',
+    'PROFESIONALES INFORMÁTICOS: ',
+    'OPERARIOS: ',
+    'BAJOS FONDOS: ',
+    'PERSONAL MEGACORPORATIVO: ',
+    'RAROS: '
+    ]
+    Localizacion_list =[
+    
+    ]
     Trabajo = random.choice(Facilitador_de_mision_list)
     Mision = random.choice(Tipo_de_mision_list)
     print (Trabajo+' quiere '+Mision)
