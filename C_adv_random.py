@@ -289,6 +289,12 @@ def main(args):
     Antagonistas_list = [
 
     ]
+    Premios_list = [
+
+    ]
+    Evento_Aleatorio_list = [
+    
+    ]
     Trabajo = random.choice(Facilitador_de_mision_list)
     Mision = random.choice(Tipo_de_mision_list)
     print (Trabajo+' quiere '+Mision)
