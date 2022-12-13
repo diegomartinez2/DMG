@@ -248,8 +248,26 @@ def main(args):
     'PROTEGER: Satélite en órbita terrestre. Quieren destruirlo para que no emita publicidad anticorporativa.'
     ]
     Objetivo_list = [
-    'LOCALIZACIÓN: ',
-    'PERSONA: ',
+    'LOCALIZACIÓN: 'Localizacion_list,
+    'LOCALIZACIÓN: 'Localizacion_list,
+    'LOCALIZACIÓN: 'Localizacion_list,
+    'LOCALIZACIÓN: 'Localizacion_list,
+    'LOCALIZACIÓN: 'Localizacion_list,
+    'LOCALIZACIÓN: 'Localizacion_list,
+    'LOCALIZACIÓN: 'Localizacion_list,
+    'LOCALIZACIÓN: 'Localizacion_list,
+    'LOCALIZACIÓN: 'Localizacion_list,
+    'LOCALIZACIÓN: 'Localizacion_list,
+    'PERSONA: 'Facilitador_de_mision_list,
+    'PERSONA: 'Facilitador_de_mision_list,
+    'PERSONA: 'Facilitador_de_mision_list,
+    'PERSONA: 'Profesiones_list,
+    'PERSONA: 'Profesiones_list,
+    'PERSONA: 'Profesiones_list,
+    'PERSONA: 'Antagonistas_list,
+    'PERSONA: 'Antagonistas_list,
+    'PERSONA: 'Antagonistas_list,
+    'PERSONA: 'dos_objetivos,
     'MEGACORPORACONES: ',
     'INTELIGENCIA: ',
     'OBJETO: ',
@@ -293,7 +311,7 @@ def main(args):
 
     ]
     Evento_Aleatorio_list = [
-    
+
     ]
     Trabajo = random.choice(Facilitador_de_mision_list)
     Mision = random.choice(Tipo_de_mision_list)
