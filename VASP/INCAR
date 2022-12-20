@@ -5,11 +5,11 @@ NCORE = 4
 #ISYM = 1
 ISTART = 0 #new job: 0-new 1-cont 2-samecut
 ICHARG = 2 #charge densities: 1-file CHGCAR 2-atom 10-const
-ENCUT  = 500
-PREC = A
-LREAL = A
+ENCUT  = 500 #cutoff used throughout all calculations: = 300??
+PREC = A #precission: minimum = Normal
+LREAL = A #real space projection yes / no: = .FALSE.  or Auto
 ALGO = N #algorithm
-ISMEAR = 0 #part. occupancies
+ISMEAR = 0 #part. occupancies. method to determine partial occupancies: = 0 or 1 or -5
 SIGMA = 0.02 #broadening in eV
 #ADDGRID = .TRUE.
 #====== Electronic Relaxation ======
