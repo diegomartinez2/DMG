@@ -3,7 +3,7 @@ SYSTEM = sl1924
 #====== Startparameter for this run ======
 NCORE = 4
 #ISYM = 1
-ISTART = 0 #new job
+ISTART = 0 #new job: 0-new 1-cont 2-samecut
 ICHARG = 2 #charge densities: 1-file CHGCAR 2-atom 10-const
 ENCUT  = 500
 PREC = A
