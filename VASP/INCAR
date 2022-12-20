@@ -1,3 +1,5 @@
+SYSTEM = sl1924
+
 #====== Startparameter for this run ======
 NCORE = 4
 #ISYM = 1
