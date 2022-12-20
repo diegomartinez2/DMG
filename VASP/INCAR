@@ -1,0 +1,68 @@
+#====== Startparameter for this run ======
+NCORE = 4
+#ISYM = 1
+ISTART = 0 #new job
+ICHARG = 2 #charge densities: 1-file CHGCAR 2-atom 10-const
+ENCUT  = 500
+PREC = A
+LREAL = A
+ALGO = N #algorithm
+ISMEAR = 0 #part. occupancies
+SIGMA = 0.02 #broadening in eV
+#ADDGRID = .TRUE.
+#====== Electronic Relaxation ======
+EDIFF = 1E-5
+NELM = 600 #nr. of electronic steps
+AMIX = 0.2
+BMIX = 0.0001 # almost zero, but 0 will crash some versions
+AMIX MAG = 0.8
+BMIX MAG = 0.0001 # almost zero, but 0 will crash some versions
+#====== Ionic Relaxation ======
+EDIFFG = -0.01
+POTIM = 0.35 #time-step for ion-motion (fs)
+NSW = 500
+IBRION = 2 #ionic relaxation: 0-MD 1-quasi-New 2-conjugate-gradient(CG)
+ISIF = 3 #calculate stress and determine what to relax
+#====== spin polarized calculation ======
+#ISPIN= 2 # (2-yes 1-no)
+#MAGMOM #initial mag moment/atom
+#====== SOC calculation ======
+#LSORBIT = .TRUE.
+#LNONCOLLINEAR = F #non collinear calculations
+#LMAXMIX = 4 # for d elements increase LMAXMIX to 4, f: LMAXMIX = 6 !
+#SAXIS = x y z # direction of the magnetic field
+#NBANDS = 2 * number of bands of collinear run
+#GGA_COMPAT = .FALSE. # apply spherical cutoff on gradient field
+#====== vdW setting ======
+#------ DFT-TS ------
+#IVDW= 2
+#VDW_RADIUS = 50.0 #cutoff radius (A) for pair interactions
+#VDW_S6 = 1.00 #global scaling factor s6
+#VDW_SR = 0.94 #scaling factor sR
+#VDW_D = 20.0 #damping parameter d
+#LVDW_EWALD = .TRUE.
+#------ DFT-D3 ------
+#IVDW= 11 # 11 Grimme; 12 Becke-Jonson damping
+#------ vdw-DF2 ------
+#GGA = ML
+#LUSE_VDW = .T.
+#Zab_vdw = -1.8867
+#AGGAC = 0.0000
+
+#====== DOS ======
+#NBANDS= 246
+#EMIN= -10
+#EMAX= 10
+#NEDOS= 800
+#====== Dipole corrections ======
+#LMONO  = F # monopole corrections only (constant potential shift)
+#LDIPOL = F # correct potential (dipole corrections)
+#IDIPOL = 0 #1-x, 2-y, 3-z, 4-all directions
+#EPSILON= 1.0000000 #bulk dielectric constant
+#====== OUTPUT CONTROL ======
+LCHARG = .FALSE. # write CHGCAR
+LWAVE = .FALSE. # write WAVECAR
+#LVTOT = .FALSE. # write LOCPOT, total local potential
+#LVHAR = .FALSE. # write LOCPOT, Hartree potential only
+#LELF = .FALSE. # write electronic localiz. function (ELF)
+LORBIT = 11 #not read RWIGS line in INCAR and create PROOUT
