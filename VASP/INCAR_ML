@@ -7,6 +7,6 @@ ISIF   = 3        ! update positions, cell shape and volume
 
 ! machine learning
 ML_LMLFF  = T
-ML_ISTART = 2
+ML_ISTART = 2     ! use the ML_FF to calculate the forces (=1 or 2 to crate force fields)
 
 RANDOM_SEED =         688344966                0                0
