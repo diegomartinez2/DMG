@@ -1,0 +1,12 @@
+SYSTEM = Si16
+
+! ionic relaxation
+IBRION = 2        ! ionic relaxation (conjugate gradient algorithm)
+NSW    = 1        ! no of ionic steps
+ISIF   = 3        ! update positions, cell shape and volume
+
+! machine learning
+ML_LMLFF  = T
+ML_ISTART = 2
+
+RANDOM_SEED =         688344966                0                0
