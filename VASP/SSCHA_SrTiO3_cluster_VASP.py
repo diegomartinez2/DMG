@@ -47,177 +47,6 @@ import scipy, scipy.optimize
 import spglib
 import sscha.Cluster
 
-class Hessiano_Vs_Temperatura(object):
-    def __init__(self,T0,temperatura_i,configuraciones,sobol,sobol_scatter):
-        # Define the temperatures, from 50 to 300 K, 6 temperatures
-        #self.temperatures = np.linspace(50, 300, 6)
-        # Initialize the DFT (Quantum Espresso) calculator for SrTiO3
-        # The input data is a dictionary that encodes the pw.x input file namelist
-        input_data = {
-            'control' : {
-                # Avoid writing wavefunctions on the disk
-                'disk_io' : 'None',
-                # Where to find the pseudopotential
-                #'pseudo_dir' : '.'
-                'tstress' : True,
-                'tprnfor' : True
-            },
-            'system' : {
-                # Specify the basis set cutoffs
-                'ecutwfc' : 50,   # Cutoff for wavefunction from 70
-                'ecutrho' : 50*10, # Cutoff for the density ecutwfc*10
-                # Information about smearing (it is a metal)
-                'occupations' : 'fixed', # 'fixed' or 'smearing', smearing for conductors
-                #'smearing' : 'mv',
-                #'degauss' : 0.03
-            },
-            'electrons' : {
-                'conv_thr' : 1e-8,
-                'conv_thr' : 1.e-09,
-                'electron_maxstep' : 80,
-                'mixing_beta' : 4.e-01
-            }
-        }
-
-        # the pseudopotential for each chemical element
-        # In this case O, Sr and Ti
-        pseudopotentials = {'O' : 'O.pbesol-n-kjpaw_psl.1.0.0.UPF',
-                            'Sr' : 'Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF',
-                            'Ti' : 'Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF'}
-
-        # the kpoints mesh and the offset
-        kpts = (4,4,4)    #With the supercell the number of k points in effect are multiplied
-        koffset = (0,0,0)
-
-        # Specify the command to call quantum espresso
-        command = 'mpirun -np 8 pw.x -i PREFIX.pwi > PREFIX.pwo'
-
-
-        # Prepare the quantum espresso calculator
-        self.calculator = CC.calculators.Espresso(input_data,
-                                             pseudopotentials,
-                                             command = command,
-                                             kpts = kpts,
-                                             koffset = koffset)
-        self.temperatures = temperatura_i
-
-        self.lowest_hessian_mode = []
-        self.lowest_sscha_mode = []
-
-        # Perform a simulation at each temperature
-        self.t_old = T0
-        self.configuraciones = configuraciones
-        self.sobol = sobol
-        self.sobol_scatter = sobol_scatter
-
-    def ciclo_T(self,Fichero_final_matriz_dinamica,nqirr):
-        MAX_ITERATIONS = 20
-        for Temperatura in self.temperatures:
-            # Load the starting dynamical matrix
-            self.dyn = CC.Phonons.Phonons(Fichero_final_matriz_dinamica.format(int(self.t_old)), nqirr)
-
-            # Prepare the ensemble
-            self.ensemble = sscha.Ensemble.Ensemble(self.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
-
-            # Prepare the minimizer
-            self.minim = sscha.SchaMinimizer.SSCHA_Minimizer(self.ensemble)
-            self.minim.min_step_struc = 0.05
-            self.minim.min_step_dyn = 0.002
-            self.minim.kong_liu_ratio = 0.5
-            self.minim.meaningful_factor = 0.000001
-            #minim.root_representation = "root4"
-            #minim.precond_dyn = False
-#            self.minim.minim_struct = True # *test*
-#            self.minim.neglect_symmetries = True    # *test*
-            self.minim.enforce_sum_rule = True  # Lorenzo's solution to the error
-
-            # Prepare the relaxer (through many population)
-            mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3', n_pool = 20, # n_pool must be a divisor of the k_points example 5x5x5=125 n_pool= 5 or 25
-                n_cpu = 40, time = '12:00:00', mpi_cmd = 'mpirun -np NPROC' ) #test with 5 pools for QE; note reducing the n_pool reduces the memory usage in the k points calculation.
-
-            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.calculator,
-                             N_configs=self.configuraciones, max_pop = MAX_ITERATIONS,
-                             cluster = mi_cluster.cluster)
-        # Initialize the NVT simulation
-
-            # Relax
-            #self.relax.relax(get_stress = True, sobol = self.sobol)
-            self.relax.relax(sobol = self.sobol)
-
-            # Save the dynamical matrix
-            self.relax.minim.dyn.save_qe(Fichero_final_matriz_dinamica.format(int(Temperatura)))
-
-            # Detect space group
-            symm=spglib.get_spacegroup(self.relax.minim.dyn.structure.get_ase_atoms(), 0.005)
-            print('Current SG = ', symm,' at T=',int(Temperatura))
-
-            # Recompute the ensemble for the hessian calculation
-            self.ensemble = sscha.Ensemble.Ensemble(self.relax.minim.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
-            self.ensemble.generate(self.configuraciones, sobol = self.sobol)
-#            self.ensemble.generate(100, sobol = False)
-#            self.ensemble.generate(5000,sobol = True)
-            self.ensemble.get_energy_forces(self.calculator, compute_stress = False) #gets the energies and forces from the calculator
-            #self.ensemble.get_energy_forces(self.calculator)
-
-            #update weights!!! es posible que este sea el motivo por el que no obtengo buenos resultados?
-            self.ensemble.update_weights(self.relax.minim.dyn, Temperatura)
-            # Get the free energy hessian
-            dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) #free energy hessian as in Bianco paper 2017
-            dyn_hessian.save_qe("hessian_T{}_".format(int(Temperatura)))
-
-            # Get the lowest frequencies for the sscha and the free energy hessian
-            w_sscha, pols_sscha = self.relax.minim.dyn.DiagonalizeSupercell() #dynamical matrix
-            # Get the structure in the supercell
-            superstructure = self.relax.minim.dyn.structure.generate_supercell(self.relax.minim.dyn.GetSupercell()) #
-
-            # Discard the acoustic modes
-            acoustic_modes = CC.Methods.get_translations(pols_sscha, superstructure.get_masses_array())
-            w_sscha = w_sscha[~acoustic_modes]
-
-            self.lowest_sscha_mode.append(np.min(w_sscha) * CC.Units.RY_TO_CM) # Convert from Ry to cm-1
-
-            w_hessian, pols_hessian = dyn_hessian.DiagonalizeSupercell() #recomputed dyn for hessian
-            # Discard the acoustic modes
-            acoustic_modes = CC.Methods.get_translations(pols_hessian, superstructure.get_masses_array())
-            w_hessian = w_hessian[~acoustic_modes]
-            self.lowest_hessian_mode.append(np.min(w_hessian) * CC.Units.RY_TO_CM) # Convert from Ry to cm-1
-            #print ("\n".join(["{:.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in pols_hessian]))
-            #exit()
-
-            self.t_old = Temperatura
-        # We prepare now the file to save the results
-        freq_data = np.zeros( (len(self.temperatures), 3))
-        freq_data[:, 0] = self.temperatures
-        freq_data[:, 1] = self.lowest_sscha_mode
-        freq_data[:, 2] = self.lowest_hessian_mode
-
-        # Save results on file
-        np.savetxt("{}_hessian_vs_temperature.dat".format(self.configuraciones), freq_data, header = "T [K]; SSCHA mode [cm-1]; Free energy hessian [cm-1]")
-
-    def dibuja(self):
-        hessian_data = np.loadtxt("{}_hessian_vs_temperature.dat".format(self.configuraciones))
-
-        plt.figure(dpi = 120)
-        plt.plot(hessian_data[:,0], hessian_data[:,1], label = "Min SCHA freq", marker = ">")
-        plt.plot(hessian_data[:,0], hessian_data[:,2], label = "Free energy curvature", marker = "o")
-        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
-        plt.xlabel("Temperature [K]")
-        plt.ylabel("Frequency [cm-1]")
-        plt.legend()
-        plt.tight_layout()
-        plt.savefig('{}_Temp_Freq.png'.format(self.configuraciones))
-        #plt.show()
-
-        plt.figure(dpi = 120)
-        plt.plot(hessian_data[:,0], np.sign(hessian_data[:,2]) * hessian_data[:,2]**2, label = "Free energy curvature", marker = "o")
-        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
-        plt.xlabel("Temperature [K]")
-        plt.ylabel("$\omega^2$ [cm-2]")
-        plt.legend()
-        plt.tight_layout()
-        plt.savefig('{}_Temp_Omeg.png'.format(self.configuraciones))
-        #plt.show()
-
 class Send_to_cluster(object):
     def __init__(self,hostname = 'diegom@ekhi.cfm.ehu.es', pwd = None,
            label = 'SrTiO3', account_name = '', n_nodes = 1, n_cpu = 40,
@@ -255,8 +84,8 @@ class Send_to_cluster(object):
         self.cluster.load_modules = """
 # Load the quantum espresso modules
 ## module load daint-gpu
-module load QuantumESPRESSO
-
+##module load QuantumESPRESSO
+module load VASP
 # Configure the environmental variables of the job
 ##export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 export NO_STOP_MESSAGE=1
@@ -265,8 +94,8 @@ export NO_STOP_MESSAGE=1
 ## ulimit -s unlimited
         """
 
-        # Now, what is the command to run quantum espresso on the cluster?
-        self.cluster.binary = "pw.x -npool NPOOL -i PREFIX.pwi > PREFIX.pwo"  #<--- No need for mpirun it's set with mpi_cmd
+        # Now, what is the command to run VASP on the cluster?
+        self.cluster.binary = "vasp_std -npool NPOOL -i PREFIX.pwi > PREFIX.pwo"  #<--- No need for mpirun it's set with mpi_cmd
         # NOTE that NPOOL will be replaced automatically with the cluster.n_pool variable
 
 
