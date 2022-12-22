@@ -118,29 +118,29 @@ class  SrTiO3_free_energy_ab_initio(object):
         # Initialize the DFT (Quantum Espresso) calculator for SrTiO3
         # The input data is a dictionary that encodes the pw.x input file namelist
         input_data = {
-            'control' : {
-                # Avoid writing wavefunctions on the disk
-                'disk_io' : 'None',
-                # Where to find the pseudopotential
-                #'pseudo_dir' : '.'
-                'tstress' : True,
-                'tprnfor' : True
-            },
-            'system' : {
-                # Specify the basis set cutoffs
-                'ecutwfc' : 50,   # Cutoff for wavefunction from 70
-                'ecutrho' : 50*10, # Cutoff for the density ecutwfc*10
-                # Information about smearing (it is a metal)
-                'occupations' : 'fixed', # 'fixed' or 'smearing', smearing for conductors
-                #'smearing' : 'mv',
-                #'degauss' : 0.03
-            },
-            'electrons' : {
-                'conv_thr' : 1e-8,
-                'conv_thr' : 1.e-09,
-                'electron_maxstep' : 80,
-                'mixing_beta' : 4.e-01
-            }
+            # 'control' : {
+            #     # Avoid writing wavefunctions on the disk
+            #     'disk_io' : 'None',
+            #     # Where to find the pseudopotential
+            #     #'pseudo_dir' : '.'
+            #     'tstress' : True,
+            #     'tprnfor' : True
+            # },
+            # 'system' : {
+            #     # Specify the basis set cutoffs
+            #     'ecutwfc' : 50,   # Cutoff for wavefunction from 70
+            #     'ecutrho' : 50*10, # Cutoff for the density ecutwfc*10
+            #     # Information about smearing (it is a metal)
+            #     'occupations' : 'fixed', # 'fixed' or 'smearing', smearing for conductors
+            #     #'smearing' : 'mv',
+            #     #'degauss' : 0.03
+            # },
+            # 'electrons' : {
+            #     'conv_thr' : 1e-8,
+            #     'conv_thr' : 1.e-09,
+            #     'electron_maxstep' : 80,
+            #     'mixing_beta' : 4.e-01
+            # }
         }
 
         # the pseudopotential for each chemical element
@@ -154,11 +154,11 @@ class  SrTiO3_free_energy_ab_initio(object):
         koffset = (0,0,0)
 
         # Specify the command to call quantum espresso
-        command = 'mpirun -np 8 pw.x -i PREFIX.pwi > PREFIX.pwo'
+        command = 'mpirun -np 8 vasp_std > PREFIX.pwo'
 
 
-        # Prepare the quantum espresso calculator
-        self.calculator = CC.calculators.Espresso(input_data,
+        # Prepare the VASP calculator (CHECK IT!!)
+        self.calculator = ase.calculators.Vasp(input_data,
                                              pseudopotentials,
                                              command = command,
                                              kpts = kpts,
