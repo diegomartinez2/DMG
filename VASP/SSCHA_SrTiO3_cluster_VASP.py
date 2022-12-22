@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  SSCHA_SrTiO3_cluster.py
+#  SSCHA_SrTiO3_cluster_VASP.py
 #
 #  Copyright 2022 Diego <diego@u038025>
 #
