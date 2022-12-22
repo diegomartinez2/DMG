@@ -95,7 +95,7 @@ export NO_STOP_MESSAGE=1
         """
 
         # Now, what is the command to run VASP on the cluster?
-        self.cluster.binary = "vasp_std -npool NPOOL -i PREFIX.pwi > PREFIX.pwo"  #<--- No need for mpirun it's set with mpi_cmd
+        self.cluster.binary = "vasp_std > PREFIX.pwo"  #<--- No need for mpirun it's set with mpi_cmd
         # NOTE that NPOOL will be replaced automatically with the cluster.n_pool variable
 
 
