@@ -320,7 +320,16 @@ def main(args):
     'RAROS: '
     ]
     Localizacion_list = [
-
+    'CALLES: ',
+    'SEDE DE MEGACORPORACIÓN: ',
+    'BAJO TIERRA/MAZMORRAS: ',
+    'CLUB: ',
+    'ALMACENAJE: ',
+    'PUBLICO: ',
+    'SERVICIOS ESPECIALES: ',
+    'SILVESTRES: ',
+    'CENTRO DE INVESTIGACIÓN: ',
+    'ESTACIÓN ESPACIAL: '
     ]
     Antagonistas_list = [
 
