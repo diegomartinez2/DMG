@@ -56,3 +56,15 @@ msg['To'] = 'email@youruni'
 s = smtplib.SMTP('smtpserver')
 s.sendmail('email@youruni', 'email@youruni', msg.as_string())
 s.quit()
+"""
+This script can be scheduled to be executed automatically using crontab. For instance, if you want to get your arXiv email every weekday at 12:00 use the command
+
+
+    crontab -e
+
+and include this line in the file that will appear
+
+
+    0 12 * * 1-5 /PathToTheAboveScript.py
+
+"""
