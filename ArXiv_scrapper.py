@@ -1,3 +1,7 @@
+"""
+Here we provide a simple Python script that can read the arXiv and email to you
+the filtered abstracts according to some keywords that you determine.
+"""
 #!/usr/local/bin/python
 
 # Import stuff
