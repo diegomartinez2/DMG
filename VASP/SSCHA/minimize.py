@@ -16,7 +16,7 @@ import numpy as np
 
 NQIRR = 10                    # The number of irreducible q points in the q-point grid
 T = 50                        # The temperature at which we want to perform the calculation in Kelvin
-SUPERCELL = (4,4,4)           # The size of the supercell (or the q point grid)
+SUPERCELL = (2,2,2)           # The size of the supercell (or the q point grid)
 N_RANDOM = 100                # The number of configurations that will be created
 POPULATION = 1                # The population to generate
 
