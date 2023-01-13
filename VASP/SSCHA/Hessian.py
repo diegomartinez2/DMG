@@ -15,9 +15,9 @@ N_RANDOM = 100                                  # number elements in the ensambl
 DYN_PREFIX =  'dyn_start_population3_'          # dyn mat that generated the last population
 FINAL_DYN =   'dyn_end_population3_'            # SSCHA dyn mat obtained with the last minimization
 SAVE_PREFIX = 'dyn_hessian_'                    # Free energy Hessian dynamical matrices outpu
-NQIRR = 3                                       # The number or irredubcible q points
-Tg = 200                                        # The temperature used to generate the configurations
-T =  200                                        # The temperature for the calculation
+NQIRR = 10                                       # The number or irredubcible q points
+Tg = 50                                         # The temperature used to generate the configurations
+T =  50                                         # The temperature for the calculation
 POPULATION = 3                                  # number of last population
 INCLUDE_V4 = False                              # True to include the 4th-order SSCHA FC term to calculate the Hessian
 
