@@ -40,7 +40,7 @@ print ("\n".join(["{:.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in  w_s]))
 # Generate the ensemble
 
 ens = sscha.Ensemble.Ensemble(dyn, T, SUPERCELL)
-ens.generate(N_RANDOM)
+ens.generate(N_RANDOM, sobol = True, sobol_scatter = 0.0)
 
 # Save the ensemble
 
