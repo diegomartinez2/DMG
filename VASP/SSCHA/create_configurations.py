@@ -85,4 +85,8 @@ Y=line_atoms
 print (zip(Y,X))
 #Z=[x for _, X in sorted(zip(Y,X))]
 Z= [x for (y,x) in sorted(zip(Y,X), key=lambda pair: pair[0])]
-print (Z)
+#print (Z)
+print (line_types)
+print (line_atoms.count(0), line_atoms.count(1), line_atoms.count(2))
+for i in range(len(line_atoms)):
+    print (" ".join(str(e) for e in Z[i]))
