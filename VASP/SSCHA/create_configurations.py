@@ -5,6 +5,7 @@ import sys,os
 import cellconstructor as CC
 import cellconstructor.Phonons
 import sscha, sscha.Ensemble
+import numpy as np
 
 # Define input variables
 
