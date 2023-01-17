@@ -60,6 +60,6 @@ for i in range(N_RANDOM):
 
 nat = ens.current_dyn.structure.N_atoms * np.prod(ens.current_dyn.GetSupercell())
 for i in range(N_RANDOM):
-    print (ens.xats.reshape((ens.N,3,nat)))
+    print (ens.xats.reshape((ens.N,nat,3)))
     #bash_command =
     #os.sysyem(bash_command)
