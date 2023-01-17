@@ -67,14 +67,14 @@ coordenadas = ens.xats.reshape((ens.N,nat,3))
 line_types = " ".join([inv_dict[x] for x in np.arange(len(type_dict))])
 #line_atoms = " ".join([str(type_dict[x]) for x in ss.atoms])
 line_atoms = [(type_dict[x]) for x in ss.atoms]
-for i in range(N_RANDOM):
-    print (coordenadas[i])
-    print ("---------------")
+#for i in range(N_RANDOM):
+#    print (coordenadas[i])
+#    print ("---------------")
     #bash_command =
     #os.sysyem(bash_command)
-print (coordenadas[0,0,:])
-print (line_types)
-print (line_atoms)
+#print (coordenadas[0,0,:])
+#print (line_types)
+#print (line_atoms)
 # for i in range(N_RANDOM):
 #     a = np.insert(coordenadas[i],[0],np.array(line_atoms).reshape((len(line_atoms),1)),axis=1)
 #     ind = np.argsort(a[:,1])
@@ -82,11 +82,18 @@ print (line_atoms)
 #     #now we write the POSCAR file for the 'i' ensamble
 X=coordenadas[0]
 Y=line_atoms
-print (zip(Y,X))
+#print (zip(Y,X))
 #Z=[x for _, X in sorted(zip(Y,X))]
 Z= [x for (y,x) in sorted(zip(Y,X), key=lambda pair: pair[0])]
 #print (Z)
+
+print ("SrTiO3")
+print ("a")
+print ("15.5785322165032696  0.0000000000000000  0.0000000000000000")
+print ("0.0000000000000000  15.5785322165032696  0.0000000000000000")
+print ("0.0000000000000000  0.0000000000000000  15.5785322165032696")
 print (line_types)
 print (line_atoms.count(0), line_atoms.count(1), line_atoms.count(2))
+print ("direct")
 for i in range(len(line_atoms)):
     print (" ".join(str(e) for e in Z[i]))
