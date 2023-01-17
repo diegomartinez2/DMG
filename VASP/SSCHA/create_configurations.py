@@ -46,9 +46,18 @@ ens.generate(N_RANDOM, sobol = True, sobol_scatter = 0.0)
 
 namefile='population'+str(POPULATION)+'_ensemble'
 ens.save(namefile, POPULATION)
+#ens.save_extxyz(namefile, POPULATION)
+#self.structures -> get_ase_atoms()
+#ens.save_enhanced_xyz(
 
 # Prepare qe input files
 
 for i in range(N_RANDOM):
     bash_command = 'cat head_scf.in population'+str(POPULATION)+'_ensemble/scf_population'+str(POPULATION)+'_'+str(i+1)+'.dat > population'+str(POPULATION)+'_ensemble/scf_'+str(i+1)+'.in'
     os.system(bash_command)
+
+# Prepare VASP input files
+
+#for i in range(N_RANDOM):
+    #bash_command =
+    #os.sysyem(bash_command)
