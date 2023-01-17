@@ -62,14 +62,16 @@ nat = ens.current_dyn.structure.N_atoms * np.prod(ens.current_dyn.GetSupercell()
 atm = np.unique(ens.current_dyn.structure.atoms)
 ss = ens.current_dyn.structure.generate_supercell(ens.current_dyn.GetSupercell())
 type_dict = {x : i for i, x in enumerate(atm)}
-
+inv_dict = {i : x for x, i in type_dict.items()}
 coordenadas = ens.xats.reshape((ens.N,nat,3))
 line_types = " ".join([inv_dict[x] for x in np.arange(len(type_dict))])
-line_atoms = " ".join([str(type_dict[x]) for x in ss.atoms])
-
+#line_atoms = " ".join([str(type_dict[x]) for x in ss.atoms])
+line_atoms = [(type_dict[x]) for x in ss.atoms]
 for i in range(N_RANDOM):
     print (coordenadas[i])
     print ("---------------")
     #bash_command =
     #os.sysyem(bash_command)
 print (coordenadas[0,0,:])
+print (line_types)
+print (line_atoms)
