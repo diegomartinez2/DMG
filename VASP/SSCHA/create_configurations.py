@@ -75,3 +75,8 @@ for i in range(N_RANDOM):
 print (coordenadas[0,0,:])
 print (line_types)
 print (line_atoms)
+for i in range(N_RANDOM):
+    a = np.insert(coordenadas[i],[1],line_atoms,axis=1)
+    ind = np.argsort(a,[:,1])
+    coordenadas_temp = a[ind]
+    #now we write the POSCAR file for the 'i' ensamble
