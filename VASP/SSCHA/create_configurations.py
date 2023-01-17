@@ -75,8 +75,14 @@ for i in range(N_RANDOM):
 print (coordenadas[0,0,:])
 print (line_types)
 print (line_atoms)
-for i in range(N_RANDOM):
-    a = np.insert(coordenadas[i],[0],np.array(line_atoms).reshape((len(line_atoms),1)),axis=1)
-    ind = np.argsort(a[:,1])
-    coordenadas_temp = a[ind]   #no funciona??
-    #now we write the POSCAR file for the 'i' ensamble
+# for i in range(N_RANDOM):
+#     a = np.insert(coordenadas[i],[0],np.array(line_atoms).reshape((len(line_atoms),1)),axis=1)
+#     ind = np.argsort(a[:,1])
+#     coordenadas_temp = a[ind]   #no funciona??
+#     #now we write the POSCAR file for the 'i' ensamble
+X=coordenadas[0]
+Y=line_atoms
+print (zip(Y,X))
+#Z=[x for _, X in sorted(zip(Y,X))]
+Z= [x for (y,x) in sorted(zip(Y,X), key=lambda pair: pair[0])]
+print (Z)
