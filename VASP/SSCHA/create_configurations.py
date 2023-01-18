@@ -80,7 +80,7 @@ for i in range(N_RANDOM):
 #     ind = np.argsort(a[:,1])
 #     coordenadas_temp = a[ind]   #no funciona??
 #     #now we write the POSCAR file for the 'i' ensamble
-    X=coordenadas[0]
+    X=coordenadas[i]
     Y=line_atoms
 #print (zip(Y,X))
 #Z=[x for _, X in sorted(zip(Y,X))]
@@ -118,6 +118,6 @@ for i in range(N_RANDOM):
         f.write('\n')
         f.write("direct")
         f.write('\n')
-        for i in range(len(line_atoms)):
-            f.write(" ".join(str(e) for e in Z[i]))
+        for j in range(len(line_atoms)):
+            f.write(" ".join(str(e) for e in Z[j]))
             f.write('\n')
