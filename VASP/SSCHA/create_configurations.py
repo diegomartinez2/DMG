@@ -67,18 +67,9 @@ coordenadas = ens.xats.reshape((ens.N,nat,3))
 line_types = " ".join([inv_dict[x] for x in np.arange(len(type_dict))])
 #line_atoms = " ".join([str(type_dict[x]) for x in ss.atoms])
 line_atoms = [(type_dict[x]) for x in ss.atoms]
-#for i in range(N_RANDOM):
-#    print (coordenadas[i])
-#    print ("---------------")
-    #bash_command =
-    #os.sysyem(bash_command)
-#print (coordenadas[0,0,:])
-#print (line_types)
-#print (line_atoms)
+
 for i in range(N_RANDOM):
-#     a = np.insert(coordenadas[i],[0],np.array(line_atoms).reshape((len(line_atoms),1)),axis=1)
-#     ind = np.argsort(a[:,1])
-#     coordenadas_temp = a[ind]   #no funciona??
+ 
 #     #now we write the POSCAR file for the 'i' ensamble
     X=coordenadas[i]
     Y=line_atoms
@@ -99,7 +90,7 @@ for i in range(N_RANDOM):
 # print ("direct")
 # for i in range(len(line_atoms)):
 #     print (" ".join(str(e) for e in Z[i]))
-    with open('./'+str(i)+'/POSCAR', 'w') as f:
+    with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/POSCAR', 'w') as f:
         f.write("SrTiO3")
         f.write('\n')
         f.write("a")
