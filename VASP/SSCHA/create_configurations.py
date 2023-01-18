@@ -1,6 +1,7 @@
 from __future__ import print_function
 from __future__ import division
 import sys,os
+import shutil
 
 import cellconstructor as CC
 import cellconstructor.Phonons
@@ -58,6 +59,10 @@ for i in range(N_RANDOM):
     os.system(bash_command)
 
 # Prepare VASP input files
+src_path_ML_FF = r".\ML_FF"
+# dst_path = r"E:\demos\files\account\profit.txt"
+# shutil.copy(src_path, dst_path)
+# print('Copied')
 nat = ens.current_dyn.structure.N_atoms * np.prod(ens.current_dyn.GetSupercell())
 atm = np.unique(ens.current_dyn.structure.atoms)
 ss = ens.current_dyn.structure.generate_supercell(ens.current_dyn.GetSupercell())
@@ -69,6 +74,8 @@ line_types = " ".join([inv_dict[x] for x in np.arange(len(type_dict))])
 line_atoms = [(type_dict[x]) for x in ss.atoms]
 
 for i in range(N_RANDOM):
+    dst_path_ML_FF = 'population'+str(POPULATION)+'_ensemble/'+str(i))+'/ML_FF'
+    shutil.copy(src_path_ML_FF, dst_path_ML_FF)
     os.makedirs('population'+str(POPULATION)+'_ensemble/'+str(i))
 #we write the KPOINTS file
     with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/KPOINTS', 'w') as f:
@@ -116,7 +123,7 @@ for i in range(N_RANDOM):
 #print (Z)
 
 #POSCAR data
-    print (ens.dyn_0.alat*SUPERCELL[0])
+#    print (ens.dyn_0.alat*SUPERCELL[0])
 # print ("SrTiO3")
 # print ("a")
 # print ("15.5785322165032696  0.0000000000000000  0.0000000000000000")
