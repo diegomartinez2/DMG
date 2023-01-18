@@ -60,9 +60,6 @@ for i in range(N_RANDOM):
 
 # Prepare VASP input files
 src_path_ML_FF = r".\ML_FF"
-# dst_path = r"E:\demos\files\account\profit.txt"
-# shutil.copy(src_path, dst_path)
-# print('Copied')
 nat = ens.current_dyn.structure.N_atoms * np.prod(ens.current_dyn.GetSupercell())
 atm = np.unique(ens.current_dyn.structure.atoms)
 ss = ens.current_dyn.structure.generate_supercell(ens.current_dyn.GetSupercell())
@@ -137,7 +134,7 @@ for i in range(N_RANDOM):
     with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/POSCAR', 'w') as f:
         f.write("SrTiO3")
         f.write('\n')
-        f.write("a")
+        f.write("1.0")
         f.write('\n')
         f.write(str(SUPERCELL[0]*ens.dyn_0.alat)+" 0.0000000000000000"+" 0.0000000000000000")
         f.write('\n')
