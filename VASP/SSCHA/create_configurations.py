@@ -76,15 +76,11 @@ for i in range(N_RANDOM):
     os.makedirs('population'+str(POPULATION)+'_ensemble/'+str(i))
 #we write the KPOINTS file
     with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/KPOINTS', 'w') as f:
-        f.write("Not only Gamma point")
-        f.write('\n')
-        f.write("0")
-        f.write('\n')
-        f.write("Gamma")
-        f.write('\n')
-        f.write("2 2 2")
-        f.write('\n')
-        f.write("0 0 0")
+        f.write("Not only Gamma point"+'\n')
+        f.write("0"+'\n')
+        f.write("Gamma"+'\n')
+        f.write("2 2 2"+'\n')
+        f.write("0 0 0"+'\n')
 
 #we write the POTCAR (is this necessary for mechine learning potentials?)
     with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/POTCAR', 'w') as f:
@@ -93,23 +89,20 @@ for i in range(N_RANDOM):
 
 #we write the INCAR file (Check this out!!!)
     with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/INCAR', 'w') as f:
-        f.write("SYSTEM = SrTiO3")
+        f.write("SYSTEM = SrTiO3"+'\n')
+        f.write("ISTART = 0"+'\n') # this is a new job
         f.write('\n') #ionic relaxation
-        f.write("IBRION = -1") #-1 = no ionic displacements #2 = ionic relaxation (conjugate gradient algorithm)
-        f.write('\n')
+        f.write("IBRION = -1"+'\n') #-1 = no ionic displacements #2 = ionic relaxation (conjugate gradient algorithm)
         #f.write("NSW    = 1") #no of ionic steps
-        f.write("EDIFF  =  1E-09") #(SCF energy convergence; in eV)
-        f.write('\n')
+        f.write("NELM = 25"+'\n') # maximum of 25 electronic steps (SCF cycles)
+        f.write("EDIFF  =  1E-09"+'\n') #(SCF energy convergence; in eV)
         #f.write("ISIF   = 3") #update positions, cell shape and volume
-        f.write("PREC   =  Accurate ") #  (Precision level)
-        f.write('\n')
-        f.write("ENCUT  =  500") #(Cut-off energy for plane wave basis set, in eV)
+        f.write("PREC   =  Accurate "+'\n') #  (Precision level)
+        f.write("ENCUT  =  500"+'\n') #(Cut-off energy for plane wave basis set, in eV)
         f.write('\n') #machine learning
-        f.write("ML_LMLFF  = T")
-        f.write('\n')
-        f.write("ML_ISTART = 2")
-        f.write('\n')
-        f.write("RANDOM_SEED =         688344966                0                0")
+        f.write("ML_LMLFF  = T"+'\n')
+        f.write("ML_ISTART = 2"+'\n')
+        f.write("RANDOM_SEED =         688344966                0                0"+'\n')
 
 #now we write the POSCAR file for the 'i' ensamble
     X=coordenadas[i]
