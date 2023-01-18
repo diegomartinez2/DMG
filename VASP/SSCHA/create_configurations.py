@@ -69,8 +69,19 @@ line_types = " ".join([inv_dict[x] for x in np.arange(len(type_dict))])
 line_atoms = [(type_dict[x]) for x in ss.atoms]
 
 for i in range(N_RANDOM):
- 
-#     #now we write the POSCAR file for the 'i' ensamble
+#we write the KPOINTS file
+ with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/KPOINTS', 'w') as f:
+     f.write("Not only Gamma point")
+     f.write('\n')
+     f.write("0")
+     f.write('\n')
+     f.write("Gamma")
+     f.write('\n')
+     f.write("2 2 2")
+     f.write('\n')
+     f.write("0 0 0")
+
+#now we write the POSCAR file for the 'i' ensamble
     X=coordenadas[i]
     Y=line_atoms
 #print (zip(Y,X))
