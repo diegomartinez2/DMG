@@ -86,7 +86,7 @@ for i in range(N_RANDOM):
         f.write("Pseudopotentials of Si.")
         f.write('\n')
 
-#we write the INCAR file
+#we write the INCAR file (Check this out!!!)
     with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/INCAR', 'w') as f:
         f.write("SYSTEM = SrTiO3")
         f.write('\n') #ionic relaxation
