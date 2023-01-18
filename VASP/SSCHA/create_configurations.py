@@ -70,16 +70,37 @@ line_atoms = [(type_dict[x]) for x in ss.atoms]
 
 for i in range(N_RANDOM):
 #we write the KPOINTS file
- with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/KPOINTS', 'w') as f:
-     f.write("Not only Gamma point")
-     f.write('\n')
-     f.write("0")
-     f.write('\n')
-     f.write("Gamma")
-     f.write('\n')
-     f.write("2 2 2")
-     f.write('\n')
-     f.write("0 0 0")
+    with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/KPOINTS', 'w') as f:
+        f.write("Not only Gamma point")
+        f.write('\n')
+        f.write("0")
+        f.write('\n')
+        f.write("Gamma")
+        f.write('\n')
+        f.write("2 2 2")
+        f.write('\n')
+        f.write("0 0 0")
+
+#we write the POTCAR (is this necessary for mechine learning potentials?)
+    with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/POTCAR', 'w') as f:
+        f.write("Pseudopotentials of Si.")
+        f.write('\n')
+
+#we write the INCAR file
+    with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/INCAR', 'w') as f:
+        f.write("SYSTEM = SrTiO3")
+        f.write('\n') #ionic relaxation
+        f.write("IBRION = 2") #ionic relaxation (conjugate gradient algorithm)
+        f.write('\n')
+        f.write("NSW    = 1") #no of ionic steps
+        f.write('\n')
+        f.write("ISIF   = 3") #update positions, cell shape and volume
+        f.write('\n') #machine learning
+        f.write("ML_LMLFF  = T")
+        f.write('\n')
+        f.write("ML_ISTART = 2")
+        f.write('\n')
+        f.write("RANDOM_SEED =         688344966                0                0")
 
 #now we write the POSCAR file for the 'i' ensamble
     X=coordenadas[i]
