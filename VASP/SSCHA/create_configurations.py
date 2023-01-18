@@ -69,6 +69,7 @@ line_types = " ".join([inv_dict[x] for x in np.arange(len(type_dict))])
 line_atoms = [(type_dict[x]) for x in ss.atoms]
 
 for i in range(N_RANDOM):
+    os.makedirs('population'+str(POPULATION)+'_ensemble/'+str(i))
 #we write the KPOINTS file
     with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/KPOINTS', 'w') as f:
         f.write("Not only Gamma point")
@@ -93,7 +94,7 @@ for i in range(N_RANDOM):
         f.write("IBRION = -1") #-1 = no ionic displacements #2 = ionic relaxation (conjugate gradient algorithm)
         f.write('\n')
         #f.write("NSW    = 1") #no of ionic steps
-        f.write("EDIFF  =  1E-08") #(SCF energy convergence; in eV)
+        f.write("EDIFF  =  1E-09") #(SCF energy convergence; in eV)
         f.write('\n')
         #f.write("ISIF   = 3") #update positions, cell shape and volume
         f.write("PREC   =  Accurate ") #  (Precision level)
