@@ -90,11 +90,15 @@ for i in range(N_RANDOM):
     with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/INCAR', 'w') as f:
         f.write("SYSTEM = SrTiO3")
         f.write('\n') #ionic relaxation
-        f.write("IBRION = 2") #ionic relaxation (conjugate gradient algorithm)
+        f.write("IBRION = -1") #-1 = no ionic displacements #2 = ionic relaxation (conjugate gradient algorithm)
         f.write('\n')
-        f.write("NSW    = 1") #no of ionic steps
+        #f.write("NSW    = 1") #no of ionic steps
+        f.write("EDIFF  =  1E-08") #(SCF energy convergence; in eV)
         f.write('\n')
-        f.write("ISIF   = 3") #update positions, cell shape and volume
+        #f.write("ISIF   = 3") #update positions, cell shape and volume
+        f.write("PREC   =  Accurate ") #  (Precision level)
+        f.write('\n')
+        f.write("ENCUT  =  500") #(Cut-off energy for plane wave basis set, in eV)
         f.write('\n') #machine learning
         f.write("ML_LMLFF  = T")
         f.write('\n')
