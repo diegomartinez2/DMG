@@ -141,7 +141,7 @@ for i in range(N_RANDOM):
         f.write(str(line_atoms.count(1))+" ")
         f.write(str(line_atoms.count(2)))
         f.write('\n')
-        f.write("direct")
+        f.write("Cartesian") # f.write("direct")
         f.write('\n')
         for j in range(len(line_atoms)):
             f.write(" ".join(str(e) for e in Z[j]))
