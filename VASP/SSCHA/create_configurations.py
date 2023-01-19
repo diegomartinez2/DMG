@@ -144,5 +144,5 @@ for i in range(N_RANDOM):
         f.write("Cartesian") # f.write("direct")
         f.write('\n')
         for j in range(len(line_atoms)):
-            f.write(" ".join(str(e) for e in round(Z[j],5)))
+            f.write(" ".join(str(round(e,5)) for e in Z[j]))
             f.write('\n')
