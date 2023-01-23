@@ -61,6 +61,7 @@ for i in range(N_RANDOM):
 # Prepare VASP input files
 src_path_ML_FF = r"./ML_FF"
 src_path_bashexe = r"./run.bash"
+shutil.copy(r"./run.sh", 'population'+str(POPULATION)+'_ensemble/run.sh')
 nat = ens.current_dyn.structure.N_atoms * np.prod(ens.current_dyn.GetSupercell())
 atm = np.unique(ens.current_dyn.structure.atoms)
 ss = ens.current_dyn.structure.generate_supercell(ens.current_dyn.GetSupercell())
@@ -78,7 +79,7 @@ for i in range(N_RANDOM):
     os.makedirs('population'+str(POPULATION)+'_ensemble/'+str(i))
     shutil.copy(src_path_ML_FF, dst_path_ML_FF)
     shutil.copy(src_path_bashexe, dst_path_bashexe)
-    
+
 #we write the KPOINTS file
     with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/KPOINTS', 'w') as f:
         f.write("Not only Gamma point"+'\n')
