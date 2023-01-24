@@ -73,8 +73,8 @@ line_types = " ".join([inv_dict[x] for x in np.arange(len(type_dict))])
 line_atoms = [(type_dict[x]) for x in ss.atoms]
 
 for i in range(N_RANDOM):
-    dst_path_ML_FF = 'population'+str(POPULATION)+'_ensemble/'+str(i))+'/ML_FF'
-    dst_path_bashexe = 'population'+str(POPULATION)+'_ensemble/'+str(i))+'/run.bash'
+    dst_path_ML_FF = 'population'+str(POPULATION)+'_ensemble/'+str(i)+'/ML_FF'
+    dst_path_bashexe = 'population'+str(POPULATION)+'_ensemble/'+str(i)+'/run.bash'
 
     os.makedirs('population'+str(POPULATION)+'_ensemble/'+str(i))
     shutil.copy(src_path_ML_FF, dst_path_ML_FF)
