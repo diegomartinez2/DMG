@@ -119,17 +119,7 @@ for i in range(N_RANDOM):
 #print (Z)
 
 #POSCAR data
-#    print (ens.dyn_0.alat*SUPERCELL[0])
-# print ("SrTiO3")
-# print ("a")
-# print ("15.5785322165032696  0.0000000000000000  0.0000000000000000")
-# print ("0.0000000000000000  15.5785322165032696  0.0000000000000000")
-# print ("0.0000000000000000  0.0000000000000000  15.5785322165032696")
-# print (line_types)
-# print (line_atoms.count(0), line_atoms.count(1), line_atoms.count(2))
-# print ("direct")
-# for i in range(len(line_atoms)):
-#     print (" ".join(str(e) for e in Z[i]))
+
     with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/POSCAR', 'w') as f:
         f.write("SrTiO3")
         f.write('\n')
