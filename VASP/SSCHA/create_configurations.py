@@ -13,7 +13,7 @@ import numpy as np
 NQIRR = 10                    # The number of irreducible q points in the q-point grid
 T = 50                        # The temperature at which we want to perform the calculation in Kelvin
 SUPERCELL = (4,4,4)           # The size of the supercell (or the q point grid)
-N_RANDOM = 100                # The number of configurations that will be created
+N_RANDOM = 128                # The number of configurations that will be created
 POPULATION = 0                # The population to generate
 
 # Load the starting dynamical matrices in the 2x2x2 grid
@@ -73,15 +73,15 @@ line_types = " ".join([inv_dict[x] for x in np.arange(len(type_dict))])
 line_atoms = [(type_dict[x]) for x in ss.atoms]
 
 for i in range(N_RANDOM):
-    dst_path_ML_FF = 'population'+str(POPULATION)+'_ensemble/'+str(i)+'/ML_FF'
-    dst_path_bashexe = 'population'+str(POPULATION)+'_ensemble/'+str(i)+'/run.bash'
+    dst_path_ML_FF = 'population'+str(POPULATION)+'_ensemble/'+str(i+1)+'/ML_FF'
+    dst_path_bashexe = 'population'+str(POPULATION)+'_ensemble/'+str(i+1)+'/run.bash'
 
-    os.makedirs('population'+str(POPULATION)+'_ensemble/'+str(i))
+    os.makedirs('population'+str(POPULATION)+'_ensemble/'+str(i+1))
     shutil.copy(src_path_ML_FF, dst_path_ML_FF)
     shutil.copy(src_path_bashexe, dst_path_bashexe)
 
 #we write the KPOINTS file
-    with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/KPOINTS', 'w') as f:
+    with open('population'+str(POPULATION)+'_ensemble/'+str(i+1)+'/KPOINTS', 'w') as f:
         f.write("Not only Gamma point"+'\n')
         f.write("0"+'\n')
         f.write("Gamma"+'\n')
@@ -89,12 +89,12 @@ for i in range(N_RANDOM):
         f.write("0 0 0"+'\n')
 
 #we write the POTCAR (is this necessary for mechine learning potentials?)
-    with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/POTCAR', 'w') as f:
+    with open('population'+str(POPULATION)+'_ensemble/'+str(i+1)+'/POTCAR', 'w') as f:
         f.write("Pseudopotentials of Si.")
         f.write('\n')
 
 #we write the INCAR file (Check this out!!!)
-    with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/INCAR', 'w') as f:
+    with open('population'+str(POPULATION)+'_ensemble/'+str(i+1)+'/INCAR', 'w') as f:
         f.write("SYSTEM = SrTiO3"+'\n')
         f.write("ISTART = 0"+'\n') # this is a new job
         f.write('\n') #ionic relaxation
@@ -120,7 +120,7 @@ for i in range(N_RANDOM):
 
 #POSCAR data
 
-    with open('population'+str(POPULATION)+'_ensemble/'+str(i)+'/POSCAR', 'w') as f:
+    with open('population'+str(POPULATION)+'_ensemble/'+str(i+1)+'/POSCAR', 'w') as f:
         f.write("SrTiO3")
         f.write('\n')
         f.write("1.0")
