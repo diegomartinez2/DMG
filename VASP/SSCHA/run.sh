@@ -5,6 +5,6 @@ do
 #        ln -sf ./ML_FF ./${i}/ML_FF
         cd ${i}
         echo run${i}
-        sbash run.bash
+        sbatch run.bash
         cd ..
 done
