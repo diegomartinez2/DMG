@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=SrTeO3_QE4           # Job name
+#SBATCH --job-name=SrTeO3_VASP_4x           # Job name
 #SBATCH --mail-type=ALL                     # Mail events (NONE, BEGIN, END, FAIL, ALL)
 #SBATCH --mail-user=diego.martinez@ehu.eus  # Where to send mail
 #########SBATCH -p test                             # queue
@@ -52,7 +52,7 @@ rm -r /lscratch/$USER/$SLURM_JOB_ID
 echo "Deleting the BACKUP..."
 cd $SLURM_SUBMIT_DIR
 for file in *; do
-        if [ $file != BACKUP ] && [ $file != slurm*out ] && [ -e BACKUP/$file ]; then
+        if [$file != BACKUP] && [$file != slurm*out] && [-e BACKUP/$file]; then
                 rm -r BACKUP/$file
         fi
 done
