@@ -128,7 +128,7 @@ for i in range(N_RANDOM):
         f.write('\n')
         f.write("0.00000 "+str(SUPERCELL[1]*ens.dyn_0.alat)+" 0.00000")
         f.write('\n')
-        f.write("0.00000 "+" 0.00000"+str(SUPERCELL[2]*ens.dyn_0.alat))
+        f.write("0.00000 "+"0.00000 "+str(SUPERCELL[2]*ens.dyn_0.alat))
         f.write('\n')
         f.write(line_types)
         f.write('\n')
