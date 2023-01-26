@@ -89,9 +89,7 @@ for i in range(N_RANDOM):
         f.write("0 0 0"+'\n')
 
 #we write the POTCAR (is this necessary for mechine learning potentials?)
-    # with open('population'+str(POPULATION)+'_ensemble/'+str(i+1)+'/POTCAR', 'w') as f:
-    #     f.write("Pseudopotentials of Si.")
-    #     f.write('\n')
+    #remember that the order of the atoms in the POTCAR must be the same as the POSCAR
     shutil.copy(r"./POTCAR", 'population'+str(POPULATION)+'_ensemble/'+str(i+1)+'/POTCAR')
 
 #we write the INCAR file (Check this out!!!)
