@@ -5,9 +5,10 @@
 #SBATCH --mail-user=diego.martinez@ehu.eus  # Where to send mail
 #########SBATCH -p test                             # queue
 #SBATCH --nodes=1                           # Run all processes on a single node
-#SBATCH --ntasks=40                         # Number of processes
-#SBATCH --time=1-23:00:00                     # Time limit hrs:min:sec
+##SBATCH --ntasks=40                         # Number of processes
+#SBATCH --time=1-23:00:00                   # Time limit hrs:min:sec
 #SBATCH --output=job.log                    # Standard output and error log
+#SBATCH --cpus-per-task=40
 
 module load intel/2021a
 
