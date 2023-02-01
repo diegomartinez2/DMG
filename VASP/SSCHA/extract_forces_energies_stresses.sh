@@ -3,6 +3,7 @@ POPULATION=`grep POPULATION create_configurations.py | head -1 | awk '{print $3}
 NAT=`grep 'number of atoms/cell      =' 'population'$POPULATION'_ensemble/scf_1.out' | awk '{print $5}'`
 
 # Extract forces, energies, and stresses (CHANGE IT TO WORK WITH THE VASP OUTPUT)
+#Notes: ,1 eV = 0.073498644351 Ry
 
 for i in `seq 1 $N_RANDOM`
 do
