@@ -8,6 +8,9 @@ import cellconstructor.Phonons
 import sscha, sscha.Ensemble
 import numpy as np
 
+# Define constants
+Ev_to_Ry =  0.073498644351
+Angst_to_bohr = 1.8897259886
 # Define input variables
 
 NQIRR = 10                    # The number of irreducible q points in the q-point grid
@@ -124,11 +127,11 @@ for i in range(N_RANDOM):
         f.write('\n')
         f.write("1.0")
         f.write('\n')
-        f.write(str(SUPERCELL[0]*ens.dyn_0.alat)+" 0.00000"+" 0.00000")
+        f.write(str(SUPERCELL[0]*ens.dyn_0.alat/Angst_to_bohr)+" 0.00000"+" 0.00000")
         f.write('\n')
-        f.write("0.00000 "+str(SUPERCELL[1]*ens.dyn_0.alat)+" 0.00000")
+        f.write("0.00000 "+str(SUPERCELL[1]*ens.dyn_0.alat/Angst_to_bohr)+" 0.00000")
         f.write('\n')
-        f.write("0.00000 "+"0.00000 "+str(SUPERCELL[2]*ens.dyn_0.alat))
+        f.write("0.00000 "+"0.00000 "+str(SUPERCELL[2]*ens.dyn_0.alat/Angst_to_bohr))
         f.write('\n')
         f.write(line_types)
         f.write('\n')
@@ -139,5 +142,5 @@ for i in range(N_RANDOM):
         f.write("Cartesian") # f.write("direct")
         f.write('\n')
         for j in range(len(line_atoms)):
-            f.write(" ".join(str(round(e,6)) for e in Z[j]))  #rounding to 5 or 6 decimals
+            f.write(" ".join(str(round(e/Angst_to_bohr,6)) for e in Z[j]))  #rounding to 5 or 6 decimals
             f.write('\n')
