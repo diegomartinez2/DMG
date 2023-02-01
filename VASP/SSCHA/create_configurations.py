@@ -103,7 +103,7 @@ for i in range(N_RANDOM):
         f.write("EDIFF  =  1E-09"+'\n') #(SCF energy convergence; in eV)
         #f.write("ISIF   = 3") #update positions, cell shape and volume
         f.write("PREC   =  Accurate "+'\n') #  (Precision level)
-        f.write("ENCUT  =  500"+'\n') #(Cut-off energy for plane wave basis set, in eV) should be set explicitely in addition to AT LEAST 1.3* max(ENMAX) of the PPs.
+        f.write("ENCUT  =  600"+'\n') #(Cut-off energy for plane wave basis set, in eV) should be set explicitely in addition to AT LEAST 1.3* max(ENMAX) of the PPs.
         f.write('\n') #machine learning
         f.write("ML_LMLFF  = T"+'\n')
         f.write("ML_ISTART = 2"+'\n')
