@@ -19,7 +19,7 @@ SUPERCELL = (4,4,4)           # The size of the supercell (or the q point grid)
 N_RANDOM = 128                # The number of configurations that will be created
 POPULATION = 0                # The population to generate
 
-# Load the starting dynamical matrices in the 2x2x2 grid
+# Load the starting dynamical matrices in the grid
 
 if (POPULATION == 0):
     namefile='harmonic_calculation/harmonic_dyn'  # We will start from the harmonic dynamical matrices at the first step
