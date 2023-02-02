@@ -8,6 +8,7 @@
 #SBATCH --ntasks=40                         # Number of processes
 #SBATCH --time=1-23:00:00                     # Time limit hrs:min:sec
 #SBATCH --output=job.log                    # Standard output and error log
+#SBATCH --cpus-per-task=40                  # Number of cpus
 
 module load intel/2021a
 
@@ -34,7 +35,7 @@ do
         ln -sf ./ML_FF ./${i}/ML_FF
         cd ${i}
         echo run${i}
-        mpirun vasp_std > stdout
+        mpirun -np 40 vasp_std > stdout
         cd ..
 done
 #########################################################################
