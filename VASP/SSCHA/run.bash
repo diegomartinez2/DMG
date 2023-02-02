@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=SrTeO3_VASP_4x           # Job name
+#SBATCH --job-name=SrTiO3_VASP_4x           # Job name
 #SBATCH --mail-type=ALL                     # Mail events (NONE, BEGIN, END, FAIL, ALL)
 #SBATCH --mail-user=diego.martinez@ehu.eus  # Where to send mail
 #########SBATCH -p test                             # queue
