@@ -75,12 +75,15 @@ line_types = " ".join([inv_dict[x] for x in np.arange(len(type_dict))])
 #line_atoms = " ".join([str(type_dict[x]) for x in ss.atoms])
 line_atoms = [(type_dict[x]) for x in ss.atoms]
 
+dst_path_ML_FF = 'population'+str(POPULATION)+'_ensemble/ML_FF'
+shutil.copy(src_path_ML_FF, dst_path_ML_FF)
+
 for i in range(N_RANDOM):
-    dst_path_ML_FF = 'population'+str(POPULATION)+'_ensemble/'+str(i+1)+'/ML_FF'
+    #dst_path_ML_FF = 'population'+str(POPULATION)+'_ensemble/'+str(i+1)+'/ML_FF'
     dst_path_bashexe = 'population'+str(POPULATION)+'_ensemble/'+str(i+1)+'/run.bash'
 
     os.makedirs('population'+str(POPULATION)+'_ensemble/'+str(i+1))
-    shutil.copy(src_path_ML_FF, dst_path_ML_FF)
+    #shutil.copy(src_path_ML_FF, dst_path_ML_FF)
     shutil.copy(src_path_bashexe, dst_path_bashexe)
 
 #we write the KPOINTS file
@@ -142,5 +145,5 @@ for i in range(N_RANDOM):
         f.write("Cartesian") # f.write("direct")
         f.write('\n')
         for j in range(len(line_atoms)):
-            f.write(" ".join(str(round(e/Angst_to_bohr,6)) for e in Z[j]))  #rounding to 5 or 6 decimals
+            f.write(" ".join(str(round(e/Angst_to_bohr,6)) for e in Z[j]))  #rounding to 5 or 6 decimals because VASP fails if not rounded
             f.write('\n')
