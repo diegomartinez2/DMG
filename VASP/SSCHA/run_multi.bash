@@ -32,10 +32,12 @@ rm slurm*.out
 module load VASP
 for i in `seq 1 32`
 do
-        ln -sf ./ML_FF ./${i}/ML_FF
+        #ln -sf ./ML_FF ./${i}/ML_FF
+        cp ./ML_FF ./${i}/ML_FF
         cd ${i}
         echo run${i}
         mpirun -np 40 vasp_std > stdout
+        rm ./ML_FF
         cd ..
 done
 #########################################################################
