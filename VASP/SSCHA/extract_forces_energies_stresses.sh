@@ -1,7 +1,9 @@
 N_RANDOM=`grep N_RANDOM create_configurations.py | head -1 | awk '{print $3}'`
 POPULATION=`grep POPULATION create_configurations.py | head -1 | awk '{print $3}'`
 NAT=`grep 'number of atoms/cell      =' 'population'$POPULATION'_ensemble/scf_1.out' | awk '{print $5}'`
-
+# Define constants
+Ev_to_Ry=0.073498644351
+Angst_to_bohr=1.8897259886
 # Extract forces, energies, and stresses (CHANGE IT TO WORK WITH THE VASP OUTPUT)
 #Notes: ,1 eV = 0.073498644351 Ry
 
@@ -28,7 +30,7 @@ do
 		for(i=1;i<='${N_ions}';i++){
 			getline
 			{
-				printf("%5d %10.5f %10.5f %10.5f %12.6f %12.6f %12.6f\n",i,$1,$2,$3,$4,$5,$6)
+				printf("%5d %10.5f %10.5f %10.5f %12.6f %12.6f %12.6f\n",i,$1*Angst_to_bohr,$2*Angst_to_bohr,$3*Angst_to_bohr,$4*(Ev_to_Ry/Angst_to_bohr),$5*(Ev_to_Ry/Angst_to_bohr),$6*(Ev_to_Ry/Angst_to_bohr))
 			}
 		}
 
