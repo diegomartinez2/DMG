@@ -88,11 +88,14 @@ for i in range(N_RANDOM):
 
 #we write the KPOINTS file
     with open('population'+str(POPULATION)+'_ensemble/'+str(i+1)+'/KPOINTS', 'w') as f:
-        f.write("Not only Gamma point"+'\n')
-        f.write("0"+'\n')
-        f.write("Gamma"+'\n')
-        f.write("2 2 2"+'\n')
-        f.write("0 0 0"+'\n')
+        lines = ["Not only Gamma point\n", "0\n", "Gamma\n", "2 2 2\n", "0 0 0\n" ]
+        # f.write("Not only Gamma point"+'\n')
+        # f.write("0"+'\n')
+        # f.write("Gamma"+'\n')
+        # f.write("2 2 2"+'\n')
+        # f.write("0 0 0"+'\n')
+        f.writelines(lines)
+        f.close()
 
 #we write the POTCAR (is this necessary for mechine learning potentials?)
     #remember that the order of the atoms in the POTCAR must be the same as the POSCAR
@@ -114,7 +117,7 @@ for i in range(N_RANDOM):
         f.write("ML_LMLFF  = T"+'\n')
         f.write("ML_ISTART = 2"+'\n')
         f.write("RANDOM_SEED =         688344966                0                0"+'\n')
-
+        f.close()
 #now we write the POSCAR file for the 'i' ensamble
     X=coordenadas[i]
     Y=line_atoms
@@ -147,3 +150,4 @@ for i in range(N_RANDOM):
         for j in range(len(line_atoms)):
             f.write(" ".join(str(round(e/Angst_to_bohr,6)) for e in Z[j]))  #rounding to 5 or 6 decimals because VASP fails if not rounded
             f.write('\n')
+        f.close()
