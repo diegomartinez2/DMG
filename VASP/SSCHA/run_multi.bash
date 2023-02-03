@@ -30,7 +30,9 @@ rm slurm*.out
 
 ##########################################################################
 module load VASP
-for i in `seq 1 32`
+
+#for i in `seq 1 32`
+for i in {1..128}
 do
         #ln -sf ./ML_FF ./${i}/ML_FF
         cp ./ML_FF ./${i}/ML_FF
