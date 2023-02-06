@@ -44,3 +44,4 @@ do
 #awk '/TOTAL-FORCE/{x=NR+3;next}(NR<=x){print}' OUTCAR
 
 #grep -A$N_ions TOTAL-FORCE OUTCAR |tail -$N_ions|awk 'NR!=1 {printf("%5d %10.5f %10.5f %10.5f %12.6f %12.6f %12.6f\n",i,$1*Angst_to_bohr,$2*Angst_to_bohr,$3*Angst_to_bohr,$4*(Ev_to_Ry/Angst_to_bohr),$5*(Ev_to_Ry/Angst_to_bohr),$6*(Ev_to_Ry/Angst_to_bohr))}'
+done
