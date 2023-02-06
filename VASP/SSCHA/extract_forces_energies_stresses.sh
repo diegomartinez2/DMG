@@ -1,6 +1,7 @@
 N_RANDOM=`grep N_RANDOM create_configurations.py | head -1 | awk '{print $3}'`
 POPULATION=`grep POPULATION create_configurations.py | head -1 | awk '{print $3}'`
-NAT=`grep 'number of atoms/cell      =' 'population'$POPULATION'_ensemble/scf_1.out' | awk '{print $5}'`
+#NAT=`grep 'number of atoms/cell      =' 'population'$POPULATION'_ensemble/scf_1.out' | awk '{print $5}'`
+NAT=`grep 'NIONS' 'population'$POPULATION'_ensemble/OUTCAR' | awk '{print $12}'`
 # Define constants
 Ev_to_Ry=0.073498644351
 Angst_to_bohr=1.8897259886
