@@ -30,7 +30,17 @@ rm slurm*.out
 
 ##########################################################################
 module load VASP
-mpirun vasp_std > stdout
+#mpirun vasp_std > stdout
+for i in 'seq 1 300'; do
+    echo 'date' >> timing
+    cp POSCAR_$i POSCAR
+    mpirun -np 40 vasp_std > stdout
+    grep "energy  without entropy" OUTCAR  >> energies
+    grep "forces" -A 54 vasprun.xml > forces/forces_population1_$i.dat
+    rm POSCAR
+    mv OUTCAR OUTCAR_{$i}
+    echo 'date' >> timing
+done
 #########################################################################
 
 
