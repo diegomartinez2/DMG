@@ -30,11 +30,11 @@ rm slurm*.out
 
 ##########################################################################
 module load VASP
-np=40
-IONS=54
-NCONFS=300
+np=40           #number of cpus
+IONS=54         #number of atoms in the supercells
+NCONFSSHA=300   #number of configurations in the sscha ensemble
 #mpirun vasp_std > stdout
-for i in {1..$NCONF}; do
+for i in {1..$NCONFSSHA}; do
     echo 'date' >> timing
     cp POSCAR_$i POSCAR
     mpirun -np $np vasp_std > stdout
