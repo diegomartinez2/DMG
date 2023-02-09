@@ -31,6 +31,7 @@ rm slurm*.out
 ##########################################################################
 module load VASP
 np=40           #number of cpus
+POPULATION=1
 IONS=54         #number of atoms in the supercells
 NCONFSSHA=300   #number of configurations in the sscha ensemble
 #mpirun vasp_std > stdout
@@ -39,7 +40,7 @@ for i in {1..$NCONFSSHA}; do
     cp POSCAR_$i POSCAR
     mpirun -np $np vasp_std > stdout
     grep "energy  without entropy" OUTCAR  >> energies
-    grep "forces" -A $IONS vasprun.xml > forces/forces_population1_$i.dat
+    grep "forces" -A $IONS vasprun.xml > forces/forces_population$POPULATION_$i.dat
     rm POSCAR
     mv OUTCAR OUTCAR_$i
     echo 'date' >> timing
