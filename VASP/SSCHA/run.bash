@@ -31,7 +31,7 @@ rm slurm*.out
 ##########################################################################
 module load VASP
 np=40           #number of cpus
-POPULATION=1
+POPULATION=1    #population index
 IONS=54         #number of atoms in the supercells
 NCONFSSHA=300   #number of configurations in the sscha ensemble
 #mpirun vasp_std > stdout
