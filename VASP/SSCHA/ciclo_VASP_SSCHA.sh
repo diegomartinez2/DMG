@@ -19,3 +19,6 @@ cp ../POTCAR.SrOTi vasp/POTCAR
 cp ../ML_FF vasp/ML_FF
 cp ../run.bash vasp/run.bash
 nano vasp/run.bash
+echo "---------------------------------------"
+echo "Now is time to do the VASP calculations"
+echo "---------------------------------------"
