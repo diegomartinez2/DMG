@@ -1,6 +1,6 @@
 #!/bin/bash
-if  [$1==0]
-do
+if  [[$1 -eq 0]]
+then
 echo "SrTiO3
  3.9048
 1.0 0.0 0.0
@@ -24,9 +24,8 @@ cp POSCAR POSCAR_UNITCELL
 cp SPOSCAR POSCAR
 cp INCAR.harmonic INCAR
 echo "VASP harmonic calculation"; sleep 300
-done
-if [$1==1]
-do
+elif [[$1 -eq 1]]
+then
 phonopy --fc vasprun.xml
 cp POSCAR_UNITCELL POSCAR
 echo "interface"
@@ -35,4 +34,4 @@ cp POTCAR ./pop1/vasp/POTCAR
 cp ML_FF ./pop1/vasp/ML_FF
 nano run.bash
 echo "Running VASP"
-done
+fi
