@@ -1,4 +1,6 @@
 #!/bin/bash
+if  [$1==0]
+do
 echo "SrTiO3
  3.9048
 1.0 0.0 0.0
@@ -21,7 +23,10 @@ phonopy -d --dim='4 4 4'
 cp POSCAR POSCAR_UNITCELL
 cp SPOSCAR POSCAR
 cp INCAR.harmonic INCAR
-echo "VASP calculation"
+echo "VASP harmonic calculation"; sleep 300
+done
+if [$1==1]
+do
 phonopy --fc vasprun.xml
 cp POSCAR_UNITCELL POSCAR
 echo "interface"
@@ -30,3 +35,4 @@ cp POTCAR ./pop1/vasp/POTCAR
 cp ML_FF ./pop1/vasp/ML_FF
 nano run.bash
 echo "Running VASP"
+done
