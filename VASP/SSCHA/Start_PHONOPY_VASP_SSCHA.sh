@@ -11,7 +11,12 @@ direct
 0.0 0.5 0.5
 0.5 0.0 0.5
 0.5 0.5 0.0
-0.5 0.5 0.5" >> POSCAR
+0.5 0.5 0.5" > POSCAR
+echo " IBRION = 6
+ ML_FF_LMLFF = .TRUE.
+ ML_FF_ISTART = 2" > INCAR.harmonic
+echo " ML_FF_LMLFF = .TRUE.
+ ML_FF_ISTART = 2" > INCAR.sc
 phonopy -d --dim='4 4 4'
 cp POSCAR POSCAR_UNITCELL
 cp SPOSCAR POSCAR
