@@ -1,6 +1,8 @@
 #!/bin/bash
-if  [[$1 -eq 0]]
-then
+if [[-z $1]]; then
+  echo "Use Start_PHONOPY_VASP_SSCHA 0 for the harmonic calculation
+  Use Start_PHONOPY_VASP_SSCHA 1 for the first VASP force/energy calculation"
+elif  [[$1 -eq 0]]; then
 echo "SrTiO3
  3.9048
 1.0 0.0 0.0
@@ -24,8 +26,7 @@ cp POSCAR POSCAR_UNITCELL
 cp SPOSCAR POSCAR
 cp INCAR.harmonic INCAR
 echo "VASP harmonic calculation"; sleep 300
-elif [[$1 -eq 1]]
-then
+elif [[$1 -eq 1]]; then
 phonopy --fc vasprun.xml
 cp POSCAR_UNITCELL POSCAR
 echo "interface"
