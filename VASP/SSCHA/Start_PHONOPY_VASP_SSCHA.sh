@@ -11,7 +11,7 @@ direct
 0.0 0.5 0.5
 0.5 0.0 0.5
 0.5 0.5 0.0
-0.5 0.5 0.5"
+0.5 0.5 0.5" >> POSCAR_UNITCELL
 phonopy -d --dim='4 4 4'
 cp POSCAR POSCAR_UNITCELL
 cp SPOSCAR POSCAR
