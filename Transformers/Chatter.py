@@ -35,11 +35,11 @@ import time
 class NombredeClase(object):
     """docstring for NombredeClase."""
 
-    def __init__(self, arg):
+    def __init__(self, model_name):
         super(NombredeClase, self).__init__()
-        self.arg = arg
+        self.model_name = model_name
         # model_name = "microsoft/DialoGPT-large"
-        model_name = "microsoft/DialoGPT-medium"
+        # model_name = "microsoft/DialoGPT-medium"
         # model_name = "microsoft/DialoGPT-small"
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModelForCausalLM.from_pretrained(model_name)
