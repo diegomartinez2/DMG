@@ -27,7 +27,7 @@
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
-
+import time
 
 # -------
 # Clases
@@ -44,10 +44,11 @@ class NombredeClase(object):
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModelForCausalLM.from_pretrained(model_name)
 
-    def run(self):
+    def run(self, time_limit=300):
         #for step in range(5):
         # while True:
         finished = False
+        startTime = time.time()
         while not finished:
             # take user input
             text = input(">> You:")
@@ -70,7 +71,14 @@ class NombredeClase(object):
             print(f"DialoGPT: {output}")
             # if condition():
             #     break
-            finished = evaluate_end_condition()
+            executionTime = (time.time() - startTime)
+            # if (executionTime-time_limit > 0):
+                # evaluate_end_condition = True
+            # elif:
+            #     evaluate_end_condition = False
+            # finished = evaluate_end_condition
+            if (executionTime-time_limit > 0):
+                finished = True
         return 0
 
 # ----------
