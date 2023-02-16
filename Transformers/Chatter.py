@@ -46,6 +46,9 @@ class NombredeClase(object):
         # murtawh/DialoGPT-medium-brainarchangel
         # TheHappyDrone/DialoGPT-medium-Nexus-Nova-turing-v2
         # allenai/cosmo-xl
+        #? EleutherAI/gpt-neox-20b
+        #? EleutherAI/gpt-j-6B
+        #? EleutherAI/pythia-6.9b-deduped
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModelForCausalLM.from_pretrained(model_name)
 
