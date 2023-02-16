@@ -3,6 +3,7 @@ POPULATION=$1
 SUPERCELL_SIZE=2
 TEMPERATURE=300
 NCONFSSCHA=512
+NQIRR=4
 echo "============================="
 echo "Population="$POPULATION
 echo "Supercell size="$SUPERCELL_SIZE
@@ -16,10 +17,11 @@ cp ../POSCAR_UNITCELL POSCAR
 python /home/diego/github/vasp-phonopy-sscha/vasp-phonopy-sscha/interface.py --f_processing $POPULATION $SUPERCELL_SIZE
 python /home/diego/github/vasp-phonopy-sscha/vasp-phonopy-sscha/interface.py --en_processing $POPULATION
 cd ..
-echo "Editing SSCHA inputfile"
-nano minimize.py
+##echo "Editing SSCHA inputfile"
+##nano minimize.py
 echo "------Running SSCHA-----"
-python3 minimize.py > minim$POPULATION.out
+#python3 minimize.py > minim$POPULATION.out
+python3 minimnize.py -pop $POPULATION -nconf $NCONFSSCHA -cell $SUPERCELL_SIZE -temp $TEMPERATURE -nqirr $NQIRR > minim$POPULATION.out
 echo "Change directory to "pop$(($POPULATION+1))
 cd pop$(($POPULATION+1))
 echo "========"+`pwd`+"======="
