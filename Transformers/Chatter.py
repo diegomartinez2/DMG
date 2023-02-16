@@ -41,6 +41,11 @@ class NombredeClase(object):
         # model_name = "microsoft/DialoGPT-large"
         # model_name = "microsoft/DialoGPT-medium"
         # model_name = "microsoft/DialoGPT-small"
+        # model_name = "mattallio/Archivist-medium-dialoGPT"
+        model_name ="EZSNoVa/DialogGPT-medium-NoVa"
+        # murtawh/DialoGPT-medium-brainarchangel
+        # TheHappyDrone/DialoGPT-medium-Nexus-Nova-turing-v2
+        # allenai/cosmo-xl
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModelForCausalLM.from_pretrained(model_name)
 
