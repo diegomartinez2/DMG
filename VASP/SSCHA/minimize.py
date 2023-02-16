@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  untitled.py
+#  minimize.py
 #
 #  Copyright 2023 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
