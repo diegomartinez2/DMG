@@ -38,6 +38,11 @@ class NombredeClase(object):
     def __init__(self, arg):
         super(NombredeClase, self).__init__()
         self.arg = arg
+        # model_name = "microsoft/DialoGPT-large"
+        model_name = "microsoft/DialoGPT-medium"
+        # model_name = "microsoft/DialoGPT-small"
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        model = AutoModelForCausalLM.from_pretrained(model_name)
 
     def run(self):
         for step in range(5):
