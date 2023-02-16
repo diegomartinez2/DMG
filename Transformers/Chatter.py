@@ -77,7 +77,7 @@ def Testing_chat(arg):
     model = AutoModelForCausalLM.from_pretrained(model_name)
 
     # chatting 5 times with greedy search
-    for step in range(5):
+    for step in range(arg):
         # take user input
         text = input(">> You:")
         # encode the input and add end of string token
@@ -95,7 +95,7 @@ def Testing_chat(arg):
         print(f"DialoGPT: {output}")
 
     # chatting 5 times with beam search
-    for step in range(5):
+    for step in range(arg):
         # take user input
         text = input(">> You:")
         # encode the input and add end of string token
@@ -115,7 +115,7 @@ def Testing_chat(arg):
         print(f"DialoGPT: {output}")
 
     # chatting 5 times with sampling
-    for step in range(5):
+    for step in range(arg):
         # take user input
         text = input(">> You:")
         # encode the input and add end of string token
@@ -135,7 +135,7 @@ def Testing_chat(arg):
         print(f"DialoGPT: {output}")
 
     # chatting 5 times with Top K sampling & tweaking temperature
-    for step in range(5):
+    for step in range(arg):
         # take user input
         text = input(">> You:")
         # encode the input and add end of string token
@@ -156,7 +156,7 @@ def Testing_chat(arg):
         print(f"DialoGPT: {output}")
 
     # chatting 5 times with nucleus sampling & tweaking temperature
-    for step in range(5):
+    for step in range(arg):
         # take user input
         text = input(">> You:")
         # encode the input and add end of string token
@@ -179,7 +179,7 @@ def Testing_chat(arg):
 
     # chatting 5 times with nucleus & top-k sampling & tweaking temperature & multiple
     # sentences
-    for step in range(5):
+    for step in range(arg):
         # take user input
         text = input(">> You:")
         # encode the input and add end of string token
@@ -207,6 +207,7 @@ def Testing_chat(arg):
     pass
 
 def main(args):
+    Testing_chat(5)
     return 0
 
 if __name__ == '__main__':
