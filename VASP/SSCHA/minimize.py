@@ -26,7 +26,7 @@
 # ---------------------------
 from __future__ import print_function
 from __future__ import division
-import sys, os, getopt
+import sys, os, argparse #getopt
 
 import cellconstructor as CC
 import cellconstructor.Phonons
@@ -124,30 +124,34 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
     return 0
 
 def main(argv):
-    inputfile = ''
-    outputfile = ''
-    try:
-        opts, args = getopt.getopt(argv,"hi:o:",["ipop=","iconf=","icell=","itemp=","inqirr="])
-    except getopt.GetoptError:
-        print ('minimize.py -pop <population> -nconf <number of configurations> -cell <cell size> -temp <Temperature> -nqirr <number of irreducible q points>')
-    for opt, arg in opts:
-        if opt == '-h':
-            print ('minimnize.py -pop <population> -nconf <number of configurations> -cell <cell size)> -temp <Temperature> -nqirr <number of irreducible q points>')
-            sys.exit()
-        elif opt in ("-pop", "--ipop"):
-            POPULATION = arg
-        elif opt in ("-nconf", "--iconf"):
-            N_RANDOM = arg
-        elif opt in ("-cell", "--icell"):
-            SUPERCELL_SIZE = arg
-        elif opt in ("-temp", "--itemp"):
-            T = arg
-        elif opt in ("-nqirr", "--inqirr"):
-            NQIRR = arg
-    SUPERCELL = (SUPERCELL_SIZE SUPERCELL_SIZE,SUPERCELL_SIZE,SUPERCELL_SIZE)
-   #print ('Input file is ', inputfile)
-   #print ('Output file is ', outputfile)
-    sscha_run(POPULATION, N_RANDOM, SUPERCELL, T, NQIRR)
+    # try:
+    #     opts, args = getopt.getopt(argv,"hi:o:",["ipop=","iconf=","icell=","itemp=","inqirr="])
+    # except getopt.GetoptError:
+    #     print ('minimize.py -pop <population> -nconf <number of configurations> -cell <cell size> -temp <Temperature> -nqirr <number of irreducible q points>')
+    # for opt, arg in opts:
+    #     if opt == '-h':
+    #         print ('minimnize.py -pop <population> -nconf <number of configurations> -cell <cell size)> -temp <Temperature> -nqirr <number of irreducible q points>')
+    #         sys.exit()
+    #     elif opt in ("-pop", "--ipop"):
+    #         POPULATION = arg
+    #     elif opt in ("-nconf", "--iconf"):
+    #         N_RANDOM = arg
+    #     elif opt in ("-cell", "--icell"):
+    #         SUPERCELL_SIZE = arg
+    #     elif opt in ("-temp", "--itemp"):
+    #         T = arg
+    #     elif opt in ("-nqirr", "--inqirr"):
+    #         NQIRR = arg
+    # SUPERCELL = (SUPERCELL_SIZE SUPERCELL_SIZE,SUPERCELL_SIZE,SUPERCELL_SIZE)
+    argParser = argparse.ArgumentParser()
+    argParser.add_argument("-pop", "--POPULATION", type=int, help="Population number")
+    argParser.add_argument("-nconf", "--N_RANDOM", type=int, help="Number of configurations")
+    argParser.add_argument("-cell", "--SUPERCELL", type=int, help="Cell size")
+    argParser.add_argument("-temp", "--T", type=int, help="Temperature")
+    argParser.add_argument("-nqirr", "--NQIRR", type=int, help="Number of irreducible q points")
+    args = argParser.parse_args()
+    SUPERCELL = (args.SUPERCELL,args.SUPERCELL,args.SUPERCELL)
+    sscha_run(args.POPULATION, args.N_RANDOM, SUPERCELL, args.T, args.NQIRR)
 
 if __name__ == "__main__":
    main(sys.argv[1:])
