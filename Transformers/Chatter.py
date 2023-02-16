@@ -45,7 +45,8 @@ class NombredeClase(object):
         model = AutoModelForCausalLM.from_pretrained(model_name)
 
     def run(self):
-        for step in range(5):
+        #for step in range(5):
+        while True:
             # take user input
             text = input(">> You:")
             # encode the input and add end of string token
@@ -65,6 +66,9 @@ class NombredeClase(object):
             #print the output
             output = tokenizer.decode(chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
             print(f"DialoGPT: {output}")
+            if condition():
+                break
+        return 0
 
 # ----------
 # Funciones
