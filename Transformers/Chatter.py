@@ -42,13 +42,13 @@ class NombredeClase(object):
         # model_name = "microsoft/DialoGPT-medium"
         # model_name = "microsoft/DialoGPT-small"
         # model_name = "mattallio/Archivist-medium-dialoGPT"
-        model_name ="EZSNoVa/DialogGPT-medium-NoVa"
-        # murtawh/DialoGPT-medium-brainarchangel
-        # TheHappyDrone/DialoGPT-medium-Nexus-Nova-turing-v2
-        # allenai/cosmo-xl
-        #? EleutherAI/gpt-neox-20b
-        #? EleutherAI/gpt-j-6B
-        #? EleutherAI/pythia-6.9b-deduped
+        model_name = "EZSNoVa/DialogGPT-medium-NoVa"
+        # model_name = murtawh/DialoGPT-medium-brainarchangel
+        # model_name = TheHappyDrone/DialoGPT-medium-Nexus-Nova-turing-v2
+        # model_name = allenai/cosmo-xl
+        #? model_name = EleutherAI/gpt-neox-20b #don't know it this works
+        #? model_name = EleutherAI/gpt-j-6B
+        #? model_name = EleutherAI/pythia-6.9b-deduped
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModelForCausalLM.from_pretrained(model_name)
 
