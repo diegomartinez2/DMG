@@ -35,8 +35,9 @@ import time
 class Chatter(object):
     """Chatter bot basado en redes neuronales tipo transformers."""
 
-    def __init__(self, model_name):
+    def __init__(self, model_name, nombre="MiPoP-tan"):
         super(Chatter, self).__init__()
+        self.nombre = nombre
         self.model_name = model_name
         # model_name = "microsoft/DialoGPT-large"
         # model_name = "microsoft/DialoGPT-medium"
@@ -76,7 +77,7 @@ class Chatter(object):
             )
             #print the output
             output = tokenizer.decode(chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
-            print(f"DialoGPT: {output}")
+            print(f"{self.nombre}: {output}")
             # if condition():
             #     break
             executionTime = (time.time() - startTime)
@@ -233,6 +234,7 @@ def main(args):
     #test = True  #Change to True for testing, change to False for running.
     argParser = argparse.ArgumentParser()
     argParser.add_argument("-T", "--tiempo", type=int, help="Límite de tiempo de ejecución")
+    argParser.add_argument("-n", "--nombre", type=int, help="Nombre de la IA")
     argParser.add_argument("-p", "--prueba", type=bool, help="Modo prueba=True,False")
     argParser.add_argument("-m","--modelo", help="Modelo de red neuronal pre-entrenada (microsoft/DialoGPT-medium por defecto)")
     args = argParser.parse_args()
@@ -240,7 +242,7 @@ def main(args):
     if test:
         Testing_chat(5)
     else:
-        MiPop_tan = Chatter(args.modelo)
+        MiPop_tan = Chatter(args.modelo, args.nombre)
         MiPoP_tan.run(args.tiempo)
     return 0
 
