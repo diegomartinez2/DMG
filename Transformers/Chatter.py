@@ -32,17 +32,17 @@ import time
 # -------
 # Clases
 # -------
-class NombredeClase(object):
+class Chatter(object, model_name="EZSNoVa/DialogGPT-medium-NoVa"):
     """docstring for NombredeClase."""
 
     def __init__(self, model_name):
-        super(NombredeClase, self).__init__()
+        super(Chatter, self).__init__()
         self.model_name = model_name
         # model_name = "microsoft/DialoGPT-large"
         # model_name = "microsoft/DialoGPT-medium"
         # model_name = "microsoft/DialoGPT-small"
         # model_name = "mattallio/Archivist-medium-dialoGPT"
-        model_name = "EZSNoVa/DialogGPT-medium-NoVa"
+        # model_name = "EZSNoVa/DialogGPT-medium-NoVa"
         # model_name = murtawh/DialoGPT-medium-brainarchangel
         # model_name = TheHappyDrone/DialoGPT-medium-Nexus-Nova-turing-v2
         # model_name = allenai/cosmo-xl
