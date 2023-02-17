@@ -32,7 +32,7 @@ import time
 # -------
 # Clases
 # -------
-class Chatter(object, model_name="EZSNoVa/DialogGPT-medium-NoVa"):
+class Chatter(object):
     """docstring for NombredeClase."""
 
     def __init__(self, model_name):
@@ -230,7 +230,12 @@ def Testing_chat(arg):
     pass
 
 def main(args):
-    Testing_chat(5)
+    test = True  #Change to True for testing, change to False for running.
+    if test:
+        Testing_chat(5)
+    else:
+        MiPop_tan = Chatter("microsoft/DialoGPT-medium")
+        MiPoP_tan.run(300)
     return 0
 
 if __name__ == '__main__':
