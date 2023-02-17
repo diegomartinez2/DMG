@@ -19,3 +19,15 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
+# First copy the files to the cluster:
+# scp [options] username1@source_host:directory1/filename1 username2@destination_host:directory2/filename2
+scp -r vasp diegom@diegom@ekhi.cfm.ehu.es:~/vasp
+# Second, run the VASP
+# ssh -l ${USERNAME} ${HOSTNAME} "${SCRIPT}"
+ssh -l diegom ekhi.cfm.ehu.es "cd ~/vasp; sbatch run.bash"
+# Third, check if is still running (¿¿¿cómo hacerlo???)
+if `squeue |grep diegom|awk -F, '{print $NF}'`==$codigo; then continua=True ; else continua=False; fi
+
+# Forth, if finished retrieve the files back
+
+scp -r diegom@diegom@ekhi.cfm.ehu.es:~/vasp vasp
