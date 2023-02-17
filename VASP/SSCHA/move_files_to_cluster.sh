@@ -24,9 +24,10 @@
 scp -r vasp diegom@diegom@ekhi.cfm.ehu.es:~/vasp
 # Second, run the VASP
 # ssh -l ${USERNAME} ${HOSTNAME} "${SCRIPT}"
-ssh -l diegom ekhi.cfm.ehu.es "cd ~/vasp; sbatch run.bash"
+codigo=`ssh -l diegom ekhi.cfm.ehu.es "cd ~/vasp; sbatch run.bash"`|awk -F, '{print $NF}'
 # Third, check if is still running (¿¿¿cómo hacerlo???)
-if `squeue |grep diegom|awk -F, '{print $NF}'`==$codigo; then continua=True ; else continua=False; fi
+#codigo=
+if `squeue |grep diegom|awk '{print $1}'`==$codigo; then continua=True ; else continua=False; fi
 
 # Forth, if finished retrieve the files back
 
