@@ -60,5 +60,6 @@ cd ..
 echo "----------------------------------------"
 echo "Checking if the Kong-Liu parameter is OK"
 echo "----------------------------------------"
-for i in `seq 1 $POPULATION`; do grep "Kong-liu" minim$i.out|tail -1;done
-echo "if those numbers are withing error, continue with the VASP calculation"
+#for i in `seq 1 $POPULATION`; do grep "Kong-liu" minim$i.out|tail -1;done
+grep "Kong-Liu" minim1.out|head -1;echo "--------";for i in `seq 1 12`;do grep "Kong-Liu" minim$i.out|tail -1;done
+echo "if those numbers are withing error (first one divided by last one less than KL ratio), continue with the VASP calculation"
