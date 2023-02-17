@@ -33,7 +33,7 @@ import time
 # Clases
 # -------
 class Chatter(object):
-    """docstring for NombredeClase."""
+    """Chatter bot basado en redes neuronales tipo transformers."""
 
     def __init__(self, model_name):
         super(Chatter, self).__init__()
@@ -230,16 +230,18 @@ def Testing_chat(arg):
     pass
 
 def main(args):
-    test = True  #Change to True for testing, change to False for running.
+    #test = True  #Change to True for testing, change to False for running.
     argParser = argparse.ArgumentParser()
     argParser.add_argument("-T", "--tiempo", type=int, help="Límite de tiempo de ejecución")
     argParser.add_argument("-p", "--prueba", type=bool, help="Modo prueba=True,False")
+    argParser.add_argument("-m","--modelo", help="Modelo de red neuronal pre-entrenada (microsoft/DialoGPT-medium por defecto)")
     args = argParser.parse_args()
+    test = args.prueba
     if test:
         Testing_chat(5)
     else:
-        MiPop_tan = Chatter("microsoft/DialoGPT-medium")
-        MiPoP_tan.run(300)
+        MiPop_tan = Chatter(args.modelo)
+        MiPoP_tan.run(args.tiempo)
     return 0
 
 if __name__ == '__main__':
