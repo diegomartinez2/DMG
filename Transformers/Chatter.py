@@ -231,6 +231,10 @@ def Testing_chat(arg):
 
 def main(args):
     test = True  #Change to True for testing, change to False for running.
+    argParser = argparse.ArgumentParser()
+    argParser.add_argument("-T", "--tiempo", type=int, help="Límite de tiempo de ejecución")
+    argParser.add_argument("-p", "--prueba", type=bool, help="Modo prueba=True,False")
+    args = argParser.parse_args()
     if test:
         Testing_chat(5)
     else:
