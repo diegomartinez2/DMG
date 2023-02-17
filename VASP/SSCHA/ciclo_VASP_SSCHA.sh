@@ -61,3 +61,4 @@ echo "----------------------------------------"
 echo "Checking if the Kong-Liu parameter is OK"
 echo "----------------------------------------"
 for i in `seq 1 $POPULATION`; do grep "Kong-liu" minim$i.out|tail -1;done
+echo "if those numbers are withing error, continue with the VASP calculation"
