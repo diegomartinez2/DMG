@@ -68,3 +68,13 @@ kong_liu_1=`grep "Kong-Liu" minim1.out|head -1`
 kong_liu_2=`grep "Kong-Liu" minim$POPULATION.out|tail -1`
 echo "If this formula is OK, then you are converged:"
 echo $(($kong_liu_1/$kong_liu_2))">"$kong_liu_ratio"?"
+if [$(($kong_liu_1/$kong_liu_2)) -le $kong_liu_ratio]
+then
+  echo "---------------------------------------"
+  echo "Now is time to do the VASP calculations"
+  echo "---------------------------------------"
+else
+  echo "--------------------------"
+  echo "The calculation converged."
+  echo "--------------------------"
+fi
