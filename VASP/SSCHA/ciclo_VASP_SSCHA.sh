@@ -65,4 +65,4 @@ grep "Kong-Liu" minim1.out|head -1;echo "--------";for i in `seq 1 12`;do grep "
 echo "if those numbers are withing error (first one divided by last one less than KL ratio), continue with the VASP calculation"
 kong_liu_1=`grep "Kong-Liu" minim1.out|head -1`
 kong_liu_2=`grep "Kong-Liu" minim$POPULATION.out|tail -1`
-echo [$kong_liu_1/$kong_liu_2]
+echo $(($kong_liu_1/$kong_liu_2))
