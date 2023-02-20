@@ -57,7 +57,10 @@ nano vasp/run.bash
 echo "---------------------------------------"
 echo "Now is time to do the VASP calculations"
 echo "---------------------------------------"
+echo "============================="
+echo "Change directory back"
 cd ..
+echo "========"+`pwd`+"======="
 echo "----------------------------------------"
 echo "Checking if the Kong-Liu parameter is OK"
 echo "----------------------------------------"
