@@ -87,7 +87,7 @@ then
   #NCONFSSHA=300   #number of configurations in the sscha ensemble
   #mpirun vasp_std > stdout
   for i in `seq 1 $NCONFSSCHA`; do
-      echo "---RUN--"$i"--of--"$NCONFSSCHA
+      echo -e "---RUN--"$i"--of--"$NCONFSSCHA"\n"
       echo `date` >> timing
       cp POSCAR_$i POSCAR
   #    mpirun -np $np vasp_std > stdout
