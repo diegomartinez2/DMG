@@ -92,7 +92,7 @@ then
   #    mpirun -np $np vasp_std > stdout
       ~/VASP/vasp.6.3.0/bin/vasp_std > stdout
       grep "energy  without entropy" OUTCAR  >> energies
-      grep "forces" -A $IONS vasprun.xml > forces/forces_population$POPULATION_$i.dat
+      grep "forces" -A $IONS vasprun.xml > forces/forces_population$POPULATION'_'$i.dat
       rm POSCAR
       mv OUTCAR OUTCAR_$i
       echo `date` >> timing
