@@ -21,15 +21,13 @@
 #
 runner=True
 POPULATION=1
-j=1
 while [runner]
 do
   if [$(($kong_liu_1/$kong_liu_2)) -le $kong_liu_ratio]
   then
-    run_local.sh $j
-    ((j++))
+    run_local.sh $POPULATION
+    ((POPULATION++))
   else
     runner=False
-  fi     
-
+  fi
 done
