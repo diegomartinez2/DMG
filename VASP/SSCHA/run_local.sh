@@ -52,8 +52,8 @@ python /home/diego/github/vasp-phonopy-sscha/vasp-phonopy-sscha/interface.py --t
 cp ../INCAR.sc vasp/INCAR
 cp ../POTCAR.SrOTi vasp/POTCAR
 cp ../ML_FF vasp/ML_FF
-cp ../run.sh vasp/run.sh
-nano vasp/run.sh
+# cp ../run.sh vasp/run.sh
+# nano vasp/run.sh
 #echo "---------------------------------------"
 #echo "Now is time to do the VASP calculations"
 #echo "---------------------------------------"
@@ -85,8 +85,8 @@ then
   IONS=54         #number of atoms in the supercells
   #NCONFSSHA=300   #number of configurations in the sscha ensemble
   #mpirun vasp_std > stdout
-  for i in `seq 1 $NCONFSSHA`; do
-      echo "---RUN--"$i"--of--"$NCONFSSHA
+  for i in `seq 1 $NCONFSSCHA`; do
+      echo "---RUN--"$i"--of--"$NCONFSSCHA
       echo `date` >> timing
       cp POSCAR_$i POSCAR
   #    mpirun -np $np vasp_std > stdout
