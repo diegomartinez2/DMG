@@ -51,7 +51,9 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
 
     # Load the dynamical matrices that generated the ensemble
 
-    namefile='dyn_start_population'+str(POPULATION)+'_'
+    namefile='pop'+str(POPULATION)+'/dyn/dynq'
+    if (POPULATION != 1):
+        namefile='dyn_end_population'+str(POPULATION-1)+'_'
     dyn = CC.Phonons.Phonons(namefile, NQIRR)
 
     # We make a copy of the starting dynamica matrices
