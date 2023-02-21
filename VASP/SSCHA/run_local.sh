@@ -52,6 +52,7 @@ python /home/diego/github/vasp-phonopy-sscha/vasp-phonopy-sscha/interface.py --t
 cp ../INCAR.sc vasp/INCAR
 cp ../POTCAR.SrOTi vasp/POTCAR
 cp ../ML_FF vasp/ML_FF
+mkdir vasp/forces
 # cp ../run.sh vasp/run.sh
 # nano vasp/run.sh
 #echo "---------------------------------------"
