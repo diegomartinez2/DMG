@@ -42,7 +42,7 @@ cd ..
 ##nano minimize.py
 echo "------Running SSCHA-----"
 #python3 minimize.py > minim$POPULATION.out
-python3 minimnize.py -pop $POPULATION -nconf $NCONFSSCHA -cell $SUPERCELL_SIZE -temp $TEMPERATURE -nqirr $NQIRR > minim$POPULATION.out
+python3 minimize.py -pop $POPULATION -nconf $NCONFSSCHA -cell $SUPERCELL_SIZE -temp $TEMPERATURE -nqirr $NQIRR > minim$POPULATION.out
 echo "Change directory to "pop$(($POPULATION+1))
 cd pop$(($POPULATION+1))
 echo "========"+`pwd`+"======="
