@@ -125,6 +125,16 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
     minimizer.dyn.save_qe(namefile)
     return 0
 
+    path = './pop'+str(POPULATION+1)+'/dyn'
+    # Check whether the specified path exists or not
+    isExist = os.path.exists(path)
+    if not isExist:
+       # Create a new directory because it does not exist
+       os.makedirs(path)
+    #os.makedirs('./pop'+str(POPULATION+1)+'/dyn')
+    namefile='./pop'+str(POPULATION+1)+'/dyn/dynq'
+    minimizer.dyn.save_qe(namefile)
+
 def main(argv):
     # try:
     #     opts, args = getopt.getopt(argv,"hi:o:",["ipop=","iconf=","icell=","itemp=","inqirr="])
