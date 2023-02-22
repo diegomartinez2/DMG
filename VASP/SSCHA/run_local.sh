@@ -19,13 +19,13 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
-POPULATION=$1
+POPULATION=$1       #population index
 SUPERCELL_SIZE=2
 TEMPERATURE=300
-NCONFSSCHA=512
-NQIRR=4
-kong_liu_ratio=0.5
-IONS=54         #number of atoms in the supercells
+NCONFSSCHA=512      #number of configurations in the sscha ensemble
+NQIRR=4             #number of irreducible q points
+kong_liu_ratio=0.5  # The parameter that estimates whether the ensemble is still good
+IONS=54             #number of atoms in the supercells
 echo "============================="
 echo "Population="$POPULATION
 echo "Supercell size="$SUPERCELL_SIZE
