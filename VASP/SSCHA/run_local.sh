@@ -25,11 +25,14 @@ TEMPERATURE=300
 NCONFSSCHA=512
 NQIRR=4
 kong_liu_ratio=0.5
+IONS=54         #number of atoms in the supercells
 echo "============================="
 echo "Population="$POPULATION
 echo "Supercell size="$SUPERCELL_SIZE
 echo "Number of configurations="$NCONFSSCHA
 echo "Temperature="$TEMPERATURE
+echo "Number of atoms in the supercell="$IONS
+echo "Number of irreducible q points="$NQIRR
 echo "============================="
 echo "Change directory to "pop$POPULATION
 cd pop$POPULATION
@@ -78,7 +81,7 @@ then
   #########################################################################
   #np=40           #number of cpus
   #POPULATION=1    #population index
-  IONS=54         #number of atoms in the supercells
+  #IONS=54         #number of atoms in the supercells
   #NCONFSSHA=300   #number of configurations in the sscha ensemble
   #mpirun vasp_std > stdout
   for i in `seq 1 $NCONFSSCHA`; do
