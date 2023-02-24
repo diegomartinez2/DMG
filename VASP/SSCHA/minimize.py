@@ -62,7 +62,7 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
 
     # Prepare the stochastic weights for the SSCHA minimization
 
-    folder_with_ensemble='population'+str(POPULATION)+'_ensemble'
+    folder_with_ensemble='pop'+str(POPULATION)+'/data'
     ensemble = sscha.Ensemble.Ensemble(dyn, T, SUPERCELL)
     ensemble.load(folder_with_ensemble, population = POPULATION, N = N_RANDOM)
 
