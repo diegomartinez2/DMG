@@ -26,6 +26,7 @@ NCONFSSCHA=512      #number of configurations in the sscha ensemble
 NQIRR=4             #number of irreducible q points
 kong_liu_ratio=0.5  # The parameter that estimates whether the ensemble is still good
 IONS=54             #number of atoms in the supercells
+vasp_phonopy_sscha_interface_location="/media/diego/Calculations/SrTiO3/SSCHA/Hessian_vs_T_and_Nconfs/vasp-phonopy-sscha/vasp-phonopy-sscha"
 echo "============================="
 echo "Population="$POPULATION
 echo "Supercell size="$SUPERCELL_SIZE
@@ -38,8 +39,8 @@ echo "Change directory to "pop$POPULATION
 cd pop$POPULATION
 echo "========"+`pwd`+"======="
 cp ../POSCAR_UNITCELL POSCAR
-python ../../vasp-phonopy-sscha/vasp-phonopy-sscha/interface.py --f_processing $POPULATION $SUPERCELL_SIZE
-python ../../vasp-phonopy-sscha/vasp-phonopy-sscha/interface.py --en_processing $POPULATION
+python $vasp_phonopy_sscha_interface_location/interface.py --f_processing $POPULATION $SUPERCELL_SIZE
+python $vasp_phonopy_sscha_interface_location/interface.py --en_processing $POPULATION
 echo "============================="
 echo "Change directory back"
 cd ..
@@ -49,9 +50,9 @@ python3 minimize.py -pop $POPULATION -nconf $NCONFSSCHA -cell $SUPERCELL_SIZE -t
 echo "Change directory to "pop$(($POPULATION+1))
 cd pop$(($POPULATION+1))
 echo "========"+`pwd`+"======="
-python ../../vasp-phonopy-sscha/vasp-phonopy-sscha/interface.py --generate $NCONFSSCHA $(($POPULATION+1)) $SUPERCELL_SIZE $TEMPERATURE
+python $vasp_phonopy_sscha_interface_location/interface.py --generate $NCONFSSCHA $(($POPULATION+1)) $SUPERCELL_SIZE $TEMPERATURE
 cp ../POSCAR_UNITCELL POSCAR
-python ../../vasp-phonopy-sscha/vasp-phonopy-sscha/interface.py --to_vasp $(($POPULATION+1)) $SUPERCELL_SIZE
+python $vasp_phonopy_sscha_interface_location/interface.py --to_vasp $(($POPULATION+1)) $SUPERCELL_SIZE
 cp ../INCAR.sc vasp/INCAR
 cp ../POTCAR.SrOTi vasp/POTCAR
 cp ../ML_FF vasp/ML_FF
