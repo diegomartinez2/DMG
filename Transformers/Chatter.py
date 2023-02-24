@@ -28,7 +28,7 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import time
-
+import sys, os, argparse
 # -------
 # Clases
 # -------
