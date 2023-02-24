@@ -38,7 +38,7 @@ while [[ $runner = 'True' ]]
 do
   if [[ $(($kong_liu_1/$kong_liu_2)) < $kong_liu_ratio]]
   then
-    run_local.sh $POPULATION
+    bash run_local.sh $POPULATION
     ((POPULATION++))
   else
     runner=False
