@@ -36,7 +36,7 @@ echo "Kong-Liu ratio="$kong_liu_ratio
 echo "============================="
 while [[ $runner = 'True' ]]
 do
-  if [[ $(($kong_liu_1/$kong_liu_2)) -le $kong_liu_ratio]]
+  if [[ $(($kong_liu_1/$kong_liu_2)) < $kong_liu_ratio]]
   then
     run_local.sh $POPULATION
     ((POPULATION++))
