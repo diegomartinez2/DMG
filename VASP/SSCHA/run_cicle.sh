@@ -34,7 +34,7 @@ echo "============================="
 echo "Population="$POPULATION
 echo "Kong-Liu ratio="$kong_liu_ratio
 echo "============================="
-while [runner]
+while [$runner]
 do
   if [$(($kong_liu_1/$kong_liu_2)) -le $kong_liu_ratio]
   then
