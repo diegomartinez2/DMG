@@ -53,9 +53,9 @@ echo "========"+`pwd`+"======="
 python $vasp_phonopy_sscha_interface_location/interface.py --generate $NCONFSSCHA $(($POPULATION+1)) $NQUIRR $TEMPERATURE
 cp ../POSCAR_UNITCELL POSCAR
 python $vasp_phonopy_sscha_interface_location/interface.py --to_vasp $(($POPULATION+1)) $SUPERCELL_SIZE
-cp ../INCAR.sc vasp/INCAR
-cp ../POTCAR.SrOTi vasp/POTCAR
-cp ../ML_FF vasp/ML_FF
+cp ../INCAR.sc vasp/INCAR .
+cp ../POTCAR.SrOTi vasp/POTCAR .
+cp ../ML_FF vasp/ML_FF .
 mkdir vasp/forces
 echo "============================="
 echo "Change directory back"
