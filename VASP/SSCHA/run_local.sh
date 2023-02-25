@@ -50,7 +50,7 @@ python3 minimize.py -pop $POPULATION -nconf $NCONFSSCHA -cell $SUPERCELL_SIZE -t
 echo "Change directory to "pop$(($POPULATION+1))
 cd pop$(($POPULATION+1))
 echo "========"+`pwd`+"======="
-python $vasp_phonopy_sscha_interface_location/interface.py --generate $NCONFSSCHA $(($POPULATION+1)) $SUPERCELL_SIZE $TEMPERATURE
+python $vasp_phonopy_sscha_interface_location/interface.py --generate $NCONFSSCHA $(($POPULATION+1)) $NQUIRR $TEMPERATURE
 cp ../POSCAR_UNITCELL POSCAR
 python $vasp_phonopy_sscha_interface_location/interface.py --to_vasp $(($POPULATION+1)) $SUPERCELL_SIZE
 cp ../INCAR.sc vasp/INCAR
