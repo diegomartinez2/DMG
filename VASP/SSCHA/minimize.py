@@ -121,6 +121,11 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
     plt.savefig(name_for_plot)
 
     # Let's print the final quantities
+    # dyn_sc = minim.dyn.GenerateSupercellDyn( minim.ensemble.supercell )
+    # # Diagonalize
+    # w, pols = dyn_sc.DyagDinQ(0)
+    # self.total_freqs.append(w)
+    # np.savetxt(freq_name, self.total_freqs, header = "Time vs Frequencies")
 
     minimizer.finalize()
 
