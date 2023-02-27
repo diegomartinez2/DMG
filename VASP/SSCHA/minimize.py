@@ -81,6 +81,10 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
     # Let's start the minimization
 
     minimizer.init()
+
+    ioinfo=sscha.Utilities.IOInfo()
+    ioinfo.SetupSaving("minim_info")
+
     minimizer.run()
 
     # Let's make some plot on the evolution of the minimization
