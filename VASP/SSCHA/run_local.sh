@@ -64,9 +64,6 @@ echo "========"+`pwd`+"======="
 echo "----------------------------------------"
 echo "Checking if the Kong-Liu parameter is OK"
 echo "----------------------------------------"
-#for i in `seq 1 $POPULATION`; do grep "Kong-liu" minim$i.out|tail -1;done
-#grep "Kong-Liu" minim1.out|head -1;echo "--------";for i in `seq 1 12`;do grep "Kong-Liu" minim$i.out|tail -1;done
-#echo "if those numbers are withing error (first one divided by last one less than KL ratio), continue with the VASP calculation"
 kong_liu_1=`grep "Kong-Liu" minim1.out|head -1 | awk '{print $NF}'`
 kong_liu_2=`grep "Kong-Liu" minim$POPULATION.out|tail -1 | awk '{print $NF}'`
 echo "If this formula is OK, then you are converged:"
@@ -110,16 +107,10 @@ echo "Change directory to "pop$(($POPULATION+1))"/vasp"
 cd pop$(($POPULATION+1))/vasp
 echo "========"+`pwd`+"======="
 #########################################################################
-#np=40           #number of cpus
-#POPULATION=1    #population index
-#IONS=54         #number of atoms in the supercells
-#NCONFSSHA=300   #number of configurations in the sscha ensemble
-#mpirun vasp_std > stdout
 for i in `seq 1 $NCONFSSCHA`; do
     echo -ne "---RUN--"$i"--of--"$NCONFSSCHA"\r"
     echo `date` >> timing
     cp POSCAR_$i POSCAR
-#    mpirun -np $np vasp_std > stdout
     ~/VASP/vasp.6.3.0/bin/vasp_std > stdout
     grep "energy  without entropy" OUTCAR  >> energies
     grep "forces" -A $IONS vasprun.xml > forces/forces_population$(($POPULATION+1))'_'$i.dat
