@@ -54,8 +54,6 @@ class Chatter(object):
         model = AutoModelForCausalLM.from_pretrained(model_name)
 
     def run(self, time_limit=300):
-        #for step in range(5):
-        # while True:
         finished = False
         startTime = time.time()
         while not finished:
