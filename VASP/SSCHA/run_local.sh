@@ -56,6 +56,7 @@ python $vasp_phonopy_sscha_interface_location/interface.py --to_vasp $(($POPULAT
 cp ../INCAR.sc vasp/INCAR
 cp ../POTCAR.SrOTi vasp/POTCAR
 cp ../ML_FF vasp/ML_FF
+cp ../KPOINTS vasp/KPOINTS
 mkdir vasp/forces
 echo "============================="
 echo "Change directory back"
