@@ -55,7 +55,7 @@ cp ../POSCAR_UNITCELL POSCAR
 python $vasp_phonopy_sscha_interface_location/interface.py --to_vasp $(($POPULATION+1)) $SUPERCELL_SIZE
 cp ../INCAR.sc vasp/INCAR
 cp ../POTCAR.SrOTi vasp/POTCAR
-cp ../ML_FF vasp/ML_FF
+ln -s ../ML_FF vasp/ML_FF
 cp ../KPOINTS vasp/KPOINTS   #now it needs the KPOINTS file (comment if not file)
 mkdir vasp/forces
 echo "============================="
