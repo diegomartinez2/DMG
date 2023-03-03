@@ -35,7 +35,7 @@ import sys, os, argparse
 class Chatter(object):
     """Chatter bot basado en redes neuronales tipo transformers."""
 
-    def __init__(self, model_name, nombre="MiPoP-tan"):
+    def __init__(self, model_name="microsoft/DialoGPT-medium", nombre="MiPoP-tan"):
         super(Chatter, self).__init__()
         self.nombre = nombre
         self.model_name = model_name
