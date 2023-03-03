@@ -30,13 +30,13 @@ from PIL import Image
 import time
 import psutil
 import random
-from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
+#from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
 
 
 start_time = time.time()
 current_steps = 25
 
-SAFETY_CHECKER = StableDiffusionSafetyChecker.from_pretrained("CompVis/stable-diffusion-safety-checker", torch_dtype=torch.float16)
+#SAFETY_CHECKER = StableDiffusionSafetyChecker.from_pretrained("CompVis/stable-diffusion-safety-checker", torch_dtype=torch.float16)
 
 
 class Model:
@@ -46,7 +46,7 @@ class Model:
 
         if path != "":
             self.pipe_t2i = StableDiffusionPipeline.from_pretrained(
-                path, torch_dtype=torch.float16, safety_checker=SAFETY_CHECKER
+                path, torch_dtype=torch.float16#, safety_checker=SAFETY_CHECKER
             )
             self.pipe_t2i.scheduler = DPMSolverMultistepScheduler.from_config(
                 self.pipe_t2i.scheduler.config
