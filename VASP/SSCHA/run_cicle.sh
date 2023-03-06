@@ -24,6 +24,13 @@ POPULATION=1
 #kong_liu_ratio=0.5
 while [[ $runner = 'True' ]]
 do
+  if [[ $POPULATION -eq 1 ]]
+  then
+      convergence="False"
+  else
+      convergence=`grep "SSCHA converge" minim$POPULATION.out|tail -1 | awk '{print $NF}'`
+  fi
+
   # if [[ $POPULATION -ne 1 ]]
   # then
   #   kong_liu_1=`grep "Kong-Liu" minim1.out|head -1 | awk '{print $NF}'`
