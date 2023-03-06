@@ -21,7 +21,7 @@
 #
 runner=True
 POPULATION=1
-kong_liu_ratio=0.5
+#kong_liu_ratio=0.5
 while [[ $runner = 'True' ]]
 do
   # if [[ $POPULATION -ne 1 ]]
