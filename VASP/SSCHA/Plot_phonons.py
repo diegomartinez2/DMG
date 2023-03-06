@@ -24,21 +24,21 @@ data = N.loadtxt('harmonic_calculation/harmonic.freq.gp')
 ax1.plot(data[:,0],data[:,1], color='k', linestyle='dotted', label='harmonic')
 ax1.plot(data[:,0],data[:,2:7], color='k', linestyle='dotted')
 
-data = N.loadtxt('dyn_start_population1.freq.gp')
-ax1.plot(data[:,0],data[:,1], color='k', linestyle='dashed', label='starting')
-ax1.plot(data[:,0],data[:,2:7], color='k', linestyle='dashed')
-
-data = N.loadtxt('dyn_end_population1.freq.gp')
-ax1.plot(data[:,0],data[:,1], color='b', label='pop1')
-ax1.plot(data[:,0],data[:,2:7], color='b')
-
-data = N.loadtxt('dyn_end_population2.freq.gp')
-ax1.plot(data[:,0],data[:,1], color='g', label='pop2')
-ax1.plot(data[:,0],data[:,2:7], color='g')
-
-data = N.loadtxt('dyn_end_population3.freq.gp')
-ax1.plot(data[:,0],data[:,1], color='r', label='pop3')
-ax1.plot(data[:,0],data[:,2:7], color='r')
+# data = N.loadtxt('dyn_start_population1.freq.gp')
+# ax1.plot(data[:,0],data[:,1], color='k', linestyle='dashed', label='starting')
+# ax1.plot(data[:,0],data[:,2:7], color='k', linestyle='dashed')
+#
+# data = N.loadtxt('dyn_end_population1.freq.gp')
+# ax1.plot(data[:,0],data[:,1], color='b', label='pop1')
+# ax1.plot(data[:,0],data[:,2:7], color='b')
+#
+# data = N.loadtxt('dyn_end_population2.freq.gp')
+# ax1.plot(data[:,0],data[:,1], color='g', label='pop2')
+# ax1.plot(data[:,0],data[:,2:7], color='g')
+#
+# data = N.loadtxt('dyn_end_population3.freq.gp')
+# ax1.plot(data[:,0],data[:,1], color='r', label='pop3')
+# ax1.plot(data[:,0],data[:,2:7], color='r')
 for i in range(1,3,1):
     data = N.loadtxt('dyn_end_population{i}.freq.gp')
     ax1.plot(data[:,0],data[:,1], color='r', label='pop{i}'
