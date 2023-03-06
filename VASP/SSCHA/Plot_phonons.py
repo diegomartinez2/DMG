@@ -39,6 +39,10 @@ ax1.plot(data[:,0],data[:,2:7], color='g')
 data = N.loadtxt('dyn_end_population3.freq.gp')
 ax1.plot(data[:,0],data[:,1], color='r', label='pop3')
 ax1.plot(data[:,0],data[:,2:7], color='r')
+for i in range(1,3,1):
+    data = N.loadtxt('dyn_end_population{i}.freq.gp')
+    ax1.plot(data[:,0],data[:,1], color='r', label='pop{i}'
+    ax1.plot(data[:,0],data[:,2:7], color='r')
 
 ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
 
