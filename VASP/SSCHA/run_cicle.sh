@@ -36,7 +36,7 @@ do
   echo "Population="$POPULATION
   echo "Convergence="$convergence
   echo "============================="
-  # convergence=`grep "SSCHA converge" minim$POPULATION.out|tail -1 | awk '{print $NF}'`
+  runner=False
   case $convergence in
    (True)
          echo "OK, Converged"
@@ -46,6 +46,7 @@ do
          echo "NOT-Converged"
          bash run_local.sh $POPULATION
          ((POPULATION++))
+         runner=True
          ;;
   esac
   # if [[ $POPULATION -le 5 ]]
