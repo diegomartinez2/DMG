@@ -56,4 +56,14 @@ do
   # else
   #   runner=False
   # fi
+  if [[ `grep "SSCHA converge" minim$last_pop.out|tail -1 | awk '{print $NF}'` != "True" ]]
+  then
+    echo "NOT-Converged"
+    bash run_local.sh $POPULATION
+    ((POPULATION++))
+    runner=True
+  else
+    echo "OK, Converged"
+    runner=False
+  fi
 done
