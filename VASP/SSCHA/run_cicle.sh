@@ -28,8 +28,8 @@ do
   then
       convergence="False"
   else
-      #last_pop=$(($POPULATION-1))
-      ((last_pop=POPULATION-1))
+      last_pop=$(($POPULATION-1))
+      #((last_pop=POPULATION-1))
       convergence=$(grep "SSCHA" minim$last_pop.out|tail -1 | awk '{print $NF}')
   fi
   echo "============================="
