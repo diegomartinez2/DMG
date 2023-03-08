@@ -143,6 +143,12 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
     #os.makedirs('./pop'+str(POPULATION+1)+'/dyn')
     namefile='./pop'+str(POPULATION+1)+'/dyn/dynq'
     minimizer.dyn.save_qe(namefile)
+    #save frequencies to file
+    f = open("Frequencies.txt", "a")
+    w_s, pols = minimizer.dyn.DiagonalizeSupercell()
+    f.write(" ".join(["{:.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in  w_s]))
+    f.close()
+    #print convergence of calculation
     print ("SSCHA Converged? = {}".format(minimizer.is_converged()))
     return 0
     # harm_dyn = CC.Phonons.Phonons("harmonic_dyn", nqirr =3) # We load harmonic_dynX with X = 1,2,3
