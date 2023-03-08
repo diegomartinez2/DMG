@@ -30,25 +30,25 @@ do
   else
       #last_pop=$(($POPULATION-1))
       ((last_pop=POPULATION-1))
-      convergence=`grep "SSCHA converge" minim$last_pop.out|tail -1 | awk '{print $NF}'`
+      convergence=`grep "SSCHA" minim$last_pop.out|tail -1 | awk '{print $NF}'`
   fi
   echo "============================="
   echo "Population="$POPULATION
   echo "Convergence="$convergence
   echo "============================="
   runner=False
-  case $convergence in
-   (True)
-         echo "OK, Converged"
-         runner=False
-         ;;
-   (False)
-         echo "NOT-Converged"
-         bash run_local.sh $POPULATION
-         ((POPULATION++))
-         runner=True
-         ;;
-  esac
+  # case $convergence in
+  #  (True)
+  #        echo "OK, Converged"
+  #        runner=False
+  #        ;;
+  #  (False)
+  #        echo "NOT-Converged"
+  #        bash run_local.sh $POPULATION
+  #        ((POPULATION++))
+  #        runner=True
+  #        ;;
+  # esac
   # if [[ $POPULATION -le 5 ]]
   # then
   #   bash run_local.sh $POPULATION
@@ -56,7 +56,8 @@ do
   # else
   #   runner=False
   # fi
-  if [[ `grep "SSCHA converge" minim$last_pop.out|tail -1 | awk '{print $NF}'` != "True" ]]
+#  if [[ `grep "SSCHA" minim$last_pop.out|tail -1 | awk '{print $NF}'` = "False" ]]
+  if [[ $convergence = "False" ]]
   then
     echo "NOT-Converged"
     bash run_local.sh $POPULATION
