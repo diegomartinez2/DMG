@@ -37,18 +37,18 @@ do
   echo "Convergence="$convergence
   echo "============================="
   runner=False
-  # case $convergence in
-  #  (True)
-  #        echo "OK, Converged"
-  #        runner=False
-  #        ;;
-  #  (False)
-  #        echo "NOT-Converged"
-  #        bash run_local.sh $POPULATION
-  #        ((POPULATION++))
-  #        runner=True
-  #        ;;
-  # esac
+  case $convergence in
+   (True)
+         echo "OK, Converged"
+         runner=False
+         ;;
+   (False)
+         echo "NOT-Converged"
+         bash run_local.sh $POPULATION
+         ((POPULATION++))
+         runner=True
+         ;;
+  esac
   # if [[ $POPULATION -le 5 ]]
   # then
   #   bash run_local.sh $POPULATION
@@ -57,14 +57,14 @@ do
   #   runner=False
   # fi
 #  if [[ `grep "SSCHA" minim$last_pop.out|tail -1 | awk '{print $NF}'` = "False" ]]
-  if [[ $convergence = "False" ]]
-  then
-    echo "NOT-Converged"
-    bash run_local.sh $POPULATION
-    ((POPULATION++))
-    runner=True
-  else
-    echo "OK, Converged"
-    runner=False
-  fi
+#   if [[ $convergence = "False" ]]
+#   then
+#     echo "NOT-Converged"
+#     bash run_local.sh $POPULATION
+#     ((POPULATION++))
+#     runner=True
+#   else
+#     echo "OK, Converged"
+#     runner=False
+#   fi
 done
