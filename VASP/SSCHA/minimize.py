@@ -55,17 +55,18 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
     if (POPULATION != 1):
         namefile='dyn_end_population'+str(POPULATION-1)+'_'
     dyn = CC.Phonons.Phonons(namefile, NQIRR)
-
+    dyn.ForcePositiveDefinite()
+    dyn.Symmetrize()
     # We make a copy of the starting dynamica matrices
 
-    dyn_0 = dyn
+    #dyn_0 = dyn
 
     # Prepare the stochastic weights for the SSCHA minimization
 
     folder_with_ensemble='pop'+str(POPULATION)+'/data'
     ensemble = sscha.Ensemble.Ensemble(dyn, T, SUPERCELL)
     ensemble.load(folder_with_ensemble, population = POPULATION, N = N_RANDOM)
-
+    #ensemble.update_weights(dyn, T)
     # Define the minimization
 
     minimizer = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
@@ -77,6 +78,8 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
     #minimizer.kong_liu_ratio = 0.5         # The parameter that estimates whether the ensemble is still good
     #minimizer.meaningful_factor = 0.000001 # How much small the gradient should be before I stop?
     minimizer.set_minimization_step(0.01)
+    minimizer.enforce_sum_rule=True
+    #ensemble.update_weights
 
     # Let's start the minimization
 
