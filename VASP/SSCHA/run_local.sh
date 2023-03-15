@@ -114,7 +114,7 @@ for i in `seq 1 $NCONFSSCHA`; do
     cp POSCAR_$i POSCAR
     ~/VASP/vasp.6.3.0/bin/vasp_std > stdout
 #    grep "energy  without entropy" OUTCAR >> energies
-    grep "energy  without entropy" OUTCAR | awk -F, '{print $NF}' >> energies
+    grep "energy  without entropy" OUTCAR | awk '{print $NF}' >> energies
     grep "forces" -A $IONS vasprun.xml > forces/forces_population$(($POPULATION+1))'_'$i.dat
     rm POSCAR
     mv OUTCAR OUTCAR_$i
