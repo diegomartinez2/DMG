@@ -64,7 +64,7 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
 
     folder_with_ensemble='pop'+str(POPULATION)+'/data'
     ensemble = sscha.Ensemble.Ensemble(dyn, T, SUPERCELL)
-    ensemble.load(folder_with_ensemble, population = POPULATION, N = N_RANDOM)
+    ensemble.load(folder_with_ensemble, population = POPULATION, N = N_RANDOM, verbose=True)
 
     # Define the minimization
 
@@ -76,12 +76,17 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
     #minimizer.min_step_struc = 0.5 #0.05        # The minimization step on the structure
     #minimizer.kong_liu_ratio = 0.5              # The parameter that estimates whether the ensemble is still good
     #minimizer.meaningful_factor = 0.000001      # How much small the gradient should be before I stop?
-    minimizer.set_minimization_step(0.01)
+    #minimizer.set_minimization_step(0.01)
+    # Ignore the structure minimization (is fixed by symmetry)
+    minimizer.minim_struct = False
 
     # Let's start the minimization
 
     minimizer.init()
-    minimizer.run()
+    IO = sscha.Utilities.IOInfo()
+    IO.SetupSaving('minim_1')
+    IO.SetupAtomicPositions('minim_1_positions', save_each_step=True)
+    minimizer.run(custom_function_post=IO.CFP_SaveAll)
 
     # Let's make some plot on the evolution of the minimization
 
@@ -134,6 +139,16 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
     #os.makedirs('./pop'+str(POPULATION+1)+'/dyn')
     namefile='./pop'+str(POPULATION+1)+'/dyn/dynq'
     minimizer.dyn.save_qe(namefile)
+    # Print the frequencies before and after the minimization
+    w_old, p_old = ensemble.dyn_0.DiagonalizeSupercell() # This is the representation of the density matrix used to generate the ensemble
+    w_new, p_new = minimizer.dyn.DiagonalizeSupercell()
+    #We can now print them
+    print(" Old frequencies |  New frequencies")
+    print("\n".join(["{:16.4f} | {:16.4f}  cm-1".format(w_old[i] * CC.Units.RY_TO_CM, w_new[i] * CC.Units.RY_TO_CM) for i in range(len(w_old))]))
+    f = open("Frequencies"+str(POPULATION+1)+"_cm_1.txt", "a")
+    f.write(" ".join(["{:.4f}".format(w * CC.Units.RY_TO_CM) for w in  w_new]))
+    f.write("\n")
+    f.close()
     print ("SSCHA Converged? = {}".format(minimizer.is_converged()))
     return 0
 
