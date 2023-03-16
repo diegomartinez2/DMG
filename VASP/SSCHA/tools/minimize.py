@@ -84,8 +84,8 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
 
     minimizer.init()
     IO = sscha.Utilities.IOInfo()
-    IO.SetupSaving('minim_1')
-    IO.SetupAtomicPositions('minim_1_positions', save_each_step=True)
+    IO.SetupSaving('minim_'+str(POPULATION))
+    IO.SetupAtomicPositions('minim_'+str(POPULATION)+'_positions', save_each_step=True)
     minimizer.run(custom_function_post=IO.CFP_SaveAll)
 
     # Let's make some plot on the evolution of the minimization
