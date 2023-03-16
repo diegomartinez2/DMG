@@ -78,8 +78,8 @@ for i in `seq 1 $NCONFSSCHA`; do
     echo `date` >> timing
     cp POSCAR_$i POSCAR
 #    mpirun -np $np vasp_std > stdout
-    $PATH_vasp/vasp_std > stdout
-    grep "energy  without entropy" OUTCAR  >> energies
+    ~/VASP/vasp.6.3.0/bin/vasp_std > stdout
+    grep "energy  without entropy" OUTCAR | awk '{print $NF}'  >> energies
     grep "forces" -A $IONS vasprun.xml > forces/forces_population$(($POPULATION+1))'_'$i.dat
     rm POSCAR
     mv OUTCAR OUTCAR_$i
