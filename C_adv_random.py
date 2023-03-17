@@ -344,7 +344,16 @@ def main(args):
     'EL PRESIDENTE DE LA SUPER NACIÓN COMUNISTA DEL ESTE'
     ]
     Premios_list = [
-
+    'INTELIGENCIA',
+    'OBJETO',
+    'DATOS',
+    'CREDITOS',
+    'PISTOLAS & ARMAS:',
+    'CIBERTECNOLOGÍA: ',
+    'ALIADO PODEROSO; ',
+    'REPUTACIÓN: ',
+    'TRAICIÓN: ',
+    'MUERTE (O BUENO, CASI): '
     ]
     Evento_Aleatorio_list = [
 
