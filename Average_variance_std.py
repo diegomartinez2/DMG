@@ -49,9 +49,9 @@ def ReadList(arg):
 
 def main(args):
     list=ReadList(args[1])
-    print(np.average(list))
-    print(np.var(list))
-    print(np.std(list))
+    print("average= "np.average(list))
+    print("variance= "np.var(list))
+    print("standar deviation= "p.std(list))
     return 0
 
 if __name__ == '__main__':
