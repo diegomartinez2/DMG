@@ -44,10 +44,11 @@ def ReadList(arg):
     separated_lines = [line.strip() for line in open(arg)]
 #    flattened_list = [item for i in separated_lines for item in i.split(",")]
 #    file1.close()
-    return separated_lines
+    list=[float(line) for line in separated_lines]
+    return list
 
 def main(args):
-    list=ReadList(args)
+    list=ReadList(args[1])
     print(np.average(list))
     print(np.var(list))
     print(np.std(list))
