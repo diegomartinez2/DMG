@@ -47,7 +47,7 @@ def ReadList(arg):
     return separated_lines
 
 def main(args):
-    list=ReadList()
+    list=ReadList(args)
     print(np.average(list))
     print(np.var(list))
     print(np.std(list))
