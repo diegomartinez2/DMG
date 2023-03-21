@@ -26,7 +26,7 @@
 # ---------------------------
 import numpy as np
 
-def mse(actual, predicted):
+def mse_1(actual, predicted):
     actual = np.array(actual)
     predicted = np.array(predicted)
     differences = np.subtract(actual, predicted)
@@ -36,33 +36,42 @@ def mse(actual, predicted):
 print(mse(df['y'], df['y_predicted']))
 
 # A shorter version of the code above
-import numpy as np
+#import numpy as np
 
-def mse(actual, predicted):
+def mse_2(actual, predicted):
     return np.square(np.subtract(np.array(actual), np.array(predicted))).mean()
 
 print(mse(df['y'], df['y_predicted']))
 
 #another
-y = [11,20,19,17,10]
-y_bar = [12,18,19.5,18,9]
-summation = 0  #variable to store the summation of differences
-n = len(y) #finding total number of items in list
-for i in range (0,n):  #looping through each element of the list
-  difference = y[i] - y_bar[i]  #finding the difference between observed and predicted value
-  squared_difference = difference**2  #taking square of the differene
-  summation = summation + squared_difference  #taking a sum of all the differences
-MSE = summation/n  #dividing summation by total values to obtain average
-print "The Mean Square Error is: " , MSE
+def mse_3(arg):
+    y = [11,20,19,17,10]
+    y_bar = [12,18,19.5,18,9]
+    summation = 0  #variable to store the summation of differences
+    n = len(y) #finding total number of items in list
+    for i in range (0,n):  #looping through each element of the list
+      difference = y[i] - y_bar[i]  #finding the difference between observed and predicted value
+      squared_difference = difference**2  #taking square of the differene
+      summation = summation + squared_difference  #taking a sum of all the differences
+    MSE = summation/n  #dividing summation by total values to obtain average
+    print "The Mean Square Error is: " , MSE
+    return MSE
 
 #another
-import numpy as np
+#import numpy as np
 
-# Given values
-Y_true = [1,1,2,2,4]  # Y_true = Y (original values)
 
-# Calculated values
-Y_pred = [0.6,1.29,1.99,2.69,3.4]  # Y_pred = Y'
+def main(args):
+    # Given values
+    Y_true = [1,1,2,2,4]  # Y_true = Y (original values)
 
-# Mean Squared Error
-MSE = np.square(np.subtract(Y_true,Y_pred)).mean()
+    # Calculated values
+    Y_pred = [0.6,1.29,1.99,2.69,3.4]  # Y_pred = Y'
+
+    # Mean Squared Error
+    MSE = np.square(np.subtract(Y_true,Y_pred)).mean()
+    return 0
+
+if __name__ == '__main__':
+    import sys
+    sys.exit(main(sys.argv))
