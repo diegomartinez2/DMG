@@ -31,9 +31,10 @@ def mse_1(actual, predicted):
     predicted = np.array(predicted)
     differences = np.subtract(actual, predicted)
     squared_differences = np.square(differences)
-    return squared_differences.mean()
+    MSE = squared_differences.mean()
+    return MSE
 
-print(mse(df['y'], df['y_predicted']))
+#print(mse(df['y'], df['y_predicted']))
 
 # A shorter version of the code above
 #import numpy as np
@@ -41,7 +42,7 @@ print(mse(df['y'], df['y_predicted']))
 def mse_2(actual, predicted):
     return np.square(np.subtract(np.array(actual), np.array(predicted))).mean()
 
-print(mse(df['y'], df['y_predicted']))
+#print(mse(df['y'], df['y_predicted']))
 
 #another
 def mse_3(arg):
