@@ -54,7 +54,7 @@ def mse_3(arg):
       squared_difference = difference**2  #taking square of the differene
       summation = summation + squared_difference  #taking a sum of all the differences
     MSE = summation/n  #dividing summation by total values to obtain average
-    print "The Mean Square Error is: " , MSE
+    print("The Mean Square Error is: " , MSE)
     return MSE
 
 #another
@@ -69,7 +69,9 @@ def main(args):
     Y_pred = [0.6,1.29,1.99,2.69,3.4]  # Y_pred = Y'
 
     # Mean Squared Error
+
     MSE = np.square(np.subtract(Y_true,Y_pred)).mean()
+    print("The Mean Square Error is: " , MSE)
     return 0
 
 if __name__ == '__main__':
