@@ -57,4 +57,3 @@ def main(args):
 if __name__ == '__main__':
     import sys
     sys.exit(main(sys.argv))
-list=[2,4,6,8,10]
