@@ -356,6 +356,8 @@ def main(args):
     'MUERTE (O BUENO, CASI): '
     ]
     Evento_Aleatorio_list = [
+    'Tabla I ',
+    'Table II: '
 
     ]
     Trabajo = random.choice(Facilitador_de_mision_list)
