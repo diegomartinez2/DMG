@@ -19,8 +19,8 @@ def f_processing(parsed_args,atom_occurrencies,type_atoms):
         #print(forces)
         #forces[3] = pd.to_numeric(forces[3], downcast="float")
         #print(forces[3])
-        print("---------")
-        print(int(np.sum(atom_occurrencies)))
+        #print("---------")
+        #print(int(np.sum(atom_occurrencies)))
 #        forces = forces * 0.0388937935
         #print(forces)
 #        print("+++++++++")
