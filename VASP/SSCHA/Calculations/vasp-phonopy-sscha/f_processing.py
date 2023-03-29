@@ -32,7 +32,7 @@ def f_processing(parsed_args,atom_occurrencies,type_atoms):
         for i in range(0,N):
 #            print(i,"[",i*5+1,"*",i*5+atom_occurrencies[0]+1,"*",i*5+atom_occurrencies[0]+atom_occurrencies[1]+1,"*",i*5+atom_occurrencies[0]+atom_occurrencies[1]+2,"*",i*5+atom_occurrencies[0]+atom_occurrencies[1]+3,"]")
 #            print(i,"[",i*5+1,"*",i*5+N+1,"*",i*5+2*N+1,"*",i*5+2*N+2,"*",i*5+2*N+3,"]")
-            print(i,N,"[",i+0*N+1,"*",i+1*N+1,"*",i+2*N+1,"*",i+3*N+1,"*",i+4*N+1,"]"," atom_ocurrencies=",atom_occurrencies)
+            #print(i,N,"[",i+0*N+1,"*",i+1*N+1,"*",i+2*N+1,"*",i+3*N+1,"*",i+4*N+1,"]"," atom_ocurrencies=",atom_occurrencies)
 #            print(i,N,"[",atom_occurrencies[0]*i+1,"*",atom_occurrencies[1]*i+N+1,"*",atom_occurrencies[2]*i+2*N+1,"*",atom_occurrencies[2]*i+2*N+2,"*",atom_occurrencies[2]*i+2*N+3,"]"," atom_ocurrencies=",atom_occurrencies)
             for j in range(0,int(np.sum(atom_occurrencies))):
                              force =  forces.iloc[i+j*N+1-1]
