@@ -21,7 +21,7 @@ def f_processing(parsed_args,atom_occurrencies,type_atoms):
         #print(forces[3])
         #print("---------")
         #print(int(np.sum(atom_occurrencies)))
-#        forces = forces * 0.0388937935
+        forces = forces * 0.0388937935
         #print(forces)
 #        print("+++++++++")
         processed_forces_path = f"data/forces_population{pop_id}_" + str(a) + ".dat"
@@ -30,9 +30,9 @@ def f_processing(parsed_args,atom_occurrencies,type_atoms):
         print("type_atoms=",type_atoms,"len(type_atoms)=",len(type_atoms))
         for i in range(0, N):
             for j in range(len(type_atoms)):
-                for jj in range(0,int(atom_occurrencies[j])):
-                    print("[",atom_occurrencies[j]*i+j*N+jj,"]")
-                    force =  forces.iloc[atom_occurrencies[j]*i+j*N+jj]
+                for k in range(0,int(atom_occurrencies[j])):
+                    print("[",atom_occurrencies[j]*i+j*N+k,"]")
+                    force =  forces.iloc[atom_occurrencies[j]*i+j*N+k]
                     force = force.to_frame()
                     force = force.transpose()
                     force.to_csv(f, index=False, header=False, float_format="%16.12f", sep='\t', mode="w+")
