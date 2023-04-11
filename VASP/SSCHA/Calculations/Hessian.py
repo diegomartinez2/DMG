@@ -10,10 +10,10 @@ import sscha, sscha.Ensemble
 
 
 # Here the input information
-DATA_DIR = 'population3_ensemble'               # path to the directory ens_pop#lastpop where the last population is stored
+DATA_DIR = 'pop3/data'               # path to the directory ens_pop#lastpop where the last population is stored
 N_RANDOM = 512                                  # number elements in the ensamble
-DYN_PREFIX =  'dyn_start_population3_'          # dyn mat that generated the last population
-FINAL_DYN =   'dyn_end_population3_'            # SSCHA dyn mat obtained with the last minimization
+DYN_PREFIX =  'pop3/dyn_start_population3_'          # dyn mat that generated the last population
+FINAL_DYN =   'pop3/dyn_end_population3_'            # SSCHA dyn mat obtained with the last minimization
 SAVE_PREFIX = 'dyn_hessian_'                    # Free energy Hessian dynamical matrices outpu
 NQIRR = 4                                       # The number or irredubcible q points
 Tg = 300                                         # The temperature used to generate the configurations
