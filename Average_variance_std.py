@@ -28,12 +28,12 @@ import numpy as np
 # -------
 # Clases
 # -------
-class NombredeClase(object):
-    """docstring for NombredeClase."""
-
-    def __init__(self, arg):
-        super(NombredeClase, self).__init__()
-        self.arg = arg
+# class NombredeClase(object):
+#     """docstring for NombredeClase."""
+#
+#     def __init__(self, arg):
+#         super(NombredeClase, self).__init__()
+#         self.arg = arg
 
 # ----------
 # Funciones
