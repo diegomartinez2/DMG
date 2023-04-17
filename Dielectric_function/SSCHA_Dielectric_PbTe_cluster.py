@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  SSCHA_SrTiO3_cluster.py
+#  SSCHA_Dielectric_PbTe_cluster.py
 #
 #  Copyright 2022 Diego <diego@u038025>
 #
@@ -51,7 +51,7 @@ class Hessiano_Vs_Temperatura(object):
     def __init__(self,T0,temperatura_i,configuraciones,sobol,sobol_scatter):
         # Define the temperatures, from 50 to 300 K, 6 temperatures
         #self.temperatures = np.linspace(50, 300, 6)
-        # Initialize the DFT (Quantum Espresso) calculator for SrTiO3
+        # Initialize the DFT (Quantum Espresso) calculator for Dielectric PbTe
         # The input data is a dictionary that encodes the pw.x input file namelist
         input_data = {
             'control' : {
@@ -135,7 +135,7 @@ class Hessiano_Vs_Temperatura(object):
             self.minim.enforce_sum_rule = True  # Lorenzo's solution to the error
 
             # Prepare the relaxer (through many population)
-            mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3', n_pool = 20, # n_pool must be a divisor of the k_points example 5x5x5=125 n_pool= 5 or 25
+            mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'Dielectric_PbTe', n_pool = 20, # n_pool must be a divisor of the k_points example 5x5x5=125 n_pool= 5 or 25
                 n_cpu = 40, time = '12:00:00', mpi_cmd = 'mpirun -np NPROC' ) #test with 5 pools for QE; note reducing the n_pool reduces the memory usage in the k points calculation.
 
             self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.calculator,
@@ -224,7 +224,7 @@ class Hessiano_Vs_Temperatura(object):
 class Send_to_cluster(object):
     def __init__(self,hostname = 'diegom@ekhi.cfm.ehu.es', pwd = None,
            label = 'Dielectric_PbTe', account_name = '', n_nodes = 1, n_cpu = 40,
-           time = '00:20:00', n_pool = 20, workdir = '/scratch/diegom/SrTiO3',
+           time = '00:20:00', n_pool = 20, workdir = '/scratch/diegom/Dielectric_PbTe',
            mpi_cmd=r"srun --mpi=pmi2 -n NPROC"):    #note the r"..." means that "..." is literate.
         self.cluster = sscha.Cluster.Cluster(hostname = hostname, pwd = pwd,  # Put the password in pwd if needed
             mpi_cmd = mpi_cmd)
@@ -289,7 +289,7 @@ export NO_STOP_MESSAGE=1
 
 class  System_free_energy_ab_initio(object):
     def __init__(self):
-        # Initialize the DFT (Quantum Espresso) calculator for SrTiO3
+        # Initialize the DFT (Quantum Espresso) calculator for Dielectric PbTe
         # The input data is a dictionary that encodes the pw.x input file namelist
         input_data = {
             'control' : {
@@ -350,18 +350,18 @@ class  System_free_energy_ab_initio(object):
         #NQIRR = 4
 
         # Let us load the starting dynamical matrix
-        SrTiO3_dyn = CC.Phonons.Phonons(START_DYN, NQIRR)
-        SrTiO3_dyn.ForcePositiveDefinite()
-        SrTiO3_dyn.Symmetrize()
+        System_dyn = CC.Phonons.Phonons(START_DYN, NQIRR)
+        System_dyn.ForcePositiveDefinite()
+        System_dyn.Symmetrize()
         # Initialize the random ionic ensemble
-        ensemble = sscha.Ensemble.Ensemble(SrTiO3_dyn, TEMPERATURE)
+        ensemble = sscha.Ensemble.Ensemble(System_dyn, TEMPERATURE)
 
         # Initialize the free energy minimizer
         minim = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
         minim.set_minimization_step(0.01)
 
         # Initialize the NVT simulation
-        mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'SrTiO3_512_T50K', n_pool = 1,
+        mi_cluster = Send_to_cluster(hostname = 'diegom@ekhi.cfm.ehu.es', label = 'Dielectric_PbTe_512_T50K', n_pool = 1,
            n_cpu = 40, time = '01-23:00:00', mpi_cmd = 'mpirun -np NPROC' ) #test with 5 pools for QE
         relax = sscha.Relax.SSCHA(minim, self.calculator, N_configs = N_CONFIGS,
                         max_pop = MAX_ITERATIONS, cluster = mi_cluster.cluster,
