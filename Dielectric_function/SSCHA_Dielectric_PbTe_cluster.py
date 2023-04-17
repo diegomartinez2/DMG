@@ -463,8 +463,10 @@ def main(args):
 #    HessianoVsTemperatura = Hessiano_Vs_Temperatura(TEMPERATURE,Temperatura_i,configuraciones = N_CONFIGS,sobol = True,sobol_scatter = 0.0)
 #    HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,NQIRR)
 #    HessianoVsTemperatura.dibuja()
-    EPSILON = get_dielectric_function(calculation.System_dyn, k_grid, T, e0 ,e1, de, ie, ismear
-                                , sm0, sm0_id
+    # integration grid
+    k_grid=[4,4,4]
+    EPSILON = get_dielectric_function(calculation.System_dyn, k_grid, TEMPERATURE, e0=0 ,e1=100, de=0.1, ie=1, ismear=1
+                                , sm0=1.0, sm0_id=1.0
                                 , diag_approx=False, nsm=1, static_limit=False)
     return 0
     #raise SystemExit
