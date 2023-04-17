@@ -458,7 +458,7 @@ def main(args):
     N_CONFIGS = 512
     NQIRR = 4
     calculation = System_free_energy_ab_initio()
-#    calculation.relax(TEMPERATURE, N_CONFIGS, NQIRR)
+    calculation.relax(TEMPERATURE, N_CONFIGS, NQIRR)
     plot_dispersion(PATH = "GX", NQIRR = NQIRR,TEMPERATURA = TEMPERATURE, harmonic_dyn = 'pop1/dyn/dynq', sscha_T_dyn='pop13/dyn/dynq')
     plot_dispersion(PATH = "GM", NQIRR = NQIRR,TEMPERATURA = TEMPERATURE, harmonic_dyn = 'pop1/dyn/dynq', sscha_T_dyn='pop13/dyn/dynq')
     plot_dispersion(PATH = "GR", NQIRR = NQIRR,TEMPERATURA = TEMPERATURE, harmonic_dyn = 'pop1/dyn/dynq', sscha_T_dyn='pop13/dyn/dynq')
@@ -468,6 +468,9 @@ def main(args):
 #    HessianoVsTemperatura = Hessiano_Vs_Temperatura(TEMPERATURE,Temperatura_i,configuraciones = N_CONFIGS,sobol = True,sobol_scatter = 0.0)
 #    HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,NQIRR)
 #    HessianoVsTemperatura.dibuja()
+    EPSILON = get_dielectric_function(dyn, tensor3, k_grid, T, e0 ,e1, de, ie, ismear
+                                , sm0, sm0_id
+                                , diag_approx=False, nsm=1, static_limit=False)
     return 0
     #raise SystemExit
     #sys.exit()
