@@ -390,11 +390,6 @@ class  System_free_energy_ab_initio(object):
         relax.minim.dyn.save_qe("sscha_T{}_dyn".format(TEMPERATURE))
 
 def plot_dispersion(PATH = "GXMGRX", NQIRR = 4, TEMPERATURA = 300, harmonic_dyn='harmonic_dyn', sscha_T_dyn='sscha_T{}_dyn'):
-    #NQIRR = SrTiO3_calculation.relax.NQIRR #10
-    #CMAP = "Spectral_r"
-    #PATH = "GX"
-    #PATH = "GM"
-    #PATH = "GR"
 
     N_POINTS = 1000
 
@@ -468,7 +463,7 @@ def main(args):
 #    HessianoVsTemperatura = Hessiano_Vs_Temperatura(TEMPERATURE,Temperatura_i,configuraciones = N_CONFIGS,sobol = True,sobol_scatter = 0.0)
 #    HessianoVsTemperatura.ciclo_T(Fichero_final_matriz_dinamica,NQIRR)
 #    HessianoVsTemperatura.dibuja()
-    EPSILON = get_dielectric_function(dyn, tensor3, k_grid, T, e0 ,e1, de, ie, ismear
+    EPSILON = get_dielectric_function(calculation.System_dyn, tensor3, k_grid, T, e0 ,e1, de, ie, ismear
                                 , sm0, sm0_id
                                 , diag_approx=False, nsm=1, static_limit=False)
     return 0
