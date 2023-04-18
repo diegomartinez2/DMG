@@ -81,11 +81,13 @@ max_ka= 20
 	\item "neglect\_symmetries"
 	\item "n\_random\_eff"
 	\item "n\_random"
+	The dimension of the ensemble
 	\item "meaningful\_factor"
 	\item "eq\_energy"
 	\item "fildyn\_prefix" [REQUIRED]
 	\item "nqirr" [REQUIRED]
 	\item "data\_dir"
+	The position of the ensemble (where the data are stored). Unit of measurements must be in bohr for displacements and $Ry/bohr$ for forces and $Ry/bohr^3$ for stress tensors. Energy is in Ry.
 	\item "load\_bin"
 	\item "t" [REQUIRED]
 	\item "tg"
@@ -94,6 +96,7 @@ max_ka= 20
 	\item "stress\_offset"
 	\item "gradi\_op"
 	\item "population"
+	The population id. This is an integer that distinguish different ensembles and allows for use the same data\_dir for several minimizations
 	\item "print\_stress"
 	\item "use\_spglib"
 \end{itemize}
