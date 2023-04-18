@@ -1,0 +1,191 @@
+\documentclass[]{scrartcl}
+
+%opening
+\title{SSCHA input file}
+\author{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The input file perform the minimization. 
+
+To run the SSCHA code with the input file use:
+\begin{verbatim}
+>>> sscha -i simple_input.in --save-data simple_input.out
+\end{verbatim}
+The file can have any name (often *.in).
+
+An example of an input file:
+\begin{verbatim}
+!
+! * * * * * * * * * * * * * * *
+! *                           *
+! *    VC - RELAX EXAMPLE     *
+! *                           *
+! * * * * * * * * * * * * * * *
+!
+!
+! This is the input to perform the sscha minimization, followed
+! by the change of the unit cell given by the stress step.
+!
+! This is not the recommended way to do it (you can do everything automatically)
+! But usefull if you want to control manually each submission
+!
+
+&relax
+type = "vc-relax"
+start_pop = 2
+max_pop_id = 2
+generate_ensemble = .false.
+fix_volume = .false.
+target_pressure = 0 ! [GPa]
+bulk_modulus = 15 ! [GPa]
+n_configs = 1000
+&end
+
+&inputscha
+n_random = 1000
+data_dir = "../ensemble_data_test"
+population = 2
+fildyn_prefix = "../ensemble_data_test/dyn"
+nqirr = 1
+supercell_size =  1 1 1
+Tg = 0 
+T = 0
+meaningful_factor = 1e-4
+gradi_op = "all" 
+n_random_eff = 500
+print_stress = .true.
+eq_energy = -144.40680397
+lambda_a = 1
+lambda_w = 1
+root_representation = "normal"
+preconditioning = .true.
+max_ka= 20
+/
+\end{verbatim}
+
+\end{abstract}
+
+\section{\&inputsscha}
+
+\begin{itemize}
+	\item "lambda\_a"
+	\item "lambda\_w"
+	\item "minim\_struc"
+	\item "precond\_wyck"
+	\item "preconditioning"
+	\item "root\_representation"
+	\item "neglect\_symmetries"
+	\item "n\_random\_eff"
+	\item "n\_random"
+	\item "meaningful\_factor"
+	\item "eq\_energy"
+	\item "fildyn\_prefix" [REQUIRED]
+	\item "nqirr" [REQUIRED]
+	\item "data\_dir"
+	\item "load\_bin"
+	\item "t" [REQUIRED]
+	\item "tg"
+	\item "supercell\_size"
+	\item "max\_ka"
+	\item "stress\_offset"
+	\item "gradi\_op"
+	\item "population"
+	\item "print\_stress"
+	\item "use\_spglib"
+\end{itemize}
+\section{\&relax}
+\begin{itemize}
+	\item "type" [REQUIRED]
+	\begin{itemize}
+		\item "sscha"
+		\item "relax"	
+		\item "vc-relax"
+	\end{itemize}
+	\item "n\_configs" [REQUIRED]
+	\item "max\_pop\_id"
+	\item "start\_pop"
+	\item "ensemble\_datadir"
+	\item "generate\_ensemble"
+	\item "target\_pressure"
+	\item "fix\_volume"
+	\item "bulk\_modulus"
+	\item "sobol\_sampling"
+	\item "sobol\_scatter"
+\end{itemize}
+\section{calculator}
+\begin{itemize}
+	\item "k\_points" [REQUIRED]
+	\item "k\_offset"
+	\item "disable\_check"
+	\item "program" [REQUIRED]
+	\item "binary"
+	\item "pseudo\_"
+\end{itemize}
+\begin{enumerate}
+	\item "quantum-espresso"
+	\begin{itemize}
+		\item "ecutrho", "ecutwfc", "smearing", "degauss", 
+		"occupations", "conv\_thr", "tstress", "tprnfor",
+		"verbosity", "disk\_io", "input\_dft", "use\_all\_frac"
+	\end{itemize}
+\end{enumerate}
+\section{cluster}
+"template"
+"SSCHA\_CLUSTERS\_DIR"
+"hostname"
+"pwd"
+"account"
+"binary\_path"
+"mpicmd"
+"reconnect\_attempts"
+"port"
+
+
+"shell"
+"submit\_cmd"
+"queue\_directive"
+"v\_nodes"
+"n\_nodes"
+"use\_nodes"
+"v\_cpu"
+"n\_cpu"
+"use\_cpu"
+"v\_time"
+"n\_time"
+"n\_pools"
+"use\_time"
+"v\_memory"
+"max\_ram"
+"use\_memory"
+"v\_partition"
+"partition\_name"
+"use\_partition"
+"init\_script"
+"max\_recalc"
+"batch\_size"
+"local\_workdir"
+"v\_account"
+"use\_account"
+"sshcmd"
+"scpcmd"
+"timeout"
+"job\_numbers"
+"n\_together"
+
+
+"workdir"
+\section{utils}
+"utils"
+"save\_freq\_filename"
+"save\_rho\_filename"
+"mu\_lock\_start"
+"mu\_lock\_end"
+"mu\_free\_start"
+"mu\_free\_end"
+"project\_dyn"
+"project\_structure"
+\end{document}
