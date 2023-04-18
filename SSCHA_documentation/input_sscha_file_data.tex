@@ -82,21 +82,39 @@ max_ka= 20
 	\item "n\_random\_eff"
 	\item "n\_random"
 	The dimension of the ensemble
-	\item "meaningful\_factor"
-	\item "eq\_energy"
+	\item "meaningful\_factor"\\
+	The stopping criteria. The code will end the minimization after the gradient is lower than meaningful\_factor times its stochastic error.
+	\item "eq\_energy"\\
+	Set the equilibrium energy.
+	It should be the energy of the structure without fluctuations,
+	it is used to separate the electronic and the vibrational energy,
+	since they are usually of different order of magnitude.
+	It is measured in Ry.
 	\item "fildyn\_prefix" [REQUIRED]
-	\item "nqirr" [REQUIRED]
-	\item "data\_dir"
+	\item "nqirr" [REQUIRED]\\
+	The number of irriducible q points (just look how many dynamical-matrixes files are there).
+	\item "data\_dir"\\
 	The position of the ensemble (where the data are stored). Unit of measurements must be in bohr for displacements and $Ry/bohr$ for forces and $Ry/bohr^3$ for stress tensors. Energy is in Ry.
 	\item "load\_bin"
-	\item "t" [REQUIRED]
-	\item "tg"
-	\item "supercell\_size"
+	\item "t" [REQUIRED]\\
+	The temperature used to generate the ensemble (in Kelvin).
+	\item "tg"\\
+	The temperature that will be used in the minimization (in Kelvin).
+	\item "supercell\_size"\\
+	The supercell size.
 	\item "max\_ka"
 	\item "stress\_offset"
-	\item "gradi\_op"
-	\item "population"
-	The population id. This is an integer that distinguish different ensembles and allows for use the same data\_dir for several minimizations
+	\item "gradi\_op"\\
+	Which gradient is used to trigger the stopping condition.
+ By default, both of them should satisfy the meaningufl criteria.
+ Options are "all", "gc", and "gw".
+\begin{enumerate}
+	\item "all" - both the gradient should satisfy the meaningulf (default)
+	\item "gw"  - only the wyckoff (i.e. structure) gradient.
+	\item "gc"  - only the force-constant matrix gradient.
+\end{enumerate} 
+	\item "population"\\
+	The population id. This is an integer that distinguish different ensembles and allows for use the same data\_dir for several minimizations.
 	\item "print\_stress"
 	\item "use\_spglib"
 \end{itemize}
