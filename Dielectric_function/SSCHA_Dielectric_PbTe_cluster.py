@@ -468,7 +468,7 @@ def main(args):
     EPSILON = get_dielectric_function(calculation.System_dyn, k_grid, TEMPERATURE, e0=0 ,e1=100, de=0.1, ie=1, ismear=1
                                 , sm0=1.0, sm0_id=1.0
                                 , diag_approx=False, nsm=1, static_limit=False)
-    # we compare this EPSILON with the one obtained from data.
+    # we compare this EPSILON with the one obtained from the Lorentz approximation data.
 
     print("EPSILON=",EPSILON,":","epsilon=")
     return 0
