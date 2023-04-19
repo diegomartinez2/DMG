@@ -69,21 +69,27 @@
 		\item[tg :]
 		The temperature that will be used in the minimization (in Kelvin).
 		\item[lambda\_a :]
-		***[...]***
+		Force constant minimization step. Step for the force constant matrix
 		\item[lambda\_w :]
-	
+	    Force constant minimization step. Step for the structure
 		\item[minim\_struc :]
-
+		Do SSCHA minimize the structure? [.true./.false.] 
 		\item[precond\_wyck :]
-
+        Preconditioning variable [.true./.false.]
 		\item[preconditioning :]
-
+        Preconditioning dynamical martix variable for a very fast minimization [.true./.false.] (preconditioning can be used only if root\_representation = "normal")
 		\item[root\_representation :]
+        Set root representation, a trick to increase the speed of the minimization and to avoid the imaginary frequency error. (The python new code is not able to do simultaneously precondition and root\_representation.)
+\begin{enumerate}
+\item "normal" : normal minimization, can lead to imaginary frequencies
+\item "sqrt"   : square root representation.
+\item "root4"  : fourth-root represnetation, the best one (and the slowest).
+\end{enumerate}
 
 		\item[neglect\_symmetries :]
-
+        ****************************
 		\item[n\_random\_eff :]
-		
+		****************************
 		\item[n\_random :]
 		The dimension of the ensemble
 		\item [meaningful\_factor :]
@@ -94,20 +100,6 @@
 		it is used to separate the electronic and the vibrational energy,
 		since they are usually of different order of magnitude.
 		It is measured in Ry.
-		\item [fildyn\_prefix :] 
-		[REQUIRED]
-		\item [nqirr :] 
-		[REQUIRED]
-		The number of irriducible q points (just look how many dynamical-matrixes files are there).
-		\item [data\_dir :]
-		The position of the ensemble (where the data are stored). Unit of measurements must be in bohr for displacements and $Ry/bohr$ for forces and $Ry/bohr^3$ for stress tensors. Energy is in Ry.
-		\item [load\_bin :]
-		
-		\item [supercell\_size :]"
-		The supercell size.
-		\item [max\_ka :]
-		
-		\item [stress\_offset :]
 		
 		%  Constante de gases ideales$ = 8.31 \frac{\mbox{J}}{\mbox{mol K}} = 0.0821 \frac{\mbox{l atm}}{\mbox{mol K}}$
 		\end{itemize}
@@ -122,6 +114,20 @@
 	\node [mybox] (box){%
 		\begin{minipage}{0.3\textwidth}
 			\begin{itemize}
+			\item [fildyn\_prefix :] [REQUIRED] 
+			************************
+			\item [nqirr :] [REQUIRED]
+			The number of irriducible q points (just look how many dynamical-matrixes files are there).
+			\item [data\_dir :]
+			The position of the ensemble (where the data are stored). Unit of measurements must be in bohr for displacements and $Ry/bohr$ for forces and $Ry/bohr^3$ for stress tensors. Energy is in Ry.
+			\item [load\_bin :]
+			*************************
+			\item [supercell\_size :]"
+			The supercell size.
+			\item [max\_ka :]
+			Maximum number of steps after which the code is automatically stopped
+			\item [stress\_offset :]
+			**************************
 			\item [gradi\_op :]
 			Which gradient is used to trigger the stopping condition.
 			By default, both of them should satisfy the meaningufl criteria.
@@ -134,7 +140,9 @@
 			\item [population :]
 			The population id. This is an integer that distinguish different ensembles and allows for use the same data\_dir for several minimizations.
 			\item [print\_stress :]
+			Legacy flag, not used anymore, now it automatically print the stress if it finds the stress tensor inside the ensemble. 
 			\item [use\_spglib :]
+			*************************
 			\end{itemize}
 		\end{minipage}
 	};
@@ -148,21 +156,32 @@
 		\begin{minipage}{0.3\textwidth}
 \begin{itemize}
 \item [type :] [REQUIRED]
+***************************
 \begin{itemize}
 \item "sscha"
 \item "relax"	
 \item "vc-relax"
 \end{itemize}
 \item [n\_configs :] [REQUIRED]
+****************************
 \item [max\_pop\_id :]
+****************************
 \item [start\_pop :]
+****************************
 \item [ensemble\_datadir :]
+****************************
 \item [generate\_ensemble :]
+****************************
 \item [target\_pressure :]
+*****************************
 \item [fix\_volume :]
+*****************************
 \item [bulk\_modulus :]
+******************************
 \item [sobol\_sampling :]
+******************************
 \item [sobol\_scatter :]
+******************************
 \end{itemize}
 		\end{minipage}
 	};
@@ -176,11 +195,17 @@
 	\begin{minipage}{0.3\textwidth}
 \begin{itemize}
 \item [k\_points :] [REQUIRED]
+********************
 \item [k\_offset :]
+*************************
 \item [disable\_check :]
+*************************
 \item [program :] [REQUIRED]
+*************************
 \item [binary :]
+**************************
 \item [pseudo\_ :]
+**************************
 \end{itemize}
 \begin{enumerate}
 \item "quantum-espresso"
@@ -201,15 +226,14 @@
 \node [mybox] (box){%
 	\begin{minipage}{0.3\textwidth}
 	\begin{itemize}
-	\item [utils :]
-"save\_freq\_filename"
-"save\_rho\_filename"
-"mu\_lock\_start"
-"mu\_lock\_end"
-"mu\_free\_start"
-"mu\_free\_end"
-"project\_dyn"
-"project\_structure"
+	\item [save\_freq\_filename :]
+	\item [save\_rho\_filename :]
+	\item [mu\_lock\_start :]
+	\item [mu\_lock\_end :]
+	\item [mu\_free\_start :]
+	\item [mu\_free\_end :]
+	\item [project\_dyn :]
+	\item [project\_structure :]
 	\end{itemize}
 	\end{minipage}
 };
@@ -223,31 +247,30 @@
 	\begin{minipage}{0.3\textwidth}
 	\begin{itemize}
 \item [template :]
-"SSCHA\_CLUSTERS\_DIR"
-"hostname"
-"pwd"
-"account"
-"binary\_path"
-"mpicmd"
-"reconnect\_attempts"
-"port"
-
-
-"shell"
-"submit\_cmd"
-"queue\_directive"
-"v\_nodes"
-"n\_nodes"
-"use\_nodes"
-"v\_cpu"
-"n\_cpu"
-"use\_cpu"
-"v\_time"
-"n\_time"
-"n\_pools"
-"use\_time"
-"v\_memory"
-"max\_ram"
+\item [SSCHA\_CLUSTERS\_DIR :]
+\item [hostname :]
+\item [pwd :]
+\item [account :]
+\item [binary\_path :]
+\item [mpicmd :]
+\item [reconnect\_attempts :]
+\item [port :]
+\item [shell :]
+\item [submit\_cmd :]
+\item [queue\_directive :]
+\item [v\_nodes :]
+\item [n\_nodes :]
+\item [use\_nodes :]
+\item [v\_cpu :]
+\item [n\_cpu :]
+\item [use\_cpu :]
+\item [v\_time :]
+\item [n\_time :]
+\item [n\_pools :]
+\item [use\_time :]
+\item [v\_memory :]
+\item [max\_ram :]
+\item [ :]
 "use\_memory"
 "v\_partition"
 "partition\_name"
