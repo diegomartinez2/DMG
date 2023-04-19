@@ -1,13 +1,286 @@
-\documentclass[]{scrartcl}
+\documentclass{article}
+\usepackage[landscape]{geometry}
+\usepackage{url}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{esint}
+\usepackage{bigints}
+\usepackage{amsfonts}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing}
+\usepackage{amsmath,amssymb}
+
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{xhfill}
+\makeatletter
+
+\newcommand*\bigcdot{\mathpalette\bigcdot@{.5}}
+\newcommand*\bigcdot@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}
+\makeatother
 
 %opening
 \title{SSCHA input file}
-\author{}
+%\author{}
+\date{}
+
+\advance\topmargin-.8in
+\advance\textheight3in
+\advance\textwidth3in
+\advance\oddsidemargin-1.5in
+\advance\evensidemargin-1.5in
+\parindent0pt
+\parskip2pt
+\newcommand{\hr}{\centerline{\rule{3.5in}{1pt}}}
+%\colorbox[HTML]{e4e4e4}{\makebox[\textwidth-2\fboxsep][l]{texto}
+\newcommand{\nc}[2][]{%
+	\tikz \draw [draw=black, ultra thick, #1]
+	($(current page.center)-(0.5\linewidth,0)$) --
+	($(current page.center)+(0.5\linewidth,0)$)
+	node [midway, fill=white] {#2};
+}% tomado de https://tex.stackexchange.com/questions/179425/a-new-command-of-the-form-tex
 
 \begin{document}
 
-\maketitle
+%\maketitle
+\begin{center}{\huge{\textbf{SSCHA input file cheatsheet}}}\\
+\end{center}
+\begin{multicols*}{2}
+	
+	\tikzstyle{mybox} = [draw=black, fill=white, very thick,
+	rectangle, rounded corners, inner sep=75pt, inner ysep=10pt]
+	\tikzstyle{fancytitle} =[fill=black, text=white, font=\bfseries]
+	
+	%--------------------------
+	\begin{tikzpicture}
+	\node [mybox] (box){%
+		\begin{minipage}{0.3\textwidth}
+		\begin{itemize}
+		\addtolength{\itemsep}{-2pt}
+		%\item[$g = $]
+		%  9.80 m s$^{-2}$
+		\item[t :]
+				The temperature used to generate the ensemble (in Kelvin). [REQUIRED] 
+		\item[tg :]
+		The temperature that will be used in the minimization (in Kelvin).
+		\item[lambda\_a :]
+		***[...]***
+		\item[lambda\_w :]
+	
+		\item[minim\_struc :]
 
+		\item[precond\_wyck :]
+
+		\item[preconditioning :]
+
+		\item[root\_representation :]
+
+		\item[neglect\_symmetries :]
+
+		\item[n\_random\_eff :]
+		
+		\item[n\_random :]
+		The dimension of the ensemble
+		\item [meaningful\_factor :]
+		The stopping criteria. The code will end the minimization after the gradient is lower than meaningful\_factor times its stochastic error.
+		\item [eq\_energy :]
+		Set the equilibrium energy.
+		It should be the energy of the structure without fluctuations,
+		it is used to separate the electronic and the vibrational energy,
+		since they are usually of different order of magnitude.
+		It is measured in Ry.
+		\item [fildyn\_prefix :] 
+		[REQUIRED]
+		\item [nqirr :] 
+		[REQUIRED]
+		The number of irriducible q points (just look how many dynamical-matrixes files are there).
+		\item [data\_dir :]
+		The position of the ensemble (where the data are stored). Unit of measurements must be in bohr for displacements and $Ry/bohr$ for forces and $Ry/bohr^3$ for stress tensors. Energy is in Ry.
+		\item [load\_bin :]
+		
+		\item [supercell\_size :]"
+		The supercell size.
+		\item [max\_ka :]
+		
+		\item [stress\_offset :]
+		
+		%  Constante de gases ideales$ = 8.31 \frac{\mbox{J}}{\mbox{mol K}} = 0.0821 \frac{\mbox{l atm}}{\mbox{mol K}}$
+		\end{itemize}
+		\end{minipage}
+	};
+	%---------------------------------
+	\node[fancytitle, right=10pt] at (box.north west) {\&inputsscha};
+	\end{tikzpicture}
+	
+	%---------------------------
+	\begin{tikzpicture}
+	\node [mybox] (box){%
+		\begin{minipage}{0.3\textwidth}
+			\begin{itemize}
+			\item [gradi\_op :]
+			Which gradient is used to trigger the stopping condition.
+			By default, both of them should satisfy the meaningufl criteria.
+			Options are "all", "gc", and "gw".
+			\begin{enumerate}
+			\item "all" - both the gradient should satisfy the meaningulf (default)
+			\item "gw"  - only the wyckoff (i.e. structure) gradient.
+			\item "gc"  - only the force-constant matrix gradient.
+			\end{enumerate} 
+			\item [population :]
+			The population id. This is an integer that distinguish different ensembles and allows for use the same data\_dir for several minimizations.
+			\item [print\_stress :]
+			\item [use\_spglib :]
+			\end{itemize}
+		\end{minipage}
+	};
+	%---------------------------------
+	\node[fancytitle, right=10pt] at (box.north west) {\&inputsscha};
+	\end{tikzpicture}
+	
+	%---------------------------
+	\begin{tikzpicture}
+	\node [mybox] (box){%
+		\begin{minipage}{0.3\textwidth}
+\begin{itemize}
+\item [type :] [REQUIRED]
+\begin{itemize}
+\item "sscha"
+\item "relax"	
+\item "vc-relax"
+\end{itemize}
+\item [n\_configs :] [REQUIRED]
+\item [max\_pop\_id :]
+\item [start\_pop :]
+\item [ensemble\_datadir :]
+\item [generate\_ensemble :]
+\item [target\_pressure :]
+\item [fix\_volume :]
+\item [bulk\_modulus :]
+\item [sobol\_sampling :]
+\item [sobol\_scatter :]
+\end{itemize}
+		\end{minipage}
+	};
+	%---------------------------------
+	\node[fancytitle, right=10pt] at (box.north west) {\&relax};
+	\end{tikzpicture}
+	
+	%---------------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+	\begin{minipage}{0.3\textwidth}
+\begin{itemize}
+\item [k\_points :] [REQUIRED]
+\item [k\_offset :]
+\item [disable\_check :]
+\item [program :] [REQUIRED]
+\item [binary :]
+\item [pseudo\_ :]
+\end{itemize}
+\begin{enumerate}
+\item "quantum-espresso"
+\begin{itemize}
+\item "ecutrho", "ecutwfc", "smearing", "degauss", 
+"occupations", "conv\_thr", "tstress", "tprnfor",
+"verbosity", "disk\_io", "input\_dft", "use\_all\_frac"
+\end{itemize}
+\end{enumerate}
+	\end{minipage}
+};
+%---------------------------------
+\node[fancytitle, right=10pt] at (box.north west) {\&calculator};
+\end{tikzpicture}
+
+	%---------------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+	\begin{minipage}{0.3\textwidth}
+	\begin{itemize}
+	\item [utils :]
+"save\_freq\_filename"
+"save\_rho\_filename"
+"mu\_lock\_start"
+"mu\_lock\_end"
+"mu\_free\_start"
+"mu\_free\_end"
+"project\_dyn"
+"project\_structure"
+	\end{itemize}
+	\end{minipage}
+};
+%---------------------------------
+\node[fancytitle, right=10pt] at (box.north west) {\&utils};
+\end{tikzpicture}	
+
+	%---------------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+	\begin{minipage}{0.3\textwidth}
+	\begin{itemize}
+\item [template :]
+"SSCHA\_CLUSTERS\_DIR"
+"hostname"
+"pwd"
+"account"
+"binary\_path"
+"mpicmd"
+"reconnect\_attempts"
+"port"
+
+
+"shell"
+"submit\_cmd"
+"queue\_directive"
+"v\_nodes"
+"n\_nodes"
+"use\_nodes"
+"v\_cpu"
+"n\_cpu"
+"use\_cpu"
+"v\_time"
+"n\_time"
+"n\_pools"
+"use\_time"
+"v\_memory"
+"max\_ram"
+"use\_memory"
+"v\_partition"
+"partition\_name"
+"use\_partition"
+"init\_script"
+"max\_recalc"
+"batch\_size"
+"local\_workdir"
+"v\_account"
+"use\_account"
+"sshcmd"
+"scpcmd"
+"timeout"
+"job\_numbers"
+"n\_together"
+
+
+"workdir"
+
+
+	\end{itemize}
+	\end{minipage}
+};
+%---------------------------------
+\node[fancytitle, right=10pt] at (box.north west) {\&cluster};
+\end{tikzpicture}	
+
+	
+
+	
+	
+	
+\end{multicols*}
 \begin{abstract}
 The input file perform the minimization. 
 
@@ -69,144 +342,6 @@ max_ka= 20
 
 \end{abstract}
 
-\section{\&inputsscha}
-
-\begin{itemize}
-	\item "lambda\_a"
-	\item "lambda\_w"
-	\item "minim\_struc"
-	\item "precond\_wyck"
-	\item "preconditioning"
-	\item "root\_representation"
-	\item "neglect\_symmetries"
-	\item "n\_random\_eff"
-	\item "n\_random"
-	The dimension of the ensemble
-	\item "meaningful\_factor"\\
-	The stopping criteria. The code will end the minimization after the gradient is lower than meaningful\_factor times its stochastic error.
-	\item "eq\_energy"\\
-	Set the equilibrium energy.
-	It should be the energy of the structure without fluctuations,
-	it is used to separate the electronic and the vibrational energy,
-	since they are usually of different order of magnitude.
-	It is measured in Ry.
-	\item "fildyn\_prefix" [REQUIRED]
-	\item "nqirr" [REQUIRED]\\
-	The number of irriducible q points (just look how many dynamical-matrixes files are there).
-	\item "data\_dir"\\
-	The position of the ensemble (where the data are stored). Unit of measurements must be in bohr for displacements and $Ry/bohr$ for forces and $Ry/bohr^3$ for stress tensors. Energy is in Ry.
-	\item "load\_bin"
-	\item "t" [REQUIRED]\\
-	The temperature used to generate the ensemble (in Kelvin).
-	\item "tg"\\
-	The temperature that will be used in the minimization (in Kelvin).
-	\item "supercell\_size"\\
-	The supercell size.
-	\item "max\_ka"
-	\item "stress\_offset"
-	\item "gradi\_op"\\
-	Which gradient is used to trigger the stopping condition.
- By default, both of them should satisfy the meaningufl criteria.
- Options are "all", "gc", and "gw".
-\begin{enumerate}
-	\item "all" - both the gradient should satisfy the meaningulf (default)
-	\item "gw"  - only the wyckoff (i.e. structure) gradient.
-	\item "gc"  - only the force-constant matrix gradient.
-\end{enumerate} 
-	\item "population"\\
-	The population id. This is an integer that distinguish different ensembles and allows for use the same data\_dir for several minimizations.
-	\item "print\_stress"
-	\item "use\_spglib"
-\end{itemize}
-\section{\&relax}
-\begin{itemize}
-	\item "type" [REQUIRED]
-	\begin{itemize}
-		\item "sscha"
-		\item "relax"	
-		\item "vc-relax"
-	\end{itemize}
-	\item "n\_configs" [REQUIRED]
-	\item "max\_pop\_id"
-	\item "start\_pop"
-	\item "ensemble\_datadir"
-	\item "generate\_ensemble"
-	\item "target\_pressure"
-	\item "fix\_volume"
-	\item "bulk\_modulus"
-	\item "sobol\_sampling"
-	\item "sobol\_scatter"
-\end{itemize}
-\section{calculator}
-\begin{itemize}
-	\item "k\_points" [REQUIRED]
-	\item "k\_offset"
-	\item "disable\_check"
-	\item "program" [REQUIRED]
-	\item "binary"
-	\item "pseudo\_"
-\end{itemize}
-\begin{enumerate}
-	\item "quantum-espresso"
-	\begin{itemize}
-		\item "ecutrho", "ecutwfc", "smearing", "degauss", 
-		"occupations", "conv\_thr", "tstress", "tprnfor",
-		"verbosity", "disk\_io", "input\_dft", "use\_all\_frac"
-	\end{itemize}
-\end{enumerate}
-\section{cluster}
-"template"
-"SSCHA\_CLUSTERS\_DIR"
-"hostname"
-"pwd"
-"account"
-"binary\_path"
-"mpicmd"
-"reconnect\_attempts"
-"port"
 
 
-"shell"
-"submit\_cmd"
-"queue\_directive"
-"v\_nodes"
-"n\_nodes"
-"use\_nodes"
-"v\_cpu"
-"n\_cpu"
-"use\_cpu"
-"v\_time"
-"n\_time"
-"n\_pools"
-"use\_time"
-"v\_memory"
-"max\_ram"
-"use\_memory"
-"v\_partition"
-"partition\_name"
-"use\_partition"
-"init\_script"
-"max\_recalc"
-"batch\_size"
-"local\_workdir"
-"v\_account"
-"use\_account"
-"sshcmd"
-"scpcmd"
-"timeout"
-"job\_numbers"
-"n\_together"
-
-
-"workdir"
-\section{utils}
-"utils"
-"save\_freq\_filename"
-"save\_rho\_filename"
-"mu\_lock\_start"
-"mu\_lock\_end"
-"mu\_free\_start"
-"mu\_free\_end"
-"project\_dyn"
-"project\_structure"
 \end{document}

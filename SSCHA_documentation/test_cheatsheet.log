@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.6.20)  19 APR 2023 08:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.6.20)  19 APR 2023 08:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**input_sscha_file_data.tex
-(./input_sscha_file_data.tex
+**test_cheatsheet.tex
+(./test_cheatsheet.tex
 LaTeX2e <2020-02-02> patch level 2
 L3 programming layer <2020-02-14>
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -597,28 +597,55 @@ Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 )
 Package: xhfill 2011/05/14\ v 1.01\ modify width and color of hrulefill
 )
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2020/02/14 3.40 The Babel package
+
+(/usr/share/texlive/texmf-dist/tex/generic/babel/switch.def
+File: switch.def 2020/02/14 3.40 Babel switching mechanism
+)
+(/usr/share/texlive/texmf-dist/tex/generic/babel-portuges/portuges.ldf
+Language: portuges 2008/03/18 v1.2q Portuguese support from the babel system
+
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.def
+File: babel.def 2020/02/14 3.40 Babel common definitions
+\babel@savecnt=\count294
+\U@D=\dimen288
+
+(/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
+\bbl@readstream=\read3
+\bbl@dirlevel=\count295
+)
+Package babel Info: \l@brazilian = using hyphenrules for portuguese
+(babel)             (\language54) on input line 113.
+Package babel Info: Making " an active character on input line 145.
+))
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2018/08/11 v1.3c Input encoding file
+\inpenc@prehook=\toks36
+\inpenc@posthook=\toks37
+)
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
 File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
-\l__kernel_color_stack_int=\count294
+\l__kernel_color_stack_int=\count296
 \l__pdf_internal_box=\box108
 )
-(./input_sscha_file_data.aux)
-\openout1 = `input_sscha_file_data.aux'.
+(./test_cheatsheet.aux)
+\openout1 = `test_cheatsheet.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -656,144 +683,157 @@ LaTeX Font Info:    ... okay on input line 48.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count295
-\scratchdimen=\dimen288
+\scratchcounter=\count297
+\scratchdimen=\dimen289
 \scratchbox=\box109
-\nofMPsegments=\count296
-\nofMParguments=\count297
-\everyMPshowfont=\toks36
-\MPscratchCnt=\count298
-\MPscratchDim=\dimen289
-\MPnumerator=\count299
-\makeMPintoPDFobject=\count300
-\everyMPtoPDFconversion=\toks37
+\nofMPsegments=\count298
+\nofMParguments=\count299
+\everyMPshowfont=\toks38
+\MPscratchCnt=\count300
+\MPscratchDim=\dimen290
+\MPnumerator=\count301
+\makeMPintoPDFobject=\count302
+\everyMPtoPDFconversion=\toks39
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/grfext/grfext.sty
+Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+))
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2019/11/29 v3.13 Key value format for package options (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2019/12/15 v1.24 LaTeX kernel commands for general use (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+))
+(/usr/share/texlive/texmf-dist/tex/latex/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2019/11/24 v0.31 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 85.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 504.
 
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 ABD: EveryShipout initializing macros
-LaTeX Font Info:    Trying to load font information for U+esint on input line 1
-03.
+LaTeX Font Info:    Trying to load font information for U+esint on input line 6
+4.
 
 (/usr/share/texlive/texmf-dist/tex/latex/esint/uesint.fd
 File: uesint.fd 
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 103
-.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 64.
+
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 103
-.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 64.
+
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 118--119
+Underfull \hbox (badness 10000) in paragraph at lines 79--80
+[]\OT1/cmr/m/n/10 N^^Sumero de Avo-ga-dro $= 6\OML/cmm/m/it/10 :\OT1/cmr/m/n/10
+ 022 \OMS/cmsy/m/n/10 ^^B \OT1/cmr/m/n/10 10[]$
+ []
+
+
+Overfull \hbox (2.09277pt too wide) in paragraph at lines 94--95
 [][] 
  []
 
 
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 143--144
+Overfull \hbox (2.09277pt too wide) in paragraph at lines 107--108
 [][] 
  []
 
 
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 171--172
+Overfull \hbox (2.09277pt too wide) in paragraph at lines 120--121
 [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 188--191
-\OT1/cmr/m/n/10 gauss", "oc-cu-pa-tions", "conv[]thr",
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 188--191
-\OT1/cmr/m/n/10 "tstress", "tprn-for", "ver-bosity",
- []
-
-
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 197--198
+Overfull \hbox (1.59999pt too wide) in paragraph at lines 126--132
 [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 205--213
-[]\OT1/cmr/m/n/10 "save[]freq[]filename" "save[]rho[]filename"
+Overfull \hbox (1.59999pt too wide) in paragraph at lines 143--154
+[][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 205--213
-\OT1/cmr/m/n/10 "mu[]lock[]start" "mu[]lock[]end"
+Overfull \hbox (1.59999pt too wide) in paragraph at lines 143--154
+[] 
+ []
+
+
+Overfull \hbox (1.59999pt too wide) in paragraph at lines 143--154
+[] 
+ []
+
+
+Overfull \hbox (2.09277pt too wide) in paragraph at lines 136--159
+[][]
+ []
+
+
+Overfull \hbox (2.09277pt too wide) in paragraph at lines 136--159
+[] 
+ []
+
+
+Overfull \hbox (2.09277pt too wide) in paragraph at lines 173--174
+[][] 
  []
 
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 218--219
-[][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 236--266
-[]\OT1/cmr/m/n/10 "shell" "sub-mit[]cmd" "queue[]directive"
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 236--266
-\OT1/cmr/m/n/10 "v[]nodes" "n[]nodes" "use[]nodes" "v[]cpu"
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 236--266
-\OT1/cmr/m/n/10 "n[]cpu" "use[]cpu" "v[]time" "n[]time"
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 236--266
-\OT1/cmr/m/n/10 "use[]partition" "init[]script" "max[]recalc"
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 236--266
-\OT1/cmr/m/n/10 "batch[]size" "lo-cal[]workdir" "v[]account"
- []
-
-
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 276--277
-[][] 
- []
-
-[2] [3] (./input_sscha_file_data.aux) ) 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./test_cheatsheet.aux) ) 
 Here is how much of TeX's memory you used:
- 14984 strings out of 481239
- 295817 string characters out of 5920377
- 525276 words of memory out of 5000000
- 29965 multiletter control sequences out of 15000+600000
- 536261 words of font info for 42 fonts, out of 8000000 for 9000
+ 16093 strings out of 481239
+ 313103 string characters out of 5920377
+ 558816 words of memory out of 5000000
+ 31021 multiletter control sequences out of 15000+600000
+ 541610 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,7n,65p,423b,898s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/cm-sup
-er/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmb
-x12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb
-></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr
-/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/
-texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/share/texmf/fonts/type1/publi
-c/cm-super/sfrm1000.pfb>
-Output written on input_sscha_file_data.pdf (3 pages, 111299 bytes).
+ 60i,18n,65p,417b,1389s stack positions out of 5000i,500n,10000p,200000b,80000s
+<
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/esint-type1/esint10.pfb>
+Output written on test_cheatsheet.pdf (1 page, 129824 bytes).
 PDF statistics:
- 54 PDF objects out of 1000 (max. 8388607)
- 39 compressed objects within 1 object stream
+ 59 PDF objects out of 1000 (max. 8388607)
+ 43 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 
