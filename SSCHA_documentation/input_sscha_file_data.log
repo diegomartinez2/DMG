@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.6.20)  19 APR 2023 09:27
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.6.20)  19 APR 2023 10:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -682,70 +682,70 @@ Underfull \hbox (badness 10000) in paragraph at lines 76--77
  []
 
 LaTeX Font Info:    Trying to load font information for U+esint on input line 1
-06.
+04.
 (/usr/share/texlive/texmf-dist/tex/latex/esint/uesint.fd
 File: uesint.fd 
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 106
+LaTeX Font Info:    Trying to load font information for U+msa on input line 104
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 106
+LaTeX Font Info:    Trying to load font information for U+msb on input line 104
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 110--111
+Overfull \hbox (1.54501pt too wide) in paragraph at lines 108--109
 [][] 
  []
 
 
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 151--152
+Overfull \hbox (1.54501pt too wide) in paragraph at lines 155--156
 [][] 
  []
 
 
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 190--191
+Overfull \hbox (1.54501pt too wide) in paragraph at lines 194--195
 [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 213--216
+Underfull \hbox (badness 10000) in paragraph at lines 217--220
 \OT1/cmr/m/n/10 gauss", "oc-cu-pa-tions", "conv[]thr",
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 213--216
+Underfull \hbox (badness 10000) in paragraph at lines 217--220
 \OT1/cmr/m/n/10 "tstress", "tprn-for", "ver-bosity",
  []
 
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 222--223
+Overfull \hbox (1.54501pt too wide) in paragraph at lines 226--227
 [][] 
  []
 
 
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 242--243
+Overfull \hbox (1.54501pt too wide) in paragraph at lines 246--247
 [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 274--289
+Underfull \hbox (badness 10000) in paragraph at lines 278--293
 \OT1/cmr/m/n/10 "use[]partition" "init[]script" "max[]recalc"
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 274--289
+Underfull \hbox (badness 10000) in paragraph at lines 278--293
 \OT1/cmr/m/n/10 "batch[]size" "lo-cal[]workdir" "v[]account"
  []
 
 
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 299--300
+Overfull \hbox (1.54501pt too wide) in paragraph at lines 303--304
 [][] 
  []
 
@@ -753,7 +753,7 @@ Overfull \hbox (1.54501pt too wide) in paragraph at lines 299--300
 Here is how much of TeX's memory you used:
  14982 strings out of 481239
  295765 string characters out of 5920377
- 525276 words of memory out of 5000000
+ 527276 words of memory out of 5000000
  29963 multiletter control sequences out of 15000+600000
  536261 words of font info for 42 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -768,7 +768,7 @@ are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texl
 ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/share/texmf/fonts/type1/p
 ublic/cm-super/sfrm1000.pfb>
-Output written on input_sscha_file_data.pdf (4 pages, 114006 bytes).
+Output written on input_sscha_file_data.pdf (4 pages, 115754 bytes).
 PDF statistics:
  57 PDF objects out of 1000 (max. 8388607)
  41 compressed objects within 1 object stream
