@@ -20,18 +20,21 @@ sbatch run.sh
 ENDSSH
 
 ##########
-#files=$(ssh diegom@ekhi.cfm.ehu.es 'squeue |grep diego')
-#if [[ $? != 0 ]]; then
-#    echo "Command failed."
-#elif [[ $files ]]; then
-#    echo $files
-#else
-#    echo "No files found."
-#scp -r diegom@ekhi.cfm.ehu.es:/scratch/diegom/SrTiO3/VASP/SrTiO3_3x3x3_50K_para_comparar_con_Espresso_Q4x4x4/pop$1 /media/diego/Calculations/SrTiO3/SSCHA/Hessian_vs_T_and_Nconfs/VASP_17_4_2023/SrTiO3_3x3x3_50K_para_comparar_con_Espresso>
-#scp -r diegom@ekhi.cfm.ehu.es:/scratch/diegom/SrTiO3/VASP/SrTiO3_3x3x3_100K_para_comparar_con_Espresso_Q4x4x4/pop$1 /media/diego/Calculations/SrTiO3/SSCHA/Hessian_vs_T_and_Nconfs/VASP_17_4_2023/SrTiO3_3x3x3_100K_para_comparar_con_Espres>
-#scp -r diegom@ekhi.cfm.ehu.es:/scratch/diegom/SrTiO3/VASP/SrTiO3_3x3x3_300K_para_comparar_con_Espresso_Q4x4x4/pop$1 /media/diego/Calculations/SrTiO3/SSCHA/Hessian_vs_T_and_Nconfs/VASP_17_4_2023/SrTiO3_3x3x3_300K_para_comparar_con_Espres>
-#fi
-
+while True
+do
+files=$(ssh diegom@ekhi.cfm.ehu.es 'squeue |grep diego')
+if [[ $? != 0 ]]; then
+    echo "Command failed."
+elif [[ $files ]]; then
+    echo $files
+else
+    echo "No files found."
+scp -r diegom@ekhi.cfm.ehu.es:/scratch/diegom/SrTiO3/VASP/SrTiO3_3x3x3_50K_para_comparar_con_Espresso_Q4x4x4/pop$1 /media/diego/Calculations/SrTiO3/SSCHA/Hessian_vs_T_and_Nconfs/VASP_17_4_2023/SrTiO3_3x3x3_50K_para_comparar_con_Espresso>
+scp -r diegom@ekhi.cfm.ehu.es:/scratch/diegom/SrTiO3/VASP/SrTiO3_3x3x3_100K_para_comparar_con_Espresso_Q4x4x4/pop$1 /media/diego/Calculations/SrTiO3/SSCHA/Hessian_vs_T_and_Nconfs/VASP_17_4_2023/SrTiO3_3x3x3_100K_para_comparar_con_Espres>
+scp -r diegom@ekhi.cfm.ehu.es:/scratch/diegom/SrTiO3/VASP/SrTiO3_3x3x3_300K_para_comparar_con_Espresso_Q4x4x4/pop$1 /media/diego/Calculations/SrTiO3/SSCHA/Hessian_vs_T_and_Nconfs/VASP_17_4_2023/SrTiO3_3x3x3_300K_para_comparar_con_Espres>
+break
+fi
+done
 #scp -r diegom@ekhi.cfm.ehu.es:/scratch/diegom/SrTiO3/VASP/SrTiO3_3x3x3_50K_para_comparar_con_Espresso_Q4x4x4/pop$1 /media/diego/Calculations/SrTiO3/SSCHA/Hessian_vs_T_and_Nconfs/VASP_17_4_2023/SrTiO3_3x3x3_50K_para_comparar_con_Espresso_Q4x4x4/pop$1
 #scp -r diegom@ekhi.cfm.ehu.es:/scratch/diegom/SrTiO3/VASP/SrTiO3_3x3x3_100K_para_comparar_con_Espresso_Q4x4x4/pop$1 /media/diego/Calculations/SrTiO3/SSCHA/Hessian_vs_T_and_Nconfs/VASP_17_4_2023/SrTiO3_3x3x3_100K_para_comparar_con_Espresso_Q4x4x4/pop$1
 #scp -r diegom@ekhi.cfm.ehu.es:/scratch/diegom/SrTiO3/VASP/SrTiO3_3x3x3_300K_para_comparar_con_Espresso_Q4x4x4/pop$1 /media/diego/Calculations/SrTiO3/SSCHA/Hessian_vs_T_and_Nconfs/VASP_17_4_2023/SrTiO3_3x3x3_300K_para_comparar_con_Espresso_Q4x4x4/pop$1
