@@ -22,6 +22,7 @@ ENDSSH
 ##########
 while True
 do
+sleep 300  
 files=$(ssh diegom@ekhi.cfm.ehu.es 'squeue |grep diego')
 if [[ $? != 0 ]]; then
     echo "Command failed."
