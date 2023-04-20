@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.6.20)  20 APR 2023 07:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.6.20)  20 APR 2023 10:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -713,65 +713,58 @@ Overfull \hbox (1.54501pt too wide) in paragraph at lines 194--195
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 217--220
-\OT1/cmr/m/n/10 gauss", "oc-cu-pa-tions", "conv[]thr",
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 217--220
-\OT1/cmr/m/n/10 "tstress", "tprn-for", "ver-bosity",
+Underfull \hbox (badness 10000) in paragraph at lines 201--203
+[]\OT1/cmr/m/n/10 [REQUIRED] The cal-cu-la-tor type (e.g.
  []
 
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 226--227
+Overfull \hbox (1.54501pt too wide) in paragraph at lines 230--231
 [][] 
  []
 
 
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 246--247
+Overfull \hbox (1.54501pt too wide) in paragraph at lines 250--251
 [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 278--293
+Underfull \hbox (badness 10000) in paragraph at lines 282--297
 \OT1/cmr/m/n/10 "use[]partition" "init[]script" "max[]recalc"
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 278--293
+Underfull \hbox (badness 10000) in paragraph at lines 282--297
 \OT1/cmr/m/n/10 "batch[]size" "lo-cal[]workdir" "v[]account"
  []
 
 
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 303--304
+Overfull \hbox (1.54501pt too wide) in paragraph at lines 307--308
 [][] 
  []
 
 [2] [3] [4] (./input_sscha_file_data.aux) ) 
 Here is how much of TeX's memory you used:
- 14982 strings out of 481239
- 295765 string characters out of 5920377
- 526275 words of memory out of 5000000
- 29963 multiletter control sequences out of 15000+600000
- 536261 words of font info for 42 fonts, out of 8000000 for 9000
+ 14977 strings out of 481239
+ 295683 string characters out of 5920377
+ 526276 words of memory out of 5000000
+ 29959 multiletter control sequences out of 15000+600000
+ 535926 words of font info for 41 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,6n,65p,423b,898s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/cm
--super/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9
-.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/share/texmf/fonts/type1/p
-ublic/cm-super/sfrm1000.pfb>
-Output written on input_sscha_file_data.pdf (4 pages, 116148 bytes).
+ 60i,6n,65p,423b,884s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr
+/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on input_sscha_file_data.pdf (4 pages, 110863 bytes).
 PDF statistics:
- 57 PDF objects out of 1000 (max. 8388607)
- 41 compressed objects within 1 object stream
+ 52 PDF objects out of 1000 (max. 8388607)
+ 37 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

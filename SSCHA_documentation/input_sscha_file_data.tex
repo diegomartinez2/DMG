@@ -198,27 +198,31 @@ Set the scatter value for the Sobol sampling.
 \node [mybox] (box){%
 	\begin{minipage}{0.3\textwidth}
 \begin{itemize}
-\item [k\_points :] [REQUIRED]
-********************
-\item [k\_offset :]
-*************************
-\item [disable\_check :]
-*************************
 \item [program :] [REQUIRED]
+The calculator type (e.g. "quantum-espresso")
+\item [k\_points :] [REQUIRED]
+k grid for the electronic calculation
+\item [k\_offset :]
+Offset of the k grid
+\item [disable\_check :]
 *************************
 \item [binary :]
 **************************
 \item [pseudo\_ :]
-**************************
+Here the pseudopotentials. ote they are pseudo\_ followed by the atom name (not case sensitive)
 \end{itemize}
-\begin{enumerate}
-\item "quantum-espresso"
-\begin{itemize}
-\item "ecutrho", "ecutwfc", "smearing", "degauss", 
+
+------------------------------------------
+
+"quantum-espresso" accepted parameters:
+%\begin{itemize}
+
+%\item 
+"ecutrho", "ecutwfc", "smearing", "degauss", 
 "occupations", "conv\_thr", "tstress", "tprnfor",
 "verbosity", "disk\_io", "input\_dft", "use\_all\_frac"
-\end{itemize}
-\end{enumerate}
+
+%\end{itemize}
 	\end{minipage}
 };
 %---------------------------------
