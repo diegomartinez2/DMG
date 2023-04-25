@@ -12,7 +12,7 @@ ssh -t $CLUSTER "cd $DESTINO/pop$1/vasp; sbatch run.sh $1"
 #ssh -t diegom@ekhi.cfm.ehu.es "cd /scratch/diegom/SrTiO3/VASP/SrTiO3_3x3x3_300K_para_comparar_con_Espresso_Q4x4x4/pop$1/vasp; sbatch run.sh"
 
 echo "##########"
-while True
+while true
 do
 echo "Sleep..."
 sleep 300
