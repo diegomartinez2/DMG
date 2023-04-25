@@ -28,7 +28,7 @@ rm slurm*.out
 ############################################################################
 module load VASP
 #np=4           #number of cpus
-POPULATION=1    #population index
+POPULATION=$1    #population index
 IONS=320         #number of atoms in the supercells
 NCONFSSHA=512   #number of configurations in the sscha ensemble
 #mpirun vasp_std > stdout
@@ -76,4 +76,3 @@ done
 rmdir BACKUP
 
 echo "DONE"
-
