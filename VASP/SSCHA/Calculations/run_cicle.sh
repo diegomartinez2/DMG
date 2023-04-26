@@ -43,6 +43,7 @@ do
        ;;
    (False)
        echo "NOT-converged"
+       #bash run_ekhi.sh $POPULATION
        bash run_local.sh $POPULATION
        ((POPULATION++))
        runner=True

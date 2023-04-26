@@ -64,20 +64,24 @@
 		\addtolength{\itemsep}{-2pt}
 		%\item[$g = $]
 		%  9.80 m s$^{-2}$
+		\item [fildyn\_prefix :] [REQUIRED] 
+        Location of the files with the dynamical matrices.
+        \item [nqirr :] [REQUIRED]
+        The number of irriducible q points (just look how many dynamical-matrixes files are there).
 		\item[t :] [REQUIRED]
-				The temperature used to generate the ensemble (in Kelvin).  
+		The temperature used to generate the ensemble (in Kelvin).  
 		\item[tg :]
 		The temperature that will be used in the minimization (in Kelvin).
-		\item[lambda\_a :]
-		Force constant minimization step. Step for the force constant matrix
-		\item[lambda\_w :]
-	    Force constant minimization step. Step for the structure
 		\item[minim\_struc :]
-		Do SSCHA minimize the structure? [.true./.false.] 
-		\item[precond\_wyck :]
-        Preconditioning variable [.true./.false.]
-		\item[preconditioning :]
-        Preconditioning dynamical martix variable for a very fast minimization [.true./.false.] (preconditioning can be used only if root\_representation = "normal")
+		Do SSCHA minimize the structure? [.true./.false.]
+		\item[n\_random :]
+		The dimension of the ensemble
+		\item [meaningful\_factor :]
+		The stopping criteria. The code will end the minimization after the gradient is lower than meaningful\_factor times its stochastic error.
+		\item[n\_random\_eff :]
+		The Kong-Liu effective sample size.When this size
+		becomes lower than the given threshold the minimization is stopped,
+		and you should re-generate a new ensemble. Usually in the begining you can chose 0.1 the original ensemble, and raise it to 0.4 or 0.5 when you are close to convergence. 
 		\item[root\_representation :]
         Set root representation, a trick to increase the speed of the minimization and to avoid the imaginary frequency error. The python new code is not able to do simultaneously precondition and root\_representation. Options are:
 \begin{itemize}
@@ -85,19 +89,12 @@
 \item "sqrt"   : square root representation.
 \item "root4"  : fourth-root represnetation, the best one (and the slowest).
 \end{itemize}
-
-		\item[neglect\_symmetries :]
-        Disable the symmetrization. Usefull if we want to
-        relax a structure. [.true./.false.]
-		\item[n\_random\_eff :]
-		The Kong-Liu effective sample size.When this size
-		becomes lower than the given threshold the minimization is stopped,
-		and you should re-generate a new ensemble. Usually in the begining you can chose 0.1 the original ensemble, and raise it to 0.4 or 0.5 when you are close to convergence.
-		\item[n\_random :]
-		The dimension of the ensemble
-		\item [meaningful\_factor :]
-		The stopping criteria. The code will end the minimization after the gradient is lower than meaningful\_factor times its stochastic error.
-		
+		\item[precond\_wyck :]
+		Preconditioning variable [.true./.false.]
+		\item[preconditioning :]
+		Preconditioning dynamical martix variable for a very fast minimization [.true./.false.] (preconditioning can be used only if root\_representation = "normal")
+		\item [load\_bin :]
+		*************************
 		
 		%  Constante de gases ideales$ = 8.31 \frac{\mbox{J}}{\mbox{mol K}} = 0.0821 \frac{\mbox{l atm}}{\mbox{mol K}}$
 		\end{itemize}
@@ -112,22 +109,22 @@
 	\node [mybox] (box){%
 		\begin{minipage}{0.3\textwidth}
 			\begin{itemize}
+			\item [population :]
+			The population id. This is an integer that distinguish different ensembles and allows for use the same data\_dir for several minimizations.
+			\item [supercell\_size :]"
+			The supercell size.
+			\item [data\_dir :]
+			The position of the ensemble (where the data are stored). Unit of measurements must be in bohr for displacements and $Ry/bohr$ for forces and $Ry/bohr^3$ for stress tensors. Energy is in Ry.
 			\item [eq\_energy :]
 			Set the equilibrium energy.
 			It should be the energy of the structure without fluctuations,
 			it is used to separate the electronic and the vibrational energy,
 			since they are usually of different order of magnitude.
 			It is measured in Ry.
-			\item [fildyn\_prefix :] [REQUIRED] 
-			Location of the files with the dynamical matrices.
-			\item [nqirr :] [REQUIRED]
-			The number of irriducible q points (just look how many dynamical-matrixes files are there).
-			\item [data\_dir :]
-			The position of the ensemble (where the data are stored). Unit of measurements must be in bohr for displacements and $Ry/bohr$ for forces and $Ry/bohr^3$ for stress tensors. Energy is in Ry.
-			\item [load\_bin :]
-			*************************
-			\item [supercell\_size :]"
-			The supercell size.
+	    	\item[lambda\_a :]
+            Force constant minimization step. Step for the force constant matrix
+            \item[lambda\_w :]
+            Force constant minimization step. Step for the structure			
 			\item [max\_ka :]
 			Maximum number of steps after which the code is automatically stopped
 			\item [stress\_offset :]
@@ -141,12 +138,13 @@
 			\item "gw"  - only the wyckoff (i.e. structure) gradient.
 			\item "gc"  - only the force-constant matrix gradient.
 			\end{itemize} 
-			\item [population :]
-			The population id. This is an integer that distinguish different ensembles and allows for use the same data\_dir for several minimizations.
 			\item [print\_stress :]
 			Legacy flag, not used anymore, now it automatically print the stress if it finds the stress tensor inside the ensemble. 
 			\item [use\_spglib :]
 			Use spglib for symmetrization. [.true./.false.]
+			\item[neglect\_symmetries :]
+			Disable the symmetrization. Usefull if we want to
+			relax a structure. [.true./.false.]
 			\end{itemize}
 		\end{minipage}
 	};
@@ -209,9 +207,8 @@ Offset of the k grid
 \item [binary :]
 **************************
 \item [pseudo\_ :]
-Here the pseudopotentials. ote they are pseudo\_ followed by the atom name (not case sensitive)
+Here the pseudopotentials. Note they are pseudo\_ followed by the atom name (not case sensitive)
 \end{itemize}
-
 ------------------------------------------
 
 "quantum-espresso" accepted parameters:
@@ -241,7 +238,7 @@ Here the pseudopotentials. ote they are pseudo\_ followed by the atom name (not 
 	\item [mu\_free\_start :] This flag set the value for unlockin the modes.
 	\item [mu\_free\_end :] This flag set the value for unlockin the modes.
 	\item [project\_dyn :] Project on the mode subspace the dynamical matrix. [.true./.false.]
-	\item [project\_structure :]] Project on the structure [.true./.false.]
+	\item [project\_structure :] Project on the structure [.true./.false.]
 	\end{itemize}
 	\end{minipage}
 };
