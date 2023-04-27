@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.6.20)  25 APR 2023 16:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.6.20)  27 APR 2023 12:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -730,17 +730,22 @@ Overfull \hbox (1.54501pt too wide) in paragraph at lines 247--248
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 279--294
+Overfull \hbox (1.54501pt too wide) in paragraph at lines 271--272
+[][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 292--307
 \OT1/cmr/m/n/10 "use[]partition" "init[]script" "max[]recalc"
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 279--294
+Underfull \hbox (badness 10000) in paragraph at lines 292--307
 \OT1/cmr/m/n/10 "batch[]size" "lo-cal[]workdir" "v[]account"
  []
 
 
-Overfull \hbox (1.54501pt too wide) in paragraph at lines 304--305
+Overfull \hbox (1.54501pt too wide) in paragraph at lines 317--318
 [][] 
  []
 
@@ -761,7 +766,7 @@ nts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.p
 fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr
 /share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on input_sscha_file_data.pdf (4 pages, 110873 bytes).
+Output written on input_sscha_file_data.pdf (4 pages, 111017 bytes).
 PDF statistics:
  52 PDF objects out of 1000 (max. 8388607)
  37 compressed objects within 1 object stream

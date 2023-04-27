@@ -263,39 +263,6 @@ Here the pseudopotentials. Note they are pseudo\_ followed by the atom name (not
 \item [shell :]
 \item [submit\_cmd :]
 \item [queue\_directive :]
-\item [v\_nodes :]
-\item [n\_nodes :]
-\item [use\_nodes :]
-\item [v\_cpu :]
-\item [n\_cpu :]
-\item [use\_cpu :]
-\item [v\_time :]
-\item [n\_time :]
-\item [n\_pools :]
-\item [use\_time :]
-\item [v\_memory :]
-\item [max\_ram :]
-\item [ :]
-"use\_memory"
-"v\_partition"
-"partition\_name"
-"use\_partition"
-"init\_script"
-"max\_recalc"
-"batch\_size"
-"local\_workdir"
-"v\_account"
-"use\_account"
-"sshcmd"
-"scpcmd"
-"timeout"
-"job\_numbers"
-"n\_together"
-
-
-"workdir"
-
-
 	\end{itemize}
 	\end{minipage}
 };
@@ -303,7 +270,51 @@ Here the pseudopotentials. Note they are pseudo\_ followed by the atom name (not
 \node[fancytitle, right=10pt] at (box.north west) {\&cluster};
 \end{tikzpicture}	
 
+	%---------------------------
+\begin{tikzpicture}
+\node [mybox] (box){%
+	\begin{minipage}{0.3\textwidth}
+	\begin{itemize}
+
+	\item [v\_nodes :]
+	\item [n\_nodes :]
+	\item [use\_nodes :]
+	\item [v\_cpu :]
+	\item [n\_cpu :]
+	\item [use\_cpu :]
+	\item [v\_time :]
+	\item [n\_time :]
+	\item [n\_pools :]
+	\item [use\_time :]
+	\item [v\_memory :]
+	\item [max\_ram :]
+	\item [ :]
+	"use\_memory"
+	"v\_partition"
+	"partition\_name"
+	"use\_partition"
+	"init\_script"
+	"max\_recalc"
+	"batch\_size"
+	"local\_workdir"
+	"v\_account"
+	"use\_account"
+	"sshcmd"
+	"scpcmd"
+	"timeout"
+	"job\_numbers"
+	"n\_together"
 	
+	
+	"workdir"
+	
+	
+	\end{itemize}
+	\end{minipage}
+};
+%---------------------------------
+\node[fancytitle, right=10pt] at (box.north west) {\&cluster};
+\end{tikzpicture}	
 
 	
 	
