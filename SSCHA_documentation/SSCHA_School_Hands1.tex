@@ -1,0 +1,167 @@
+\documentclass[]{report}
+
+
+% Title Page
+\title{\textbf{SSCHA School 2023} \\ \underline{Hands-on-session1:}\\ First SSCHA simulations: free energy and structural relaxations}
+\author{Diego Martinez}
+
+
+\begin{document}
+\maketitle
+
+%\begin{abstract}
+%\end{abstract}
+\chapter{Installing SSCHA}
+\section{Getting SSCHA}
+In order to use the SSCHA code you will need to download both the CellConstructor package and the python-sscha package. These packages can be downloaded directly from the following github pages:
+
+\begin{quotation}
+	github.com/SSCHAcode/CellConstructor
+\end{quotation}
+
+\begin{quotation}
+	github.com/SSCHAcode/python-sscha
+\end{quotation}
+
+In case you want to use the force field calculator used in the SnTe tutorial, you will need to download as well the F3ToyModel package from this link:
+
+\begin{quotation}
+	github.com/SSCHAcode/F3ToyModel
+\end{quotation}
+The commands for downloading this using git is 
+\begin{quotation}
+	git@github.com:SSCHAcode/CellConstructor.git
+\end{quotation}
+\begin{quotation}
+	git@github.com:SSCHAcode/python-sscha.git
+\end{quotation}
+
+If you are using GitHub CLI
+\begin{quotation}
+	gh repo clone SSCHAcode/CellConstructor
+\end{quotation}
+\begin{quotation}
+	gh repo clone SSCHAcode/python-sscha
+\end{quotation}
+\section{Requirements for installation}
+In order to install both CellConstructor and python-sscha packages, you need to install previously python and several python packages. As python-sscha depends on CellConstructor, the former will not work unless the latter is installed. As the SSCHA code also is partly written in Fortran, you will aslo need a Fortran compiler as well as Lapack and Blas librearies.
+
+The full list of dependencies to install CellConstructor and python-sscha packages is:
+\begin{itemize}
+	\item python
+	\item numpy
+	\item matplotlib
+	\item Lapack
+	\item Blas
+	\item A FORTRAN compiler. For example gfortran.
+	\item ASE (Atomic Simulation Environment)
+	\item SPGLIB
+\end{itemize}
+
+All the needed python dependencies can be easily installed for CellConstructor or python-sscha by simply running
+
+\begin{quotation}
+	pip install -r requirements.txt
+\end{quotation}
+
+in the folder of each package.
+
+To install the code, a fortran compiler is required. We recommend gfortran. For example, on Ubuntu, the fortran prerequisites may be installed with:
+
+\begin{quotation}
+	sudo apt-get install libblas-dev liblapack-dev liblapacke-dev gfortran
+\end{quotation}
+for RedHat
+\begin{quotation}
+	sudo dnf install libblas-dev liblapack-dev liblapacke-dev gfortran 
+\end{quotation}
+for Arch-base linux
+\begin{quotation}
+	sudo pacman -S libblas-dev liblapack-dev liblapacke-dev gfortran
+\end{quotation}
+It is also recommended to use anaconda, conda or miniconda for development security. The instructions for the miniconda installation can be found here:
+\begin{quotation}
+	https://docs.conda.io/en/latest/miniconda.html
+\end{quotation}
+Once installed we can create a new enviroment for SSCHA with
+\begin{quotation}
+	conda create --name SSCHA
+\end{quotation}
+and activate the enviroment with 
+\begin{quotation}
+	conda activate SSCHA
+\end{quotation}
+then installing the prerequisites with conda is
+\begin{quotation}
+	conda install numpy
+\end{quotation}
+
+\section{Installation}
+To install the CellConstructor and python-sscha packages it is recommended to use the last version of anaconda-python2, which cames with all the updated numpy and matplotlib packages already compiled to work in parallel. Moreover the last version of matplotlib will allow the user to modify the plots after they are produced.
+
+Once all the dependencies have been installed, the CellConstructor and python-sscha codes can be easily installed from the command line as:
+
+\begin{quotation}
+	python setup.py install
+\end{quotation}
+
+This command must be executed in the directory where the setup.py script is, insice the CellConstructor and python-sscha folders. If you installed python in a system directory, administration rights may be requested (add a sudo before the command).
+
+Installing CellConstructor and python-sscha in clusters may me more tricky and one needs to adapt the setup.py to the cluster characteristics. For instance, if you use the intel compiler, you need to delete the lapack linking from the setup.py and include -mkl. Note that you must force to use the same linker as the one used for the compilation. For example, specific setup.py scripts are provided with the distribution to install CellConstructor easily in FOSS or INTEL clusters.
+\subsection{Installation through pip}
+
+Alternatively, both CellConstructor and python-sscha can be installed through pip simply as:
+
+\begin{quotation}
+	pip install CellConstructor
+\end{quotation}
+
+and
+
+\begin{quotation}
+	pip install python-sscha 
+\end{quotation}
+
+\subsection{Installation through docker}
+
+If you are not able to compile the code, or you want to use it on a cluster, where compilation could be cumbersome, we provide a docker container with the SSCHA code already compiled and installed.
+
+You can download it from the docker hub. To run the docker command you need Docker already installed.
+
+\begin{quotation}
+	docker pull mesonepigreco/python-sscha
+\end{quotation}
+
+If you get an error of permissions, you need to add your user to the docker group.
+
+This can be done with the commands:
+
+\begin{quotation}
+	sudo usermod -aG docker \$USER
+\end{quotation}
+	
+\begin{quotation}
+		newgrp docker
+\end{quotation}
+
+
+Most clusters provide docker through a module load command, please, ask the cluster maintainer how to run a docker container on your favorite HPC system.
+
+Once the container is installed, you can access it with
+
+\begin{quotation}
+	docker run -it mesonepigreco/python-sscha
+\end{quotation}
+
+the previous command opens a new shell with the python-sscha code installed. To share the content of the current directory with the container, execute the command with
+
+\begin{quotation}
+	docker run -it -v \$PWD:/root mesonepigreco/python-sscha
+\end{quotation}
+
+This loads the content of the local directory inside the home (/root) of the container with python-sscha.
+\chapter{Free energy calculation}
+
+\chapter{Structural relaxation}
+
+\end{document}          
