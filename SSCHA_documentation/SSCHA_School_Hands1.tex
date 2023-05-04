@@ -161,7 +161,19 @@ the previous command opens a new shell with the python-sscha code installed. To 
 
 This loads the content of the local directory inside the home (/root) of the container with python-sscha.
 \chapter{Free energy calculation}
-
+\section{Pre-processing}
+*Create the object for the strtucture
+*Read structure into structure object
+*Prepare calculator
+*Set the Relax object with the structure and calculator to get the harmonic
+*Relax and get the dynamical matrix -> and save the dyn
+\section{Free energy minimization}
+*Read the dynamical matrixes
+*Apply the sum rule and symmetrization
+*remove imaginary frequencies -> show frequencies after/before
+*Generate the ensemble
+**calculate forces/energies/(stress)
+*
 \chapter{Structural relaxation}
 
 \end{document}          
