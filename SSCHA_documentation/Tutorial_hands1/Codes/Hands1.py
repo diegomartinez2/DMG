@@ -1,3 +1,4 @@
+#Code for the SSCHA School 2023
 # Import the sscha code
 import sscha, sscha.Ensemble, sscha.SchaMinimizer, sscha.Relax, sscha.Utilities
 
