@@ -162,18 +162,58 @@ the previous command opens a new shell with the python-sscha code installed. To 
 This loads the content of the local directory inside the home (/root) of the container with python-sscha.
 \chapter{Free energy calculation}
 \section{Pre-processing}
-*Create the object for the strtucture
-*Read structure into structure object
-*Prepare calculator
-*Set the Relax object with the structure and calculator to get the harmonic
-*Relax and get the dynamical matrix -> and save the dyn
+\subsection{Create the object for the structure}
+structure = CC.Structure.Structure()
+\subsection{Read structure into structure object}
+structure.read\_generic\_file("Au.cif")
+\subsection{Prepare calculator}
+calculator = ase.calculators.emt() \#as example
+\subsection{Set the Relax object with the structure and calculator to get the harmonic}
+relax = CC.calculators.Relax(structure, calculator)
+\subsection{Relax and get the dynamical matrix -> and save the dyn}
+relaxed = relax.static\_relax()
+dyn = CC.Phonons.compute\_phonons\_finite\_displacements(structure, calculator, supercell = (4,4,4))
+\subsubsection{Save data}
+%dyn.Symmetryze
+dyn.save\_qe(namefile)
 \section{Free energy minimization}
-*Read the dynamical matrixes
-*Apply the sum rule and symmetrization
-*remove imaginary frequencies -> show frequencies after/before
-*Generate the ensemble
-**calculate forces/energies/(stress)
-*
+
+\subsection{Read the dynamical matrixes}
+dyn =CC.Phonons.Phonons(namefile, NQIRR)
+\subsection{Apply the sum rule and symmetrization}
+dyn.Symmetrize()
+\subsection{remove imaginary frequencies}
+dyn.ForcePositiveDefinite()
+\subsubsection{show frequencies after/before}
+W\_harmonic, pols\_harmonic = dyn.DiagonaliueSupercell()
+\subsection{Generate the ensemble}
+ensemble = sscha.Ensemble.Ensemble(dyn, Temperature, supercell = dyn.GetSupercell())
+enseble.generate(N)
+\subsection{calculate forces/energies/(stress)}
+[...]
+\subsubsection{Calculators}
+[...]
+\subsection{Create the minimization object}
+minimizer = sscha.SchaMinimizer.SSCHA\_Minimizer(ensemble)
+\subsection{set the minimization parameters}
+minimizer.min\_step\_dyn = 0.005
+minimizer.min\_step\_struc = 0.05
+minimizer.gradi\_op = "all"
+minimizer.kong\_liu\_ratio = 0.5
+minimizer.meaningfull\_factor = 0.000001
+
+\subsection{Minimization cycle in two ways:}
+\begin{enumerate}
+	\item Step by step calculation
+	minimizer.init()
+	minimizer.run()
+	minimizer.finalize()
+	\item Automatic relaxation
+	relax = sscha.Relax.SSCHA(minimizer, ase\_calculator = calculator, N\_configs = N, max\_pop = 20)
+	relax.relax()
+\end{enumerate}
+
+\section{Post-processing}
 \chapter{Structural relaxation}
 
 \end{document}          

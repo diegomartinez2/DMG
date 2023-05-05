@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.6.20)  4 MAY 2023 10:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.6.20)  4 MAY 2023 17:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -62,31 +62,62 @@ Chapter 1.
 
 ] [2] [3] [4]
 Chapter 2.
+
+Overfull \hbox (80.84532pt too wide) in paragraph at lines 174--176
+\OT1/cmr/m/n/10 relaxed = re-lax.static[]relax() dyn = CC.Phonons.compute[]phon
+ons[]finite[]displacements(structure,
+ []
+
 [5
 
 ]
+Overfull \hbox (41.79234pt too wide) in paragraph at lines 190--192
+\OT1/cmr/m/n/10 ensemble = ss-cha.Ensemble.Ensemble(dyn, Tem-per-a-ture, su-per
+-cell = dyn.GetSupercell())
+ []
+
+
+Overfull \hbox (20.80635pt too wide) in paragraph at lines 199--204
+\OT1/cmr/m/n/10 minimizer.min[]step[]dyn = 0.005 min-i-mizer.min[]step[]struc =
+ 0.05 min-i-mizer.gradi[]op
+ []
+
+
+Overfull \hbox (10.72295pt too wide) in paragraph at lines 207--211
+[]\OT1/cmr/m/n/10 Step by step cal-cu-la-tion min-i-mizer.init() min-i-mizer.ru
+n() min-i-mizer.finalize() 
+ []
+
+
+Overfull \hbox (6.73958pt too wide) in paragraph at lines 211--214
+[]\OT1/cmr/m/n/10 Automatic re-lax-ation re-lax = ss-cha.Relax.SSCHA(minimizer,
+ ase[]calculator
+ []
+
+[6] [7]
 Chapter 3.
-[6
+[8
 
 ] (./SSCHA_School_Hands1.aux) ) 
 Here is how much of TeX's memory you used:
- 418 strings out of 481239
- 6950 string characters out of 5920377
+ 421 strings out of 481239
+ 6989 string characters out of 5920377
  240562 words of memory out of 5000000
- 15757 multiletter control sequences out of 15000+600000
- 538455 words of font info for 44 fonts, out of 8000000 for 9000
+ 15759 multiletter control sequences out of 15000+600000
+ 538763 words of font info for 45 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  25i,6n,19p,507b,178s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-su
 per-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx1
-2.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/tex
-mf/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on SSCHA_School_Hands1.pdf (7 pages, 71034 bytes).
+0.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf/fon
+ts/type1/public/cm-super/sfrm1000.pfb>
+Output written on SSCHA_School_Hands1.pdf (9 pages, 88954 bytes).
 PDF statistics:
- 49 PDF objects out of 1000 (max. 8388607)
- 34 compressed objects within 1 object stream
+ 59 PDF objects out of 1000 (max. 8388607)
+ 41 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
