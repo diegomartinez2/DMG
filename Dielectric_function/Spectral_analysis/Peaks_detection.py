@@ -2,7 +2,11 @@ import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
 import numpy as np
 
-with open("xit") as file:
+#with open("xaa") as file:
+#with open("xbv") as file:
+#with open("xzaez") as file:
+with open("xzabu") as file:
+#with open("xtg") as file:
      lines = [line.rsplit() for line in file]
 Frequency = np.zeros(5001)
 Spec = np.zeros(5001)
