@@ -215,6 +215,7 @@ Now [...]
           # Apply also the ASR and the symmetry group
           self.dyn_sscha.Symmetrize()
       def load_dyn(self,File_final_dyn,nqirr):
+          # The SSCHA dynamical matrix is needed (the one after convergence)
           # We reload the final result (no need to rerun the sscha minimization)
           self.dyn_sscha_final = CC.Phonons.Phonons(File_final_dyn, nqirr)
       def ensamble_sscha(self,T):
@@ -226,50 +227,43 @@ Now [...]
           self.ensemble.generate(5000, sobol = True, sobol_scramble = False)
   #        self.ensemble.generate(50, sobol = False)
   #        self.ensemble.generate(1000,sobol = True)
+          #We could also load the ensemble with ensemble.load("data_ensemble_final", N = 100, population = 5)
+
       def calcula1(self):
           # We now compute forces and energies using the force field calculator
           self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False)
       def hessian(self,T):
 
           print("Updating the importance sampling...")
+          # If the sscha matrix was not the one used to compute the ensemble
+          # We must update the ensemble weights
+          # We can also use this function to simulate a different temperature.
           self.ensemble.update_weights(self.dyn_sscha_final, T)
-
+          # ----------- COMPUTE THE FREE ENERGY HESSIAN -----------
           print("Computing the free energy hessian...")
           self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
           #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = True,
           #                                          get_full_hessian = True,verbose = True) # Full calculus
-          # We can save it
+          # We can save the free energy hessian as a dynamical matrix in quantum espresso format
           self.dyn_hessian.save_qe("hessian")
+          # -------------------------------------------------------
           # We calculate the frequencies of the hessian:
           w_hessian, pols_hessian = self.dyn_hessian.DiagonalizeSupercell()
 
           # Print all the frequency converting them into cm-1 (They are in Ry)
           print("\n".join(["{:16.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in w_hessian]))
 
+
+
+
 .. code-block:: python
-  # Lets import all the sscha modules
-  import cellconstructor as CC
-  import cellconstructor.Phonons
-  import sscha, sscha.Ensemble
 
-  # We load the SSCHA dynamical matrix for the PbTe (the one after convergence)
-  dyn_sscha = CC.Phonons.Phonons("dyn_sscha", nqirr = 3)
 
-  # Now we load the ensemble
-  ensemble = sscha.Ensemble.Ensemble(dyn_sscha, T0 = 1000, supercell=dyn_sscha.GetSupercell())
-  ensemble.load("data_ensemble_final", N = 100, population = 5)
 
-  # If the sscha matrix was not the one used to compute the ensemble
-  # We must update the ensemble weights
-  # We can also use this function to simulate a different temperature.
-  ensemble.update_weights(dyn_sscha, T = 1000)
 
-  # ----------- COMPUTE THE FREE ENERGY HESSIAN -----------
-  dyn_hessian = ensemble.get_free_energy_hessian()
-  # -------------------------------------------------------
 
-  # We can save the free energy hessian as a dynamical matrix in quantum espresso format
-  dyn_hessian.save_qe("free_energy_hessian")
+
+
 
 We can then print the frequencies of the hessian. If an imaginary frequency is present, then the system wants to spontaneosly break the high symmetry phase.
 
