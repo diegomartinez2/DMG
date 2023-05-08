@@ -12,7 +12,7 @@ The SSCHA method provides a complete theoretical framework to study second-order
 
 According to Landau’s theory of second-order phase transitions, a phase transition occurs when the free energy curvature around the high-symmetry structure on the direction of the order parameter becomes negative:
 [image]
-.. _fig-goldminim:
+.. _fig-second_order:
 
 .. figure:: figures/second_order.png
    :width: 400
