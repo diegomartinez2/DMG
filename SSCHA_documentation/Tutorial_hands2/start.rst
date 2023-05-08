@@ -193,7 +193,58 @@ Now we fill the main function:
 
 This code will calculate the SSCHA minimization with the "ff_calculator".
 
-Now 
+Now [...]
+
+.. code-block:: python
+  class Busca_inestabilidades(object):
+      def __init__(self,fichero_ForceFields,fichero_dyn,nqirr):
+          # Load the dynamical matrix for the force field
+          self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
+
+          # Setup the forcefield with the correct parameters
+          self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
+          self.ff_calculator.type_cal = "pbtex"
+          self.ff_calculator.p3 = 0.036475
+          self.ff_calculator.p4 = -0.022
+          self.ff_calculator.p4x = -0.014
+
+          # Initialization of the SSCHA matrix
+          self.dyn_sscha = CC.Phonons.Phonons(fichero_dyn, nqirr)
+          self.dyn_sscha.ForcePositiveDefinite()
+
+          # Apply also the ASR and the symmetry group
+          self.dyn_sscha.Symmetrize()
+      def load_dyn(self,Fichero_final_matriz_dinamica,nqirr):
+          # We reload the final result (no need to rerun the sscha minimization)
+          self.dyn_sscha_final = CC.Phonons.Phonons(Fichero_final_matriz_dinamica, nqirr)
+      def ensambla(self,T):
+          # We reset the ensemble
+          self.ensemble = sscha.Ensemble.Ensemble(self.dyn_sscha_final, T0 = T, supercell = self.dyn_sscha_final.GetSupercell())
+
+          # We need a bigger ensemble to properly compute the hessian
+          # Here we will use 10000 configurations
+          self.ensemble.generate(5000, sobol = True, sobol_scramble = False)
+  #        self.ensemble.generate(50, sobol = False)
+  #        self.ensemble.generate(1000,sobol = True)
+      def calcula1(self):
+          # We now compute forces and energies using the force field calculator
+          self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #test compute_stress = True no puede con este potencial...
+      def hessiano(self,T):
+
+          print("Updating the importance sampling...")
+          self.ensemble.update_weights(self.dyn_sscha_final, T)
+
+          print("Computing the free energy hessian...")
+          self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) # We neglect high-order four phonon scattering
+          #self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = True,
+          #                                          get_full_hessian = True,verbose = True) # Full calculus
+          # We can save it
+          self.dyn_hessian.save_qe("hessian")
+
+          w_hessian, pols_hessian = self.dyn_hessian.DiagonalizeSupercell()
+
+          # Print all the frequency converting them into cm-1 (They are in Ry)
+          print("\n".join(["{:16.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in w_hessian]))
 
 .. code-block:: python
   # Lets import all the sscha modules
