@@ -12,6 +12,13 @@ The SSCHA method provides a complete theoretical framework to study second-order
 
 According to Landau’s theory of second-order phase transitions, a phase transition occurs when the free energy curvature around the high-symmetry structure on the direction of the order parameter becomes negative:
 [image]
+.. _fig-goldminim:
+
+.. figure:: figures/second_order.png
+   :width: 400
+   :alt: Second order.
+
+   Landau’s theory of second-order phase transitions.
 
 For structural phase transitions, the order parameter is associated to phonon atomic displacements $$\frac{\partial^2 F}{\partial R_a \partial R_b}$$. So we just need to calculate the Free energy Hessian. the SSCHA provides an analytical equation for the free energy Hessian, derived by Raffaello Bianco in the work Bianco et. al. Phys. Rev. B 96, 014111 <https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111>.
 The free energy curvature can be written in matrix form as:
@@ -193,7 +200,7 @@ Now we fill the main function:
 
 This code will calculate the SSCHA minimization with the "ff_calculator".
 
-Now [...]
+Now we can search for instabilities. For that we [...]
 
 .. code-block:: python
   class Search_instabilities(object):
