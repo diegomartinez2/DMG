@@ -196,10 +196,10 @@ This code will calculate the SSCHA minimization with the "ff_calculator".
 Now [...]
 
 .. code-block:: python
-  class Busca_inestabilidades(object):
-      def __init__(self,fichero_ForceFields,fichero_dyn,nqirr):
+  class Search_instabilities(object):
+      def __init__(self,files_ForceFields,files_dyn,nqirr):
           # Load the dynamical matrix for the force field
-          self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
+          self.ff_dyn = CC.Phonons.Phonons(files_ForceFields, 3)
 
           # Setup the forcefield with the correct parameters
           self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
@@ -209,15 +209,15 @@ Now [...]
           self.ff_calculator.p4x = -0.014
 
           # Initialization of the SSCHA matrix
-          self.dyn_sscha = CC.Phonons.Phonons(fichero_dyn, nqirr)
+          self.dyn_sscha = CC.Phonons.Phonons(files_dyn, nqirr)
           self.dyn_sscha.ForcePositiveDefinite()
 
           # Apply also the ASR and the symmetry group
           self.dyn_sscha.Symmetrize()
-      def load_dyn(self,Fichero_final_matriz_dinamica,nqirr):
+      def load_dyn(self,File_final_dyn,nqirr):
           # We reload the final result (no need to rerun the sscha minimization)
-          self.dyn_sscha_final = CC.Phonons.Phonons(Fichero_final_matriz_dinamica, nqirr)
-      def ensambla(self,T):
+          self.dyn_sscha_final = CC.Phonons.Phonons(File_final_dyn, nqirr)
+      def ensamble_sscha(self,T):
           # We reset the ensemble
           self.ensemble = sscha.Ensemble.Ensemble(self.dyn_sscha_final, T0 = T, supercell = self.dyn_sscha_final.GetSupercell())
 
@@ -228,8 +228,8 @@ Now [...]
   #        self.ensemble.generate(1000,sobol = True)
       def calcula1(self):
           # We now compute forces and energies using the force field calculator
-          self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #test compute_stress = True no puede con este potencial...
-      def hessiano(self,T):
+          self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False)
+      def hessian(self,T):
 
           print("Updating the importance sampling...")
           self.ensemble.update_weights(self.dyn_sscha_final, T)
@@ -240,7 +240,7 @@ Now [...]
           #                                          get_full_hessian = True,verbose = True) # Full calculus
           # We can save it
           self.dyn_hessian.save_qe("hessian")
-
+          # We calculate the frequencies of the hessian:
           w_hessian, pols_hessian = self.dyn_hessian.DiagonalizeSupercell()
 
           # Print all the frequency converting them into cm-1 (They are in Ry)
