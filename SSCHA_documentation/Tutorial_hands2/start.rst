@@ -13,7 +13,7 @@ The SSCHA method provides a complete theoretical framework to study second-order
 According to Landau’s theory of second-order phase transitions, a phase transition occurs when the free energy curvature around the high-symmetry structure on the direction of the order parameter becomes negative:
 [image]
 
-For structural phase transitions, the order parameter is associated to phonon atomic displacements [formula]. So we just need to calculate the Free energy Hessian. the SSCHA provides an analytical equation for the free energy Hessian, derived by Raffaello Bianco in the work Bianco et. al. Phys. Rev. B 96, 014111 [https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111].
+For structural phase transitions, the order parameter is associated to phonon atomic displacements [formula]. So we just need to calculate the Free energy Hessian. the SSCHA provides an analytical equation for the free energy Hessian, derived by Raffaello Bianco in the work Bianco et. al. Phys. Rev. B 96, 014111 <https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111>.
 
 *****
 Starting from the Gold structure in the primitive cell, to run the SSCHA we need:
