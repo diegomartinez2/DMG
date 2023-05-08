@@ -27,9 +27,54 @@ Lets see a practical example, first we calculate the SSCHA dynamical matrix for 
 
 Lets do something different an write it as an object (Object Oriented Program).
 
+We begin from the bottom with the old trick for code re-usability:
+
+.. code-block:: python
+  def main(args):
+  #main code goes here
+  return 0
+
+  if __name__ == '__main__':
+    import sys
+    sys.exit(main(sys.argv))
+
+and now we put the top part of the code, the inputs:
+
+.. code-bolck python
+  #!/usr/bin/env python
+  # -*- coding: utf-8 -*-
+  #
+  #  SSCHA_exercise.py
+  #
+  # Import the cellconstructor stuff
+  import cellconstructor as CC
+  import cellconstructor.Phonons
+  import cellconstructor.ForceTensor
+  import cellconstructor.Structure
+  import cellconstructor.Spectral
+
+  # Import the modules of the force field
+  import fforces as ff
+  import fforces.Calculator
+
+  # Import the modules to run the sscha
+  import sscha, sscha.Ensemble, sscha.SchaMinimizer
+  import sscha.Relax, sscha.Utilities
+
+  import spglib
+  from ase.visualize import view
+
+  # Import Matplotlib to plot
+  import numpy as np
+  import matplotlib.pyplot as plt
+  from matplotlib import cm
+  import timeit
+
+Now we need to calculate the SSCHA dynamical matrix. For that we can use this object:
+
 .. code-block:: python
   class PbTe_initial(object):
-    def __init__(self,fichero_ForceFields,fichero_dyn,nqirr,configuraciones,sobol,sobol_scatter):
+    def __init__(self,file_ForceFields,file_dyn,nqirr,configurations,sobol,sobol_scatter):
         # Load the dynamical matrix for the force field
         self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
 
@@ -50,24 +95,21 @@ Lets do something different an write it as an object (Object Oriented Program).
         self.sobol = sobol
         self.sobol_scatter = sobol_scatter
 
-    def ensambla(self,T):
+    def ensamble_sscha(self,T):
         self.ensemble = sscha.Ensemble.Ensemble(self.dyn_sscha, T0 = T, supercell = self.dyn_sscha.GetSupercell())
         # Detect space group
         symm=spglib.get_spacegroup(self.dyn_sscha.structure.get_ase_atoms(), 0.005)
         print('Initial SG = ', symm)
 
 
-    def minimiza(self,fichero_frecuencias,fichero_matriz):
+    def minimizing(self,fichero_frecuencias,fichero_matriz):
         self.minim = sscha.SchaMinimizer.SSCHA_Minimizer(self.ensemble)
 
         # Lets setup the minimization on the fourth root
-#        self.minim.root_representation = "root4" # Other possibilities are 'normal' and 'sqrt'
+        #self.minim.root_representation = "root4" # Other possibilities are 'normal' and 'sqrt'
 
         # To work correctly with the root4, we must deactivate the preconditioning on the dynamical matrix
-#        self.minim.precond_dyn = False
-
-        # Probemos con self.neglect_symmetries= true
-#        self.minim.neglect_symmetries = True    # *test*
+        #self.minim.precond_dyn = False
 
         # Now we setup the minimization parameters
         # Since we are quite far from the correct solution, we will use a small optimization step
@@ -75,13 +117,7 @@ Lets do something different an write it as an object (Object Oriented Program).
 
         # We decrease the Kong-Liu effective sample size below which the population is stopped
         self.minim.kong_liu_ratio = 0.5 # Default 0.5
-        # Pedimos que minimize la estructura (eso espero) *test*
-#        self.minim.minim_struct = True
-
-#        self.relax = sscha.Relax.SSCHA(self.minim,
-#                          ase_calculator = self.ff_calculator,
-#                          N_configs = 100,
-#                          max_pop = 200)
+        # We relax the structure
         self.relax = sscha.Relax.SSCHA(self.minim,
                           ase_calculator = self.ff_calculator,
                           N_configs = self.configuraciones,
@@ -96,8 +132,8 @@ Lets do something different an write it as an object (Object Oriented Program).
         self.relax.setup_custom_functions(custom_function_post = self.io_func.CFP_SaveFrequencies)
         # Finalmente hacemos todos los calculos de busqueda de la energia libre.
         self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
-#        self.relax.relax(sobol = False)
-#        self.relax.vc_relax(static_bulk_modulus="recalc",restart_from_ens = True, fix_volume = True, stress_numerical = True)
+        #self.relax.relax(sobol = False)
+        #self.relax.vc_relax(static_bulk_modulus="recalc",restart_from_ens = True, fix_volume = True, stress_numerical = True)
         #self.relax.vc_relax(static_bulk_modulus=40, fix_volume = False)
 
         # Save the final dynamical matrix
@@ -107,15 +143,14 @@ Lets do something different an write it as an object (Object Oriented Program).
         print('New SG = ', symm)
         view(self.relax.minim.dyn.structure.get_ase_atoms())
 
-    def dibuja(self,fichero):
+    def draw_figure(self,file):
         # Setup the interactive plotting mode
         #plt.ion()
 
         # Lets plot the Free energy, gradient and the Kong-Liu effective sample size
         self.relax.minim.plot_results()
 
-#        frequencies = np.loadtxt(fichero)
-        frequencies = np.loadtxt("{}.freqs".format(fichero)) # se ha cambiado el formato?????
+        frequencies = np.loadtxt("{}.freqs".format(file))
         N_steps, N_modes = frequencies.shape
 
         #For each frequency, we plot it [we convert from Ry to cm-1]
