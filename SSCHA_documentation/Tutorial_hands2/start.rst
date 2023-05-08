@@ -73,7 +73,7 @@ and now we put the top part of the code, the inputs:
 Now we need to calculate the SSCHA dynamical matrix. For that we can use this object:
 
 .. code-block:: python
-  class PbTe_initial(object):
+  class SnTe_initial(object):
     def __init__(self,file_ForceFields,file_dyn,nqirr,configurations,sobol,sobol_scatter):
         # Load the dynamical matrix for the force field
         self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
@@ -163,6 +163,37 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
         plt.tight_layout()
         #plt.show()
         plt.savefig('Step_Freq.png')[...]
+
+Now we fill the main function:
+
+.. code-block:: python
+  def main(args):
+    #Setting the variables:
+    #Setting the temperature in Kelvin:
+    Temperature = 250
+    #Setting the number of configurations:
+    configuration_number = 50
+    #Setting the names and location of the files:
+    Files_ForceFields = "ffield_dynq"
+    Files_dyn_SnTe = "ffield_dynq"
+    #Set the number of irreducible q (reated to the supercell size):
+    nqirr = 3
+    #Setting the frequencies output file:
+    File_frequencies = "frequencies.dat"
+    #Setting the dynamical matrix output filename:
+    File_final_dyn = "final_sscha_T{}_".format(int(Temperature))
+    sobol = False
+    sobol_scatter = False
+
+    Calculus = SnTe_initial(Files_ForceFields,Files_dyn_SnTe,nqirr,configuration_number,sobol,sobol_scatter)
+    Calculus.ensamble_sscha(Temperature)
+    Calculo.minimizing(File_frequencies,File_final_dyn.format(int(Temperature)))
+    Calculo.draw_figure(File_frequencies)
+    return 0
+
+This code will calculate the SSCHA minimization with the "ff_calculator".
+
+Now 
 
 .. code-block:: python
   # Lets import all the sscha modules
