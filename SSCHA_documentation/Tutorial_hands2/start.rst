@@ -389,7 +389,7 @@ Phase transition:
           plt.savefig('{}_Temp_Omeg.png'.format(self.configurations))
           #plt.show()
 
-
+As exercise, put this object into the main function.
 
 
 
