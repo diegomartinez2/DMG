@@ -264,10 +264,10 @@ Phase transition:
 
 .. code-block:: python
 
-  class Hessiano_Vs_Temperatura(object):
-      def __init__(self,T0,temperatura_i,fichero_ForceFields,configuraciones,sobol,sobol_scatter):
+  class Hessian_Vs_Temperature(object):
+      def __init__(self,T0,temperatures_i,files_ForceFields,configurations,sobol,sobol_scatter):
           # Load the dynamical matrix for the force field
-          self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
+          self.ff_dyn = CC.Phonons.Phonons(files_ForceFields, 3)
 
           # Setup the forcefield with the correct parameters
           self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
@@ -277,24 +277,24 @@ Phase transition:
           self.ff_calculator.p4x = -0.014
           # Define the temperatures, from 50 to 300 K, 6 temperatures
           #self.temperatures = np.linspace(50, 300, 6)
-          self.temperatures = temperatura_i
+          self.temperatures = temperatures_i
 
           self.lowest_hessian_mode = []
           self.lowest_sscha_mode = []
 
           # Perform a simulation at each temperature
           self.t_old = T0
-          self.configuraciones = configuraciones
+          self.configurations = configurations
           self.sobol = sobol
           self.sobol_scatter = sobol_scatter
 
-      def ciclo_T(self,Fichero_final_matriz_dinamica,nqirr):
-          for Temperatura in self.temperatures:
+      def cycle_T(self,Files_final_dyn,nqirr):
+          for Temperature in self.temperatures:
               # Load the starting dynamical matrix
-              self.dyn = CC.Phonons.Phonons(Fichero_final_matriz_dinamica.format(int(self.t_old)), nqirr)
+              self.dyn = CC.Phonons.Phonons(Files_final_dyn.format(int(self.t_old)), nqirr)
 
               # Prepare the ensemble
-              self.ensemble = sscha.Ensemble.Ensemble(self.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
+              self.ensemble = sscha.Ensemble.Ensemble(self.dyn, T0 = Temperature, supercell = self.dyn.GetSupercell())
 
               # Prepare the minimizer
               self.minim = sscha.SchaMinimizer.SSCHA_Minimizer(self.ensemble)
@@ -304,37 +304,37 @@ Phase transition:
               self.minim.meaningful_factor = 0.000001
               #minim.root_representation = "root4"
               #minim.precond_dyn = False
-  #            self.minim.minim_struct = True # *test*
-  #            self.minim.neglect_symmetries = True    # *test*
+              #self.minim.minim_struct = True # *test*
+              #self.minim.neglect_symmetries = True    # *test*
               self.minim.enforce_sum_rule = True  # Lorenzo's solution to the error
 
               # Prepare the relaxer (through many population)
-  #            self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)
-              self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=self.configuraciones, max_pop=20)
+              #self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)
+              self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=self.configurations, max_pop=20)
 
               # Relax
               self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
-  #            self.relax.relax(sobol = False)
+              #self.relax.relax(sobol = False)
 
               # Save the dynamical matrix
-              self.relax.minim.dyn.save_qe(Fichero_final_matriz_dinamica.format(int(Temperatura)))
+              self.relax.minim.dyn.save_qe(Files_final_dyn.format(int(Temperature)))
 
               # Detect space group
               symm=spglib.get_spacegroup(self.relax.minim.dyn.structure.get_ase_atoms(), 0.005)
               print('Current SG = ', symm,' at T=',int(Temperatura))
 
               # Recompute the ensemble for the hessian calculation
-              self.ensemble = sscha.Ensemble.Ensemble(self.relax.minim.dyn, T0 = Temperatura, supercell = self.dyn.GetSupercell())
-              self.ensemble.generate(self.configuraciones, sobol = self.sobol, sobol_scramble = self.sobol_scatter)
-  #            self.ensemble.generate(100, sobol = False)
-  #            self.ensemble.generate(5000,sobol = True)
+              self.ensemble = sscha.Ensemble.Ensemble(self.relax.minim.dyn, T0 = Temperature, supercell = self.dyn.GetSupercell())
+              self.ensemble.generate(self.configurations, sobol = self.sobol, sobol_scramble = self.sobol_scatter)
+              #self.ensemble.generate(100, sobol = False)
+              #self.ensemble.generate(5000,sobol = True)
               self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #gets the energies and forces from ff_calculator
 
-              #update weights!!! es posible que este sea el motivo por el que no obtengo buenos resultados?
-              self.ensemble.update_weights(self.relax.minim.dyn, Temperatura)
+              #update weights!!!
+              self.ensemble.update_weights(self.relax.minim.dyn, Temperature)
               # Get the free energy hessian
               dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = False) #free energy hessian as in Bianco paper 2017
-              dyn_hessian.save_qe("hessian_T{}_".format(int(Temperatura)))
+              dyn_hessian.save_qe("hessian_T{}_".format(int(Temperature)))
 
               # Get the lowest frequencies for the sscha and the free energy hessian
               w_sscha, pols_sscha = self.relax.minim.dyn.DiagonalizeSupercell() #dynamical matrix
@@ -355,7 +355,7 @@ Phase transition:
               #print ("\n".join(["{:.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in pols_hessian]))
               #exit()
 
-              self.t_old = Temperatura
+              self.t_old = Temperature
           # We prepare now the file to save the results
           freq_data = np.zeros( (len(self.temperatures), 3))
           freq_data[:, 0] = self.temperatures
@@ -363,10 +363,10 @@ Phase transition:
           freq_data[:, 2] = self.lowest_hessian_mode
 
           # Save results on file
-          np.savetxt("{}_hessian_vs_temperature.dat".format(self.configuraciones), freq_data, header = "T [K]; SSCHA mode [cm-1]; Free energy hessian [cm-1]")
+          np.savetxt("{}_hessian_vs_temperature.dat".format(self.configurations), freq_data, header = "T [K]; SSCHA mode [cm-1]; Free energy hessian [cm-1]")
 
-      def dibuja(self):
-          hessian_data = np.loadtxt("{}_hessian_vs_temperature.dat".format(self.configuraciones))
+      def draw_figure(self):
+          hessian_data = np.loadtxt("{}_hessian_vs_temperature.dat".format(self.configurations))
 
           plt.figure(dpi = 120)
           plt.plot(hessian_data[:,0], hessian_data[:,1], label = "Min SCHA freq", marker = ">")
@@ -376,7 +376,7 @@ Phase transition:
           plt.ylabel("Frequency [cm-1]")
           plt.legend()
           plt.tight_layout()
-          plt.savefig('{}_Temp_Freq.png'.format(self.configuraciones))
+          plt.savefig('{}_Temp_Freq.png'.format(self.configurations))
           #plt.show()
 
           plt.figure(dpi = 120)
@@ -386,7 +386,7 @@ Phase transition:
           plt.ylabel("$\omega^2$ [cm-2]")
           plt.legend()
           plt.tight_layout()
-          plt.savefig('{}_Temp_Omeg.png'.format(self.configuraciones))
+          plt.savefig('{}_Temp_Omeg.png'.format(self.configurations))
           #plt.show()
 
 
