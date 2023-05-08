@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.6.20)  4 MAY 2023 17:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.6.20)  5 MAY 2023 17:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -98,6 +98,10 @@ Overfull \hbox (6.73958pt too wide) in paragraph at lines 211--214
 Chapter 3.
 [8
 
+]
+Chapter 4.
+[9
+
 ] (./SSCHA_School_Hands1.aux) ) 
 Here is how much of TeX's memory you used:
  421 strings out of 481239
@@ -114,10 +118,10 @@ per-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx1
 hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/te
 xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf/fon
 ts/type1/public/cm-super/sfrm1000.pfb>
-Output written on SSCHA_School_Hands1.pdf (9 pages, 88954 bytes).
+Output written on SSCHA_School_Hands1.pdf (10 pages, 90449 bytes).
 PDF statistics:
- 59 PDF objects out of 1000 (max. 8388607)
- 41 compressed objects within 1 object stream
+ 62 PDF objects out of 1000 (max. 8388607)
+ 43 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
