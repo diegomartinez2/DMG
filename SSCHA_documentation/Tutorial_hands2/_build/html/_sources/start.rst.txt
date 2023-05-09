@@ -31,7 +31,7 @@ Fortunately, this complex equation can be evaluated from the ensemble with a sim
 
    ensemble.get_free_energy_hessian()
 
-Lets see a practical example, first we calculate the SSCHA dynamical matrix for the PbTe:
+Lets see a practical example, first we calculate the SSCHA dynamical matrix for the SnTe:
 
 Lets do something different an write it as an object (Object Oriented Program).
 
@@ -49,7 +49,7 @@ We begin from the bottom with the old trick for code re-usability:
 
 and now we put the top part of the code, the inputs:
 
-.. code-bolck python
+.. code-block python
 
   #!/usr/bin/env python
   # -*- coding: utf-8 -*-
@@ -173,7 +173,11 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
         plt.title("Evolution of the frequencies")
         plt.tight_layout()
         #plt.show()
-        plt.savefig('Step_Freq.png')[...]
+        plt.savefig('Step_Freq.png')
+[...]
+We've seen this before, so let's review what's there in detail:
+
+First this object is initialized in "__init__" where the toy model potential is set for the next calculations.
 
 Now we fill the main function:
 

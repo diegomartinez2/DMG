@@ -49,7 +49,7 @@ We begin from the bottom with the old trick for code re-usability:
 
 and now we put the top part of the code, the inputs:
 
-.. code-block python
+.. code-block:: python
 
   #!/usr/bin/env python
   # -*- coding: utf-8 -*-

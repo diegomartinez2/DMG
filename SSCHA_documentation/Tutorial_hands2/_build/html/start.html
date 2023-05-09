@@ -52,7 +52,7 @@ The free energy curvature can be written in matrix form as:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ensemble</span><span class="o">.</span><span class="n">get_free_energy_hessian</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Lets see a practical example, first we calculate the SSCHA dynamical matrix for the PbTe:</p>
+<p>Lets see a practical example, first we calculate the SSCHA dynamical matrix for the SnTe:</p>
 <p>Lets do something different an write it as an object (Object Oriented Program).</p>
 <p>We begin from the bottom with the old trick for code re-usability:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
@@ -155,9 +155,12 @@ The free energy curvature can be written in matrix form as:</p>
       <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Evolution of the frequencies&quot;</span><span class="p">)</span>
       <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
       <span class="c1">#plt.show()</span>
-      <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;Step_Freq.png&#39;</span><span class="p">)[</span><span class="o">...</span><span class="p">]</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;Step_Freq.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>[…]
+We’ve seen this before, so let’s review what’s there in detail:</p>
+<p>First this object is initialized in “__init__” where the toy model potential is set for the next calculations.</p>
 <p>Now we fill the main function:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
   <span class="c1">#Setting the variables:</span>
