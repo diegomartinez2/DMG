@@ -1,0 +1,156 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>How to install &#8212; python-sscha 1.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quick start" href="start.html" />
+    <link rel="prev" title="Introduction" href="intro.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="how-to-install">
+<h1>How to install<a class="headerlink" href="#how-to-install" title="Permalink to this headline">¶</a></h1>
+<p>The SSCHA code is a collection of 2 python packages: CellConstructor and python-sscha.
+In this guide, we refer to the installation of python-sscha.</p>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>To install python-sscha you need:
+1. python (either 2.7 or 3.*)
+2. numpy
+3. scipy
+4. matplotlib
+5. Lapack
+6. Blas
+7. gfortran (or any fortran compiler)
+8. CellConstructor</p>
+<p>For python, we strongly recommend using the anaconda distribution, that already comes with numerical packages correctly compiled to exploit multithreading.</p>
+<p>The numpy, scipy and matplotlib are python packages. These are usually provided with a new installation
+of python distributions like anaconda. Lapack and Blas are needed for compiling the FORTRAN code (together with a FORTRAN compiler like gfortran).
+In many Linux distributions like ubuntu they can be installed as</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo apt-get install libblas-dev liblapack-dev liblapacke-dev gfortran</span>
+</pre></div>
+</div>
+<p>Note that this specific command may change in time.</p>
+<p>Together with these mandatory requirements (otherwise, the code will not compile correctly or raise an exception at the startup), we
+strongly recommend installing also the following libraries:
+1. Atomic Simulation Environment (ASE)
+2. SPGLIB</p>
+<p>If these packages are available, they will enable the automatic cluster/local calculation of forces (ASE) and the symmetry recognition in the supercell (SPGLIB).</p>
+<p>To install all the python dependencies (and recommended) automatically, you may just run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install -r requirements.txt</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installation-from-pip">
+<h2>Installation from pip<a class="headerlink" href="#installation-from-pip" title="Permalink to this headline">¶</a></h2>
+<p>The easiest way to install python-sscha (and CellConstructor) is through the python package manager:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install python-sscha</span>
+</pre></div>
+</div>
+<p>Eventually, you can append the –user option to install the package only for the user (without requiring administrator powers).
+Pip will check for requirements automatically and install them. This method only works if pip is already installed with python.</p>
+</div>
+<div class="section" id="installation-from-source">
+<h2>Installation from source<a class="headerlink" href="#installation-from-source" title="Permalink to this headline">¶</a></h2>
+<p>Once all the dependences of the codes are satisfied, you can unzip the source code downloaded from the website.
+Then run, inside the directory that contains the setup.py script, the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python setup.py install</span>
+</pre></div>
+</div>
+<p>As for the pip installation, you may append the –user option to install the package only for the user (without requiring administrator powers).</p>
+</div>
+<div class="section" id="install-with-intel-fortran-compiler">
+<h2>Install with Intel FORTRAN compiler<a class="headerlink" href="#install-with-intel-fortran-compiler" title="Permalink to this headline">¶</a></h2>
+<p>The setup.py script works automatically with the GNU FORTRAN compiler. However, due to some differences in linking lapack,
+to use the intel compiler you need to edit a bit the setup.py script:</p>
+<p>In this case, you need to delete the lapack linking from the
+setup.py and include the -mkl as linker option.
+Note that you must force to use the same liker compiler as the one used for the compilation.</p>
+</div>
+<div class="section" id="install-with-a-specific-compiler-path">
+<h2>Install with a specific compiler path<a class="headerlink" href="#install-with-a-specific-compiler-path" title="Permalink to this headline">¶</a></h2>
+<p>This can be achieved by specifying the environment variables on which setup.py relies:</p>
+<ol class="arabic simple">
+<li>CC (C compiler)</li>
+<li>FC (Fortran compiler)</li>
+<li>LDSHARED (linking)</li>
+</ol>
+<p>If we want to use a custom compiler in /path/to/fcompiler we may run the setup as:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">FC=/path/to/fcompiler LDSHARED=/path/to/fcompiler python setup.py install</span>
+</pre></div>
+</div>
+<p>A specific setup.py script is provided to install it easily in FOSS clusters.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index1.html">Documentation overview</a><ul>
+      <li>Previous: <a href="intro.html" title="previous chapter">Introduction</a></li>
+      <li>Next: <a href="start.html" title="next chapter">Quick start</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Lorenzo Monacelli.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/install.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

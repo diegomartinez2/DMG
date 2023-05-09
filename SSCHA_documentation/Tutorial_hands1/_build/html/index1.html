@@ -1,0 +1,144 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PYTHON-SSCHA USER GUIDE &#8212; python-sscha 1.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="intro.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-sscha-user-guide">
+<h1>PYTHON-SSCHA USER GUIDE<a class="headerlink" href="#python-sscha-user-guide" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#what-is-python-sscha">What is python-sscha?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#why-do-i-need-python-sscha">Why do I need python-sscha?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">How to install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installation-from-pip">Installation from pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#installation-from-source">Installation from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-with-intel-fortran-compiler">Install with Intel FORTRAN compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-with-a-specific-compiler-path">Install with a specific compiler path</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="start.html">Quick start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="start.html#the-free-energy-of-gold-a-simulation-in-the-nvt-ensemble">The free energy of gold: a simulation in the NVT ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="start.html#plot-the-phonon-dispersion">Plot the phonon dispersion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="start.html#analysis-of-the-input-script-for-the-nvt-simulation">Analysis of the input script for the NVT simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="start.html#exercise">Exercise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="start.html#running-in-the-npt-ensemble-simulating-thermal-expansion">Running in the NPT ensemble: simulating thermal expansion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="start.html#ab-initio-calculation-with-the-sscha-code">Ab initio calculation with the SSCHA code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="start.html#parallelization">Parallelization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="start.html#remote-submission-on-a-queue-system">Remote submission on a queue system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="start.html#other-tutorials">Other tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#manual-submission">Manual submission</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#keep-track-of-free-energy-gradients-and-frequencies-during-minimization">Keep track of free energy, gradients and frequencies during minimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#cluster-configuration-with-a-code-different-from-quantum-espresso">Cluster configuration with a code different from Quantum ESPRESSO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#employ-a-custom-function">Employ a custom function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#constraints">Constraints</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions (FAQs)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#setup-the-calculation">Setup the calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#on-error-and-convergence-of-the-free-energy-minimization">On error and convergence of the free energy minimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#post-processing-the-output">Post-processing the output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#constrains-and-custom-minimization">Constrains and custom minimization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="apireference.html">THE API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="apireference.html#the-ensemble-module">The Ensemble Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apireference.html#the-schaminimizer-module">The SchaMinimizer Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apireference.html#the-relax-module">The Relax Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apireference.html#the-utilities-module">The Utilities Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apireference.html#the-cluster-module">The Cluster Module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="intro.html" title="next chapter">Introduction</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Lorenzo Monacelli.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/index1.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

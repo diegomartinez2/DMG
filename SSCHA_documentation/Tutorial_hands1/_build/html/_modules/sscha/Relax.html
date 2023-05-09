@@ -1,0 +1,825 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>sscha.Relax &#8212; python-sscha 1.2 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for sscha.Relax</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module performs the relax over more</span>
+<span class="sd">SCHA minimization. It can be both a constant temperature and a </span>
+<span class="sd">constant pressure relax. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">difflib</span>
+<span class="kn">import</span> <span class="nn">sscha</span><span class="o">,</span> <span class="nn">sscha.Ensemble</span><span class="o">,</span> <span class="nn">sscha.SchaMinimizer</span>
+<span class="kn">import</span> <span class="nn">sscha.Optimizer</span>
+<span class="kn">import</span> <span class="nn">sscha.Calculator</span>
+<span class="kn">import</span> <span class="nn">sscha.Cluster</span>
+<span class="kn">import</span> <span class="nn">sscha.Utilities</span> <span class="k">as</span> <span class="nn">Utilities</span>
+<span class="kn">import</span> <span class="nn">cellconstructor</span> <span class="k">as</span> <span class="nn">CC</span>
+<span class="kn">import</span> <span class="nn">cellconstructor.symmetries</span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">sscha.Parallel</span> <span class="kn">import</span> <span class="n">pprint</span> <span class="k">as</span> <span class="nb">print</span>
+
+<span class="n">__EPSILON__</span> <span class="o">=</span> <span class="mf">1e-5</span>
+
+<span class="n">__RELAX_NAMESPACE__</span> <span class="o">=</span> <span class="s2">&quot;relax&quot;</span>
+<span class="n">__RELAX_TYPE__</span> <span class="o">=</span> <span class="s2">&quot;type&quot;</span>
+<span class="n">__RELAX_NCONFIGS__</span> <span class="o">=</span> <span class="s2">&quot;n_configs&quot;</span>
+<span class="n">__RELAX_MAX_POP__</span> <span class="o">=</span> <span class="s2">&quot;max_pop_id&quot;</span>
+<span class="n">__RELAX_START_POP__</span> <span class="o">=</span> <span class="s2">&quot;start_pop&quot;</span>
+<span class="n">__RELAX_SAVE_ENSEMBLE__</span> <span class="o">=</span> <span class="s2">&quot;ensemble_datadir&quot;</span>
+<span class="n">__RELAX_GENERATE_FIRST_ENSEMBLE__</span> <span class="o">=</span> <span class="s2">&quot;generate_ensemble&quot;</span>
+<span class="n">__RELAX_TARGET_PRESSURE__</span> <span class="o">=</span> <span class="s2">&quot;target_pressure&quot;</span>
+<span class="n">__RELAX_FIXVOLUME__</span> <span class="o">=</span> <span class="s2">&quot;fix_volume&quot;</span>
+<span class="n">__RELAX_BULK_MODULUS__</span> <span class="o">=</span> <span class="s2">&quot;bulk_modulus&quot;</span>
+
+<span class="n">__TYPE_SINGLE__</span> <span class="o">=</span> <span class="s2">&quot;sscha&quot;</span>
+<span class="n">__TYPE_RELAX__</span> <span class="o">=</span> <span class="s2">&quot;relax&quot;</span>
+<span class="n">__TYPE_VCRELAX__</span> <span class="o">=</span> <span class="s2">&quot;vc-relax&quot;</span>
+<span class="n">__ALLOWED_RELAX_TYPES__</span> <span class="o">=</span> <span class="p">[</span><span class="n">__TYPE_RELAX__</span><span class="p">,</span> <span class="n">__TYPE_VCRELAX__</span><span class="p">]</span>
+
+<span class="n">__REQ_KEYS__</span> <span class="o">=</span> <span class="p">[</span><span class="n">__RELAX_TYPE__</span><span class="p">,</span> <span class="n">__RELAX_NCONFIGS__</span><span class="p">]</span>
+<span class="n">__ALLOWED_KEYS__</span> <span class="o">=</span> <span class="p">[</span><span class="n">__RELAX_TYPE__</span><span class="p">,</span> <span class="n">__RELAX_NCONFIGS__</span><span class="p">,</span> <span class="n">__RELAX_MAX_POP__</span><span class="p">,</span>
+                    <span class="n">__RELAX_START_POP__</span><span class="p">,</span> <span class="n">__RELAX_SAVE_ENSEMBLE__</span><span class="p">,</span>
+                    <span class="n">__RELAX_FIXVOLUME__</span><span class="p">,</span> <span class="n">__RELAX_TARGET_PRESSURE__</span><span class="p">,</span>
+                    <span class="n">__RELAX_BULK_MODULUS__</span><span class="p">,</span> <span class="n">__RELAX_GENERATE_FIRST_ENSEMBLE__</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SSCHA"><a class="viewcode-back" href="../../apireference.html#sscha.Relax.SSCHA">[docs]</a><span class="k">class</span> <span class="nc">SSCHA</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimizer</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ase_calculator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">N_configs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_pop</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> 
+                 <span class="n">save_ensemble</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">cluster</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This module initialize the relaxer. It may perform</span>
+<span class="sd">        constant volume or pressure relaxation using fully anharmonic potentials.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            minimizer : SSCHA_Minimizer</span>
+<span class="sd">                An initialized SCHA minimizer. Note that its ensemble must be initialized</span>
+<span class="sd">                with the correct dynamical matrix.</span>
+<span class="sd">            ase_calculator : ase.calculators...</span>
+<span class="sd">                An initialized ASE calculator. This will be used to compute energies and forces</span>
+<span class="sd">                for the relaxation of the SSCHA.</span>
+<span class="sd">            N_configs : int</span>
+<span class="sd">                The number of configuration to be used for each population</span>
+<span class="sd">            max_pop: int, optional</span>
+<span class="sd">                The maximum number of iteration (The code will stop)</span>
+<span class="sd">            save_ensemble : bool, optional</span>
+<span class="sd">                If True (default false) the ensemble is saved after each energy and forces calculation.</span>
+<span class="sd">            cluster : Cluster.Cluster, optional</span>
+<span class="sd">                If different from None, the ensemble force and energy calculations</span>
+<span class="sd">                will be runned in the provided cluster.</span>
+<span class="sd">            **kwargs : any other keyword that matches an object of this structure</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">minimizer</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">SchaMinimizer</span><span class="o">.</span><span class="n">SSCHA_Minimizer</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span> <span class="o">=</span> <span class="n">minimizer</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">calc</span> <span class="o">=</span> <span class="n">ase_calculator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N_configs</span> <span class="o">=</span> <span class="n">N_configs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_pop</span> <span class="o">=</span> <span class="n">max_pop</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span> <span class="o">=</span> <span class="n">cluster</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_pop</span> <span class="o">=</span> <span class="mi">1</span>
+        
+        <span class="c1"># If the ensemble must be saved at each iteration.</span>
+        <span class="c1"># </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_ensemble</span> <span class="o">=</span> <span class="n">save_ensemble</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;data&quot;</span>
+        
+        
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cfpre__</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cfpost__</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cfg__</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># The variable cell attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bulk_modulus</span> <span class="o">=</span> <span class="mi">15</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_pressure</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fix_volume</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Options for the cell relaxation</span>
+        <span class="c1"># If true the cell shape is fixed in a variable-cell relaxation</span>
+        <span class="c1"># even if the symmetries allows for more degrees of freedom in the cell shape.</span>
+        <span class="c1"># Usefull (for example) if you want to enfoce a cubic cell even if the structure brakes the symmetries</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fix_cell_shape</span> <span class="o">=</span> <span class="kc">False</span>  
+
+
+        <span class="c1"># Setup the attribute control</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__total_attributes__</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixed_attributes</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># This must be the last attribute to be setted</span>
+
+
+        <span class="c1"># Setup any other keyword given in input (raising the error if not already defined)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is used to set an attribute.</span>
+<span class="sd">        It will raise an exception if the attribute does not exists (with a suggestion of similar entries)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        
+        <span class="k">if</span> <span class="s2">&quot;fixed_attributes&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__total_attributes__</span><span class="p">:</span>
+                <span class="nb">super</span><span class="p">(</span><span class="n">SSCHA</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_attributes</span><span class="p">:</span>
+                <span class="n">similar_objects</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span> <span class="n">difflib</span><span class="o">.</span><span class="n">get_close_matches</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__total_attributes__</span><span class="p">))</span>
+                <span class="n">ERROR_MSG</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        Error, the attribute &#39;</span><span class="si">{}</span><span class="s2">&#39; is not a member of &#39;</span><span class="si">{}</span><span class="s2">&#39;.</span>
+<span class="s2">        Suggested similar attributes: </span><span class="si">{}</span><span class="s2"> ?</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>  <span class="n">similar_objects</span><span class="p">)</span>
+
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">ERROR_MSG</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">SSCHA</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        
+        
+        
+<div class="viewcode-block" id="SSCHA.setup_from_namelist"><a class="viewcode-back" href="../../apireference.html#sscha.Relax.SSCHA.setup_from_namelist">[docs]</a>    <span class="k">def</span> <span class="nf">setup_from_namelist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">namelist</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        SETUP THE RELAXER FROM THE NAMELIST</span>
+<span class="sd">        ===================================</span>
+<span class="sd">        </span>
+<span class="sd">        Setup the SSCHA relaxer from the given namelist.</span>
+<span class="sd">        </span>
+<span class="sd">        Note the calculation will be also started by this method.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            namelist : dict</span>
+<span class="sd">                A dictionary that contains the namespaces</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">__RELAX_NAMESPACE__</span> <span class="ow">in</span> <span class="n">namelist</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Error, </span><span class="si">%s</span><span class="s2"> namespace not found&quot;</span> <span class="o">%</span> <span class="n">__RELAX_NAMESPACE__</span><span class="p">)</span>
+        
+        <span class="n">c_info</span> <span class="o">=</span> <span class="n">namelist</span><span class="p">[</span><span class="n">__RELAX_NAMESPACE__</span><span class="p">]</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">c_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        
+        <span class="c1"># Load the minim and the ensemble if a inputscha namespace is found</span>
+        <span class="k">if</span> <span class="s2">&quot;inputscha&quot;</span> <span class="ow">in</span> <span class="n">namelist</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">setup_from_namelist</span><span class="p">(</span><span class="n">namelist</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">ensemble</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Error, please specify the input dynamical matrix.&quot;</span><span class="p">)</span>
+            
+        
+        <span class="c1"># Load the cluster if any</span>
+        <span class="k">if</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Cluster</span><span class="o">.</span><span class="n">__CLUSTER_NAMELIST__</span> <span class="ow">in</span> <span class="n">namelist</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Cluster</span><span class="o">.</span><span class="n">Cluster</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">setup_from_namelist</span><span class="p">(</span><span class="n">namelist</span><span class="p">)</span>
+        
+        <span class="c1"># Load the calculator if any</span>
+        <span class="k">if</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Calculator</span><span class="o">.</span><span class="n">__CALCULATOR_HEAD__</span> <span class="ow">in</span> <span class="n">namelist</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">calc</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Calculator</span><span class="o">.</span><span class="n">prepare_calculator_from_namelist</span><span class="p">(</span><span class="n">namelist</span><span class="p">)</span>
+        
+        <span class="c1"># Get if you must use a already loaded ensemble or not</span>
+        <span class="n">restart_from_ens</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">__RELAX_GENERATE_FIRST_ENSEMBLE__</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">restart_from_ens</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">c_info</span><span class="p">[</span><span class="n">__RELAX_GENERATE_FIRST_ENSEMBLE__</span><span class="p">])</span>
+        
+        <span class="c1"># Get the number of configurations</span>
+        <span class="k">if</span> <span class="n">__RELAX_NCONFIGS__</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">N_configs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">c_info</span><span class="p">[</span><span class="n">__RELAX_NCONFIGS__</span><span class="p">])</span>
+        
+        <span class="c1"># Get the maximum population</span>
+        <span class="k">if</span> <span class="n">__RELAX_MAX_POP__</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_pop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">c_info</span><span class="p">[</span><span class="n">__RELAX_MAX_POP__</span><span class="p">])</span>
+            
+        <span class="k">if</span> <span class="n">__RELAX_START_POP__</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_pop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">c_info</span><span class="p">[</span><span class="n">__RELAX_START_POP__</span><span class="p">])</span>
+        
+        <span class="k">if</span> <span class="n">__RELAX_SAVE_ENSEMBLE__</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_ensemble</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">c_info</span><span class="p">[</span><span class="n">__RELAX_SAVE_ENSEMBLE__</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="n">__RELAX_BULK_MODULUS__</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bulk_modulus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">c_info</span><span class="p">[</span><span class="n">__RELAX_BULK_MODULUS__</span><span class="p">])</span>
+            
+        <span class="k">if</span> <span class="n">__RELAX_TARGET_PRESSURE__</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">target_pressure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">c_info</span><span class="p">[</span><span class="n">__RELAX_TARGET_PRESSURE__</span><span class="p">])</span>
+            
+        <span class="k">if</span> <span class="n">__RELAX_FIXVOLUME__</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fix_volume</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">c_info</span><span class="p">[</span><span class="n">__RELAX_FIXVOLUME__</span><span class="p">])</span>
+        
+        
+        <span class="c1"># Check the allowed keys</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span> 
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">__ALLOWED_KEYS__</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Error with the key:&quot;</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;Did you mean something like:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span> <span class="n">difflib</span><span class="o">.</span><span class="n">get_close_matches</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">__ALLOWED_KEYS__</span><span class="p">))</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Error in calculator namespace: key &#39;&quot;</span> <span class="o">+</span> <span class="n">k</span> <span class="o">+</span><span class="s2">&quot;&#39; not recognized.</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span>
+        
+        <span class="c1"># Check for mandatory keys</span>
+        <span class="k">for</span> <span class="n">req_key</span> <span class="ow">in</span> <span class="n">__REQ_KEYS__</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">req_key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Error, the calculator configuration namelist requires the keyword: &#39;&quot;</span> <span class="o">+</span> <span class="n">req_key</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+        
+        
+        
+        <span class="c1"># Get the calculation type</span>
+        <span class="k">if</span> <span class="n">__RELAX_TYPE__</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">rtype</span> <span class="o">=</span> <span class="n">c_info</span><span class="p">[</span><span class="n">__RELAX_TYPE__</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">rtype</span> <span class="ow">in</span> <span class="n">__ALLOWED_RELAX_TYPES__</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Unknown relaxation option:&quot;</span><span class="p">,</span> <span class="n">rtype</span><span class="p">)</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Did you mean:&quot;</span><span class="p">,</span> <span class="n">difflib</span><span class="o">.</span><span class="n">get_close_matches</span><span class="p">(</span><span class="n">rtype</span><span class="p">,</span> <span class="n">__ALLOWED_RELAX_TYPES__</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Error with key </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">__RELAX_TYPE__</span><span class="p">)</span>
+        
+            <span class="c1"># Setup custom functions</span>
+            <span class="k">if</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">__UTILS_NAMESPACE__</span> <span class="ow">in</span> <span class="n">namelist</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">cfgs</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">get_custom_functions_from_namelist</span><span class="p">(</span><span class="n">namelist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setup_custom_functions</span><span class="p">(</span><span class="n">cfgs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cfgs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cfgs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        
+            <span class="c1"># Initialize the minimizer</span>
+            <span class="c1">#self.minim.init()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">print_info</span><span class="p">()</span>
+        
+            <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="n">__TYPE_RELAX__</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="p">(</span><span class="n">restart_from_ens</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">has_stress</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">start_pop</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">rtype</span> <span class="o">==</span> <span class="n">__TYPE_VCRELAX__</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vc_relax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_pressure</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bulk_modulus</span><span class="p">,</span> 
+                              <span class="n">restart_from_ens</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_pop</span><span class="p">,</span> <span class="n">fix_volume</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fix_volume</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="SSCHA.setup_custom_functions"><a class="viewcode-back" href="../../apireference.html#sscha.Relax.SSCHA.setup_custom_functions">[docs]</a>    <span class="k">def</span> <span class="nf">setup_custom_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">custom_function_pre</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="n">custom_function_gradient</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="n">custom_function_post</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This subroutine setup which custom functions should be called during the minimization.</span>
+<span class="sd">        Look for the SCHA_Minimizer.run() method for other details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cfpre__</span> <span class="o">=</span> <span class="n">custom_function_pre</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cfpost__</span> <span class="o">=</span> <span class="n">custom_function_post</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cfg__</span> <span class="o">=</span> <span class="n">custom_function_gradient</span></div>
+        
+        
+<div class="viewcode-block" id="SSCHA.relax"><a class="viewcode-back" href="../../apireference.html#sscha.Relax.SSCHA.relax">[docs]</a>    <span class="k">def</span> <span class="nf">relax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">restart_from_ens</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">get_stress</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+              <span class="n">ensemble_loc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">start_pop</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        COSTANT VOLUME RELAX</span>
+<span class="sd">        ====================</span>
+<span class="sd">        </span>
+<span class="sd">        This function performs the costant volume SCHA relaxation, by submitting several populations</span>
+<span class="sd">        until the minimization converges (or the maximum number of population is reached)</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            restart_from_ens : bool, optional</span>
+<span class="sd">                If True the ensemble is used to start the first population, without recomputing</span>
+<span class="sd">                energies and forces. If False (default) the first ensemble is overwritten with</span>
+<span class="sd">                a new one, and the minimization starts.</span>
+<span class="sd">            get_stress : bool, optional</span>
+<span class="sd">                If true the stress tensor is calculated. This may increase the computational</span>
+<span class="sd">                cost, as it will be computed for each ab-initio configuration (it may be not available</span>
+<span class="sd">                with some ase calculator)</span>
+<span class="sd">            ensemble_loc : string</span>
+<span class="sd">                Where the ensemble of each population is saved on the disk. If none, it will</span>
+<span class="sd">                use the content of self.data_dir. It is just a way to override the variable self.data_dir</span>
+<span class="sd">            start_pop : int, optional</span>
+<span class="sd">                The starting index for the population, used only for saving the ensemble and the dynamical </span>
+<span class="sd">                matrix. If None, the content of self.start_pop will be used.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            status : bool</span>
+<span class="sd">                True if the minimization converged, False if the maximum number of </span>
+<span class="sd">                populations has been reached.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">ensemble_loc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ensemble_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">ensemble_loc</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ensemble</span><span class="p">:</span>
+            <span class="n">ERR_MSG</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Error, you must specify where to save the ensembles.</span>
+<span class="s2">       this can be done either passing ensemble_loc = &quot;path/to/dir&quot; </span>
+<span class="s2">       for the ensemble, or by setting the data_dir attribute of this object.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">ERR_MSG</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ensemble</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">ensemble_loc</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">ensemble_loc</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">ensemble_loc</span><span class="p">):</span>
+                    <span class="n">ERR_MSG</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Error, the specified location to save the ensemble:</span>
+<span class="s2">       &#39;</span><span class="si">{}</span><span class="s2">&#39; </span>
+<span class="s2">       already exists and it is not a directory.</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ensemble_loc</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">ERR_MSG</span><span class="p">)</span>
+
+        
+        <span class="k">if</span> <span class="n">start_pop</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">start_pop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_pop</span>
+
+        <span class="n">pop</span> <span class="o">=</span> <span class="n">start_pop</span>
+                
+        <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+            <span class="c1"># Generate the ensemble</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">dyn_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">Copy</span><span class="p">()</span>
+            
+            <span class="k">if</span> <span class="n">pop</span> <span class="o">!=</span> <span class="n">start_pop</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">restart_from_ens</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N_configs</span><span class="p">)</span>
+            
+                <span class="c1"># Compute energies and forces</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">compute_ensemble</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calc</span><span class="p">,</span> <span class="n">get_stress</span><span class="p">,</span> 
+                                                 <span class="n">cluster</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span><span class="p">)</span>
+                <span class="c1">#self.minim.ensemble.get_energy_forces(self.calc, get_stress)</span>
+            
+                <span class="k">if</span> <span class="n">ensemble_loc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ensemble</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">save_bin</span><span class="p">(</span><span class="n">ensemble_loc</span><span class="p">,</span> <span class="n">pop</span><span class="p">)</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">population</span> <span class="o">=</span> <span class="n">pop</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">delete_previous_data</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">custom_function_pre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cfpre__</span><span class="p">,</span>
+                           <span class="n">custom_function_post</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cfpost__</span><span class="p">,</span>
+                           <span class="n">custom_function_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cfg__</span><span class="p">)</span>
+        
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+            
+            <span class="c1"># Perform the symmetrization</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Checking the symmetries of the dynamical matrix:&quot;</span><span class="p">)</span>
+            <span class="n">qe_sym</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">symmetries</span><span class="o">.</span><span class="n">QE_Symmetry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="p">)</span>
+            <span class="n">qe_sym</span><span class="o">.</span><span class="n">SetupQPoint</span><span class="p">(</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+            
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Forcing the symmetries in the dynamical matrix.&quot;</span><span class="p">)</span>
+            <span class="n">fcq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">dynmats</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+            <span class="n">qe_sym</span><span class="o">.</span><span class="n">SymmetrizeFCQ</span><span class="p">(</span><span class="n">fcq</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">q_stars</span><span class="p">,</span> <span class="n">asr</span> <span class="o">=</span> <span class="s2">&quot;custom&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">iq</span><span class="p">,</span><span class="n">q</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">q_tot</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">dynmats</span><span class="p">[</span><span class="n">iq</span><span class="p">]</span> <span class="o">=</span> <span class="n">fcq</span><span class="p">[</span><span class="n">iq</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+            <span class="c1"># Save the dynamical matrix</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ensemble</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">save_qe</span><span class="p">(</span><span class="s2">&quot;dyn_pop</span><span class="si">%d</span><span class="s2">_&quot;</span> <span class="o">%</span> <span class="n">pop</span><span class="p">)</span>
+        
+            <span class="c1"># Check if it is converged</span>
+            <span class="n">running</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">is_converged</span><span class="p">()</span>
+            <span class="n">pop</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+            
+            <span class="k">if</span> <span class="n">pop</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pop</span><span class="p">:</span>
+                <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+                
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_pop</span> <span class="o">=</span> <span class="n">pop</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">is_converged</span><span class="p">()</span></div>
+    
+    
+<div class="viewcode-block" id="SSCHA.vc_relax"><a class="viewcode-back" href="../../apireference.html#sscha.Relax.SSCHA.vc_relax">[docs]</a>    <span class="k">def</span> <span class="nf">vc_relax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_press</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">static_bulk_modulus</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                 <span class="n">restart_from_ens</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">ensemble_loc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">start_pop</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stress_numerical</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">cell_relax_algorithm</span> <span class="o">=</span> <span class="s2">&quot;sd&quot;</span><span class="p">,</span> <span class="n">fix_volume</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        VARIABLE CELL RELAX</span>
+<span class="sd">        ====================</span>
+<span class="sd">        </span>
+<span class="sd">        This function performs a variable cell SCHA relaxation at constant pressure,</span>
+<span class="sd">        It is similar to the relax calculation, but the unit cell is updated according</span>
+<span class="sd">        to the anharmonic stress tensor at each new population. </span>
+
+<span class="sd">        By default, all the degrees of freedom compatible with the symmetry group are relaxed in the cell.</span>
+<span class="sd">        You can constrain the cell to keep the same shape by setting fix_cell_shape = True.</span>
+
+<span class="sd">        </span>
+<span class="sd">        NOTE: </span>
+<span class="sd">            remember to setup the stress_offset variable of the SCHA_Minimizer,</span>
+<span class="sd">            because in ab-initio calculation the stress tensor converges porly with the cutoff, </span>
+<span class="sd">            but stress tensor differences converges much quicker. Therefore, setup the</span>
+<span class="sd">            stress tensor difference between a single very high-cutoff calculation and a</span>
+<span class="sd">            single low-cutoff (the one you use), this difference will be added at the final</span>
+<span class="sd">            stress tensor to get a better estimation of the true stress.</span>
+
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">            target_press : float, optional</span>
+<span class="sd">                The target pressure of the minimization (in GPa). The minimization is stopped if the </span>
+<span class="sd">                target pressure is the stress tensor is the identity matrix multiplied by the</span>
+<span class="sd">                target pressure, with a tollerance equal to the stochastic noise. By default </span>
+<span class="sd">                it is 0 (ambient pressure)</span>
+<span class="sd">            static_bulk_modulus : float (default 100), or (9x9) matrix or string, optional</span>
+<span class="sd">                The static bulk modulus, expressed in GPa. It is used to initialize the</span>
+<span class="sd">                hessian matrix on the BFGS cell relaxation, to guess the volume deformation caused</span>
+<span class="sd">                by the anharmonic stress tensor in the first steps. By default is 100 GPa (higher value</span>
+<span class="sd">                are safer, since they means a lower change in the cell shape).</span>
+<span class="sd">                It can be also the whole non isotropic matrix. If you specify a string, it </span>
+<span class="sd">                can be both:</span>
+<span class="sd">                    - &quot;recalc&quot; : the static bulk modulus is recomputed with finite differences after</span>
+<span class="sd">                        each step</span>
+<span class="sd">                    - &quot;bfgs&quot; : the bfgs algorithm is used to infer the Hessian from previous calculations.</span>
+<span class="sd">            restart_from_ens : bool, optional</span>
+<span class="sd">                If True the ensemble is used to start the first population, without recomputing</span>
+<span class="sd">                energies and forces. If False (default) the first ensemble is overwritten with</span>
+<span class="sd">                a new one, and the minimization starts.</span>
+<span class="sd">            ensemble_loc : string</span>
+<span class="sd">                Where the ensemble of each population is saved on the disk. You can specify None</span>
+<span class="sd">                if you do not want to save the ensemble (useful to avoid disk I/O for force fields)</span>
+<span class="sd">            start_pop : int, optional</span>
+<span class="sd">                The starting index for the population, used only for saving the ensemble and the dynamical </span>
+<span class="sd">                matrix.</span>
+<span class="sd">            stress_numerical : bool</span>
+<span class="sd">                If True the stress is computed by finite difference (usefull for calculators that </span>
+<span class="sd">                does not support it by default)</span>
+<span class="sd">            cell_relax_algorithm : string</span>
+<span class="sd">                This identifies the stress algorithm. It can be both sd (steepest-descent),</span>
+<span class="sd">                cg (conjugate-gradient) or bfgs (Quasi-newton).</span>
+<span class="sd">                The most robust one is SD. Do not change if you are not sure what you are doing.</span>
+<span class="sd">            fix_volume : bool, optional</span>
+<span class="sd">                If true (default False) the volume is fixed, therefore only the cell shape is relaxed.</span>
+<span class="sd">                </span>
+<span class="sd">            </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            status : bool</span>
+<span class="sd">                True if the minimization converged, False if the maximum number of </span>
+<span class="sd">                populations has been reached.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Rescale the target pressure in eV / A^3</span>
+        <span class="n">target_press_evA3</span> <span class="o">=</span> <span class="n">target_press</span> <span class="o">/</span> <span class="n">sscha</span><span class="o">.</span><span class="n">SchaMinimizer</span><span class="o">.</span><span class="n">__evA3_to_GPa__</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        
+        <span class="n">SUPPORTED_ALGORITHMS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sd&quot;</span><span class="p">,</span> <span class="s2">&quot;cg&quot;</span><span class="p">,</span> <span class="s2">&quot;bfgs&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cell_relax_algorithm</span> <span class="ow">in</span> <span class="n">SUPPORTED_ALGORITHMS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Error, cell_relax_algorithm </span><span class="si">%s</span><span class="s2"> not supported.&quot;</span> <span class="o">%</span>  <span class="n">cell_relax_algorithm</span><span class="p">)</span>
+
+        <span class="c1"># Read the bulk modulus</span>
+        <span class="n">kind_minimizer</span> <span class="o">=</span> <span class="s2">&quot;SD&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">static_bulk_modulus</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">static_bulk_modulus</span> <span class="o">==</span> <span class="s2">&quot;recalc&quot;</span><span class="p">:</span>
+                <span class="n">kind_minimizer</span> <span class="o">=</span> <span class="s2">&quot;RPSD&quot;</span>
+            <span class="k">elif</span> <span class="n">static_bulk_modulus</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+                <span class="n">kind_minimizer</span> <span class="o">=</span> <span class="s2">&quot;SD&quot;</span>
+                <span class="n">static_bulk_modulus</span> <span class="o">=</span> <span class="mi">100</span>
+            <span class="k">elif</span> <span class="n">static_bulk_modulus</span> <span class="o">==</span> <span class="s2">&quot;bfgs&quot;</span><span class="p">:</span>
+                <span class="n">static_bulk_modulus</span> <span class="o">=</span> <span class="mi">100</span>
+                <span class="n">kind_minimizer</span> <span class="o">=</span> <span class="s2">&quot;BFGS&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Error, value &#39;</span><span class="si">%s</span><span class="s2">&#39; not supported for bulk modulus.&quot;</span> <span class="o">%</span> <span class="n">static_bulk_modulus</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">static_bulk_modulus</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">kind_minimizer</span> <span class="o">=</span> <span class="n">cell_relax_algorithm</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">static_bulk_modulus</span><span class="p">))</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">kind_minimizer</span> <span class="o">=</span> <span class="s2">&quot;PSD&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Error, the given value not supported as a bulk modulus.&quot;</span><span class="p">)</span>
+            
+        
+        
+
+        <span class="k">if</span> <span class="n">static_bulk_modulus</span> <span class="o">!=</span> <span class="s2">&quot;recalc&quot;</span><span class="p">:</span>
+            <span class="c1"># Rescale the static bulk modulus in eV / A^3</span>
+            <span class="n">static_bulk_modulus</span> <span class="o">/=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">SchaMinimizer</span><span class="o">.</span><span class="n">__evA3_to_GPa__</span> 
+
+        <span class="c1"># initilaize the cell minimizer</span>
+        <span class="c1">#BFGS = sscha.Optimizer.BFGS_UC(self.minim.dyn.structure.unit_cell, static_bulk_modulus)</span>
+        <span class="k">if</span> <span class="n">kind_minimizer</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;SD&quot;</span><span class="p">,</span> <span class="s2">&quot;CG&quot;</span><span class="p">]</span> <span class="p">:</span>
+            <span class="n">BFGS</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Optimizer</span><span class="o">.</span><span class="n">UC_OPTIMIZER</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">unit_cell</span><span class="p">)</span>
+            <span class="n">BFGS</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">static_bulk_modulus</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">get_volume</span><span class="p">())</span>
+            <span class="n">BFGS</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">=</span> <span class="n">kind_minimizer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">kind_minimizer</span> <span class="o">==</span> <span class="s2">&quot;PSD&quot;</span><span class="p">:</span>
+            <span class="n">BFGS</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Optimizer</span><span class="o">.</span><span class="n">SD_PREC_UC</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">unit_cell</span><span class="p">,</span> <span class="n">static_bulk_modulus</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">kind_minimizer</span> <span class="o">==</span> <span class="s2">&quot;BFGS&quot;</span><span class="p">:</span>
+            <span class="n">BFGS</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Optimizer</span><span class="o">.</span><span class="n">BFGS_UC</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">unit_cell</span><span class="p">,</span> <span class="n">static_bulk_modulus</span><span class="p">)</span>
+
+        <span class="c1"># Initialize the bulk modulus</span>
+        <span class="c1"># The gradient (stress) is in eV/A^3, we have the cell in Angstrom so the Hessian must be</span>
+        <span class="c1"># in eV / A^6</span>
+        <span class="k">if</span> <span class="n">start_pop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pop</span> <span class="o">=</span> <span class="n">start_pop</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_pop</span>
+                
+        <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+            <span class="c1"># Compute the static bulk modulus if required</span>
+            <span class="k">if</span> <span class="n">kind_minimizer</span> <span class="o">==</span> <span class="s2">&quot;RPSD&quot;</span><span class="p">:</span>
+                <span class="c1"># Compute the static bulk modulus</span>
+                <span class="n">sbm</span> <span class="o">=</span> <span class="n">GetStaticBulkModulus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc</span><span class="p">)</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;BM:&quot;</span><span class="p">)</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="n">sbm</span><span class="p">)</span>
+                <span class="n">BFGS</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Optimizer</span><span class="o">.</span><span class="n">SD_PREC_UC</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">unit_cell</span><span class="p">,</span> <span class="n">sbm</span><span class="p">)</span>
+
+            <span class="c1"># Generate the ensemble</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">dyn_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">Copy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">pop</span> <span class="o">!=</span> <span class="n">start_pop</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">restart_from_ens</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N_configs</span><span class="p">)</span>
+            
+                <span class="c1"># Compute energies and forces</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">compute_ensemble</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calc</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">stress_numerical</span><span class="p">,</span>
+                                                 <span class="n">cluster</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span><span class="p">)</span>
+                <span class="c1">#self.minim.ensemble.get_energy_forces(self.calc, True, stress_numerical = stress_numerical)</span>
+            
+                <span class="k">if</span> <span class="n">ensemble_loc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ensemble</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">save_bin</span><span class="p">(</span><span class="n">ensemble_loc</span><span class="p">,</span> <span class="n">pop</span><span class="p">)</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">population</span> <span class="o">=</span> <span class="n">pop</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">delete_previous_data</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+        
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">custom_function_pre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cfpre__</span><span class="p">,</span>
+                           <span class="n">custom_function_post</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cfpost__</span><span class="p">,</span>
+                           <span class="n">custom_function_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cfg__</span><span class="p">)</span>
+        
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+            
+            <span class="c1"># Get the stress tensor [ev/A^3]</span>
+            <span class="n">stress_tensor</span><span class="p">,</span> <span class="n">stress_err</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">get_stress_tensor</span><span class="p">()</span> 
+            <span class="n">stress_tensor</span> <span class="o">*=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">SchaMinimizer</span><span class="o">.</span><span class="n">__RyBohr3_to_evA3__</span>
+            <span class="n">stress_err</span> <span class="o">*=</span>  <span class="n">sscha</span><span class="o">.</span><span class="n">SchaMinimizer</span><span class="o">.</span><span class="n">__RyBohr3_to_evA3__</span>
+
+            <span class="c1"># Get the pressure</span>
+            <span class="n">Press</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">stress_tensor</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
+            
+            <span class="c1"># Get the volume</span>
+            <span class="n">Vol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">get_volume</span><span class="p">()</span>
+            
+            <span class="c1"># Get the Helmoltz-Gibbs free energy</span>
+            <span class="n">helmoltz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">get_free_energy</span><span class="p">()</span> <span class="o">*</span> <span class="n">sscha</span><span class="o">.</span><span class="n">SchaMinimizer</span><span class="o">.</span><span class="n">__RyToev__</span>
+            <span class="n">gibbs</span> <span class="o">=</span> <span class="n">helmoltz</span> <span class="o">+</span> <span class="n">target_press_evA3</span> <span class="o">*</span> <span class="n">Vol</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">eq_energy</span>
+            
+            <span class="c1"># Prepare a mark to underline which quantity is actually minimized by the</span>
+            <span class="c1"># Variable relaxation algorithm if the helmoltz free energy (in case of fixed volume)</span>
+            <span class="c1"># Or the Gibbs free energy (in case of fixed pressure)</span>
+            <span class="n">mark_helmoltz</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">mark_gibbs</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">fix_volume</span><span class="p">:</span>
+                <span class="n">mark_helmoltz</span> <span class="o">=</span> <span class="s2">&quot;&lt;--&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mark_gibbs</span> <span class="o">=</span> <span class="s2">&quot;&lt;--&quot;</span>
+
+            <span class="c1"># Extract the bulk modulus from the cell minimization</span>
+            <span class="n">new_bulkmodulus</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">BFGS</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">get_volume</span><span class="p">())</span>
+            <span class="n">new_bulkmodulus</span> <span class="o">*=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">SchaMinimizer</span><span class="o">.</span><span class="n">__evA3_to_GPa__</span> 
+
+            <span class="c1"># Print the enthalpic contribution</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2"> ====================== </span>
+<span class="s2"> ENTHALPIC CONTRIBUTION </span>
+<span class="s2"> ====================== </span>
+
+<span class="s2"> P = </span><span class="si">{:.4f}</span><span class="s2"> GPa   V = </span><span class="si">{:.4f}</span><span class="s2"> A^3</span>
+
+<span class="s2"> P V = </span><span class="si">{:.8e}</span><span class="s2"> eV</span>
+
+<span class="s2"> Helmoltz Free energy = </span><span class="si">{:.10e}</span><span class="s2"> eV </span><span class="si">{}</span>
+<span class="s2"> Gibbs Free energy = </span><span class="si">{:.10e}</span><span class="s2"> eV </span><span class="si">{}</span>
+<span class="s2"> Zero energy = </span><span class="si">{:.10e}</span><span class="s2"> eV</span>
+
+<span class="s2"> &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">target_press</span> <span class="p">,</span> <span class="n">Vol</span><span class="p">,</span><span class="n">target_press_evA3</span> <span class="o">*</span> <span class="n">Vol</span><span class="p">,</span> <span class="n">helmoltz</span><span class="p">,</span> <span class="n">mark_helmoltz</span><span class="p">,</span> <span class="n">gibbs</span><span class="p">,</span> <span class="n">mark_gibbs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">eq_energy</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="c1"># print &quot; ====================== &quot;</span>
+            <span class="c1"># print &quot; ENTHALPIC CONTRIBUTION &quot;</span>
+            <span class="c1"># print &quot; ====================== &quot;</span>
+            <span class="c1"># print &quot;&quot;</span>
+            <span class="c1"># print &quot;  P = %.4f GPa    V = %.4f A^3&quot; % (target_press , Vol)</span>
+            <span class="c1"># print &quot;&quot;</span>
+            <span class="c1"># print &quot;  P V = %.8e eV &quot; % (target_press_evA3 * Vol)</span>
+            <span class="c1"># print &quot;&quot;</span>
+            <span class="c1"># print &quot; Helmoltz Free energy = %.8e eV &quot; % helmoltz,</span>
+            <span class="c1"># if fix_volume:</span>
+            <span class="c1">#     print &quot;  &lt;-- &quot;</span>
+            <span class="c1"># else:</span>
+            <span class="c1">#     print &quot;&quot;</span>
+            <span class="c1"># print &quot; Gibbs Free energy = %.8e eV &quot; % gibbs,</span>
+            <span class="c1"># if fix_volume:</span>
+            <span class="c1">#     print &quot;&quot;</span>
+            <span class="c1"># else:</span>
+            <span class="c1">#     print &quot;  &lt;-- &quot;</span>
+            <span class="c1"># print &quot; (Zero energy = %.8e eV) &quot; % self.minim.eq_energy</span>
+            <span class="c1"># print &quot;&quot;</span>
+        
+            <span class="c1"># Perform the cell step</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fix_cell_shape</span><span class="p">:</span>
+                <span class="c1"># Use a isotropic stress tensor to keep the same cell shape</span>
+                <span class="n">cell_gradient</span> <span class="o">=</span> <span class="n">I</span> <span class="o">*</span> <span class="p">(</span><span class="n">Press</span> <span class="o">-</span> <span class="n">target_press_evA3</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cell_gradient</span> <span class="o">=</span> <span class="p">(</span><span class="n">stress_tensor</span> <span class="o">-</span> <span class="n">I</span> <span class="o">*</span><span class="n">target_press_evA3</span><span class="p">)</span>
+            
+            <span class="n">new_uc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">unit_cell</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">BFGS</span><span class="o">.</span><span class="n">UpdateCell</span><span class="p">(</span><span class="n">new_uc</span><span class="p">,</span>  <span class="n">cell_gradient</span><span class="p">,</span> <span class="n">fix_volume</span><span class="p">)</span>
+            
+            <span class="c1"># Strain the structure and the q points preserving the symmetries</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">AdjustToNewCell</span><span class="p">(</span><span class="n">new_uc</span><span class="p">)</span>
+            <span class="c1">#self.minim.dyn.structure.change_unit_cell(new_uc)</span>
+
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;    </span>
+<span class="s2"> Currently estimated bulk modulus = </span><span class="si">{:8.3f}</span><span class="s2"> GPa</span>
+<span class="s2"> (Note: this is just indicative, do not use it for computing bulk modulus)</span>
+<span class="s2"> </span>
+<span class="s2"> &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_bulkmodulus</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot; New unit cell:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot; v1 [A] = (</span><span class="si">%16.8f</span><span class="s2"> </span><span class="si">%16.8f</span><span class="s2"> </span><span class="si">%16.8f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_uc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_uc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">new_uc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot; v2 [A] = (</span><span class="si">%16.8f</span><span class="s2"> </span><span class="si">%16.8f</span><span class="s2"> </span><span class="si">%16.8f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_uc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_uc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">new_uc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot; v3 [A] = (</span><span class="si">%16.8f</span><span class="s2"> </span><span class="si">%16.8f</span><span class="s2"> </span><span class="si">%16.8f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_uc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_uc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">new_uc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]))</span>
+            
+            <span class="nb">print</span> <span class="p">()</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Check the symmetries in the new cell:&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="n">qe_sym</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">symmetries</span><span class="o">.</span><span class="n">QE_Symmetry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="p">)</span>
+            <span class="n">qe_sym</span><span class="o">.</span><span class="n">SetupQPoint</span><span class="p">(</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+            
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Forcing the symmetries in the dynamical matrix.&quot;</span><span class="p">)</span>
+            <span class="n">fcq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">dynmats</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+            <span class="n">qe_sym</span><span class="o">.</span><span class="n">SymmetrizeFCQ</span><span class="p">(</span><span class="n">fcq</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">q_stars</span><span class="p">,</span> <span class="n">asr</span> <span class="o">=</span> <span class="s2">&quot;custom&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">iq</span><span class="p">,</span><span class="n">q</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">q_tot</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">dynmats</span><span class="p">[</span><span class="n">iq</span><span class="p">]</span> <span class="o">=</span> <span class="n">fcq</span><span class="p">[</span><span class="n">iq</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+            <span class="c1"># Save the dynamical matrix</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">save_qe</span><span class="p">(</span><span class="s2">&quot;dyn_pop</span><span class="si">%d</span><span class="s2">_&quot;</span> <span class="o">%</span> <span class="n">pop</span><span class="p">)</span>
+
+            <span class="c1"># Check if the constant volume calculation is converged</span>
+            <span class="n">running1</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">is_converged</span><span class="p">()</span>
+
+            <span class="c1"># Check if the cell variation is converged</span>
+            <span class="n">running2</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">not_zero_mask</span> <span class="o">=</span> <span class="n">stress_err</span> <span class="o">!=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">fix_volume</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cell_gradient</span><span class="p">[</span><span class="n">not_zero_mask</span><span class="p">])</span> <span class="o">/</span> <span class="n">stress_err</span><span class="p">[</span><span class="n">not_zero_mask</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">running2</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">stress_tensor</span> <span class="o">-</span> <span class="n">I</span> <span class="o">*</span> <span class="n">Press</span><span class="p">)[</span><span class="n">not_zero_mask</span><span class="p">]</span> <span class="o">/</span> 
+                                 <span class="n">stress_err</span><span class="p">[</span><span class="n">not_zero_mask</span><span class="p">]))</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">running2</span> <span class="o">=</span> <span class="kc">False</span>
+                
+
+            <span class="n">running</span> <span class="o">=</span> <span class="n">running1</span> <span class="ow">or</span> <span class="n">running2</span>
+
+            <span class="n">pop</span> <span class="o">+=</span> <span class="mi">1</span>
+            
+            <span class="k">if</span> <span class="n">pop</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pop</span><span class="p">:</span>
+                <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+                
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_pop</span> <span class="o">=</span> <span class="n">pop</span>
+        <span class="k">return</span> <span class="p">(</span><span class="ow">not</span> <span class="n">running1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">running2</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">GetStaticBulkModulus</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">ase_calculator</span><span class="p">,</span> <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    GET STATIC BULK MODULUS</span>
+<span class="sd">    =======================</span>
+
+<span class="sd">    This method uses finite differences on the cell to compute</span>
+<span class="sd">    the static bulk modulus. The cell is strained into several volumes,</span>
+<span class="sd">    and the stress tensor is computed in orther to obtain the bulk modulus.</span>
+<span class="sd">    Only the symmmetry relevant terms are computed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        structure : CC.Structure.Structure()</span>
+<span class="sd">            The structure on which you want to compute the static bulk modulus</span>
+<span class="sd">        ase_calculator : ase.calculators.calculator.Calculator()</span>
+<span class="sd">            One of the ase calculators to get the stress tensor in several strained</span>
+<span class="sd">            cells.</span>
+<span class="sd">        eps : float</span>
+<span class="sd">            The strain module</span>
+
+<span class="sd">    Results</span>
+<span class="sd">    -------</span>
+<span class="sd">        bk_mod : ndarray (9x9)</span>
+<span class="sd">            The bulk modulus as a 9x9 matrix, expressed in eV / A^3</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Initialize the symmetries</span>
+    <span class="n">qe_sym</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">symmetries</span><span class="o">.</span><span class="n">QE_Symmetry</span><span class="p">(</span><span class="n">structure</span><span class="p">)</span>
+
+    <span class="c1"># Perform the firts calculation</span>
+    <span class="n">atm_center</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">get_ase_atoms</span><span class="p">()</span>
+    <span class="n">atm_center</span><span class="o">.</span><span class="n">set_calculator</span><span class="p">(</span><span class="n">ase_calculator</span><span class="p">)</span>
+    <span class="n">V_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">structure</span><span class="o">.</span><span class="n">unit_cell</span><span class="p">)</span>
+    <span class="n">stress_0</span> <span class="o">=</span> <span class="n">atm_center</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    
+
+    <span class="n">qe_sym</span><span class="o">.</span><span class="n">ApplySymmetryToMatrix</span><span class="p">(</span><span class="n">stress_0</span><span class="p">)</span>
+
+    <span class="n">bk_mod</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">9</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="c1"># Get the non zero elements</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">trials</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            <span class="n">trials</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">qe_sym</span><span class="o">.</span><span class="n">ApplySymmetryToMatrix</span><span class="p">(</span><span class="n">trials</span><span class="p">)</span>
+
+
+            <span class="k">if</span> <span class="n">trials</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">trials</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">__EPSILON__</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+            <span class="n">strain</span> <span class="o">=</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">mask</span>
+            
+            <span class="n">dstrain</span> <span class="o">=</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask</span><span class="p">))</span>
+
+            <span class="c1"># Strain the cell and perform the calculation</span>
+            <span class="n">new_structure</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">new_structure</span><span class="o">.</span><span class="n">change_unit_cell</span><span class="p">(</span><span class="n">structure</span><span class="o">.</span><span class="n">unit_cell</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">I</span> <span class="o">+</span> <span class="n">strain</span><span class="p">))</span>
+
+            <span class="n">atm</span> <span class="o">=</span> <span class="n">new_structure</span><span class="o">.</span><span class="n">get_ase_atoms</span><span class="p">()</span>
+            <span class="n">atm</span><span class="o">.</span><span class="n">set_calculator</span><span class="p">(</span><span class="n">ase_calculator</span><span class="p">)</span>
+            <span class="n">stress_1</span> <span class="o">=</span> <span class="n">atm</span><span class="o">.</span><span class="n">get_stress</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">V_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">new_structure</span><span class="o">.</span><span class="n">unit_cell</span><span class="p">)</span>
+
+
+            <span class="n">qe_sym</span><span class="o">.</span><span class="n">ApplySymmetryToMatrix</span><span class="p">(</span><span class="n">stress_1</span><span class="p">)</span>
+
+            <span class="n">bk_mod</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">stress_1</span> <span class="o">-</span> <span class="n">stress_0</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">/</span> <span class="n">dstrain</span>
+            <span class="k">if</span> <span class="n">j</span><span class="o">!=</span> <span class="n">i</span><span class="p">:</span>
+                <span class="n">bk_mod</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">j</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">stress_1</span> <span class="o">-</span> <span class="n">stress_0</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">/</span> <span class="n">dstrain</span>
+            
+            <span class="c1"># Apply hermitianity</span>
+            <span class="n">bk_mod</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bk_mod</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">+</span> <span class="n">bk_mod</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">bk_mod</span>
+
+
+
+
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index1.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Lorenzo Monacelli.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
