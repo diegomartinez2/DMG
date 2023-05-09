@@ -24,7 +24,14 @@
 # ---------------------------
 # Importación de los módulos
 # ---------------------------
-
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy as scipy
+from scipy import optimize
+from matplotlib.ticker import AutoMinorLocator
+from matplotlib import gridspec
+import matplotlib.ticker as ticker
 # -------
 # Clases
 # -------
@@ -34,6 +41,18 @@ class Polaron_analysis(object):
     def __init__(self, arg):
         super(NombredeClase, self).__init__()
         self.arg = arg
+
+        self.amp1 = 50
+        self.cen1 = 100
+        self.wid1 = 5
+
+        self.amp2 = 100
+        self.cen2 = 150
+        self.wid2 = 10
+
+        self.amp3 = 50
+        self.cen3 = 200
+        self.wid3 = 5
         return 0
 
     def read_data(self):
@@ -49,7 +68,7 @@ class Polaron_analysis(object):
         return 0
 
     def locate_3Lorenztians(self):
-        return 0        
+        return 0
 
 # ----------
 # Funciones
