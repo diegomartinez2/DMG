@@ -1,0 +1,374 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Frequently Asked Questions (FAQs) &#8212; python-sscha 1.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="frequently-asked-questions-faqs">
+<h1>Frequently Asked Questions (FAQs)<a class="headerlink" href="#frequently-asked-questions-faqs" title="Permalink to this headline">¶</a></h1>
+<p>Here we answer to most common question we received.</p>
+<div class="section" id="setup-the-calculation">
+<h2>Setup the calculation<a class="headerlink" href="#setup-the-calculation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="how-do-i-start-a-calculation-if-the-dynamical-matrices-have-imaginary-frequencies">
+<h3>How do I start a calculation if the Dynamical matrices have imaginary frequencies?<a class="headerlink" href="#how-do-i-start-a-calculation-if-the-dynamical-matrices-have-imaginary-frequencies" title="Permalink to this headline">¶</a></h3>
+<p>A good starting point for a sscha minimization are the dynamical matrix obtained from a harmonic calculation. However, they can have imaginary frequencies. This may be related to both instabilities (the structure is a saddle-point of the Born-Oppenheimer energy landscape) or to a not well-converged choice of the parameters for computing the harmonic frequencies.
+In both cases, it is very easy to get a new dynamical matrix that is positive definite and can be used as a starting point. An example is made in Turorial on H3S.
+Assuming your not positive definite dynamical matrix is in Quantum Espresso format “harm1” … “harmN” (with N the number of irreducible q points), you can generate a positive definite dynamical matrix “positive1” … “positiveN” with the following python script that uses CellConstructor.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the cellconstructor library</span>
+<span class="kn">import</span> <span class="nn">cellconstructor</span> <span class="k">as</span> <span class="nn">CC</span>
+<span class="kn">import</span> <span class="nn">cellconstructor.Phonons</span>
+
+<span class="c1"># Load the harmonic not-positive definite dynamical matrix</span>
+<span class="c1"># We are reading 6 dynamical matrices</span>
+<span class="n">harm</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="s2">&quot;harm&quot;</span><span class="p">,</span> <span class="n">nqirr</span> <span class="o">=</span> <span class="mi">6</span><span class="p">)</span>
+
+<span class="c1"># Apply the acoustic sum rule and the symmetries</span>
+<span class="n">harm</span><span class="o">.</span><span class="n">Symmetrize</span><span class="p">()</span>
+
+<span class="c1"># Force the frequencies to be positive definite</span>
+<span class="n">harm</span><span class="o">.</span><span class="n">ForcePositiveDefinite</span><span class="p">()</span>
+
+<span class="c1"># Save the final dynamical matrix, ready to be used in a sscha run</span>
+<span class="n">harm</span><span class="o">.</span><span class="n">save_qe</span><span class="p">(</span><span class="s2">&quot;positive&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The previous script (that we can save into <em>script.py</em>) will generate the positive definite matrix ready for the sscha run. It may be executed with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>script.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="what-are-the-reasonable-values-for-the-steps">
+<h3>What are the reasonable values for the steps?<a class="headerlink" href="#what-are-the-reasonable-values-for-the-steps" title="Permalink to this headline">¶</a></h3>
+<p>Starting from version 1.2, the line minimization is implemented. This means that there is no need to specify the value of the minimization step as the code will automatically find it.</p>
+<p>However, if the code takes too long to get a good timestep at the begining of a calculation (especially at the very first iteration or if few configurations are employed), you could speedup the calculation providing a smaller initial guess than the default one (1).
+This is done in the python script by calling the function</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">minim</span><span class="o">.</span><span class="n">set_minimization_step</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Where minim is the sscha.SchaMinimizer.SSCHA_Minimizer class. You can select the step also in the namespace input by setting the following variables in the inputscha namespace</p>
+<p><strong>lambda_w</strong> is the step in the atomic positions (stand-alone program input).</p>
+<p><strong>lambda_a</strong> is the step in the dynamical matrix (stand-alone program input).</p>
+</div>
+<div class="section" id="in-a-npt-or-nvt-with-variable-lattice-what-is-a-reasonable-value-for-the-bulk-modulus">
+<h3>In a NPT or NVT with variable lattice, what is a reasonable value for the bulk modulus?<a class="headerlink" href="#in-a-npt-or-nvt-with-variable-lattice-what-is-a-reasonable-value-for-the-bulk-modulus" title="Permalink to this headline">¶</a></h3>
+<p>The bulk modulus is just an indicative parameter used to guess the optimal step of the lattice parameters to converge as quickly as possible.
+It is expressed in GPa. You can find online the bulk modulus for many materials. Find a material similar to the one you are studying and look if there is in literature a bulk modulus.</p>
+<p>The default value is good for most case (equal to 100), but it could be too low for very hard materials (like diamond, which is 500 GPa, or high-pressure stuff). If you are not sure, it is safer to choose an higher value of the bulk modulus, as the code is going to optimize it during the simulation anyway.</p>
+<p>If you have no idea on the bulk modulus, you can easily compute them by doing two static <em>ab initio</em> calculations at very close volumes (by varying the cell size), and then computing the differences between the pressure:</p>
+<div class="math notranslate nohighlight">
+\[B = - \Omega \frac{dP}{d\Omega}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Omega\)</span> is the unit-cell volume and <span class="math notranslate nohighlight">\(P\)</span> is the pressure (in GPa).</p>
+</div>
+<div class="section" id="it-is-always-good-to-run-nvt-before-any-npt-simulation">
+<h3>It is always good to run NVT before any NPT simulation?<a class="headerlink" href="#it-is-always-good-to-run-nvt-before-any-npt-simulation" title="Permalink to this headline">¶</a></h3>
+<p>In general, it is good to have a reasonable dynamical matrix before starting with a relaxation with variable cell (vc_relax).
+Therefore, to avoid mooving the volume upward and backward, always start with a NVT simulation with fixed lattice (the relax method of SSCHA class) and then run a NPT or a NVT with variable lattice (vc_relax method), starting from the static lattice solution.</p>
+</div>
+<div class="section" id="how-may-i-run-a-calculation-neglecting-symmetries">
+<h3>How may I run a calculation neglecting symmetries?<a class="headerlink" href="#how-may-i-run-a-calculation-neglecting-symmetries" title="Permalink to this headline">¶</a></h3>
+<p>You can tell the code to neglect symmetries with the <code class="code docutils literal notranslate"><span class="pre">neglect_symmetries</span> <span class="pre">=</span> <span class="pre">.true.</span></code> flag.
+In the python script, this is done setting the attribute <em>neglect_symmetries</em> of sscha.SchaMinimizer.SSCHA_Minimizer to False.</p>
+</div>
+<div class="section" id="in-which-units-are-the-lattice-vectors-the-atomic-positions-and-the-mass-of-the-atoms-in-the-dynamical-matrix-file">
+<h3>In which units are the lattice vectors, the atomic positions, and the mass of the atoms in the dynamical matrix file?<a class="headerlink" href="#in-which-units-are-the-lattice-vectors-the-atomic-positions-and-the-mass-of-the-atoms-in-the-dynamical-matrix-file" title="Permalink to this headline">¶</a></h3>
+<p>The dynamical matrix follows the quantum espresso units. They are Rydberg atomic units (unit of mass is 1/2  the electron mass, energy is Ry, positions are in Bohr. However, espresso may have an ibrav not equal to zero (the third number in the header of the dynamical matrix). In this case, please, refer to the espresso ibrav guide in the <cite>PW.x input description &lt;https://www.quantum-espresso.org/Doc/INPUT_PW.html#idm199&gt;</cite></p>
+</div>
+<div class="section" id="what-is-the-difference-between-different-kinds-of-minimization-preconditioning-and-root-representation">
+<h3>What is the difference between different kinds of minimization (preconditioning and root_representation)?<a class="headerlink" href="#what-is-the-difference-between-different-kinds-of-minimization-preconditioning-and-root-representation" title="Permalink to this headline">¶</a></h3>
+<p>You do not need to worry about these parameters, as starting from version 1.2 the code has a robust workflow that should avoid bothering you with these details.
+However, if you are curious and want to know a bit more on the details here it is the explanation:
+We provide three different advanced algorithms called in <strong>root_representation</strong>, that can be either <strong>normal</strong>, or <strong>sqrt</strong>, or <strong>root4</strong> (inside &amp;inputscha namespace or the SSCHA_Minimizer object)
+In this way, instead of minimizing the <span class="math notranslate nohighlight">\(\Phi\)</span> matrix, we minimize with respect to <span class="math notranslate nohighlight">\(\sqrt{\Phi}\)</span> or <span class="math notranslate nohighlight">\(\sqrt[4]{\Phi}\)</span>.
+Therefore the new dynamical matrix is constrained in a space that is positive definite. Moreover, it has been proved that <span class="math notranslate nohighlight">\(\sqrt[4]{\Phi}\)</span>
+minimization has a better condition number than the original one and thus should reach the minimum faster.</p>
+<p>Alternatively, a similar effect to the speedup in the minimization obtained with <strong>root4</strong> is possible using the preconditioning (by setting <strong>preconditioning</strong> or <strong>precond_dyn</strong> to True in the input file or the python script, respectively). This way also the single minimization step runs faster, as it avoids passing in the root space of the dynamical matrix (but indeed, you can have imaginary frequencies).</p>
+<p>Since the gradient computation is much slower (especially for a system with more than 80 atoms in the supercell) without the preconditioning,
+it is possible to combine the preconditioning with the root representation to have a faster gradient computation and to be guaranteed that
+the dynamical matrix is positive definite by construction at each step.
+However, in this way the good condition number obtained by the preconditioning (or the root4 representation) is spoiled. For this reason, when using the preconditioning, avoid using <strong>root4</strong>, and chose instead <strong>sqrt</strong> as root_representation.</p>
+<p>The default values are:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&amp;inputscha</span>
+<span class="go">   root_representation = &quot;normal&quot;</span>
+<span class="go">   preconditioning = .true.</span>
+<span class="go">&amp;end</span>
+</pre></div>
+</div>
+<p>or in python</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The ensemble has been loaded as ens</span>
+<span class="n">minim</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">SchaMinimizer</span><span class="o">.</span><span class="n">SSCHA_Minimizer</span><span class="p">(</span><span class="n">ens</span><span class="p">)</span>
+<span class="n">minim</span><span class="o">.</span><span class="n">root_representation</span> <span class="o">=</span> <span class="s2">&quot;normal&quot;</span>
+<span class="n">minim</span><span class="o">.</span><span class="n">precond_dyn</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-do-i-fix-the-random-number-generator-seed-to-make-a-calculation-reproducible">
+<h3>How do I fix the random number generator seed to make a calculation reproducible?<a class="headerlink" href="#how-do-i-fix-the-random-number-generator-seed-to-make-a-calculation-reproducible" title="Permalink to this headline">¶</a></h3>
+<p>As for version 1.2, this can be achieved only by using the python script.
+Since python uses NumPy for random numbers generation, you can, at the beginning of the script that generates the ensemble, use the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span> <span class="o">=</span> <span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="code docutils literal notranslate"><span class="pre">X</span></code> is the integer used as a seed. By default, if not specified, it is initialized with None that it is equivalent to initializing with the current local time.</p>
+</div>
+</div>
+<div class="section" id="on-error-and-convergence-of-the-free-energy-minimization">
+<h2>On error and convergence of the free energy minimization<a class="headerlink" href="#on-error-and-convergence-of-the-free-energy-minimization" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="the-code-stops-saying-it-has-found-imaginary-frequencies-how-do-i-fix-it">
+<h3>The code stops saying it has found imaginary frequencies, how do I fix it?<a class="headerlink" href="#the-code-stops-saying-it-has-found-imaginary-frequencies-how-do-i-fix-it" title="Permalink to this headline">¶</a></h3>
+<p><strong>Update python-sscha to version 1.2 (at least)!</strong> This should be fixed.</p>
+<p>If you do not want to update the code, set</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">minim</span><span class="o">.</span><span class="n">root_representation</span> <span class="o">=</span> <span class="s1">&#39;root2&#39;</span>
+</pre></div>
+</div>
+<p>This way the minimization strategy changes and it is mathematically impossible to get imaginary frequencies.
+The same option can be activated within the namespace input</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&amp;inputscha</span>
+<span class="go">   root_representation = &#39;root2&#39;</span>
+<span class="go">&amp;end</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="why-the-gradient-sometimes-increases-during-a-minimization">
+<h3>Why the gradient sometimes increases during a minimization?<a class="headerlink" href="#why-the-gradient-sometimes-increases-during-a-minimization" title="Permalink to this headline">¶</a></h3>
+<p>Noting in principle assures that a gradient should always go down. It is possible at the beginning of the calculation when we are far from the solution that one of the gradients increases.
+However, when we get closer to the solution, indeed the gradient must decrease.
+If this does not happen it could be due to the ensemble that has fewer configurations than necessary. In this case, the good choice is to increase the number of effective sample size (the Kong-Liu ratio), to stop the minimization when the gradient starts increasing, or to increase the number of configurations in the ensemble.</p>
+<p>In any case, what must decrease is free energy. If you see that the gradient is increasing but the free energy decreases, then the minimization is correct. However, if both the gradient and free energy are increasing, something is wrong, and you may require more configurations in each iteration.
+This is especially true for system with few symmetries (or big primitive cells).</p>
+</div>
+<div class="section" id="how-do-i-check-if-my-calculations-are-well-converged">
+<h3>How do I check if my calculations are well converged?<a class="headerlink" href="#how-do-i-check-if-my-calculations-are-well-converged" title="Permalink to this headline">¶</a></h3>
+<p>In general, if the gradient goes to zero and the Kong Liu ratio is above 0.5 probably your calculation converged very well. This means that when your calculation stops because it converged (not because it runs out of iterations), then it should be well converged.</p>
+<p>There are some cases (especially in systems with many atoms) in which it is difficult to have an ensemble sufficiently big to reach this condition.
+In these cases, you can look at the history of the frequencies in the last populations (there is a drift or random fluctuations?)</p>
+</div>
+<div class="section" id="what-is-the-final-error-on-the-structure-or-the-dynamical-matrix-of-a-scha-minimization">
+<h3>What is the final error on the structure or the dynamical matrix of a SCHA minimization?<a class="headerlink" href="#what-is-the-final-error-on-the-structure-or-the-dynamical-matrix-of-a-scha-minimization" title="Permalink to this headline">¶</a></h3>
+<p>To test the error, you can split the ensemble in two half and repeat the last minimization.
+Then check at the difference between the result to have a rough estimation of the fluctuations.</p>
+<p>To split the ensemble, refer to the FAQ <a class="reference internal" href="#faq-split"><span class="std std-ref">How do I split the ensemble?</span></a>.</p>
+</div>
+<div class="section" id="how-do-i-understand-if-the-free-energy-hessian-calculation-is-converged">
+<h3>How do I understand if the free energy hessian calculation is converged?<a class="headerlink" href="#how-do-i-understand-if-the-free-energy-hessian-calculation-is-converged" title="Permalink to this headline">¶</a></h3>
+<p>The free energy hessian requires much more configurations than the SCHA minimization. First of all, to run the free energy Hessian, the SSCHA minimization must end with a gradient that can be decreased indefinitely without decreasing the KL below 0.7 /0.8.
+Then you can estimate the error by repeating the hessian calculation with half of the ensemble and check how the frequencies of the hessian changes. This is also a good check for the final error on the frequencies.</p>
+<p>You can split your ensemble in two by using the split function.</p>
+<p>To split the ensemble, refer to the FAQ <a class="reference internal" href="#faq-split"><span class="std std-ref">How do I split the ensemble?</span></a>.</p>
+</div>
+<div class="section" id="how-do-i-split-the-ensemble">
+<span id="faq-split"></span><h3>How do I split the ensemble?<a class="headerlink" href="#how-do-i-split-the-ensemble" title="Permalink to this headline">¶</a></h3>
+<p>After you load or compute an ensemble you can split it and select only a portion of it to run the code.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assuming you loaded or computed the ensemble inside</span>
+<span class="c1"># ensemble</span>
+
+<span class="c1"># Let us create a mask that selects only the first half of the ensemble</span>
+<span class="n">first_half_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ensemble</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">)</span>
+<span class="n">first_half_mask</span><span class="p">[:</span><span class="n">ensemble</span><span class="o">.</span><span class="n">N</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1"># Now we pass the mask to the ensemble to extract a new one</span>
+<span class="c1"># Containing only the configurations that correspond to the True</span>
+<span class="c1"># values of the mask</span>
+<span class="n">first_half_ensemble</span> <span class="o">=</span> <span class="n">ensemble</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">first_half_mask</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>After this code, the varialbe first_half_ensemble is a sscha.Ensemble.Ensemble that
+can be used for any caluclation.</p>
+</div>
+<div class="section" id="how-can-i-add-more-configurations-to-an-existing-ensemble">
+<h3>How can I add more configurations to an existing ensemble?<a class="headerlink" href="#how-can-i-add-more-configurations-to-an-existing-ensemble" title="Permalink to this headline">¶</a></h3>
+<p>You can use the split and merge functions of the Ensemble class.
+First of all you generate a new ensemble, you compute the energy and force for that ensemble,
+then you merge it inside another one.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the original ensemble (first population with 1000 configurations)</span>
+<span class="n">ens</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Ensemble</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="n">dynmat</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dynmat</span><span class="o">.</span><span class="n">GetSupercell</span><span class="p">())</span>
+<span class="n">ens</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;data_dir&quot;</span><span class="p">,</span> <span class="n">population</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># Generate a new ensemble with other 1000 configurations</span>
+<span class="n">new_ensemble</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Ensemble</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="n">dynmat</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dynmat</span><span class="o">.</span><span class="n">GetSupercell</span><span class="p">())</span>
+<span class="n">new_ensemble</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># Compute the energy and forces for the new ensemble</span>
+<span class="c1"># For example in this case we assume to have initialized &#39;calc&#39; as an ASE calculator.</span>
+<span class="c1"># But you can also save it with a different population,</span>
+<span class="c1"># manually compute energy and forces, and then load again the ensemble.</span>
+<span class="n">new_ensemble</span><span class="o">.</span><span class="n">get_energy_forces</span><span class="p">(</span><span class="n">calc</span><span class="p">)</span>
+
+<span class="c1"># Merge the two ensembles</span>
+<span class="n">ens</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">new_ensemble</span><span class="p">)</span>
+
+<span class="c1"># Now ens contains the two ensembles. You can save it or directly use it for a SSCHA calculation</span>
+<span class="n">ens</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;data_dir&quot;</span><span class="p">,</span> <span class="n">population</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Indeed, to avoid mistakes, when merging the ensemble you must be carefull that the dynamical matrix and the temperature used to generate both ensembles are the same.</p>
+</div>
+<div class="section" id="how-does-the-error-over-the-gradients-scale-with-the-number-of-configurations">
+<h3>How does the error over the gradients scale with the number of configurations?<a class="headerlink" href="#how-does-the-error-over-the-gradients-scale-with-the-number-of-configurations" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>The error scales as any stochastic method, with the inverse of the square root of the number of configurations. So to double the accuracy, the number of configurations must be multiplied by 4.</div></blockquote>
+</div>
+<div class="section" id="i-cannot-remove-the-pressure-anisotropy-after-relaxing-the-cell-what-is-happening">
+<h3>I cannot remove the pressure anisotropy after relaxing the cell, what is happening?<a class="headerlink" href="#i-cannot-remove-the-pressure-anisotropy-after-relaxing-the-cell-what-is-happening" title="Permalink to this headline">¶</a></h3>
+<p>Variable cell calculation is a tricky algorithm. It could be that your bulk modulus is strongly anisotropic, so the algorithm has difficulties in optimizing well.
+In general, the stress tensor is also affected by the stochastic error, so it is impossible to completely remove anisotropy. However, a converged result is one in which the residual anisotropy in the stress tensor is comparable to the stochastic error on the stress tensor.
+If you are not able to converge, you can either increase the number of configurations, modify the bulk_modulus parameter (increase it if the stress change too much between two populations, decrease it if it does not changes enough) or fix the overall volume (by using the fix_volume flag in the &amp;relax namespace or the vc_relax method if you are using the python script).</p>
+<p>Fixing the volume improves the convergence of the variable cell algorithm (using the fix_volume = True argument of the vc_relax method).</p>
+</div>
+<div class="section" id="how-do-i-choose-the-appropriate-value-of-kong-liu-effective-sample-size-or-ratio">
+<h3>How do I choose the appropriate value of Kong-Liu effective sample size or ratio?<a class="headerlink" href="#how-do-i-choose-the-appropriate-value-of-kong-liu-effective-sample-size-or-ratio" title="Permalink to this headline">¶</a></h3>
+<p>The Kong-Liu (KL) effective sample size is an estimation of how good is the extracted set of configurations to describe the BO landscape around the current values of the dynamical matrix and the centroid position. After the ensemble is generated, the KL sample size matches with the actual number of configurations, however, as the minimization goes, the KL sample size is reduced. The code stops when the KL sample size is below a certain threshold.</p>
+<p>The default value for the Kong-Liu threshold ratio is 0.5 (effective sample size = 0.5 the original number of configurations). This is a good and safe value for most situations. However, if you are very far from the minimum and the gradient is big, you can trust it even if it is very noisy. For this reason, you can lower the Kong-Liu ratio to 0.2 or 0.1. However, notice that by construction the KL effective sample size is always bigger than 2.  Therefore, if you use 10 configurations, and you set a threshold ratio below 0.2, you will never reach the threshold, and your minimization will continue forever (going into a very bad regime where you are minimizing something completely random). On the other side, on some very complex systems close to the minimum, it could be safe to increase the KL ratio even at 0.6.</p>
+</div>
+</div>
+<div class="section" id="post-processing-the-output">
+<h2>Post-processing the output<a class="headerlink" href="#post-processing-the-output" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="how-do-i-plot-the-phonon-dispersion-after-the-calculation">
+<h3>How do I plot the phonon dispersion after the calculation?<a class="headerlink" href="#how-do-i-plot-the-phonon-dispersion-after-the-calculation" title="Permalink to this headline">¶</a></h3>
+<p>See <span class="xref std std-ref">Plot the phonon dispersion</span> section.</p>
+</div>
+<div class="section" id="how-do-i-plot-the-frequencies-of-the-dynamical-matrix-during-the-optimization">
+<h3>How do I plot the frequencies of the dynamical matrix during the optimization?<a class="headerlink" href="#how-do-i-plot-the-frequencies-of-the-dynamical-matrix-during-the-optimization" title="Permalink to this headline">¶</a></h3>
+<p>To check if the SSCHA is converging, you should plot the dynamical matrix’s frequencies during the minimization.
+In particular, you should look if, between different populations, the evolution of each frequency is consistent. If it seems that frequencies are evolving randomly from a population to the next one, you should increase the number of configurations, otherwise, you can keep the number fixed.</p>
+<p>The code can print the frequencies at each step.
+If you run the code with an input script, you should provide in the &amp;utils tag the filename for the frequencies:</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="p">&amp;</span><span class="n">utils</span>
+<span class="w">    </span><span class="n">save_frequencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;minim_info&quot;</span>
+<span class="p">&amp;</span><span class="n">utils</span>
+</pre></div>
+</div>
+<p>You can use the same function from the python script by calling a custom function that saves the frequencies after each optimization step. The Utilities module of the SSCHA offers this function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">IO_freq</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Utilities</span><span class="o">.</span><span class="n">IOInfo</span><span class="p">()</span>
+<span class="n">IO_freq</span><span class="o">.</span><span class="n">SetupSaving</span><span class="p">(</span><span class="s2">&quot;minim_info&quot;</span><span class="p">)</span>
+
+<span class="c1"># Initialize the minimizer as minim [...]</span>
+<span class="n">minim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">custom_function_post</span> <span class="o">=</span> <span class="n">IO_freq</span><span class="o">.</span><span class="n">CFP_SaveAll</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then, while running you can plot all the information about the minimization with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sscha-plot-data.py<span class="w"> </span>minim_info
+
+<span class="go">And you will see both frequencies, free energy, gradients and everything how it evolves during the</span>
+<span class="go">minimization.</span>
+
+<span class="go">If you are using a version older than 1.2, the previous command should be replaced with:</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>plot_frequencies.py<span class="w"> </span>minim_info
+</pre></div>
+</div>
+<p>If you restart the calculation and save it in multiple files, you can concatenate the results with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sscha-plot-data.py<span class="w"> </span>minim_info1<span class="w"> </span>minim_info2<span class="w"> </span>...
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="constrains-and-custom-minimization">
+<h2>Constrains and custom minimization<a class="headerlink" href="#constrains-and-custom-minimization" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="how-do-i-lock-modes-from-m-to-n-in-the-minimization">
+<h3>How do I lock modes from m to n in the minimization?<a class="headerlink" href="#how-do-i-lock-modes-from-m-to-n-in-the-minimization" title="Permalink to this headline">¶</a></h3>
+<p>Constrains to the minimization within the mode space may be added in both the input file (for the stand-alone execution) and in the python script.
+In the input script, inside the namespace <strong>&amp;utils</strong>, you should add:</p>
+<p><strong>mu_free_start = 30</strong> and <strong>mu_free_end = 36</strong> : optimize only between mode 30 and 36 (for each q point).</p>
+<p>You can also use the keywords <strong>mu_lock_start</strong> and <strong>mu_lock_end</strong> to freeze only a subset of modes.</p>
+<p>You can also choose if you want to freeze only the dynamical matrix or also the structure relaxation along with those directions, by picking:</p>
+<p><strong>project_dyn = .true.</strong> and <strong>project_structure = .false.</strong>. In this way, I freeze only the dynamical matrix along with the specified modes, but not the structure.</p>
+<p>Modes may be also locked within the python scripting. Look at the LockModes example in the Examples directory.</p>
+<p>TODO: Add the same guide for the python code</p>
+</div>
+<div class="section" id="how-do-i-lock-a-special-atom-in-the-minimization">
+<h3>How do I lock a special atom in the minimization?<a class="headerlink" href="#how-do-i-lock-a-special-atom-in-the-minimization" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>More complex constraints may be activated in the minimization, but their use is limited within the python scripting.
+You can write your constraining function that will be applied to the structure gradient or the dynamical matrix gradient.
+This function should take as input the two gradients (dynamical matrix and structure) and operate directly on them.
+Then it can be passed to the minimization engine as <em>custom_function_gradient</em>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LIST_OF_ATOMS_TO_FIX</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">fix_atoms</span><span class="p">(</span><span class="n">gradient_dyn</span><span class="p">,</span> <span class="n">gradient_struct</span><span class="p">):</span>
+    <span class="c1"># Fix the atoms in the list</span>
+    <span class="n">gradient_struct</span><span class="p">[</span><span class="n">LIST_OF_ATOMS_TO_FIX</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">minim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span> <span class="n">custom_function_gradient</span> <span class="o">=</span> <span class="n">fix_atoms</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, <code class="code docutils literal notranslate"><span class="pre">minim</span></code> is the <code class="code docutils literal notranslate"><span class="pre">SSCHA_Minimizer</span></code> class. In this case, we only fix the structure gradient. However, the overall gradient will have a translation (acoustic sum rule is violated). Be very careful when doing this kind of constrains, and check if it is really what you want.</p>
+<p>A more detailed and working example that fixes also the degrees of freedom of the dynamical matrix is reported in the FixAtoms example.</p>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index1.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Lorenzo Monacelli.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/faq.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

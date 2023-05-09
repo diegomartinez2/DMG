@@ -1,0 +1,244 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Calculations of second-order phase transitions with the SSCHA &#8212; python-sscha 1.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="PYTHON-SSCHA USER GUIDE" href="index1.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="calculations-of-second-order-phase-transitions-with-the-sscha">
+<h1>Calculations of second-order phase transitions with the SSCHA<a class="headerlink" href="#calculations-of-second-order-phase-transitions-with-the-sscha" title="Permalink to this headline">¶</a></h1>
+<p>In this chapter we provide ready to use examples to calculate second-order phase transitions with SSCHA calculations.</p>
+<div class="section" id="structural-instability-calculation-of-the-hessian">
+<h2>Structural instability: calculation of the Hessian<a class="headerlink" href="#structural-instability-calculation-of-the-hessian" title="Permalink to this headline">¶</a></h2>
+<p>This tutorial explains how to search for structural instabilities with a SSCHA calculation.</p>
+<p>The SSCHA method provides a complete theoretical framework to study second-order phase transitions for structural instabilities.</p>
+<p>According to Landau’s theory of second-order phase transitions, a phase transition occurs when the free energy curvature around the high-symmetry structure on the direction of the order parameter becomes negative:
+[image]
+.. _fig-second_order:</p>
+<div class="figure" id="id1">
+<a class="reference internal image-reference" href="_images/second_order.png"><img alt="Second order." src="_images/second_order.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Landau’s theory of second-order phase transitions.</span></p>
+</div>
+<p>For structural phase transitions, the order parameter is associated to phonon atomic displacements $$\frac{\partial^2 F}{\partial R_a \partial R_b}$$. So we just need to calculate the Free energy Hessian. the SSCHA provides an analytical equation for the free energy Hessian, derived by Raffaello Bianco in the work Bianco et. al. Phys. Rev. B 96, 014111 &lt;<a class="reference external" href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111">https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111</a>&gt;.
+The free energy curvature can be written in matrix form as:</p>
+<p>$$\frac{\partial^2 F}{\partial {R_a}\partial {R_b}} = \Phi_{ab} + \sum_{cdef} \stackrel{(3)}{\Phi}_{acd}[1 - \Lambda\stackrel{(4)}{\Phi}]^{-1}_{cdef} \stackrel{(3)}{\Phi}_{efb}$$</p>
+<p>Fortunately, this complex equation can be evaluated from the ensemble with a simple function call:</p>
+<p>Lets see a practical example, first we calculate the SSCHA dynamical matrix for the PbTe:</p>
+<p>Lets do something different an write it as an object (Object Oriented Program).</p>
+<p>We begin from the bottom with the old trick for code re-usability:</p>
+<p>and now we put the top part of the code, the inputs:</p>
+<p>Now we need to calculate the SSCHA dynamical matrix. For that we can use this object:</p>
+<p>Now we fill the main function:</p>
+<p>This code will calculate the SSCHA minimization with the “ff_calculator”.</p>
+<p>Now we can search for instabilities. For that we […]</p>
+<p>We can then print the frequencies of the hessian. If an imaginary frequency is present, then the system wants to spontaneosly break the high symmetry phase.</p>
+<p>The frequencies in the free energy hessian are temperature dependent.</p>
+</div>
+<div class="section" id="phase-transition">
+<h2>Phase transition:<a class="headerlink" href="#phase-transition" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Hessian_Vs_Temperature</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T0</span><span class="p">,</span><span class="n">temperatures_i</span><span class="p">,</span><span class="n">files_ForceFields</span><span class="p">,</span><span class="n">configurations</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">):</span>
+        <span class="c1"># Load the dynamical matrix for the force field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ff_dyn</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="n">files_ForceFields</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+        <span class="c1"># Setup the forcefield with the correct parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="n">Calculator</span><span class="o">.</span><span class="n">ToyModelCalculator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ff_dyn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="o">.</span><span class="n">type_cal</span> <span class="o">=</span> <span class="s2">&quot;pbtex&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="o">.</span><span class="n">p3</span> <span class="o">=</span> <span class="mf">0.036475</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="o">.</span><span class="n">p4</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.022</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="o">.</span><span class="n">p4x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.014</span>
+        <span class="c1"># Define the temperatures, from 50 to 300 K, 6 temperatures</span>
+        <span class="c1">#self.temperatures = np.linspace(50, 300, 6)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperatures</span> <span class="o">=</span> <span class="n">temperatures_i</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lowest_hessian_mode</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lowest_sscha_mode</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Perform a simulation at each temperature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_old</span> <span class="o">=</span> <span class="n">T0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configurations</span> <span class="o">=</span> <span class="n">configurations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sobol</span> <span class="o">=</span> <span class="n">sobol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sobol_scatter</span> <span class="o">=</span> <span class="n">sobol_scatter</span>
+
+    <span class="k">def</span> <span class="nf">cycle_T</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Files_final_dyn</span><span class="p">,</span><span class="n">nqirr</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">Temperature</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperatures</span><span class="p">:</span>
+            <span class="c1"># Load the starting dynamical matrix</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dyn</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="n">Files_final_dyn</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t_old</span><span class="p">)),</span> <span class="n">nqirr</span><span class="p">)</span>
+
+            <span class="c1"># Prepare the ensemble</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Ensemble</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dyn</span><span class="p">,</span> <span class="n">T0</span> <span class="o">=</span> <span class="n">Temperature</span><span class="p">,</span> <span class="n">supercell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">GetSupercell</span><span class="p">())</span>
+
+            <span class="c1"># Prepare the minimizer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">SchaMinimizer</span><span class="o">.</span><span class="n">SSCHA_Minimizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">min_step_struc</span> <span class="o">=</span> <span class="mf">0.05</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">min_step_dyn</span> <span class="o">=</span> <span class="mf">0.002</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">kong_liu_ratio</span> <span class="o">=</span> <span class="mf">0.5</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">meaningful_factor</span> <span class="o">=</span> <span class="mf">0.000001</span>
+            <span class="c1">#minim.root_representation = &quot;root4&quot;</span>
+            <span class="c1">#minim.precond_dyn = False</span>
+            <span class="c1">#self.minim.minim_struct = True # *test*</span>
+            <span class="c1">#self.minim.neglect_symmetries = True    # *test*</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">enforce_sum_rule</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Lorenzo&#39;s solution to the error</span>
+
+            <span class="c1"># Prepare the relaxer (through many population)</span>
+            <span class="c1">#self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">relax</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Relax</span><span class="o">.</span><span class="n">SSCHA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="p">,</span> <span class="n">ase_calculator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="p">,</span> <span class="n">N_configs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">configurations</span><span class="p">,</span> <span class="n">max_pop</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+            <span class="c1"># Relax</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">relax</span><span class="p">(</span><span class="n">sobol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol</span><span class="p">,</span> <span class="n">sobol_scramble</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol_scatter</span><span class="p">)</span>
+            <span class="c1">#self.relax.relax(sobol = False)</span>
+
+            <span class="c1"># Save the dynamical matrix</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">save_qe</span><span class="p">(</span><span class="n">Files_final_dyn</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)))</span>
+
+            <span class="c1"># Detect space group</span>
+            <span class="n">symm</span><span class="o">=</span><span class="n">spglib</span><span class="o">.</span><span class="n">get_spacegroup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">get_ase_atoms</span><span class="p">(),</span> <span class="mf">0.005</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Current SG = &#39;</span><span class="p">,</span> <span class="n">symm</span><span class="p">,</span><span class="s1">&#39; at T=&#39;</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperatura</span><span class="p">))</span>
+
+            <span class="c1"># Recompute the ensemble for the hessian calculation</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Ensemble</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="p">,</span> <span class="n">T0</span> <span class="o">=</span> <span class="n">Temperature</span><span class="p">,</span> <span class="n">supercell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">GetSupercell</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configurations</span><span class="p">,</span> <span class="n">sobol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol</span><span class="p">,</span> <span class="n">sobol_scramble</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol_scatter</span><span class="p">)</span>
+            <span class="c1">#self.ensemble.generate(100, sobol = False)</span>
+            <span class="c1">#self.ensemble.generate(5000,sobol = True)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">get_energy_forces</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="p">,</span> <span class="n">compute_stress</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="c1">#gets the energies and forces from ff_calculator</span>
+
+            <span class="c1">#update weights!!!</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">update_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="p">,</span> <span class="n">Temperature</span><span class="p">)</span>
+            <span class="c1"># Get the free energy hessian</span>
+            <span class="n">dyn_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">get_free_energy_hessian</span><span class="p">(</span><span class="n">include_v4</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="c1">#free energy hessian as in Bianco paper 2017</span>
+            <span class="n">dyn_hessian</span><span class="o">.</span><span class="n">save_qe</span><span class="p">(</span><span class="s2">&quot;hessian_T</span><span class="si">{}</span><span class="s2">_&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)))</span>
+
+            <span class="c1"># Get the lowest frequencies for the sscha and the free energy hessian</span>
+            <span class="n">w_sscha</span><span class="p">,</span> <span class="n">pols_sscha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">DiagonalizeSupercell</span><span class="p">()</span> <span class="c1">#dynamical matrix</span>
+            <span class="c1"># Get the structure in the supercell</span>
+            <span class="n">superstructure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">generate_supercell</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">GetSupercell</span><span class="p">())</span> <span class="c1">#</span>
+
+            <span class="c1"># Discard the acoustic modes</span>
+            <span class="n">acoustic_modes</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Methods</span><span class="o">.</span><span class="n">get_translations</span><span class="p">(</span><span class="n">pols_sscha</span><span class="p">,</span> <span class="n">superstructure</span><span class="o">.</span><span class="n">get_masses_array</span><span class="p">())</span>
+            <span class="n">w_sscha</span> <span class="o">=</span> <span class="n">w_sscha</span><span class="p">[</span><span class="o">~</span><span class="n">acoustic_modes</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">lowest_sscha_mode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">w_sscha</span><span class="p">)</span> <span class="o">*</span> <span class="n">CC</span><span class="o">.</span><span class="n">Units</span><span class="o">.</span><span class="n">RY_TO_CM</span><span class="p">)</span> <span class="c1"># Convert from Ry to cm-1</span>
+
+            <span class="n">w_hessian</span><span class="p">,</span> <span class="n">pols_hessian</span> <span class="o">=</span> <span class="n">dyn_hessian</span><span class="o">.</span><span class="n">DiagonalizeSupercell</span><span class="p">()</span> <span class="c1">#recomputed dyn for hessian</span>
+            <span class="c1"># Discard the acoustic modes</span>
+            <span class="n">acoustic_modes</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Methods</span><span class="o">.</span><span class="n">get_translations</span><span class="p">(</span><span class="n">pols_hessian</span><span class="p">,</span> <span class="n">superstructure</span><span class="o">.</span><span class="n">get_masses_array</span><span class="p">())</span>
+            <span class="n">w_hessian</span> <span class="o">=</span> <span class="n">w_hessian</span><span class="p">[</span><span class="o">~</span><span class="n">acoustic_modes</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lowest_hessian_mode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">w_hessian</span><span class="p">)</span> <span class="o">*</span> <span class="n">CC</span><span class="o">.</span><span class="n">Units</span><span class="o">.</span><span class="n">RY_TO_CM</span><span class="p">)</span> <span class="c1"># Convert from Ry to cm-1</span>
+            <span class="c1">#print (&quot;\n&quot;.join([&quot;{:.4f} cm-1&quot;.format(w * CC.Units.RY_TO_CM) for w in pols_hessian]))</span>
+            <span class="c1">#exit()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">t_old</span> <span class="o">=</span> <span class="n">Temperature</span>
+        <span class="c1"># We prepare now the file to save the results</span>
+        <span class="n">freq_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temperatures</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">freq_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperatures</span>
+        <span class="n">freq_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lowest_sscha_mode</span>
+        <span class="n">freq_data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lowest_hessian_mode</span>
+
+        <span class="c1"># Save results on file</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_hessian_vs_temperature.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configurations</span><span class="p">),</span> <span class="n">freq_data</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;T [K]; SSCHA mode [cm-1]; Free energy hessian [cm-1]&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">draw_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">hessian_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_hessian_vs_temperature.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configurations</span><span class="p">))</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">dpi</span> <span class="o">=</span> <span class="mi">120</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hessian_data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">hessian_data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Min SCHA freq&quot;</span><span class="p">,</span> <span class="n">marker</span> <span class="o">=</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hessian_data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">hessian_data</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Free energy curvature&quot;</span><span class="p">,</span> <span class="n">marker</span> <span class="o">=</span> <span class="s2">&quot;o&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="s2">&quot;dotted&quot;</span><span class="p">)</span> <span class="c1"># Draw the zero</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Temperature [K]&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency [cm-1]&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_Temp_Freq.png&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configurations</span><span class="p">))</span>
+        <span class="c1">#plt.show()</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">dpi</span> <span class="o">=</span> <span class="mi">120</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hessian_data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">hessian_data</span><span class="p">[:,</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">hessian_data</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Free energy curvature&quot;</span><span class="p">,</span> <span class="n">marker</span> <span class="o">=</span> <span class="s2">&quot;o&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="s2">&quot;dotted&quot;</span><span class="p">)</span> <span class="c1"># Draw the zero</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Temperature [K]&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$\omega^2$ [cm-2]&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_Temp_Omeg.png&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configurations</span><span class="p">))</span>
+        <span class="c1">#plt.show()</span>
+</pre></div>
+</div>
+<p>As exercise, put this object into the main function.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="plot-the-hessian-phonon-dispersion">
+<h2>Plot the Hessian phonon dispersion<a class="headerlink" href="#plot-the-hessian-phonon-dispersion" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index1.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index1.html" title="previous chapter">PYTHON-SSCHA USER GUIDE</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Lorenzo Monacelli.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/start.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
