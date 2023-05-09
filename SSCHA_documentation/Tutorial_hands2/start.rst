@@ -177,15 +177,15 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
         #plt.show()
         plt.savefig('Step_Freq.png')
 
-We've seen this before, so let's review what's there in detail:
+We've seen most of this before, so let's review what's there in detail:
 
 First this object is initialized in "__init__" where the toy model potential is set for the next calculations.
 This force field needs the harmonic dynamical matrix to be initialized, and the higher order parameters.
-Finally, the dynamical matrix for the minimization is loaded and readied.
+Finally, the dynamical matrix for the minimization is loaded and readied. Since we are studying a system that has a spontaneous symmetry breaking at low temperature, the harmonic dynamical matrices will have imaginary phonons. We must enforce phonons to be positive definite to start a SSCHA minimization.
 
 The next function of this object "ensemble_sscha" just creates the ensembles for the specified temperature. As an extra, we also look for the space group of the structure.
 
-
+Next comes the minimization function.
 
 Now we fill the main function:
 
@@ -217,7 +217,8 @@ Now we fill the main function:
 
 This code will calculate the SSCHA minimization with the "ff_calculator".
 
-Now we can search for instabilities. For that we [...]
+Now we can search for instabilities. For that we create another object. [...]
+Note: this force field model is not able to compute stress, as it is defined only at fixed volume, so we cannot use it for a variable cell relaxation.
 
 .. code-block:: python
 
