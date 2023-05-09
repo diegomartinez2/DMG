@@ -56,6 +56,14 @@ class Polaron_analysis(object):
         return 0
 
     def read_data(self):
+        with open("xzabu") as file:
+             lines = [line.rsplit() for line in file]
+        Spec = np.zeros(50,5001)
+        for i in range(5001*50*50):
+            if lines[i][0]=0.31290
+            for j in range(50):
+
+             Spec[j][i]=lines[i][6]
         return 0
 
     def drawn_3D(self):
@@ -68,6 +76,44 @@ class Polaron_analysis(object):
         return 0
 
     def locate_3Lorenztians(self):
+        def _3Lorentzian(x, amp1, cen1, wid1, amp2,cen2,wid2, amp3,cen3,wid3):
+            return (amp1*wid1**2/((x-cen1)**2+wid1**2)) +\
+                    (amp2*wid2**2/((x-cen2)**2+wid2**2)) +\
+                        (amp3*wid3**2/((x-cen3)**2+wid3**2))
+
+        popt_3lorentz, pcov_3lorentz = scipy.optimize.curve_fit(_3Lorentzian, x_array, y_array_3lorentz, p0=[amp1, cen1, wid1, \
+                                                                                            amp2, cen2, wid2, amp3, cen3, wid3])
+
+        perr_3lorentz = np.sqrt(np.diag(pcov_3lorentz))
+
+        pars_1 = popt_3lorentz[0:3]
+        pars_2 = popt_3lorentz[3:6]
+        pars_3 = popt_3lorentz[6:9]
+        lorentz_peak_1 = _1Lorentzian(x_array, *pars_1)
+        lorentz_peak_2 = _1Lorentzian(x_array, *pars_2)
+        lorentz_peak_3 = _1Lorentzian(x_array, *pars_3)
+
+        # this cell prints the fitting parameters with their errors
+        print ("-------------Peak 1-------------")
+        print ("amplitude = %0.2f (+/-) %0.2f" % (pars_1[0], perr_3lorentz[0]))
+        print ("center = %0.2f (+/-) %0.2f" % (pars_1[1], perr_3lorentz[1]))
+        print ("width = %0.2f (+/-) %0.2f" % (pars_1[2], perr_3lorentz[2]))
+        print ("area = %0.2f" % np.trapz(lorentz_peak_1))
+        print ("--------------------------------")
+        print ("-------------Peak 2-------------")
+        print ("amplitude = %0.2f (+/-) %0.2f" % (pars_2[0], perr_3lorentz[3]))
+        print ("center = %0.2f (+/-) %0.2f" % (pars_2[1], perr_3lorentz[4]))
+        print ("width = %0.2f (+/-) %0.2f" % (pars_2[2], perr_3lorentz[5]))
+        print ("area = %0.2f" % np.trapz(lorentz_peak_2))
+        print ("--------------------------------")
+        print ("-------------Peak 3-------------")
+        print ("amplitude = %0.2f (+/-) %0.2f" % (pars_3[0], perr_3lorentz[6]))
+        print ("center = %0.2f (+/-) %0.2f" % (pars_3[1], perr_3lorentz[7]))
+        print ("width = %0.2f (+/-) %0.2f" % (pars_3[2], perr_3lorentz[8]))
+        print ("area = %0.2f" % np.trapz(lorentz_peak_3))
+        print ("--------------------------------")
+
+        residual_3lorentz = y_array_3lorentz - (_3Lorentzian(x_array, *popt_3lorentz))
         return 0
 
 # ----------
