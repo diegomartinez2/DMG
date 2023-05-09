@@ -65,6 +65,36 @@ The free energy curvature can be written in matrix form as:</p>
 </pre></div>
 </div>
 <p>and now we put the top part of the code, the inputs:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1">#  SSCHA_exercise.py</span>
+<span class="c1">#</span>
+<span class="c1"># Import the cellconstructor stuff</span>
+<span class="kn">import</span> <span class="nn">cellconstructor</span> <span class="k">as</span> <span class="nn">CC</span>
+<span class="kn">import</span> <span class="nn">cellconstructor.Phonons</span>
+<span class="kn">import</span> <span class="nn">cellconstructor.ForceTensor</span>
+<span class="kn">import</span> <span class="nn">cellconstructor.Structure</span>
+<span class="kn">import</span> <span class="nn">cellconstructor.Spectral</span>
+
+<span class="c1"># Import the modules of the force field</span>
+<span class="kn">import</span> <span class="nn">fforces</span> <span class="k">as</span> <span class="nn">ff</span>
+<span class="kn">import</span> <span class="nn">fforces.Calculator</span>
+
+<span class="c1"># Import the modules to run the sscha</span>
+<span class="kn">import</span> <span class="nn">sscha</span><span class="o">,</span> <span class="nn">sscha.Ensemble</span><span class="o">,</span> <span class="nn">sscha.SchaMinimizer</span>
+<span class="kn">import</span> <span class="nn">sscha.Relax</span><span class="o">,</span> <span class="nn">sscha.Utilities</span>
+
+<span class="kn">import</span> <span class="nn">spglib</span>
+<span class="kn">from</span> <span class="nn">ase.visualize</span> <span class="kn">import</span> <span class="n">view</span>
+
+<span class="c1"># Import Matplotlib to plot</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">import</span> <span class="nn">timeit</span>
+</pre></div>
+</div>
 <p>Now we need to calculate the SSCHA dynamical matrix. For that we can use this object:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SnTe_initial</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">file_ForceFields</span><span class="p">,</span><span class="n">file_dyn</span><span class="p">,</span><span class="n">nqirr</span><span class="p">,</span><span class="n">configurations</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">):</span>

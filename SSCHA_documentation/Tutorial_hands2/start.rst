@@ -11,7 +11,7 @@ This tutorial explains how to search for structural instabilities with a SSCHA c
 The SSCHA method provides a complete theoretical framework to study second-order phase transitions for structural instabilities.
 
 According to Landau’s theory of second-order phase transitions, a phase transition occurs when the free energy curvature around the high-symmetry structure on the direction of the order parameter becomes negative:
-[image]
+
 .. _fig-second_order:
 
 .. figure:: figures/second_order.png
@@ -33,6 +33,8 @@ Fortunately, this complex equation can be evaluated from the ensemble with a sim
 
 Lets see a practical example, first we calculate the SSCHA dynamical matrix for the SnTe:
 
+To speedup the calculations, we will use a force-field that can mimic the physics of ferroelectric transitions in FCC lattices.
+
 Lets do something different an write it as an object (Object Oriented Program).
 
 We begin from the bottom with the old trick for code re-usability:
@@ -47,7 +49,7 @@ We begin from the bottom with the old trick for code re-usability:
     import sys
     sys.exit(main(sys.argv))
 
-and now we put the top part of the code, the inputs:
+and now we put the top part of the code, we import some libraries:
 
 .. code-block:: python
 
