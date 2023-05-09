@@ -55,11 +55,195 @@ The free energy curvature can be written in matrix form as:</p>
 <p>Lets see a practical example, first we calculate the SSCHA dynamical matrix for the PbTe:</p>
 <p>Lets do something different an write it as an object (Object Oriented Program).</p>
 <p>We begin from the bottom with the old trick for code re-usability:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<span class="c1">#main code goes here</span>
+<span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="kn">import</span> <span class="nn">sys</span>
+  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">))</span>
+</pre></div>
+</div>
 <p>and now we put the top part of the code, the inputs:</p>
 <p>Now we need to calculate the SSCHA dynamical matrix. For that we can use this object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SnTe_initial</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">file_ForceFields</span><span class="p">,</span><span class="n">file_dyn</span><span class="p">,</span><span class="n">nqirr</span><span class="p">,</span><span class="n">configurations</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">):</span>
+      <span class="c1"># Load the dynamical matrix for the force field</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">ff_dyn</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="n">fichero_ForceFields</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+      <span class="c1"># Setup the forcefield with the correct parameters</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="n">Calculator</span><span class="o">.</span><span class="n">ToyModelCalculator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ff_dyn</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="o">.</span><span class="n">type_cal</span> <span class="o">=</span> <span class="s2">&quot;pbtex&quot;</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="o">.</span><span class="n">p3</span> <span class="o">=</span> <span class="mf">0.036475</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="o">.</span><span class="n">p4</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.022</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="o">.</span><span class="n">p4x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.014</span>
+
+      <span class="c1"># Initialization of the SSCHA matrix</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="n">fichero_dyn</span><span class="p">,</span> <span class="n">nqirr</span><span class="p">)</span>
+      <span class="c1"># Flip the imaginary frequencies into real ones</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="o">.</span><span class="n">ForcePositiveDefinite</span><span class="p">()</span>
+      <span class="c1"># Apply the ASR and the symmetry group</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="o">.</span><span class="n">Symmetrize</span><span class="p">()</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">configuraciones</span><span class="o">=</span><span class="n">configuraciones</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">sobol</span> <span class="o">=</span> <span class="n">sobol</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">sobol_scatter</span> <span class="o">=</span> <span class="n">sobol_scatter</span>
+
+  <span class="k">def</span> <span class="nf">ensamble_sscha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Ensemble</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="p">,</span> <span class="n">T0</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">supercell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="o">.</span><span class="n">GetSupercell</span><span class="p">())</span>
+      <span class="c1"># Detect space group</span>
+      <span class="n">symm</span><span class="o">=</span><span class="n">spglib</span><span class="o">.</span><span class="n">get_spacegroup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">get_ase_atoms</span><span class="p">(),</span> <span class="mf">0.005</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Initial SG = &#39;</span><span class="p">,</span> <span class="n">symm</span><span class="p">)</span>
+
+
+  <span class="k">def</span> <span class="nf">minimizing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fichero_frecuencias</span><span class="p">,</span><span class="n">fichero_matriz</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">minim</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">SchaMinimizer</span><span class="o">.</span><span class="n">SSCHA_Minimizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="p">)</span>
+
+      <span class="c1"># Lets setup the minimization on the fourth root</span>
+      <span class="c1">#self.minim.root_representation = &quot;root4&quot; # Other possibilities are &#39;normal&#39; and &#39;sqrt&#39;</span>
+
+      <span class="c1"># To work correctly with the root4, we must deactivate the preconditioning on the dynamical matrix</span>
+      <span class="c1">#self.minim.precond_dyn = False</span>
+
+      <span class="c1"># Now we setup the minimization parameters</span>
+      <span class="c1"># Since we are quite far from the correct solution, we will use a small optimization step</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">min_step_dyn</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1"># If the minimization ends with few steps (less than 10), decrease it, if it takes too much, increase it</span>
+
+      <span class="c1"># We decrease the Kong-Liu effective sample size below which the population is stopped</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">kong_liu_ratio</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1"># Default 0.5</span>
+      <span class="c1"># We relax the structure</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">relax</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Relax</span><span class="o">.</span><span class="n">SSCHA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="p">,</span>
+                        <span class="n">ase_calculator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="p">,</span>
+                        <span class="n">N_configs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuraciones</span><span class="p">,</span>
+                        <span class="n">max_pop</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span>
+
+      <span class="c1"># Setup the custom function to print the frequencies at each step of the minimization</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">io_func</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Utilities</span><span class="o">.</span><span class="n">IOInfo</span><span class="p">()</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">io_func</span><span class="o">.</span><span class="n">SetupSaving</span><span class="p">(</span><span class="n">fichero_frecuencias</span><span class="p">)</span> <span class="c1"># The file that will contain the frequencies is frequencies.dat</span>
+
+      <span class="c1"># Now tell relax to call the function to save the frequencies after each iteration</span>
+      <span class="c1"># CFP stands for Custom Function Post (Post = after the minimization step)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">setup_custom_functions</span><span class="p">(</span><span class="n">custom_function_post</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">io_func</span><span class="o">.</span><span class="n">CFP_SaveFrequencies</span><span class="p">)</span>
+      <span class="c1"># Finalmente hacemos todos los calculos de busqueda de la energia libre.</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">relax</span><span class="p">(</span><span class="n">sobol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol</span><span class="p">,</span> <span class="n">sobol_scramble</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol_scatter</span><span class="p">)</span>
+      <span class="c1">#self.relax.relax(sobol = False)</span>
+      <span class="c1">#self.relax.vc_relax(static_bulk_modulus=&quot;recalc&quot;,restart_from_ens = True, fix_volume = True, stress_numerical = True)</span>
+      <span class="c1">#self.relax.vc_relax(static_bulk_modulus=40, fix_volume = False)</span>
+
+      <span class="c1"># Save the final dynamical matrix</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">save_qe</span><span class="p">(</span><span class="n">fichero_matriz</span><span class="p">)</span>
+      <span class="c1"># Detect space group</span>
+      <span class="n">symm</span><span class="o">=</span><span class="n">spglib</span><span class="o">.</span><span class="n">get_spacegroup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">get_ase_atoms</span><span class="p">(),</span> <span class="mf">0.005</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;New SG = &#39;</span><span class="p">,</span> <span class="n">symm</span><span class="p">)</span>
+      <span class="n">view</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">get_ase_atoms</span><span class="p">())</span>
+
+  <span class="k">def</span> <span class="nf">draw_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">file</span><span class="p">):</span>
+      <span class="c1"># Setup the interactive plotting mode</span>
+      <span class="c1">#plt.ion()</span>
+
+      <span class="c1"># Lets plot the Free energy, gradient and the Kong-Liu effective sample size</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">plot_results</span><span class="p">()</span>
+
+      <span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.freqs&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+      <span class="n">N_steps</span><span class="p">,</span> <span class="n">N_modes</span> <span class="o">=</span> <span class="n">frequencies</span><span class="o">.</span><span class="n">shape</span>
+
+      <span class="c1">#For each frequency, we plot it [we convert from Ry to cm-1]</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">dpi</span> <span class="o">=</span> <span class="mi">120</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">i_mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_modes</span><span class="p">):</span>
+          <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frequencies</span><span class="p">[:,</span> <span class="n">i_mode</span><span class="p">]</span> <span class="o">*</span> <span class="n">CC</span><span class="o">.</span><span class="n">Units</span><span class="o">.</span><span class="n">RY_TO_CM</span><span class="p">)</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Steps&quot;</span><span class="p">)</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frequencies [cm-1]&quot;</span><span class="p">)</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Evolution of the frequencies&quot;</span><span class="p">)</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+      <span class="c1">#plt.show()</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;Step_Freq.png&#39;</span><span class="p">)[</span><span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
 <p>Now we fill the main function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+  <span class="c1">#Setting the variables:</span>
+  <span class="c1">#Setting the temperature in Kelvin:</span>
+  <span class="n">Temperature</span> <span class="o">=</span> <span class="mi">250</span>
+  <span class="c1">#Setting the number of configurations:</span>
+  <span class="n">configuration_number</span> <span class="o">=</span> <span class="mi">50</span>
+  <span class="c1">#Setting the names and location of the files:</span>
+  <span class="n">Files_ForceFields</span> <span class="o">=</span> <span class="s2">&quot;ffield_dynq&quot;</span>
+  <span class="n">Files_dyn_SnTe</span> <span class="o">=</span> <span class="s2">&quot;ffield_dynq&quot;</span>
+  <span class="c1">#Set the number of irreducible q (reated to the supercell size):</span>
+  <span class="n">nqirr</span> <span class="o">=</span> <span class="mi">3</span>
+  <span class="c1">#Setting the frequencies output file:</span>
+  <span class="n">File_frequencies</span> <span class="o">=</span> <span class="s2">&quot;frequencies.dat&quot;</span>
+  <span class="c1">#Setting the dynamical matrix output filename:</span>
+  <span class="n">File_final_dyn</span> <span class="o">=</span> <span class="s2">&quot;final_sscha_T</span><span class="si">{}</span><span class="s2">_&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperature</span><span class="p">))</span>
+  <span class="n">sobol</span> <span class="o">=</span> <span class="kc">False</span>
+  <span class="n">sobol_scatter</span> <span class="o">=</span> <span class="kc">False</span>
+
+  <span class="n">Calculus</span> <span class="o">=</span> <span class="n">SnTe_initial</span><span class="p">(</span><span class="n">Files_ForceFields</span><span class="p">,</span><span class="n">Files_dyn_SnTe</span><span class="p">,</span><span class="n">nqirr</span><span class="p">,</span><span class="n">configuration_number</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">)</span>
+  <span class="n">Calculus</span><span class="o">.</span><span class="n">ensamble_sscha</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)</span>
+  <span class="n">Calculo</span><span class="o">.</span><span class="n">minimizing</span><span class="p">(</span><span class="n">File_frequencies</span><span class="p">,</span><span class="n">File_final_dyn</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)))</span>
+  <span class="n">Calculo</span><span class="o">.</span><span class="n">draw_figure</span><span class="p">(</span><span class="n">File_frequencies</span><span class="p">)</span>
+  <span class="k">return</span> <span class="mi">0</span>
+</pre></div>
+</div>
 <p>This code will calculate the SSCHA minimization with the “ff_calculator”.</p>
 <p>Now we can search for instabilities. For that we […]</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Search_instabilities</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">files_ForceFields</span><span class="p">,</span><span class="n">files_dyn</span><span class="p">,</span><span class="n">nqirr</span><span class="p">):</span>
+        <span class="c1"># Load the dynamical matrix for the force field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ff_dyn</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="n">files_ForceFields</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+        <span class="c1"># Setup the forcefield with the correct parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="n">Calculator</span><span class="o">.</span><span class="n">ToyModelCalculator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ff_dyn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="o">.</span><span class="n">type_cal</span> <span class="o">=</span> <span class="s2">&quot;pbtex&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="o">.</span><span class="n">p3</span> <span class="o">=</span> <span class="mf">0.036475</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="o">.</span><span class="n">p4</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.022</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="o">.</span><span class="n">p4x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.014</span>
+
+        <span class="c1"># Initialization of the SSCHA matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="n">files_dyn</span><span class="p">,</span> <span class="n">nqirr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="o">.</span><span class="n">ForcePositiveDefinite</span><span class="p">()</span>
+
+        <span class="c1"># Apply also the ASR and the symmetry group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="o">.</span><span class="n">Symmetrize</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">load_dyn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">File_final_dyn</span><span class="p">,</span><span class="n">nqirr</span><span class="p">):</span>
+        <span class="c1"># The SSCHA dynamical matrix is needed (the one after convergence)</span>
+        <span class="c1"># We reload the final result (no need to rerun the sscha minimization)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha_final</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="n">File_final_dyn</span><span class="p">,</span> <span class="n">nqirr</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">ensamble_sscha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
+        <span class="c1"># We reset the ensemble</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Ensemble</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha_final</span><span class="p">,</span> <span class="n">T0</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">supercell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha_final</span><span class="o">.</span><span class="n">GetSupercell</span><span class="p">())</span>
+
+        <span class="c1"># We need a bigger ensemble to properly compute the hessian</span>
+        <span class="c1"># Here we will use 10000 configurations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">sobol</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">sobol_scramble</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="c1">#        self.ensemble.generate(50, sobol = False)</span>
+<span class="c1">#        self.ensemble.generate(1000,sobol = True)</span>
+        <span class="c1">#We could also load the ensemble with ensemble.load(&quot;data_ensemble_final&quot;, N = 100, population = 5)</span>
+
+    <span class="k">def</span> <span class="nf">calcula1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># We now compute forces and energies using the force field calculator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">get_energy_forces</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="p">,</span> <span class="n">compute_stress</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Updating the importance sampling...&quot;</span><span class="p">)</span>
+        <span class="c1"># If the sscha matrix was not the one used to compute the ensemble</span>
+        <span class="c1"># We must update the ensemble weights</span>
+        <span class="c1"># We can also use this function to simulate a different temperature.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">update_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha_final</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+        <span class="c1"># ----------- COMPUTE THE FREE ENERGY HESSIAN -----------</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing the free energy hessian...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dyn_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">get_free_energy_hessian</span><span class="p">(</span><span class="n">include_v4</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="c1"># We neglect high-order four phonon scattering</span>
+        <span class="c1">#self.dyn_hessian = self.ensemble.get_free_energy_hessian(include_v4 = True,</span>
+        <span class="c1">#                                          get_full_hessian = True,verbose = True) # Full calculus</span>
+        <span class="c1"># We can save the free energy hessian as a dynamical matrix in quantum espresso format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dyn_hessian</span><span class="o">.</span><span class="n">save_qe</span><span class="p">(</span><span class="s2">&quot;hessian&quot;</span><span class="p">)</span>
+        <span class="c1"># -------------------------------------------------------</span>
+        <span class="c1"># We calculate the frequencies of the hessian:</span>
+        <span class="n">w_hessian</span><span class="p">,</span> <span class="n">pols_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dyn_hessian</span><span class="o">.</span><span class="n">DiagonalizeSupercell</span><span class="p">()</span>
+
+        <span class="c1"># Print all the frequency converting them into cm-1 (They are in Ry)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">{:16.4f}</span><span class="s2"> cm-1&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">CC</span><span class="o">.</span><span class="n">Units</span><span class="o">.</span><span class="n">RY_TO_CM</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">w_hessian</span><span class="p">]))</span>
+</pre></div>
+</div>
 <p>We can then print the frequencies of the hessian. If an imaginary frequency is present, then the system wants to spontaneosly break the high symmetry phase.</p>
 <p>The frequencies in the free energy hessian are temperature dependent.</p>
 </div>

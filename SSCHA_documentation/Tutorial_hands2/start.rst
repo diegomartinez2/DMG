@@ -20,7 +20,7 @@ According to Landau’s theory of second-order phase transitions, a phase transi
 
    Landau’s theory of second-order phase transitions.
 
-For structural phase transitions, the order parameter is associated to phonon atomic displacements $$\\frac{\\partial^2 F}{\\partial R_a \\partial R_b}$$. So we just need to calculate the Free energy Hessian. the SSCHA provides an analytical equation for the free energy Hessian, derived by Raffaello Bianco in the work Bianco et. al. Phys. Rev. B 96, 014111 <https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111>.
+For structural phase transitions, the order parameter is associated to phonon atomic displacements $$\\frac{\\partial^2 F}{\\partial R_a \\partial R_b}$$. So we just need to calculate the Free energy Hessian. the SSCHA provides an analytical equation for the free energy Hessian, derived by Raffaello Bianco in the work `Bianco et. al. Phys. Rev. B 96, 014111 <https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111>`_.
 The free energy curvature can be written in matrix form as:
 
 $$\\frac{\\partial^2 F}{\\partial {R_a}\\partial {R_b}} = \\Phi_{ab} + \\sum_{cdef} \\stackrel{(3)}{\\Phi}_{acd}[1 - \\Lambda\\stackrel{(4)}{\\Phi}]^{-1}_{cdef} \\stackrel{(3)}{\\Phi}_{efb}$$
