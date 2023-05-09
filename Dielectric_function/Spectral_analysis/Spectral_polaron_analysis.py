@@ -56,14 +56,19 @@ class Polaron_analysis(object):
         return 0
 
     def read_data(self):
-        with open("xzabu") as file:
+        with open("A7_EPS.dat") as file:
              lines = [line.rsplit() for line in file]
-        Spec = np.zeros(50,5001)
-        for i in range(5001*50*50):
-            if lines[i][0]=0.31290
-            for j in range(50):
-
-             Spec[j][i]=lines[i][6]
+        Spec = np.zeros((51,51,5001))
+        for i in range(51):
+            for j in range(51):
+                for k in range (5001):
+                    index=i+j+k
+                    Spect[i][j][k]=lines[index][6]
+        # for i in range(5001*50*51):
+        #     if lines[i][0]=0.31290
+        #     for j in range(50):
+        #
+        #      Spec[j][i]=lines[i][6]
         return 0
 
     def drawn_3D(self):
