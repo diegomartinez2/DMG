@@ -42,28 +42,18 @@ class Polaron_analysis(object):
         super(NombredeClase, self).__init__()
         self.arg = arg
 
-        self.amp1 = 50
-        self.cen1 = 100
-        self.wid1 = 5
+        self.Spec = np.zeros((51,51,5001))
 
-        self.amp2 = 100
-        self.cen2 = 150
-        self.wid2 = 10
-
-        self.amp3 = 50
-        self.cen3 = 200
-        self.wid3 = 5
         return 0
 
     def read_data(self):
         with open("A7_EPS.dat") as file:
              lines = [line.rsplit() for line in file]
-        Spec = np.zeros((51,51,5001))
         for i in range(51*51*5001):
                     i=int(lines[i][0]/0.00869)
                     j=int(lines[i][1]/0.00869)
                     k=int(lines[i][2]/0.0002)
-                    Spect[i][j][k]=lines[index][6]
+                    self.Spect[i][j][k]=lines[index][6]
         # for i in range(5001*50*51):
         #     if lines[i][0]=0.31290
         #     for j in range(50):
@@ -72,6 +62,14 @@ class Polaron_analysis(object):
         return 0
 
     def drawn_3D(self):
+        levels = np.linspace(Z.min(), Z.max(), 7)
+
+        # plot
+        fig, ax = plt.subplots()
+
+        ax.contourf(X, Y, Z, levels=levels)
+
+        plt.show()
         return 0
 
     def drawn_2D(self):
