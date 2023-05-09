@@ -248,10 +248,12 @@ Note: this force field model is not able to compute stress, as it is defined onl
 
           # Apply also the ASR and the symmetry group
           self.dyn_sscha.Symmetrize()
+
       def load_dyn(self,File_final_dyn,nqirr):
           # The SSCHA dynamical matrix is needed (the one after convergence)
           # We reload the final result (no need to rerun the sscha minimization)
           self.dyn_sscha_final = CC.Phonons.Phonons(File_final_dyn, nqirr)
+          
       def ensemble_sscha(self,T):
           # We reset the ensemble
           self.ensemble = sscha.Ensemble.Ensemble(self.dyn_sscha_final, T0 = T, supercell = self.dyn_sscha_final.GetSupercell())
@@ -263,11 +265,11 @@ Note: this force field model is not able to compute stress, as it is defined onl
   #        self.ensemble.generate(1000,sobol = True)
           #We could also load the ensemble with ensemble.load("data_ensemble_final", N = 100, population = 5)
 
-      def calcula1(self):
+      def calculate(self):
           # We now compute forces and energies using the force field calculator
           self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False)
-      def hessian(self,T):
 
+      def hessian(self,T):
           print("Updating the importance sampling...")
           # If the sscha matrix was not the one used to compute the ensemble
           # We must update the ensemble weights
