@@ -254,11 +254,13 @@ Note: this force field model is not able to compute stress, as it is defined onl
 
         <span class="c1"># Apply also the ASR and the symmetry group</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="o">.</span><span class="n">Symmetrize</span><span class="p">()</span>
+
     <span class="k">def</span> <span class="nf">load_dyn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">File_final_dyn</span><span class="p">,</span><span class="n">nqirr</span><span class="p">):</span>
         <span class="c1"># The SSCHA dynamical matrix is needed (the one after convergence)</span>
         <span class="c1"># We reload the final result (no need to rerun the sscha minimization)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha_final</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="n">File_final_dyn</span><span class="p">,</span> <span class="n">nqirr</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">ensamble_sscha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">ensemble_sscha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
         <span class="c1"># We reset the ensemble</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Ensemble</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha_final</span><span class="p">,</span> <span class="n">T0</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">supercell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha_final</span><span class="o">.</span><span class="n">GetSupercell</span><span class="p">())</span>
 
@@ -269,11 +271,11 @@ Note: this force field model is not able to compute stress, as it is defined onl
 <span class="c1">#        self.ensemble.generate(1000,sobol = True)</span>
         <span class="c1">#We could also load the ensemble with ensemble.load(&quot;data_ensemble_final&quot;, N = 100, population = 5)</span>
 
-    <span class="k">def</span> <span class="nf">calcula1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># We now compute forces and energies using the force field calculator</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">get_energy_forces</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="p">,</span> <span class="n">compute_stress</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
 
+    <span class="k">def</span> <span class="nf">hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Updating the importance sampling...&quot;</span><span class="p">)</span>
         <span class="c1"># If the sscha matrix was not the one used to compute the ensemble</span>
         <span class="c1"># We must update the ensemble weights</span>

@@ -56,7 +56,7 @@ master_doc = 'index1'
 # General information about the project.
 project = u'python-sscha'
 copyright = u'2020, Lorenzo Monacelli'
-author = u'Lorenzo Monacelli'
+author = u'Diego Martinez'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
