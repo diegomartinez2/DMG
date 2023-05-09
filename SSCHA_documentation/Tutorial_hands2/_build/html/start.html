@@ -117,7 +117,7 @@ The free energy curvature can be written in matrix form as:</p>
       <span class="bp">self</span><span class="o">.</span><span class="n">sobol</span> <span class="o">=</span> <span class="n">sobol</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">sobol_scatter</span> <span class="o">=</span> <span class="n">sobol_scatter</span>
 
-  <span class="k">def</span> <span class="nf">ensamble_sscha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">ensemble_sscha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Ensemble</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="p">,</span> <span class="n">T0</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">supercell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="o">.</span><span class="n">GetSupercell</span><span class="p">())</span>
       <span class="c1"># Detect space group</span>
       <span class="n">symm</span><span class="o">=</span><span class="n">spglib</span><span class="o">.</span><span class="n">get_spacegroup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">get_ase_atoms</span><span class="p">(),</span> <span class="mf">0.005</span><span class="p">)</span>
@@ -187,11 +187,26 @@ The free energy curvature can be written in matrix form as:</p>
       <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;Step_Freq.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We’ve seen this before, so let’s review what’s there in detail:</p>
-<p>First this object is initialized in “__init__” where the toy model potential is set for the next calculations.
-This force field needs the harmonic dynamical matrix to be initialized, and the higher order parameters.
-Finally, the dynamical matrix for the minimization is loaded and readied.</p>
-<p>The next function of this object “ensamble_sscha” just creates the ensembles for the specified temperature. As an extra, we also look for the space group of the structure.</p>
+<p>We’ve seen most of this before, so let’s review what’s there in detail:</p>
+<ol class="arabic simple">
+<li>First this object is initialized in “__init__” where the toy model potential is set for the next calculations.</li>
+</ol>
+<blockquote>
+<div>This force field needs the harmonic dynamical matrix to be initialized, and the higher order parameters.
+Finally, the dynamical matrix for the minimization is loaded and readied. Since we are studying a system that has a spontaneous symmetry breaking at low temperature, the harmonic dynamical matrices will have imaginary phonons. We must enforce phonons to be positive definite to start a SSCHA minimization.</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>The next function of this object “ensemble_sscha” just creates the ensembles for the specified temperature. As an extra, we also look for the space group of the structure.</li>
+<li>Next comes the minimization function. In the “minimizing” function we can set the fourth root minimization, in which, instead of optimizing the auxiliary dynamical matrices themselves, we will optimize their fourth root.</li>
+</ol>
+<blockquote>
+<div><p>This constrains the dynamical matrix to be positive definite during the minimization.
+Next the automatic relaxation is set with the option here to use the Sobol sequence for the ensemble generation.</p>
+<p>We also set a custom function to save the frequencies at each iteration, to see how they evolves. This is very useful to understand if the algorithm is converged or not.</p>
+<p>Then the dynamical matrix of the converged minimization is saved in a file.</p>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li>The last function is just a drawing output of the free energy, gradient and the Kong-Liu effective sample size.</li>
+</ol>
 <p>Now we fill the main function:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
   <span class="c1">#Setting the variables:</span>
@@ -212,14 +227,15 @@ Finally, the dynamical matrix for the minimization is loaded and readied.</p>
   <span class="n">sobol_scatter</span> <span class="o">=</span> <span class="kc">False</span>
 
   <span class="n">Calculus</span> <span class="o">=</span> <span class="n">SnTe_initial</span><span class="p">(</span><span class="n">Files_ForceFields</span><span class="p">,</span><span class="n">Files_dyn_SnTe</span><span class="p">,</span><span class="n">nqirr</span><span class="p">,</span><span class="n">configuration_number</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">)</span>
-  <span class="n">Calculus</span><span class="o">.</span><span class="n">ensamble_sscha</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)</span>
+  <span class="n">Calculus</span><span class="o">.</span><span class="n">ensemble_sscha</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)</span>
   <span class="n">Calculo</span><span class="o">.</span><span class="n">minimizing</span><span class="p">(</span><span class="n">File_frequencies</span><span class="p">,</span><span class="n">File_final_dyn</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)))</span>
   <span class="n">Calculo</span><span class="o">.</span><span class="n">draw_figure</span><span class="p">(</span><span class="n">File_frequencies</span><span class="p">)</span>
   <span class="k">return</span> <span class="mi">0</span>
 </pre></div>
 </div>
 <p>This code will calculate the SSCHA minimization with the “ff_calculator”.</p>
-<p>Now we can search for instabilities. For that we […]</p>
+<p>Now we can search for instabilities. For that we create another object. […]
+Note: this force field model is not able to compute stress, as it is defined only at fixed volume, so we cannot use it for a variable cell relaxation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Search_instabilities</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">files_ForceFields</span><span class="p">,</span><span class="n">files_dyn</span><span class="p">,</span><span class="n">nqirr</span><span class="p">):</span>
         <span class="c1"># Load the dynamical matrix for the force field</span>
