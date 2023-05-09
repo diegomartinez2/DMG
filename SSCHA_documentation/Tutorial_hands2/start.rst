@@ -31,7 +31,7 @@ Fortunately, this complex equation can be evaluated from the ensemble with a sim
 
    ensemble.get_free_energy_hessian()
 
-Lets see a practical example, first we calculate the SSCHA dynamical matrix for the PbTe:
+Lets see a practical example, first we calculate the SSCHA dynamical matrix for the SnTe:
 
 Lets do something different an write it as an object (Object Oriented Program).
 

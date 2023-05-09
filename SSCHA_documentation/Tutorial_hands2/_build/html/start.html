@@ -45,7 +45,7 @@
 <a class="reference internal image-reference" href="_images/second_order.png"><img alt="Second order." src="_images/second_order.png" style="width: 400px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Landau’s theory of second-order phase transitions.</span></p>
 </div>
-<p>For structural phase transitions, the order parameter is associated to phonon atomic displacements $$\frac{\partial^2 F}{\partial R_a \partial R_b}$$. So we just need to calculate the Free energy Hessian. the SSCHA provides an analytical equation for the free energy Hessian, derived by Raffaello Bianco in the work Bianco et. al. Phys. Rev. B 96, 014111 &lt;<a class="reference external" href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111">https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111</a>&gt;.
+<p>For structural phase transitions, the order parameter is associated to phonon atomic displacements $$\frac{\partial^2 F}{\partial R_a \partial R_b}$$. So we just need to calculate the Free energy Hessian. the SSCHA provides an analytical equation for the free energy Hessian, derived by Raffaello Bianco in the work <a class="reference external" href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111">Bianco et. al. Phys. Rev. B 96, 014111</a>.
 The free energy curvature can be written in matrix form as:</p>
 <p>$$\frac{\partial^2 F}{\partial {R_a}\partial {R_b}} = \Phi_{ab} + \sum_{cdef} \stackrel{(3)}{\Phi}_{acd}[1 - \Lambda\stackrel{(4)}{\Phi}]^{-1}_{cdef} \stackrel{(3)}{\Phi}_{efb}$$</p>
 <p>Fortunately, this complex equation can be evaluated from the ensemble with a simple function call:</p>
