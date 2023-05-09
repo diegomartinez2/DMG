@@ -49,6 +49,9 @@
 The free energy curvature can be written in matrix form as:</p>
 <p>$$\frac{\partial^2 F}{\partial {R_a}\partial {R_b}} = \Phi_{ab} + \sum_{cdef} \stackrel{(3)}{\Phi}_{acd}[1 - \Lambda\stackrel{(4)}{\Phi}]^{-1}_{cdef} \stackrel{(3)}{\Phi}_{efb}$$</p>
 <p>Fortunately, this complex equation can be evaluated from the ensemble with a simple function call:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ensemble</span><span class="o">.</span><span class="n">get_free_energy_hessian</span><span class="p">()</span>
+</pre></div>
+</div>
 <p>Lets see a practical example, first we calculate the SSCHA dynamical matrix for the PbTe:</p>
 <p>Lets do something different an write it as an object (Object Oriented Program).</p>
 <p>We begin from the bottom with the old trick for code re-usability:</p>

@@ -38,6 +38,7 @@ Lets do something different an write it as an object (Object Oriented Program).
 We begin from the bottom with the old trick for code re-usability:
 
 .. code-block:: python
+
   def main(args):
   #main code goes here
   return 0
@@ -49,6 +50,7 @@ We begin from the bottom with the old trick for code re-usability:
 and now we put the top part of the code, the inputs:
 
 .. code-bolck python
+
   #!/usr/bin/env python
   # -*- coding: utf-8 -*-
   #
@@ -81,6 +83,7 @@ and now we put the top part of the code, the inputs:
 Now we need to calculate the SSCHA dynamical matrix. For that we can use this object:
 
 .. code-block:: python
+
   class SnTe_initial(object):
     def __init__(self,file_ForceFields,file_dyn,nqirr,configurations,sobol,sobol_scatter):
         # Load the dynamical matrix for the force field
@@ -175,6 +178,7 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
 Now we fill the main function:
 
 .. code-block:: python
+
   def main(args):
     #Setting the variables:
     #Setting the temperature in Kelvin:
@@ -204,6 +208,7 @@ This code will calculate the SSCHA minimization with the "ff_calculator".
 Now we can search for instabilities. For that we [...]
 
 .. code-block:: python
+
   class Search_instabilities(object):
       def __init__(self,files_ForceFields,files_dyn,nqirr):
           # Load the dynamical matrix for the force field
