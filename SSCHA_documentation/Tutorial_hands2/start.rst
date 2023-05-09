@@ -108,7 +108,7 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
         self.sobol = sobol
         self.sobol_scatter = sobol_scatter
 
-    def ensamble_sscha(self,T):
+    def ensemble_sscha(self,T):
         self.ensemble = sscha.Ensemble.Ensemble(self.dyn_sscha, T0 = T, supercell = self.dyn_sscha.GetSupercell())
         # Detect space group
         symm=spglib.get_spacegroup(self.dyn_sscha.structure.get_ase_atoms(), 0.005)
@@ -179,8 +179,13 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
 
 We've seen this before, so let's review what's there in detail:
 
-First this object is initialized in "__init__" where the toy model potential is set for the next calculations, the dynamical matrix is loaded and readied.
-[...]
+First this object is initialized in "__init__" where the toy model potential is set for the next calculations.
+This force field needs the harmonic dynamical matrix to be initialized, and the higher order parameters.
+Finally, the dynamical matrix for the minimization is loaded and readied.
+
+The next function of this object "ensemble_sscha" just creates the ensembles for the specified temperature. As an extra, we also look for the space group of the structure.
+
+
 
 Now we fill the main function:
 
@@ -205,7 +210,7 @@ Now we fill the main function:
     sobol_scatter = False
 
     Calculus = SnTe_initial(Files_ForceFields,Files_dyn_SnTe,nqirr,configuration_number,sobol,sobol_scatter)
-    Calculus.ensamble_sscha(Temperature)
+    Calculus.ensemble_sscha(Temperature)
     Calculo.minimizing(File_frequencies,File_final_dyn.format(int(Temperature)))
     Calculo.draw_figure(File_frequencies)
     return 0
