@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
 import numpy as np
 
-with open("xaa") as file:
-#with open("xbv") as file:
+#with open("xaa") as file:
+with open("xbv") as file:
 #with open("xzaez") as file:
 #with open("xzabu") as file:
 #with open("xtg") as file:
@@ -22,9 +22,9 @@ peaks, _ = find_peaks(Spec, prominence=1)
 m = np.zeros(Frequency.shape, dtype=bool)
 m[peaks] = True
 
-plt.plot(Frequency[peaks], Spec[peaks], "xr", label="prominence")
+#plt.plot(Frequency[peaks], Spec[peaks], "xr", label="prominence")
 plt.plot(Frequency, Spec, label="original")
-plt.plot(Frequency[~m], Spec[~m], label="'smoothed'")
+#plt.plot(Frequency[~m], Spec[~m], label="'smoothed'")
 plt.legend()
 
 plt.tight_layout()
