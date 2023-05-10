@@ -15,7 +15,7 @@ This simple tutorial explains how to setup a SSCHA calculation starting just fro
 
 You can find there a lot of structures ready to use for your SSCHA runs.
 
-For the purpouse of this tutorial, we are going to use the EMT force field, so that the calculation can be run in a laptop without the need of a supercomputer.
+For the purpose of this tutorial, we are going to use the EMT force field, so that the calculation can be run in a laptop without the need of a supercomputer.
 We explain in a later section how to couple the SSCHA with a cluster to submit the same calculation fully ab-initio.
 
 Starting from the Gold structure in the primitive cell, to run the SSCHA we need:
