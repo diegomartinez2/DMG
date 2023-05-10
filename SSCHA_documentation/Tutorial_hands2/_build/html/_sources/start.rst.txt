@@ -1,5 +1,5 @@
 ==================
-Hands-on-session 2
+Hands-on-session 3
 ==================
 
 Calculations of second-order phase transitions with the SSCHA
