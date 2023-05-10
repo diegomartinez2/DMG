@@ -1,7 +1,11 @@
+==================
+Hands-on-session 2
+==================
+
 Calculations of second-order phase transitions with the SSCHA
 =============================================================
 
-In this chapter we provide ready to use examples to calculate second-order phase transitions with SSCHA calculations.
+In this hands-on we provide ready to use examples to calculate second-order phase transitions with SSCHA calculations.
 
 Structural instability: calculation of the Hessian
 --------------------------------------------------
@@ -253,7 +257,7 @@ Note: this force field model is not able to compute stress, as it is defined onl
           # The SSCHA dynamical matrix is needed (the one after convergence)
           # We reload the final result (no need to rerun the sscha minimization)
           self.dyn_sscha_final = CC.Phonons.Phonons(File_final_dyn, nqirr)
-          
+
       def ensemble_sscha(self,T):
           # We reset the ensemble
           self.ensemble = sscha.Ensemble.Ensemble(self.dyn_sscha_final, T0 = T, supercell = self.dyn_sscha_final.GetSupercell())

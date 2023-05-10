@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Calculations of second-order phase transitions with the SSCHA &#8212; python-sscha 1.2 documentation</title>
+    <title>Hands-on-session 2 &#8212; python-sscha 1.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -31,11 +31,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="calculations-of-second-order-phase-transitions-with-the-sscha">
-<h1>Calculations of second-order phase transitions with the SSCHA<a class="headerlink" href="#calculations-of-second-order-phase-transitions-with-the-sscha" title="Permalink to this headline">¶</a></h1>
-<p>In this chapter we provide ready to use examples to calculate second-order phase transitions with SSCHA calculations.</p>
+  <div class="section" id="hands-on-session-2">
+<h1>Hands-on-session 2<a class="headerlink" href="#hands-on-session-2" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="calculations-of-second-order-phase-transitions-with-the-sscha">
+<h2>Calculations of second-order phase transitions with the SSCHA<a class="headerlink" href="#calculations-of-second-order-phase-transitions-with-the-sscha" title="Permalink to this headline">¶</a></h2>
+<p>In this hands-on we provide ready to use examples to calculate second-order phase transitions with SSCHA calculations.</p>
 <div class="section" id="structural-instability-calculation-of-the-hessian">
-<h2>Structural instability: calculation of the Hessian<a class="headerlink" href="#structural-instability-calculation-of-the-hessian" title="Permalink to this headline">¶</a></h2>
+<h3>Structural instability: calculation of the Hessian<a class="headerlink" href="#structural-instability-calculation-of-the-hessian" title="Permalink to this headline">¶</a></h3>
 <p>This tutorial explains how to search for structural instabilities with a SSCHA calculation.</p>
 <p>The SSCHA method provides a complete theoretical framework to study second-order phase transitions for structural instabilities.</p>
 <p>According to Landau’s theory of second-order phase transitions, a phase transition occurs when the free energy curvature around the high-symmetry structure on the direction of the order parameter becomes negative:</p>
@@ -300,7 +302,7 @@ Note: this force field model is not able to compute stress, as it is defined onl
 <p>The frequencies in the free energy hessian are temperature dependent.</p>
 </div>
 <div class="section" id="phase-transition">
-<h2>Phase transition:<a class="headerlink" href="#phase-transition" title="Permalink to this headline">¶</a></h2>
+<h3>Phase transition:<a class="headerlink" href="#phase-transition" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Hessian_Vs_Temperature</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T0</span><span class="p">,</span><span class="n">temperatures_i</span><span class="p">,</span><span class="n">files_ForceFields</span><span class="p">,</span><span class="n">configurations</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">):</span>
         <span class="c1"># Load the dynamical matrix for the force field</span>
@@ -431,7 +433,8 @@ Note: this force field model is not able to compute stress, as it is defined onl
 </div>
 <hr class="docutils" />
 <div class="section" id="plot-the-hessian-phonon-dispersion">
-<h2>Plot the Hessian phonon dispersion<a class="headerlink" href="#plot-the-hessian-phonon-dispersion" title="Permalink to this headline">¶</a></h2>
+<h3>Plot the Hessian phonon dispersion<a class="headerlink" href="#plot-the-hessian-phonon-dispersion" title="Permalink to this headline">¶</a></h3>
+</div>
 </div>
 </div>
 

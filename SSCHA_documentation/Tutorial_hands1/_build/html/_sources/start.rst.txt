@@ -1,7 +1,12 @@
-Quick start
-===========
+==================
+Hands-on-session 1
+==================
 
-In this chapter we provide ready to use examples to setup your first SSCHA calculation.
+
+First SSCHA simulations: free energy and structural relaxations
+===============================================================
+
+In this hands-on we provide ready to use examples to setup your first SSCHA calculation.
 
 The free energy of gold: a simulation in the NVT ensemble
 ---------------------------------------------------------
@@ -60,7 +65,7 @@ You find a copy of the script and the cif file of Gold inside the directory Exam
    # NOTE: if the code is run with mpirun, the calculation goes in parallel
    gold_harmonic_dyn = CC.Phonons.compute_phonons_finite_displacements(gold_structure_relaxed, calculator, supercell = (4,4,4))
 
-   # Impose the symmetries and 
+   # Impose the symmetries and
    # save the dynamical matrix in the quantum espresso format
    gold_harmonic_dyn.Symmetrize()
    gold_harmonic_dyn.save_qe("harmonic_dyn")
@@ -85,7 +90,7 @@ You find a copy of the script and the cif file of Gold inside the directory Exam
 
    # Initialize the free energy minimizer
    minim = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
-   minim.set_minimization_step(0.01) 
+   minim.set_minimization_step(0.01)
 
    # Initialize the NVT simulation
    relax = sscha.Relax.SSCHA(minim, calculator, N_configs = N_CONFIGS,
@@ -140,7 +145,7 @@ You will see two windows.
    :alt: Minimizatio data of Gold.
 
    Minimization data of Gold.
-   
+
 In :numref:`fig-goldminim` we have all the minimization data. On the top-left panel, we see the free energy. As expected, it decreases (since the SSCHA is minimizing it).
 You can see that at certain values of the steps there are discontinuities.
 These occurs when the code realizes that the ensemble on which it is computing is no more good and a new one is generated. The goodness of an ensemble is determined by the Kong-Liu effective sample size (bottom-left).
@@ -210,7 +215,7 @@ You can use it even in your simulation, simply edit the value of the uppercase k
 
 
    # --------------------- THE SCRIPT FOLLOWS ---------------------
-   
+
    # Load the harmonic and sscha phonons
    harmonic_dyn = CC.Phonons.Phonons(, NQIRR)
    sscha_dyn = CC.Phonons.Phonons('sscha_T300_dyn', NQIRR)
@@ -246,7 +251,7 @@ You can use it even in your simulation, simply edit the value of the uppercase k
    for x in xticks:
    ax.axvline(x, 0, 1, color = "k", lw = 0.4)
    ax.axhline(0, 0, 1, color = 'k', ls = ':', lw = 0.4)
-   
+
    # Set the x labels to the high symmetry points
    ax.set_xticks(xticks)
    ax.set_xticklabels(xlabels)
@@ -285,12 +290,12 @@ Analysis of the input script for the NVT simulation
 ---------------------------------------------------
 
 While the input may seem long, it is heavily commented, but lets go through it step by step.
-At the very beginning, we simply import the sscha libraries, cellconstructor, the math libraries and the force field. This is done in python with the `import` statemets. 
+At the very beginning, we simply import the sscha libraries, cellconstructor, the math libraries and the force field. This is done in python with the `import` statemets.
 
 The first real part of the code is:
 
 .. code-block:: python
-   
+
    gold_structure = CC.Structure.Structure()
    gold_structure.read_generic_file("Au.cif")
 
@@ -311,7 +316,7 @@ In the next part of the code, we perform the harmonic phonon calculation using c
 
    gold_harmonic_dyn = CC.Phonons.compute_phonons_finite_displacements(gold_structure_relaxed, calculator, supercell = (4,4,4))
 
-   # Impose the symmetries and 
+   # Impose the symmetries and
    # save the dynamical matrix in the quantum espresso format
    gold_harmonic_dyn.Symmetrize()
    gold_harmonic_dyn.save_qe("harmonic_dyn")
@@ -353,7 +358,7 @@ The code that sets up and perform the SSCHA is the following:
 
    # Initialize the free energy minimizer
    minim = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
-   minim.set_minimization_step(0.01) 
+   minim.set_minimization_step(0.01)
 
    # Initialize the NVT simulation
    relax = sscha.Relax.SSCHA(minim, calculator, N_configs = N_CONFIGS,
@@ -367,7 +372,7 @@ The code that sets up and perform the SSCHA is the following:
 
    # Run the NVT simulation
    relax.relax(get_stress = True)
-   
+
 
 
 
@@ -504,7 +509,7 @@ This script assume you already performed the NVT calculation, so that we can sta
        relax.minim.dyn.save_qe( os.path.join(DIRECTORY, "sscha_T{}_dyn".format(t)))
        dyn = relax.minim.dyn
 
-       # Print in standard output 
+       # Print in standard output
        relax.minim.finalize()
 
        # Update the temperature
@@ -515,7 +520,7 @@ This script assume you already performed the NVT calculation, so that we can sta
                   np.transpose([temperatures, volumes]),
 	          header = "Temperature [K]; Volume [A^3]")
 
-    
+
 You can run the script as always with:
 
 .. code-block:: bash
@@ -531,7 +536,7 @@ A simple script to plot the thermal expansion (and fit the volumetric thermal ex
 
 .. code-block:: python
 
-   
+
    import numpy as np
    import matplotlib.pyplot as plt
 
@@ -630,7 +635,7 @@ In the following example, we initialize the quantum espresso calculator for Gold
 .. code-block:: python
 
    import cellconstructor.calculators
-   
+
    # Initialize the DFT (Quantum Espresso) calculator for gold
    # The input data is a dictionary that encodes the pw.x input file namelist
    input_data = {
@@ -755,7 +760,7 @@ The complete code is inside Examples/sscha_and_dft/nvt_local.py
 
    # Initialize the free energy minimizer
    minim = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
-   minim.set_minimization_step(0.01) 
+   minim.set_minimization_step(0.01)
 
    # Initialize the NVT simulation
    relax = sscha.Relax.SSCHA(minim, calculator, N_configs = N_CONFIGS,
@@ -900,7 +905,7 @@ Sometimes cluster may not allow passwordless connection, in this case, you need 
    export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
    export NO_STOP_MESSAGE=1
    export CRAY_CUDA_MPS=1
-   
+
    ulimit -s unlimited
    """
 
@@ -951,7 +956,7 @@ By default, the ensemble is stored into a directory called 'data'. You can chang
 If the directory does not exist, python-sscha creates it automatically.
 While the cluster configuration may seem a bit more complex, it is the best way to go.
 
-   
+
 
 Other tutorials
 ---------------
@@ -968,10 +973,9 @@ Tutorials are organized as follows:
 
 1. Setup from the structure and manual submission: PbTe tutorial. Here you learn how to set up a SSCHA calculation starting just with the structure (we provide a .cif file of the PbTe at high temperature). The tutorial will guide you step by step. You will learn how to: prepare the starting data needed for the SSCHA calculation, generate a random ensemble, save the ensemble and prepare input files for your favorite ab-initio code, read back the energies and the forces inside SSCHA, run a SSCHA minimization. You will also learn how to use ASE and the Cluster module to automatize the calculation of the ensemble and submit it to a HPC system.
 2. Automatic relaxation with a force field: SnTe_ToyModel. Here, we show how to use a force-field for a SSCHA calculation, running everything on your computer. We also will explain how to calculate the free energy hessian for second-order phase transitions, and study a phase transition as a function of temperature.
-3. Variable cell relaxation: LaH10 tutorial. Here you learn how to perform an automatic calculation with a variable cell. You will exploit the quantum effect to search the high-temperature superconductive phase (Fm-3m) of LaH10 below 200 GPa, starting from a distorted structure. 
+3. Variable cell relaxation: LaH10 tutorial. Here you learn how to perform an automatic calculation with a variable cell. You will exploit the quantum effect to search the high-temperature superconductive phase (Fm-3m) of LaH10 below 200 GPa, starting from a distorted structure.
 4. Hessian matrix calculation for second-order phase transitions: H3S tutorial. Here you reproduce the calculation of the Hessian of the free energy to assert the stability of the H3S phase.
 5. Spectral properties: Spectral_Properties. In this tutorial, we explain how to use the post-processing utilities of the SSCHA to calculate the phonon spectral function, and computing phonon lifetimes, and plotting interacting phonon dispersion. We provide an ensemble for PbTe already computed ab-initio.
 
 
-The jupyter notebooks are interactive, to quickly start with your simulation, pick the tutorial that resembles the kind of calculation you want to run, and simply edit it directly in the notebook. 
-
+The jupyter notebooks are interactive, to quickly start with your simulation, pick the tutorial that resembles the kind of calculation you want to run, and simply edit it directly in the notebook.
