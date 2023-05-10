@@ -78,7 +78,9 @@ class Polaron_analysis(object):
     def remove_noise(self):
         return 0
 
-    def locate_3Lorenztians(self):
+    def locate_3Lorenztians(self,amp1, cen1, wid1,amp2, cen2, wid2, amp3, cen3, wid3):
+        def _1Lorentzian(x, amp, cen, wid):
+            return amp*wid**2/((x-cen)**2+wid**2)
         def _3Lorentzian(x, amp1, cen1, wid1, amp2,cen2,wid2, amp3,cen3,wid3):
             return (amp1*wid1**2/((x-cen1)**2+wid1**2)) +\
                     (amp2*wid2**2/((x-cen2)**2+wid2**2)) +\
