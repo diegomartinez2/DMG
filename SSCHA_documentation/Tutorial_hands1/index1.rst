@@ -11,18 +11,12 @@ PYTHON-SSCHA USER GUIDE
    :maxdepth: 2
    :caption: Contents:
 
-   intro
    install
    start
-   advanced
-   faq
-   apireference
-
+   
 Indices and tables
 ==================
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-      
