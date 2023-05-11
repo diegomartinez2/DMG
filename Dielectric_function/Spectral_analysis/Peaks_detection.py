@@ -18,10 +18,16 @@ with open(namefile) as file:
      lines = [line.rsplit() for line in file]
 Frequency = np.zeros(5001)
 Spec = np.zeros(5001)
-for i in range(5001):
-     print (lines[i][2])
+#for i in range(5001):
+for i in range(555):
+#     print (lines[i][2])
      Frequency[i]=lines[i][2]
      Spec[i]=lines[i][6]
+#hacemos nulo lo que está fuera de marco
+     if (Frequency[i] > 0.15):
+           print (i, Frequency[i], Spec[i])
+           Spec[i] = 0
+
 
 
 peaks, _ = find_peaks(Spec, prominence=1)
@@ -44,9 +50,10 @@ wid3 = 0.01
 amp4 = 0.002
 cen4 = 0.07
 wid4 = 0.06
-
+#--------------------------------
 x_array = Frequency
 y_array_3lorentz = Spec
+#--------------------------------
 def _base(x):
     if (x < 0):
         x_out = 0
@@ -58,8 +65,8 @@ def _base(x):
         x_out = 0
     return x_out
 
-def _1Lorentzian(x, amp, cen, wid):
-    return amp*wid**2/((x-cen)**2+wid**2)+_base(x)
+def _1Lorentzian(x, amp1, cen1, wid1):
+    return amp1*wid1**2/((x-cen1)**2+wid1**2)
 
 def _3Lorentzian(x, amp1, cen1, wid1, amp2,cen2,wid2, amp3,cen3,wid3):
             return (amp1*wid1**2/((x-cen1)**2+wid1**2)) +\
@@ -82,7 +89,7 @@ plt.tight_layout()
 plt.savefig("Original_{}".format(namefile))
 plt.show()
 #--------------------------------------------
-popt_1lorentz, pcov_1lorentz = scipy.optimize.curve_fit(_1Lorentzian, x_array, y_array_3lorentz, p0=[amp1, cen1, wid1])
+popt_1lorentz, pcov_1lorentz = scipy.optimize.curve_fit(_1Lorentzian, x_array, (y_array_3lorentz - base), p0=[amp1, cen1, wid1])
 #popt_3lorentz, pcov_3lorentz = scipy.optimize.curve_fit(_3Lorentzian, x_array, y_array_3lorentz, p0=[amp1, cen1, wid1, amp2, cen2, wid2, amp3, cen3, wid3])
 #popt_4lorentz, pcov_4lorentz = scipy.optimize.curve_fit(_4Lorentzian, x_array, y_array_3lorentz, p0=[amp1, cen1, wid1, amp2, cen2, wid2, amp3, cen3, wid3, amp4, cen4, wid4])
 
@@ -90,7 +97,7 @@ perr_1lorentz = np.sqrt(np.diag(pcov_1lorentz))
 #perr_3lorentz = np.sqrt(np.diag(pcov_3lorentz))
 #perr_4lorentz = np.sqrt(np.diag(pcov_4lorentz))
 
-pars_1 = popt_1lorentz[0:3]
+pars_1 = popt_1lorentz[:]
 #pars_1 = popt_3lorentz[0:3]
 #pars_2 = popt_3lorentz[3:6]
 #pars_3 = popt_3lorentz[6:9]
@@ -155,8 +162,10 @@ residual_1lorentz = y_array_3lorentz - (_1Lorentzian(x_array, *popt_1lorentz))
 
 
 plt.plot(Frequency, Spec, label="original")
+plt.plot(Frequency, lorentz_peak_1+base, "r",ls=':', label="ajuste")
 #plt.plot(Frequency, lorentz_peak_1+lorentz_peak_2+lorentz_peak_3, "r",ls=':', label="ajuste")
 #plt.plot(Frequency, lorentz_peak_1+lorentz_peak_2+lorentz_peak_3+lorentz_peak_4, "ro", label="ajuste")
+plt.plot(Frequency, base, label="base")
 plt.plot(Frequency, lorentz_peak_1, label="1")
 #plt.plot(Frequency, lorentz_peak_2, label="2")
 #plt.plot(Frequency, lorentz_peak_3, label="3")
