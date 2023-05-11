@@ -164,26 +164,6 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
         print('New SG = ', symm)
         view(self.relax.minim.dyn.structure.get_ase_atoms())
 
-    def draw_figure(self,file):
-        # Setup the interactive plotting mode
-        #plt.ion()
-
-        # Lets plot the Free energy, gradient and the Kong-Liu effective sample size
-        self.relax.minim.plot_results()
-
-        frequencies = np.loadtxt("{}.freqs".format(file))
-        N_steps, N_modes = frequencies.shape
-
-        #For each frequency, we plot it [we convert from Ry to cm-1]
-        plt.figure(dpi = 120)
-        for i_mode in range(N_modes):
-            plt.plot(frequencies[:, i_mode] * CC.Units.RY_TO_CM)
-        plt.xlabel("Steps")
-        plt.ylabel("Frequencies [cm-1]")
-        plt.title("Evolution of the frequencies")
-        plt.tight_layout()
-        #plt.show()
-        plt.savefig('Step_Freq.png')
 
 We've seen most of this before, so let's review what's there in detail:
 
