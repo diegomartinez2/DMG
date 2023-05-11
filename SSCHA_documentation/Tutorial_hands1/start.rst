@@ -13,19 +13,12 @@ The free energy of gold: a simulation in the NVT ensemble
 
 This simple tutorial explains how to setup a SSCHA calculation starting just from the structure, in this case a cif file we downloaded from the [Materials Project](https://materialsproject.org/materials/mp-81/) database.
 
-You can find there a lot of structures ready to use for your SSCHA runs.
-
-For the purpose of this tutorial, we are going to use the EMT force field, so that the calculation can be run in a laptop without the need of a supercomputer.
-We explain in a later section how to couple the SSCHA with a cluster to submit the same calculation fully ab-initio.
-
 Starting from the Gold structure in the primitive cell, to run the SSCHA we need:
  - Compute the harmonic phonons (dynamical matrix)
  - Remove imaginary frequencies (if any)
  - Run the SSCHA
 
-We prepared an input file in the form of a python script (tested with python-sscha version 1.2) which makes all these passages automatically.
-
-You find a copy of the script and the cif file of Gold inside the directory Examples/ThermodynamicsOfGold
+We prepared an input file in the form of a python script.
 
 .. code-block:: python
 
