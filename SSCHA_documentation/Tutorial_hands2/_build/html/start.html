@@ -160,8 +160,6 @@ The free energy curvature can be written in matrix form as:</p>
       <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">setup_custom_functions</span><span class="p">(</span><span class="n">custom_function_post</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">io_func</span><span class="o">.</span><span class="n">CFP_SaveFrequencies</span><span class="p">)</span>
       <span class="c1"># Finalmente hacemos todos los calculos de busqueda de la energia libre.</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">relax</span><span class="p">(</span><span class="n">sobol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol</span><span class="p">,</span> <span class="n">sobol_scramble</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol_scatter</span><span class="p">)</span>
-      <span class="c1">#self.relax.relax(sobol = False)</span>
-      <span class="c1">#self.relax.vc_relax(static_bulk_modulus=&quot;recalc&quot;,restart_from_ens = True, fix_volume = True, stress_numerical = True)</span>
       <span class="c1">#self.relax.vc_relax(static_bulk_modulus=40, fix_volume = False)</span>
 
       <span class="c1"># Save the final dynamical matrix</span>

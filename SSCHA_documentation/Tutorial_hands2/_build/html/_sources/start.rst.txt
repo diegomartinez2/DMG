@@ -153,8 +153,6 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
         self.relax.setup_custom_functions(custom_function_post = self.io_func.CFP_SaveFrequencies)
         # Finalmente hacemos todos los calculos de busqueda de la energia libre.
         self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
-        #self.relax.relax(sobol = False)
-        #self.relax.vc_relax(static_bulk_modulus="recalc",restart_from_ens = True, fix_volume = True, stress_numerical = True)
         #self.relax.vc_relax(static_bulk_modulus=40, fix_volume = False)
 
         # Save the final dynamical matrix
