@@ -59,7 +59,7 @@ The free energy curvature can be written in matrix form as:</p>
 <p>Lets see a practical example, first we calculate the SSCHA dynamical matrix for the SnTe:</p>
 <p>To speedup the calculations, we will use a force-field that can mimic the physics of ferroelectric transitions in FCC lattices.</p>
 <p>Lets do something different an write it as an object (Object Oriented Program).</p>
-<p>We begin from the bottom with the old trick for code re-usability:</p>
+<p>We begin from the bottom with the old python trick for code re-usability:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 <span class="c1">#main code goes here</span>
 <span class="k">return</span> <span class="mi">0</span>
@@ -194,24 +194,23 @@ The free energy curvature can be written in matrix form as:</p>
 </pre></div>
 </div>
 <p>We’ve seen most of this before, so let’s review what’s there in detail:</p>
-<ol class="arabic simple">
-<li>First this object is initialized in “__init__” where the toy model potential is set for the next calculations.</li>
-</ol>
-<blockquote>
-<div>This force field needs the harmonic dynamical matrix to be initialized, and the higher order parameters.
-Finally, the dynamical matrix for the minimization is loaded and readied. Since we are studying a system that has a spontaneous symmetry breaking at low temperature, the harmonic dynamical matrices will have imaginary phonons. We must enforce phonons to be positive definite to start a SSCHA minimization.</div></blockquote>
-<ol class="arabic simple" start="2">
-<li>The next function of this object “ensemble_sscha” just creates the ensembles for the specified temperature. As an extra, we also look for the space group of the structure.</li>
-<li>Next comes the minimization function. In the “minimizing” function we can set the fourth root minimization, in which, instead of optimizing the auxiliary dynamical matrices themselves, we will optimize their fourth root.</li>
-</ol>
-<blockquote>
-<div><p>This constrains the dynamical matrix to be positive definite during the minimization.
+<ol class="arabic">
+<li><p class="first">First this object is initialized in “__init__” where the toy model potential is set for the next calculations.
+This force field needs the harmonic dynamical matrix to be initialized, and the higher order parameters.
+Finally, the dynamical matrix for the minimization is loaded and readied. Since we are studying a system that has a spontaneous symmetry breaking at low temperature, the harmonic dynamical matrices will have imaginary phonons. We must enforce phonons to be positive definite to start a SSCHA minimization.</p>
+</li>
+<li><p class="first">The next function of this object “ensemble_sscha” just creates the ensembles for the specified temperature. As an extra, we also look for the space group of the structure.</p>
+</li>
+<li><p class="first">Next comes the minimization function. In the “minimizing” function we can set the fourth root minimization, in which, instead of optimizing the auxiliary dynamical matrices themselves, we will optimize their fourth root.</p>
+<div class="math notranslate nohighlight">
+\[\Phy = \left({\sqrt[4]{\Phy}}\right)^4\]</div>
+<p>This constrains the dynamical matrix to be positive definite during the minimization.
 Next the automatic relaxation is set with the option here to use the Sobol sequence for the ensemble generation.</p>
 <p>We also set a custom function to save the frequencies at each iteration, to see how they evolves. This is very useful to understand if the algorithm is converged or not.</p>
-<p>Then the dynamical matrix of the converged minimization is saved in a file.</p>
-</div></blockquote>
-<ol class="arabic simple" start="4">
-<li>The last function is just a drawing output of the free energy, gradient and the Kong-Liu effective sample size.</li>
+<p>Then the dynamical matrix of the converged minimization is saved in a file, and finally we take a look at the space group and the structure.</p>
+</li>
+<li><p class="first">The last function is just a drawing output of the free energy, gradient and the Kong-Liu effective sample size.</p>
+</li>
 </ol>
 <p>Now we fill the main function:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>

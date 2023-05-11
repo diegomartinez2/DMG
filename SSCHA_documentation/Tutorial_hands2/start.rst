@@ -45,7 +45,7 @@ To speedup the calculations, we will use a force-field that can mimic the physic
 
 Lets do something different an write it as an object (Object Oriented Program).
 
-We begin from the bottom with the old trick for code re-usability:
+We begin from the bottom with the old python trick for code re-usability:
 
 .. code-block:: python
 
@@ -188,18 +188,21 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
 We've seen most of this before, so let's review what's there in detail:
 
 1. First this object is initialized in "__init__" where the toy model potential is set for the next calculations.
-  This force field needs the harmonic dynamical matrix to be initialized, and the higher order parameters.
-  Finally, the dynamical matrix for the minimization is loaded and readied. Since we are studying a system that has a spontaneous symmetry breaking at low temperature, the harmonic dynamical matrices will have imaginary phonons. We must enforce phonons to be positive definite to start a SSCHA minimization.
+   This force field needs the harmonic dynamical matrix to be initialized, and the higher order parameters.
+   Finally, the dynamical matrix for the minimization is loaded and readied. Since we are studying a system that has a spontaneous symmetry breaking at low temperature, the harmonic dynamical matrices will have imaginary phonons. We must enforce phonons to be positive definite to start a SSCHA minimization.
 
 2. The next function of this object "ensemble_sscha" just creates the ensembles for the specified temperature. As an extra, we also look for the space group of the structure.
 
 3. Next comes the minimization function. In the "minimizing" function we can set the fourth root minimization, in which, instead of optimizing the auxiliary dynamical matrices themselves, we will optimize their fourth root.
-  This constrains the dynamical matrix to be positive definite during the minimization.
-  Next the automatic relaxation is set with the option here to use the Sobol sequence for the ensemble generation.
 
-  We also set a custom function to save the frequencies at each iteration, to see how they evolves. This is very useful to understand if the algorithm is converged or not.
+   .. math:: \Phy = \left({\sqrt[4]{\Phy}}\right)^4
 
-  Then the dynamical matrix of the converged minimization is saved in a file.
+   This constrains the dynamical matrix to be positive definite during the minimization.
+   Next the automatic relaxation is set with the option here to use the Sobol sequence for the ensemble generation.
+
+   We also set a custom function to save the frequencies at each iteration, to see how they evolves. This is very useful to understand if the algorithm is converged or not.
+
+   Then the dynamical matrix of the converged minimization is saved in a file, and finally we take a look at the space group and the structure.
 
 4. The last function is just a drawing output of the free energy, gradient and the Kong-Liu effective sample size.
 
