@@ -119,7 +119,8 @@ The free energy curvature can be written in matrix form as:</p>
       <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="o">.</span><span class="n">ForcePositiveDefinite</span><span class="p">()</span>
       <span class="c1"># Apply the ASR and the symmetry group</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="o">.</span><span class="n">Symmetrize</span><span class="p">()</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">configuraciones</span><span class="o">=</span><span class="n">configuraciones</span>
+      <span class="c1"># Set some parameters and flags</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">configurations</span><span class="o">=</span><span class="n">configurations</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">sobol</span> <span class="o">=</span> <span class="n">sobol</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">sobol_scatter</span> <span class="o">=</span> <span class="n">sobol_scatter</span>
 
@@ -130,7 +131,7 @@ The free energy curvature can be written in matrix form as:</p>
       <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Initial SG = &#39;</span><span class="p">,</span> <span class="n">symm</span><span class="p">)</span>
 
 
-  <span class="k">def</span> <span class="nf">minimizing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fichero_frecuencias</span><span class="p">,</span><span class="n">fichero_matriz</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">minimizing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">file_frequencies</span><span class="p">,</span><span class="n">file_matrix</span><span class="p">):</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">minim</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">SchaMinimizer</span><span class="o">.</span><span class="n">SSCHA_Minimizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="p">)</span>
 
       <span class="c1"># Lets setup the minimization on the fourth root</span>
@@ -148,47 +149,27 @@ The free energy curvature can be written in matrix form as:</p>
       <span class="c1"># We relax the structure</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">relax</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Relax</span><span class="o">.</span><span class="n">SSCHA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="p">,</span>
                         <span class="n">ase_calculator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="p">,</span>
-                        <span class="n">N_configs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">configuraciones</span><span class="p">,</span>
+                        <span class="n">N_configs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">configurations</span><span class="p">,</span>
                         <span class="n">max_pop</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span>
 
       <span class="c1"># Setup the custom function to print the frequencies at each step of the minimization</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">io_func</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Utilities</span><span class="o">.</span><span class="n">IOInfo</span><span class="p">()</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">io_func</span><span class="o">.</span><span class="n">SetupSaving</span><span class="p">(</span><span class="n">fichero_frecuencias</span><span class="p">)</span> <span class="c1"># The file that will contain the frequencies is frequencies.dat</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">io_func</span><span class="o">.</span><span class="n">SetupSaving</span><span class="p">(</span><span class="n">file_frequencies</span><span class="p">)</span> <span class="c1"># The file that will contain the frequencies is frequencies.dat</span>
 
       <span class="c1"># Now tell relax to call the function to save the frequencies after each iteration</span>
       <span class="c1"># CFP stands for Custom Function Post (Post = after the minimization step)</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">setup_custom_functions</span><span class="p">(</span><span class="n">custom_function_post</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">io_func</span><span class="o">.</span><span class="n">CFP_SaveFrequencies</span><span class="p">)</span>
+      <span class="c1">#self.relax.setup_custom_functions(custom_function_post = self.io_func.CFP_SaveFrequencies)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">setup_custom_functions</span><span class="p">(</span><span class="n">custom_function_post</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">io_func</span><span class="o">.</span><span class="n">CFP_SaveAll</span><span class="p">)</span>
       <span class="c1"># Finalmente hacemos todos los calculos de busqueda de la energia libre.</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">relax</span><span class="p">(</span><span class="n">sobol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol</span><span class="p">,</span> <span class="n">sobol_scramble</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol_scatter</span><span class="p">)</span>
       <span class="c1">#self.relax.vc_relax(static_bulk_modulus=40, fix_volume = False)</span>
 
       <span class="c1"># Save the final dynamical matrix</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">save_qe</span><span class="p">(</span><span class="n">fichero_matriz</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">save_qe</span><span class="p">(</span><span class="n">file_matrix</span><span class="p">)</span>
       <span class="c1"># Detect space group</span>
       <span class="n">symm</span><span class="o">=</span><span class="n">spglib</span><span class="o">.</span><span class="n">get_spacegroup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">get_ase_atoms</span><span class="p">(),</span> <span class="mf">0.005</span><span class="p">)</span>
       <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;New SG = &#39;</span><span class="p">,</span> <span class="n">symm</span><span class="p">)</span>
       <span class="n">view</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">get_ase_atoms</span><span class="p">())</span>
-
-  <span class="k">def</span> <span class="nf">draw_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">file</span><span class="p">):</span>
-      <span class="c1"># Setup the interactive plotting mode</span>
-      <span class="c1">#plt.ion()</span>
-
-      <span class="c1"># Lets plot the Free energy, gradient and the Kong-Liu effective sample size</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">plot_results</span><span class="p">()</span>
-
-      <span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.freqs&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
-      <span class="n">N_steps</span><span class="p">,</span> <span class="n">N_modes</span> <span class="o">=</span> <span class="n">frequencies</span><span class="o">.</span><span class="n">shape</span>
-
-      <span class="c1">#For each frequency, we plot it [we convert from Ry to cm-1]</span>
-      <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">dpi</span> <span class="o">=</span> <span class="mi">120</span><span class="p">)</span>
-      <span class="k">for</span> <span class="n">i_mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_modes</span><span class="p">):</span>
-          <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frequencies</span><span class="p">[:,</span> <span class="n">i_mode</span><span class="p">]</span> <span class="o">*</span> <span class="n">CC</span><span class="o">.</span><span class="n">Units</span><span class="o">.</span><span class="n">RY_TO_CM</span><span class="p">)</span>
-      <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Steps&quot;</span><span class="p">)</span>
-      <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frequencies [cm-1]&quot;</span><span class="p">)</span>
-      <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Evolution of the frequencies&quot;</span><span class="p">)</span>
-      <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-      <span class="c1">#plt.show()</span>
-      <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;Step_Freq.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We’ve seen most of this before, so let’s review what’s there in detail:</p>
@@ -206,8 +187,6 @@ Finally, the dynamical matrix for the minimization is loaded and readied. Since 
 Next the automatic relaxation is set with the option here to use the Sobol sequence for the ensemble generation.</p>
 <p>We also set a custom function to save the frequencies at each iteration, to see how they evolves. This is very useful to understand if the algorithm is converged or not.</p>
 <p>Then the dynamical matrix of the converged minimization is saved in a file, and finally we take a look at the space group and the structure.</p>
-</li>
-<li><p class="first">The last function is just a drawing output of the free energy, gradient and the Kong-Liu effective sample size.</p>
 </li>
 </ol>
 <p>Now we fill the main function with this new object:</p>

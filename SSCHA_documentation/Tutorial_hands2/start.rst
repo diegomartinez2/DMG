@@ -184,7 +184,6 @@ We've seen most of this before, so let's review what's there in detail:
 
    Then the dynamical matrix of the converged minimization is saved in a file, and finally we take a look at the space group and the structure.
 
-4. The last function is just a drawing output of the free energy, gradient and the Kong-Liu effective sample size.
 
 Now we fill the main function with this new object:
 
