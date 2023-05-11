@@ -39,9 +39,6 @@
 <div class="section" id="the-free-energy-of-gold-a-simulation-in-the-nvt-ensemble">
 <h3>The free energy of gold: a simulation in the NVT ensemble<a class="headerlink" href="#the-free-energy-of-gold-a-simulation-in-the-nvt-ensemble" title="Permalink to this headline">¶</a></h3>
 <p>This simple tutorial explains how to setup a SSCHA calculation starting just from the structure, in this case a cif file we downloaded from the [Materials Project](<a class="reference external" href="https://materialsproject.org/materials/mp-81/">https://materialsproject.org/materials/mp-81/</a>) database.</p>
-<p>You can find there a lot of structures ready to use for your SSCHA runs.</p>
-<p>For the purpose of this tutorial, we are going to use the EMT force field, so that the calculation can be run in a laptop without the need of a supercomputer.
-We explain in a later section how to couple the SSCHA with a cluster to submit the same calculation fully ab-initio.</p>
 <dl class="docutils">
 <dt>Starting from the Gold structure in the primitive cell, to run the SSCHA we need:</dt>
 <dd><ul class="first last simple">
@@ -51,8 +48,7 @@ We explain in a later section how to couple the SSCHA with a cluster to submit t
 </ul>
 </dd>
 </dl>
-<p>We prepared an input file in the form of a python script (tested with python-sscha version 1.2) which makes all these passages automatically.</p>
-<p>You find a copy of the script and the cif file of Gold inside the directory Examples/ThermodynamicsOfGold</p>
+<p>We prepared an input file in the form of a python script.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the sscha code</span>
 <span class="kn">import</span> <span class="nn">sscha</span><span class="o">,</span> <span class="nn">sscha.Ensemble</span><span class="o">,</span> <span class="nn">sscha.SchaMinimizer</span><span class="o">,</span> <span class="nn">sscha.Relax</span><span class="o">,</span> <span class="nn">sscha.Utilities</span>
 
