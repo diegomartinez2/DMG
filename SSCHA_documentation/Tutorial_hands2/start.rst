@@ -206,7 +206,7 @@ We've seen most of this before, so let's review what's there in detail:
 
 4. The last function is just a drawing output of the free energy, gradient and the Kong-Liu effective sample size.
 
-Now we fill the main function:
+Now we fill the main function with this new object:
 
 .. code-block:: python
 
