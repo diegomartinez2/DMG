@@ -18,7 +18,120 @@ Starting from the Gold structure in the primitive cell, to run the SSCHA we need
  - Remove imaginary frequencies (if any)
  - Run the SSCHA
 
-We prepared an input file in the form of a python script.
+At the very beginning, we simply import the sscha libraries, cellconstructor, the math libraries and the force field. This is done in python with the `import` statemets.
+
+.. code-block:: python
+
+  # Import the sscha code
+  import sscha, sscha.Ensemble, sscha.SchaMinimizer, sscha.Relax, sscha.Utilities
+
+  # Import the cellconstructor library to manage phonons
+  import cellconstructor as CC, cellconstructor.Phonons
+  import cellconstructor.Structure, cellconstructor.calculators
+
+  # Import the force field of Gold
+  import ase, ase.calculators
+  from ase.calculators.emt import EMT
+
+  # Import numerical and general pourpouse libraries
+  import numpy as np, matplotlib.pyplot as plt
+  import sys, os
+
+The first thing we do is to initialize a cellconstructor structure from the cif file downloaded from the material database (*Au.cif*). We initialize the EMT calculator from ASE, and relax the structure:
+
+.. code-block:: python
+
+   gold_structure = CC.Structure.Structure()
+   gold_structure.read_generic_file("Au.cif")
+
+   # Get the force field for gold
+   calculator = EMT()
+
+   # Relax the gold structure (useless since for symmetries it is already relaxed)
+   relax = CC.calculators.Relax(gold_structure, calculator)
+   gold_structure_relaxed = relax.static_relax()
+
+
+In the case of Gold the relaxation is useless, as it is a FCC structure with Fm-3m symmetry group and 1 atom per primitive cell. This means the atomic positions have no degrees of freedom, thus the relaxation will end before even start.
+
+Next, we perform the harmonic phonon calculation using cellconstructor and a finite displacement approach:
+
+.. code-block:: python
+
+   gold_harmonic_dyn = CC.Phonons.compute_phonons_finite_displacements(gold_structure_relaxed, calculator, supercell = (4,4,4))
+
+   # Impose the symmetries and
+   # save the dynamical matrix in the quantum espresso format
+   gold_harmonic_dyn.Symmetrize()
+   gold_harmonic_dyn.save_qe("harmonic_dyn")
+
+
+   # If the dynamical matrix has imaginary frequencies, remove them
+   gold_harmonic_dyn.ForcePositiveDefinite()
+
+
+The method `compute_phonons_finite_displacements` is documented in the CellConstructor guide. It requires the structure (in this case `gold_structure_relaxed`), the force-field (`calculator`) and the supercell for the calculation. In this case we use a 4x4x4 (equivalent to 64 atoms). This may not be sufficient to converge all the properties, especially at very high temperature, but it is just a start.
+
+Note that  `compute_phonons_finite_displacements`  works in parallel with MPI, therefore, if the script is executed with `mpirun -np 16 python myscript.py` it will split the calculations of the finite displacements across 16 processors. You need to have mpi4py installed.
+
+After computing the harmonic phonons in gold_harmonic_dyn, we impose the correct symmetrization and the acousitic sum rule with the `Symmetrize` method, and save the result in the quantum ESPRESSO format with `save_qe`.
+This should not be the case for Gold, however, if we have a structure which has imaginary phonon frequencies, we need to get rid of them before starting the SSCHA. This is achieved with `ForcePositiveDefinite` (see CellConstructor documentation for more details on how these methods work).
+
+
+**Now we are ready to submit the SSCHA calculation in the NVT ensemble!**.
+The important parameters are:
+  - The temperature
+  - The number of random configurations in the ensemble
+  - The maximum number of iterations
+
+
+These parameters are almost self-explaining. However, we give a brief overview of how the SSCHA works to help you understand which are the best one for your case.
+While MD or MC calculation represent the equilibrium probability distribution over time of the system by updating a single structure, the SSCHA encodes the whole probability distribution as an analytical function. Therefore, to compute properties, we can generate on the fly the ionic configurations that represent the equilibrium distributions.
+The number of random configuration is exactly how many ionic configuration we generate to compute the properties (Free energy and Stress tensors)
+
+The code that sets up and perform the SSCHA is the following:
+
+.. code-block:: python
+
+   TEMPERATURE = 300
+   N_CONFIGS = 50
+   MAX_ITERATIONS = 20
+
+   # Initialize the random ionic ensemble
+   ensemble = sscha.Ensemble.Ensemble(gold_harmonic_dyn, TEMPERATURE)
+
+   # Initialize the free energy minimizer
+   minim = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
+   minim.set_minimization_step(0.01)
+
+   # Initialize the NVT simulation
+   relax = sscha.Relax.SSCHA(minim, calculator, N_configs = N_CONFIGS,
+   max_pop = MAX_ITERATIONS)
+
+   # Define the I/O operations
+   # To save info about the free energy minimization after each step
+   ioinfo = sscha.Utilities.IOInfo()
+   ioinfo.SetupSaving("minim_info")
+   relax.setup_custom_functions(custom_function_post = ioinfo.CFP_SaveAll)
+
+   # Run the NVT simulation
+   relax.relax(get_stress = True)
+
+
+
+
+So you see many classes. `ensemble` represent the ensemble of ionic configurations. We initialize it with the dynamical matrix (which represent how much atoms fluctuate around the centroids) and the temperature.
+`minim` is a `SSCHA_Minimizer` object, which performs the free energy minimization. It contains all the info regarding the minimization algorithm, as the initial timestep (that here we set to 0.01). You can avoid setting the time-step, as the code will automatically guess the best value.
+The `relax` is a `SSCHA` object: the class that takes care about the simulation and automatizes all the steps to perform a NVT or NPT calculation.
+We pass the minimizer (which contains the ensemble with the temperature), the force-field (`calculator`), the number of configurations `N_configs` and the maximum number of iterations.
+
+In this example, most of the time is spent in the minimization, however, if we replace the force-field with ab-initio DFT, the time tu run the minimization is negligible with respect to the time to compute energies and forces on the ensemble configurations.
+The total (maximum) number of energy/forces calculations is equal to the number of configurations times the number of iterations (passed through the `max_pop` argument).
+
+The calculation is submitted with `relax.relax()`. However, before running the calculation we introduce another object, the `IOInfo`.
+This tells the `relax` to save information of the free energy, its gradient and the anharmonic phonon frequencies during the minimization in the files *minim_info.dat° and *minim_info.freqs*. It is not mandatory to introduce them, but it is very usefull as it allows to visualize the minimization while it is running.
+
+The full input file in the form of a python script is then:
 
 .. code-block:: python
 
@@ -164,109 +277,6 @@ By looking at how they change you can have an idea on which phonon mode are more
 At the end of the simulation, the code writes the final dynamical matrix in the quantum espresso file format: *sscha_T300_dynX* where X goes over the number of irreducible q points.
 
 In the next section, we analyze in details each section of the script to provide a bit more insight on the simulation, and a guide to modify it to fit your needs and submit your own system.
-
-
-
-Analysis of the input script for the NVT simulation
----------------------------------------------------
-
-While the input may seem long, it is heavily commented, but lets go through it step by step.
-At the very beginning, we simply import the sscha libraries, cellconstructor, the math libraries and the force field. This is done in python with the `import` statemets.
-
-The first real part of the code is:
-
-.. code-block:: python
-
-   gold_structure = CC.Structure.Structure()
-   gold_structure.read_generic_file("Au.cif")
-
-   # Get the force field for gold
-   calculator = EMT()
-
-   # Relax the gold structure (useless since for symmetries it is already relaxed)
-   relax = CC.calculators.Relax(gold_structure, calculator)
-   gold_structure_relaxed = relax.static_relax()
-
-Here we initialize a cellconstructor structure from the cif file downloaded from the material database (*Au.cif*). We initialize the EMT calculator from ASE, and relax the structure.
-
-In the case of Gold the relaxation is useless, as it is a FCC structure with Fm-3m symmetry group and 1 atom per primitive cell. This means the atomic positions have no degrees of freedom, thus the relaxation will end before even start.
-
-In the next part of the code, we perform the harmonic phonon calculation using cellconstructor and a finite displacement approach:
-
-.. code-block:: python
-
-   gold_harmonic_dyn = CC.Phonons.compute_phonons_finite_displacements(gold_structure_relaxed, calculator, supercell = (4,4,4))
-
-   # Impose the symmetries and
-   # save the dynamical matrix in the quantum espresso format
-   gold_harmonic_dyn.Symmetrize()
-   gold_harmonic_dyn.save_qe("harmonic_dyn")
-
-
-   # If the dynamical matrix has imaginary frequencies, remove them
-   gold_harmonic_dyn.ForcePositiveDefinite()
-
-
-The method `compute_phonons_finite_displacements` is documented in the CellConstructor guide. It requires the structure (in this case `gold_structure_relaxed`), the force-field (`calculator`) and the supercell for the calculation. In this case we use a 4x4x4 (equivalent to 64 atoms). This may not be sufficient to converge all the properties, especially at very high temperature, but it is just a start.
-
-Note that  `compute_phonons_finite_displacements`  works in parallel with MPI, therefore, if the script is executed with `mpirun -np 16 python myscript.py` it will split the calculations of the finite displacements across 16 processors. You need to have mpi4py installed.
-
-After computing the harmonic phonons in gold_harmonic_dyn, we impose the correct symmetrization and the acousitic sum rule with the `Symmetrize` method, and save the result in the quantum ESPRESSO format with `save_qe`.
-This should not be the case for Gold, however, if we have a structure which has imaginary phonon frequencies, we need to get rid of them before starting the SSCHA. This is achieved with `ForcePositiveDefinite` (see CellConstructor documentation for more details on how these methods work).
-
-
-**Now we are ready to submit the SSCHA calculation in the NVT ensemble!**.
-The important parameters are:
-  - The temperature
-  - The number of random configurations in the ensemble
-  - The maximum number of iterations
-
-
-These parameters are almost self-explaining. However, we give a brief overview of how the SSCHA works to help you understand which are the best one for your case.
-While MD or MC calculation represent the equilibrium probability distribution over time of the system by updating a single structure, the SSCHA encodes the whole probability distribution as an analytical function. Therefore, to compute properties, we can generate on the fly the ionic configurations that represent the equilibrium distributions.
-The number of random configuration is exactly how many ionic configuration we generate to compute the properties (Free energy and Stress tensors)
-
-The code that sets up and perform the SSCHA is the following:
-
-.. code-block:: python
-
-   TEMPERATURE = 300
-   N_CONFIGS = 50
-   MAX_ITERATIONS = 20
-
-   # Initialize the random ionic ensemble
-   ensemble = sscha.Ensemble.Ensemble(gold_harmonic_dyn, TEMPERATURE)
-
-   # Initialize the free energy minimizer
-   minim = sscha.SchaMinimizer.SSCHA_Minimizer(ensemble)
-   minim.set_minimization_step(0.01)
-
-   # Initialize the NVT simulation
-   relax = sscha.Relax.SSCHA(minim, calculator, N_configs = N_CONFIGS,
-   max_pop = MAX_ITERATIONS)
-
-   # Define the I/O operations
-   # To save info about the free energy minimization after each step
-   ioinfo = sscha.Utilities.IOInfo()
-   ioinfo.SetupSaving("minim_info")
-   relax.setup_custom_functions(custom_function_post = ioinfo.CFP_SaveAll)
-
-   # Run the NVT simulation
-   relax.relax(get_stress = True)
-
-
-
-
-So you see many classes. `ensemble` represent the ensemble of ionic configurations. We initialize it with the dynamical matrix (which represent how much atoms fluctuate around the centroids) and the temperature.
-`minim` is a `SSCHA_Minimizer` object, which performs the free energy minimization. It contains all the info regarding the minimization algorithm, as the initial timestep (that here we set to 0.01). You can avoid setting the time-step, as the code will automatically guess the best value.
-The `relax` is a `SSCHA` object: the class that takes care about the simulation and automatizes all the steps to perform a NVT or NPT calculation.
-We pass the minimizer (which contains the ensemble with the temperature), the force-field (`calculator`), the number of configurations `N_configs` and the maximum number of iterations.
-
-In this example, most of the time is spent in the minimization, however, if we replace the force-field with ab-initio DFT, the time tu run the minimization is negligible with respect to the time to compute energies and forces on the ensemble configurations.
-The total (maximum) number of energy/forces calculations is equal to the number of configurations times the number of iterations (passed through the `max_pop` argument).
-
-The calculation is submitted with `relax.relax()`. However, before running the calculation we introduce another object, the `IOInfo`.
-This tells the `relax` to save information of the free energy, its gradient and the anharmonic phonon frequencies during the minimization in the files *minim_info.dat° and *minim_info.freqs*. It is not mandatory to introduce them, but it is very usefull as it allows to visualize the minimization while it is running.
 
 
 Plot the phonon dispersion
