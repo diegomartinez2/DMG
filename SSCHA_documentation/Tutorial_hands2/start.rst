@@ -112,7 +112,8 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
         self.dyn_sscha.ForcePositiveDefinite()
         # Apply the ASR and the symmetry group
         self.dyn_sscha.Symmetrize()
-        self.configuraciones=configuraciones
+        # Set some parameters and flags
+        self.configurations=configurations
         self.sobol = sobol
         self.sobol_scatter = sobol_scatter
 
@@ -123,7 +124,7 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
         print('Initial SG = ', symm)
 
 
-    def minimizing(self,fichero_frecuencias,fichero_matriz):
+    def minimizing(self,file_frequencies,file_matrix):
         self.minim = sscha.SchaMinimizer.SSCHA_Minimizer(self.ensemble)
 
         # Lets setup the minimization on the fourth root
@@ -141,22 +142,23 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
         # We relax the structure
         self.relax = sscha.Relax.SSCHA(self.minim,
                           ase_calculator = self.ff_calculator,
-                          N_configs = self.configuraciones,
+                          N_configs = self.configurations,
                           max_pop = 50)
 
         # Setup the custom function to print the frequencies at each step of the minimization
         self.io_func = sscha.Utilities.IOInfo()
-        self.io_func.SetupSaving(fichero_frecuencias) # The file that will contain the frequencies is frequencies.dat
+        self.io_func.SetupSaving(file_frequencies) # The file that will contain the frequencies is frequencies.dat
 
         # Now tell relax to call the function to save the frequencies after each iteration
         # CFP stands for Custom Function Post (Post = after the minimization step)
-        self.relax.setup_custom_functions(custom_function_post = self.io_func.CFP_SaveFrequencies)
+        #self.relax.setup_custom_functions(custom_function_post = self.io_func.CFP_SaveFrequencies)
+        self.relax.setup_custom_functions(custom_function_post = self.io_func.CFP_SaveAll)
         # Finalmente hacemos todos los calculos de busqueda de la energia libre.
         self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
         #self.relax.vc_relax(static_bulk_modulus=40, fix_volume = False)
 
         # Save the final dynamical matrix
-        self.relax.minim.dyn.save_qe(fichero_matriz)
+        self.relax.minim.dyn.save_qe(file_matrix)
         # Detect space group
         symm=spglib.get_spacegroup(self.relax.minim.dyn.structure.get_ase_atoms(), 0.005)
         print('New SG = ', symm)
