@@ -175,7 +175,7 @@ We've seen most of this before, so let's review what's there in detail:
 
 3. Next comes the minimization function. In the "minimizing" function we can set the fourth root minimization, in which, instead of optimizing the auxiliary dynamical matrices themselves, we will optimize their fourth root.
 
-   .. math:: \Phy = \left({\sqrt[4]{\Phy}}\right)^4
+   .. math:: \Phi = \left({\sqrt[4]{\Phi}}\right)^4
 
    This constrains the dynamical matrix to be positive definite during the minimization.
    Next the automatic relaxation is set with the option here to use the Sobol sequence for the ensemble generation.
