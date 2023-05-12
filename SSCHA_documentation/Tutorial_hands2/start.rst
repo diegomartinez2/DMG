@@ -334,12 +334,21 @@ Lets put this object into the main function and calculate:
     sobol = False
     sobol_scatter = False
 
-    Calculus = SnTe_initial(Files_ForceFields,Files_dyn_SnTe,nqirr,configuration_number,sobol,sobol_scatter)
-    Calculus.ensemble_sscha(Temperature)
-    Calculus.minimizing(File_frequencies,File_final_dyn.format(int(Temperature)))
+    #We can comment this if we already made the sscha minimization
+    #Calculus = SnTe_initial(Files_ForceFields,Files_dyn_SnTe,nqirr,configuration_number,sobol,sobol_scatter)
+    #Calculus.ensemble_sscha(Temperature)
+    #Calculus.minimizing(File_frequencies,File_final_dyn.format(int(Temperature)))
+
+    #Now we can search for structural instabilities:
+    Unstable = Search_instabilities(Files_ForceFields,Files_dyn_SnTe,nqirr)
+    Unstable.load_dyn(File_final_dyn.format(Temperature),nqirr)
+    Unstable.ensemble_sscha(Temperature)
+    Unstable.calculate()
+    Unstable.hessian(Temperature)
 
     return 0
 
+We can look at the eigenmodes of the free energy hessian to check if we have imaginary phonons. If there are negative frequencies then we found an instability. You can check what happens if you include the fourth order.
 
 Phase transition:
 -----------------

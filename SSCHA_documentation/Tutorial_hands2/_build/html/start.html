@@ -321,13 +321,22 @@ We can choose if we neglect or not in the calculation the four phonon scattering
   <span class="n">sobol</span> <span class="o">=</span> <span class="kc">False</span>
   <span class="n">sobol_scatter</span> <span class="o">=</span> <span class="kc">False</span>
 
-  <span class="n">Calculus</span> <span class="o">=</span> <span class="n">SnTe_initial</span><span class="p">(</span><span class="n">Files_ForceFields</span><span class="p">,</span><span class="n">Files_dyn_SnTe</span><span class="p">,</span><span class="n">nqirr</span><span class="p">,</span><span class="n">configuration_number</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">)</span>
-  <span class="n">Calculus</span><span class="o">.</span><span class="n">ensemble_sscha</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)</span>
-  <span class="n">Calculus</span><span class="o">.</span><span class="n">minimizing</span><span class="p">(</span><span class="n">File_frequencies</span><span class="p">,</span><span class="n">File_final_dyn</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)))</span>
+  <span class="c1">#We can comment this if we already made the sscha minimization</span>
+  <span class="c1">#Calculus = SnTe_initial(Files_ForceFields,Files_dyn_SnTe,nqirr,configuration_number,sobol,sobol_scatter)</span>
+  <span class="c1">#Calculus.ensemble_sscha(Temperature)</span>
+  <span class="c1">#Calculus.minimizing(File_frequencies,File_final_dyn.format(int(Temperature)))</span>
+
+  <span class="c1">#Now we can search for structural instabilities:</span>
+  <span class="n">Unstable</span> <span class="o">=</span> <span class="n">Search_instabilities</span><span class="p">(</span><span class="n">Files_ForceFields</span><span class="p">,</span><span class="n">Files_dyn_SnTe</span><span class="p">,</span><span class="n">nqirr</span><span class="p">)</span>
+  <span class="n">Unstable</span><span class="o">.</span><span class="n">load_dyn</span><span class="p">(</span><span class="n">File_final_dyn</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Temperature</span><span class="p">),</span><span class="n">nqirr</span><span class="p">)</span>
+  <span class="n">Unstable</span><span class="o">.</span><span class="n">ensemble_sscha</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)</span>
+  <span class="n">Unstable</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
+  <span class="n">Unstable</span><span class="o">.</span><span class="n">hessian</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)</span>
 
   <span class="k">return</span> <span class="mi">0</span>
 </pre></div>
 </div>
+<p>We can look at the eigenmodes of the free energy hessian to check if we have imaginary phonons. If there are negative frequencies then we found an instability. You can check what happens if you include the fourth order.</p>
 </div>
 <div class="section" id="phase-transition">
 <h3>Phase transition:<a class="headerlink" href="#phase-transition" title="Permalink to this headline">¶</a></h3>
