@@ -41,7 +41,7 @@
 <p>This tutorial explains how to search for structural instabilities with a SSCHA calculation.</p>
 <p>The SSCHA method provides a complete theoretical framework to study second-order phase transitions for structural instabilities.</p>
 <p>According to Landau’s theory of second-order phase transitions, a phase transition occurs when the free energy curvature around the high-symmetry structure on the direction of the order parameter becomes negative:</p>
-<div class="figure" id="id1">
+<div class="figure" id="id2">
 <span id="fig-second-order"></span><a class="reference internal image-reference" href="_images/second_order.png"><img alt="Second order." src="_images/second_order.png" style="width: 400px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Landau’s theory of second-order phase transitions.</span></p>
 </div>
@@ -216,8 +216,10 @@ Next the automatic relaxation is set with the option here to use the Sobol seque
 </pre></div>
 </div>
 <p>This code will calculate the SSCHA minimization with the “ff_calculator”.</p>
-<p>Now we can search for instabilities. For that we create another object. […]
-Note: this force field model is not able to compute stress, as it is defined only at fixed volume, so we cannot use it for a variable cell relaxation.</p>
+<p>Note: this force field model is not able to compute stress, as it is defined only at fixed volume, so we cannot use it for a variable cell relaxation.</p>
+<p><strong>Now we can search for instabilities.</strong></p>
+<p>If we have a very small mode in the SSCHA frequencies, it means that associated to that mode we have huge fluctuations. This can indicate an instability. However, to test this we need to compute the free energy curvature along this mode. This can be obtained in one shot thanks to the theory developed in <a class="reference external" href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111">Bianco et. al. Phys. Rev. B 96, 014111.</a></p>
+<p>For that we create another object, “Search_instabilities” to do the job.[…]</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Search_instabilities</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">files_ForceFields</span><span class="p">,</span><span class="n">files_dyn</span><span class="p">,</span><span class="n">nqirr</span><span class="p">):</span>
         <span class="c1"># Load the dynamical matrix for the force field</span>

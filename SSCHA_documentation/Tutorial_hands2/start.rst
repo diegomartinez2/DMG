@@ -215,8 +215,14 @@ Now we fill the main function with this new object:
 
 This code will calculate the SSCHA minimization with the "ff_calculator".
 
-Now we can search for instabilities. For that we create another object. [...]
 Note: this force field model is not able to compute stress, as it is defined only at fixed volume, so we cannot use it for a variable cell relaxation.
+
+**Now we can search for instabilities.**
+
+If we have a very small mode in the SSCHA frequencies, it means that associated to that mode we have huge fluctuations. This can indicate an instability. However, to test this we need to compute the free energy curvature along this mode. This can be obtained in one shot thanks to the theory developed in `Bianco et. al. Phys. Rev. B 96, 014111. <https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111>`_
+
+For that we create another object, "Search_instabilities" to do the job.[...]
+
 
 .. code-block:: python
 
