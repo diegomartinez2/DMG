@@ -381,17 +381,16 @@ We can choose if we neglect or not in the calculation the four phonon scattering
             <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">meaningful_factor</span> <span class="o">=</span> <span class="mf">0.000001</span>
             <span class="c1">#minim.root_representation = &quot;root4&quot;</span>
             <span class="c1">#minim.precond_dyn = False</span>
-            <span class="c1">#self.minim.minim_struct = True # *test*</span>
-            <span class="c1">#self.minim.neglect_symmetries = True    # *test*</span>
+            <span class="c1">#self.minim.minim_struct = True</span>
+            <span class="c1">#self.minim.neglect_symmetries = True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">enforce_sum_rule</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Lorenzo&#39;s solution to the error</span>
 
             <span class="c1"># Prepare the relaxer (through many population)</span>
-            <span class="c1">#self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">relax</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Relax</span><span class="o">.</span><span class="n">SSCHA</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minim</span><span class="p">,</span> <span class="n">ase_calculator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="p">,</span> <span class="n">N_configs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">configurations</span><span class="p">,</span> <span class="n">max_pop</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 
             <span class="c1"># Relax</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">relax</span><span class="p">(</span><span class="n">sobol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol</span><span class="p">,</span> <span class="n">sobol_scramble</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol_scatter</span><span class="p">)</span>
-            <span class="c1">#self.relax.relax(sobol = False)</span>
+            <span class="c1">#self.relax.relax()</span>
 
             <span class="c1"># Save the dynamical matrix</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">save_qe</span><span class="p">(</span><span class="n">Files_final_dyn</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)))</span>
@@ -403,8 +402,6 @@ We can choose if we neglect or not in the calculation the four phonon scattering
             <span class="c1"># Recompute the ensemble for the hessian calculation</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Ensemble</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="p">,</span> <span class="n">T0</span> <span class="o">=</span> <span class="n">Temperature</span><span class="p">,</span> <span class="n">supercell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">GetSupercell</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configurations</span><span class="p">,</span> <span class="n">sobol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol</span><span class="p">,</span> <span class="n">sobol_scramble</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol_scatter</span><span class="p">)</span>
-            <span class="c1">#self.ensemble.generate(100, sobol = False)</span>
-            <span class="c1">#self.ensemble.generate(5000,sobol = True)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">get_energy_forces</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="p">,</span> <span class="n">compute_stress</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="c1">#gets the energies and forces from ff_calculator</span>
 
             <span class="c1">#update weights!!!</span>
@@ -467,6 +464,55 @@ We can choose if we neglect or not in the calculation the four phonon scattering
         <span class="c1">#plt.show()</span>
 </pre></div>
 </div>
+<p>Lets see the code:</p>
+<ol class="arabic simple">
+<li></li>
+<li></li>
+<li></li>
+</ol>
+<p>Lets put this object into the main function and calculate:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+  <span class="c1">#Setting the variables:</span>
+  <span class="c1">#Setting the temperature in Kelvin:</span>
+  <span class="n">Temperature</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="c1">#Setting the temparature range in Kelvin (6 steps from 50K to 300K):</span>
+  <span class="n">Temperature_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+  <span class="c1">#Setting the number of configurations:</span>
+  <span class="n">configuration_number</span> <span class="o">=</span> <span class="mi">50</span>
+  <span class="c1">#Setting the names and location of the files:</span>
+  <span class="n">Files_ForceFields</span> <span class="o">=</span> <span class="s2">&quot;ffield_dynq&quot;</span>
+  <span class="n">Files_dyn_SnTe</span> <span class="o">=</span> <span class="s2">&quot;ffield_dynq&quot;</span>
+  <span class="c1">#Set the number of irreducible q (reated to the supercell size):</span>
+  <span class="n">nqirr</span> <span class="o">=</span> <span class="mi">3</span>
+  <span class="c1">#Setting the frequencies output file:</span>
+  <span class="n">File_frequencies</span> <span class="o">=</span> <span class="s2">&quot;frequencies.dat&quot;</span>
+  <span class="c1">#Setting the dynamical matrix output filename:</span>
+  <span class="n">File_final_dyn</span> <span class="o">=</span> <span class="s2">&quot;final_sscha_T</span><span class="si">{}</span><span class="s2">_&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperature</span><span class="p">))</span>
+  <span class="n">sobol</span> <span class="o">=</span> <span class="kc">False</span>
+  <span class="n">sobol_scatter</span> <span class="o">=</span> <span class="kc">False</span>
+
+  <span class="c1">#We can comment this if we already made the sscha minimization</span>
+  <span class="c1">#Calculus = SnTe_initial(Files_ForceFields,Files_dyn_SnTe,nqirr,configuration_number,sobol,sobol_scatter)</span>
+  <span class="c1">#Calculus.ensemble_sscha(Temperature)</span>
+  <span class="c1">#Calculus.minimizing(File_frequencies,File_final_dyn.format(int(Temperature)))</span>
+
+  <span class="c1">#Now we can search for structural instabilities:</span>
+  <span class="c1">#Unstable = Search_instabilities(Files_ForceFields,Files_dyn_SnTe,nqirr)</span>
+  <span class="c1">#Unstable.load_dyn(File_final_dyn.format(Temperature),nqirr)</span>
+  <span class="c1">#Unstable.ensemble_sscha(Temperature)</span>
+  <span class="c1">#Unstable.calculate()</span>
+  <span class="c1">#Unstable.hessian(Temperature)</span>
+
+  <span class="c1">#</span>
+  <span class="n">HessianVsTemperature</span> <span class="o">=</span> <span class="n">Hessian_Vs_Temperature</span><span class="p">(</span><span class="n">T0</span><span class="p">,</span><span class="n">Temperature_i</span><span class="p">,</span><span class="n">Files_ForceFields</span><span class="p">,</span><span class="n">configuration_number</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">)</span>
+  <span class="n">HessianVsTemperature</span><span class="o">.</span><span class="n">cycle_T</span><span class="p">(</span><span class="n">File_final_dyn</span><span class="p">,</span><span class="n">nqirr</span><span class="p">)</span>
+  <span class="n">HessianVsTemperature</span><span class="o">.</span><span class="n">draw_figure</span><span class="p">()</span>
+
+  <span class="k">return</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>We will simulate the temperatures up to room temperature (300 K) with steps of 50 K. Note, this will perform all the steps above 6 times, so it may take some minutes, depending on the PC (on a i3 from 2015, with one core, it took 2 hours).
+If it takes too long you can reduce the number of steps by changing ‘Temperature_i = np.linspace(50, 300, 6)’.</p>
 <p>As exercise, you can modify this “Hessian_Vs_Temperature” object by calling the “Search_instabilities” into the “cycle_T” function.</p>
 </div>
 <hr class="docutils" />

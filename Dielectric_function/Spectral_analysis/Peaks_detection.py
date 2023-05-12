@@ -10,12 +10,14 @@ import numpy as np
 #with open("xtg") as file:
 #with open("xjz") as file:
 
-namefile="xju"
+#namefile="xju"
 #namefile="xjv"
 #namefile="xjw"
-#namefile="xjx"
+namefile="xjx"
+#namefile="xjy"
 #freq_range=5001
-freq_range=555
+freq_range=800
+y_max_range=0.02    #0.015
 with open(namefile) as file:
      lines = [line.rsplit() for line in file]
 Frequency = np.zeros(5001)
@@ -66,7 +68,8 @@ def _base(x):
 #    if (x < 0.0271):
         x_out = 0
     elif (x <= 0.0271):
-        x_out = -1.9985*x*x+0.0651067*x+0.000119668
+        #x_out = -1.9985*x*x+0.0651067*x+0.000119668
+        x_out = 0
     elif ((x >= 0.0271)and(x <= 0.107)):
         x_out = -1.99329*x*x+0.264442*x-0.00527247
     else:
@@ -93,7 +96,7 @@ for i in range(len(Frequency)):
    base[i]=_base(Frequency[i])
 plt.plot(Frequency,base, label="base")
 plt.xlim([0, x_max_range])
-plt.ylim([0,0.015])
+plt.ylim([0, y_max_range])
 plt.legend()
 plt.tight_layout()
 plt.savefig("Original_{}".format(namefile))
@@ -200,7 +203,7 @@ if (amp2!=0):
 #plt.plot(Frequency, lorentz_peak_4, label="4")
 plt.legend()
 plt.xlim([0, x_max_range])
-plt.ylim([0,0.015])
+plt.ylim([0, y_max_range])
 plt.tight_layout()
 plt.savefig("Ajuste_{}".format(namefile))
 plt.show()

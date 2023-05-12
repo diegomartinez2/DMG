@@ -397,17 +397,16 @@ Up to now we studied the system at T=0K and we found that there is an instabilit
               self.minim.meaningful_factor = 0.000001
               #minim.root_representation = "root4"
               #minim.precond_dyn = False
-              #self.minim.minim_struct = True # *test*
-              #self.minim.neglect_symmetries = True    # *test*
+              #self.minim.minim_struct = True
+              #self.minim.neglect_symmetries = True
               self.minim.enforce_sum_rule = True  # Lorenzo's solution to the error
 
               # Prepare the relaxer (through many population)
-              #self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=1000, max_pop=50)
               self.relax = sscha.Relax.SSCHA(self.minim, ase_calculator = self.ff_calculator, N_configs=self.configurations, max_pop=20)
 
               # Relax
               self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
-              #self.relax.relax(sobol = False)
+              #self.relax.relax()
 
               # Save the dynamical matrix
               self.relax.minim.dyn.save_qe(Files_final_dyn.format(int(Temperature)))
@@ -419,8 +418,6 @@ Up to now we studied the system at T=0K and we found that there is an instabilit
               # Recompute the ensemble for the hessian calculation
               self.ensemble = sscha.Ensemble.Ensemble(self.relax.minim.dyn, T0 = Temperature, supercell = self.dyn.GetSupercell())
               self.ensemble.generate(self.configurations, sobol = self.sobol, sobol_scramble = self.sobol_scatter)
-              #self.ensemble.generate(100, sobol = False)
-              #self.ensemble.generate(5000,sobol = True)
               self.ensemble.get_energy_forces(self.ff_calculator, compute_stress = False) #gets the energies and forces from ff_calculator
 
               #update weights!!!
@@ -481,6 +478,62 @@ Up to now we studied the system at T=0K and we found that there is an instabilit
           plt.tight_layout()
           plt.savefig('{}_Temp_Omeg.png'.format(self.configurations))
           #plt.show()
+
+Lets see the code:
+
+1.
+
+2.
+
+3.
+
+Lets put this object into the main function and calculate:
+
+.. code-block:: python
+
+            def main(args):
+              #Setting the variables:
+              #Setting the temperature in Kelvin:
+              Temperature = 0
+              #Setting the temparature range in Kelvin (6 steps from 50K to 300K):
+              Temperature_i = np.linspace(50, 300, 6)
+              #Setting the number of configurations:
+              configuration_number = 50
+              #Setting the names and location of the files:
+              Files_ForceFields = "ffield_dynq"
+              Files_dyn_SnTe = "ffield_dynq"
+              #Set the number of irreducible q (reated to the supercell size):
+              nqirr = 3
+              #Setting the frequencies output file:
+              File_frequencies = "frequencies.dat"
+              #Setting the dynamical matrix output filename:
+              File_final_dyn = "final_sscha_T{}_".format(int(Temperature))
+              sobol = False
+              sobol_scatter = False
+
+              #We can comment this if we already made the sscha minimization
+              #Calculus = SnTe_initial(Files_ForceFields,Files_dyn_SnTe,nqirr,configuration_number,sobol,sobol_scatter)
+              #Calculus.ensemble_sscha(Temperature)
+              #Calculus.minimizing(File_frequencies,File_final_dyn.format(int(Temperature)))
+
+              #Now we can search for structural instabilities:
+              #Unstable = Search_instabilities(Files_ForceFields,Files_dyn_SnTe,nqirr)
+              #Unstable.load_dyn(File_final_dyn.format(Temperature),nqirr)
+              #Unstable.ensemble_sscha(Temperature)
+              #Unstable.calculate()
+              #Unstable.hessian(Temperature)
+
+              #
+              HessianVsTemperature = Hessian_Vs_Temperature(T0,Temperature_i,Files_ForceFields,configuration_number,sobol,sobol_scatter)
+              HessianVsTemperature.cycle_T(File_final_dyn,nqirr)
+              HessianVsTemperature.draw_figure()
+
+              return 0
+
+We will simulate the temperatures up to room temperature (300 K) with steps of 50 K. Note, this will perform all the steps above 6 times, so it may take some minutes, depending on the PC (on a i3 from 2015, with one core, it took 2 hours).
+If it takes too long you can reduce the number of steps by changing 'Temperature_i = np.linspace(50, 300, 6)'.
+
+
 
 As exercise, you can modify this "Hessian_Vs_Temperature" object by calling the "Search_instabilities" into the "cycle_T" function.
 
