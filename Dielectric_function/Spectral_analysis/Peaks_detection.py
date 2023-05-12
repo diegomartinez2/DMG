@@ -14,6 +14,8 @@ import numpy as np
 #namefile="xjv"
 #namefile="xjw"
 namefile="xjx"
+
+freq_range=900
 with open(namefile) as file:
      lines = [line.rsplit() for line in file]
 Frequency = np.zeros(5001)
@@ -21,7 +23,7 @@ Spec = np.zeros(5001)
 #for i in range(5001):
 #for i in range(555):
 #for i in range(700):
-for i in range(800):
+for i in range(freq_range):
 #     print (lines[i][2])
      Frequency[i]=lines[i][2]
      Spec[i]=lines[i][6]
@@ -35,7 +37,8 @@ for i in range(800):
 peaks, _ = find_peaks(Spec, prominence=1)
 m = np.zeros(Frequency.shape, dtype=bool)
 m[peaks] = True
-
+x_max_range=0.15 #Frequency[freq_range]
+print (x_max_range)
 #-------------------------------
 amp1 = 0.009
 cen1 = 0.007
@@ -86,7 +89,7 @@ base = np.zeros(Frequency.shape)
 for i in range(len(Frequency)):
    base[i]=_base(Frequency[i])
 plt.plot(Frequency,base, label="base")
-plt.xlim([0, 0.13])
+plt.xlim([0, x_max_range])
 plt.ylim([0,0.015])
 plt.tight_layout()
 plt.savefig("Original_{}".format(namefile))
@@ -192,7 +195,7 @@ if (amp2!=0):
     plt.plot(Frequency, lorentz_peak_3, label="3")
 #plt.plot(Frequency, lorentz_peak_4, label="4")
 plt.legend()
-plt.xlim([0, 0.15])
+plt.xlim([0, x_max_range])
 plt.ylim([0,0.015])
 plt.tight_layout()
 plt.savefig("Ajuste_{}".format(namefile))
