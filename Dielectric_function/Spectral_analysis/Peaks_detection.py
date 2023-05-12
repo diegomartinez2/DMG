@@ -36,24 +36,25 @@ for i in range(freq_range):
 
 
 
-peaks, _ = find_peaks(Spec)
-m = np.zeros(Frequency.shape, dtype=bool)
-m[peaks] = True
+peaks, _ = find_peaks(Spec,width=5)
+#m = np.zeros(Frequency.shape, dtype=bool)
+#m[peaks] = True
 x_max_range=Frequency.max()
-print (x_max_range)
+y_max_range=Spec.max()
+#print (x_max_range)
 print (peaks,Frequency[peaks])
 #print (Frequency.max())
 #-------------------------------
 amp1 = 0.009
-cen1 = 0.0009
+cen1 = Frequency[peaks[0]] #0.0009
 wid1 = 0.0001
 
 amp2 = 0.001
-cen2 = 0.07
+cen2 = Frequency[peaks[1]] #0.07
 wid2 = 0.001
 
 amp3 = 0.007
-cen3 = 0.08
+cen3 = Frequency[peaks[2]] #0.08
 wid3 = 0.001
 
 amp4 = 0.0

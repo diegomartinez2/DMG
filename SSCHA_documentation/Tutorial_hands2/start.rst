@@ -97,7 +97,7 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
   class SnTe_initial(object):
     def __init__(self,file_ForceFields,file_dyn,nqirr,configurations,sobol,sobol_scatter):
         # Load the dynamical matrix for the force field
-        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
+        self.ff_dyn = CC.Phonons.Phonons(file_ForceFields, 3)
 
         # Setup the forcefield with the correct parameters
         self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
@@ -107,7 +107,7 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
         self.ff_calculator.p4x = -0.014
 
         # Initialization of the SSCHA matrix
-        self.dyn_sscha = CC.Phonons.Phonons(fichero_dyn, nqirr)
+        self.dyn_sscha = CC.Phonons.Phonons(file_dyn, nqirr)
         # Flip the imaginary frequencies into real ones
         self.dyn_sscha.ForcePositiveDefinite()
         # Apply the ASR and the symmetry group
@@ -153,7 +153,7 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
         # CFP stands for Custom Function Post (Post = after the minimization step)
         #self.relax.setup_custom_functions(custom_function_post = self.io_func.CFP_SaveFrequencies)
         self.relax.setup_custom_functions(custom_function_post = self.io_func.CFP_SaveAll)
-        # Finalmente hacemos todos los calculos de busqueda de la energia libre.
+        # Finally we do all the free energy calculations.
         self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
         #self.relax.vc_relax(static_bulk_modulus=40, fix_volume = False)
 
