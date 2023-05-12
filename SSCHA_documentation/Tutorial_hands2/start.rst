@@ -210,7 +210,7 @@ Now we fill the main function with this new object:
     Calculus = SnTe_initial(Files_ForceFields,Files_dyn_SnTe,nqirr,configuration_number,sobol,sobol_scatter)
     Calculus.ensemble_sscha(Temperature)
     Calculo.minimizing(File_frequencies,File_final_dyn.format(int(Temperature)))
-    Calculo.draw_figure(File_frequencies)
+
     return 0
 
 This code will calculate the SSCHA minimization with the "ff_calculator".
