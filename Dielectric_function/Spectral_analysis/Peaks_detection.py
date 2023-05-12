@@ -10,12 +10,12 @@ import numpy as np
 #with open("xtg") as file:
 #with open("xjz") as file:
 
-#namefile="xju"
+namefile="xju"
 #namefile="xjv"
 #namefile="xjw"
-namefile="xjx"
-
-freq_range=900
+#namefile="xjx"
+#freq_range=5001
+freq_range=555
 with open(namefile) as file:
      lines = [line.rsplit() for line in file]
 Frequency = np.zeros(5001)
@@ -37,19 +37,20 @@ for i in range(freq_range):
 peaks, _ = find_peaks(Spec, prominence=1)
 m = np.zeros(Frequency.shape, dtype=bool)
 m[peaks] = True
-x_max_range=0.15 #Frequency[freq_range]
+x_max_range=Frequency.max()
 print (x_max_range)
+#print (Frequency.max())
 #-------------------------------
 amp1 = 0.009
-cen1 = 0.007
-wid1 = 0.001
+cen1 = 0.0009
+wid1 = 0.0001
 
 amp2 = 0.001
 cen2 = 0.07
 wid2 = 0.001
 
 amp3 = 0.007
-cen3 = 0.1
+cen3 = 0.08
 wid3 = 0.001
 
 amp4 = 0.0
