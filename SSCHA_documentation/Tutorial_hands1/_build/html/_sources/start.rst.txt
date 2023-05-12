@@ -272,6 +272,8 @@ Indeed, since the gold atomic positions are all fixed by symmetries, it is alway
 Instead, :numref:`fig-goldfreqs` represents the evolution of the SSCHA phonon frequencies.
 Here, all the frequencies in the supercell (at each q point commensurate with the calculation) are shown.
 
+ [...]The sscha auxiliary frequencies in :numref:`fig-goldfreqs` are not the real frequencies observed in experiments, but rather are linked to the average displacements of atoms along that mode.
+
 By looking at how they change you can have an idea on which phonon mode are more affected by anharmonicity. In this case, it is evident that Gold is trongly anharmonci and that the finite temperature tend to harden almost all the phonon frequencies.
 
 At the end of the simulation, the code writes the final dynamical matrix in the quantum espresso file format: *sscha_T300_dynX* where X goes over the number of irreducible q points.
