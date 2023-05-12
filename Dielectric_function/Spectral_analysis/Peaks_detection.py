@@ -34,11 +34,12 @@ for i in range(freq_range):
 
 
 
-peaks, _ = find_peaks(Spec, prominence=1)
+peaks, _ = find_peaks(Spec)
 m = np.zeros(Frequency.shape, dtype=bool)
 m[peaks] = True
 x_max_range=Frequency.max()
 print (x_max_range)
+print (peaks,Frequency[peaks])
 #print (Frequency.max())
 #-------------------------------
 amp1 = 0.009
@@ -86,12 +87,14 @@ def _4Lorentzian(x, amp1, cen1, wid1, amp2,cen2,wid2, amp3,cen3,wid3, amp4,cen4,
 
 #--------------------------------------------
 plt.plot(Frequency, Spec, label="original")
+plt.plot(Frequency[peaks], Spec[peaks], "xr", label="peaks")
 base = np.zeros(Frequency.shape)
 for i in range(len(Frequency)):
    base[i]=_base(Frequency[i])
 plt.plot(Frequency,base, label="base")
 plt.xlim([0, x_max_range])
 plt.ylim([0,0.015])
+plt.legend()
 plt.tight_layout()
 plt.savefig("Original_{}".format(namefile))
 plt.show()

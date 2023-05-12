@@ -276,7 +276,17 @@ class Polaron_analysis(object):
 # ----------
 # Funciones
 # ----------
-def NombredeFuncion(arg):
+def Detecta_picos(arg):
+    #from peakdetect import peakdetect
+
+    peaks = peakdetect(data, lookahead=20)
+    # Lookahead is the distance to look ahead from a peak to determine if it is the actual peak.
+    # Change lookahead as necessary
+    higherPeaks = np.array(peaks[0])
+    lowerPeaks = np.array(peaks[1])
+    plt.plot(data)
+    plt.plot(higherPeaks[:,0], higherPeaks[:,1], 'ro')
+    plt.plot(lowerPeaks[:,0], lowerPeaks[:,1], 'ko')
     pass
 
 def main(args):
