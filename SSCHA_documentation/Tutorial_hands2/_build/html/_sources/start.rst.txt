@@ -221,7 +221,9 @@ Note: this force field model is not able to compute stress, as it is defined onl
 
 If we have a very small mode in the SSCHA frequencies, it means that associated to that mode we have huge fluctuations. This can indicate an instability. However, to test this we need to compute the free energy curvature along this mode. This can be obtained in one shot thanks to the theory developed in `Bianco et. al. Phys. Rev. B 96, 014111. <https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111>`_
 
-For that we create another object, "Search_instabilities" to do the job.[...]
+For that we create another object, "Search_instabilities" to do the job.
+
+[...]
 
 
 .. code-block:: python
@@ -257,8 +259,7 @@ For that we create another object, "Search_instabilities" to do the job.[...]
           # We need a bigger ensemble to properly compute the hessian
           # Here we will use 10000 configurations
           self.ensemble.generate(5000, sobol = True, sobol_scramble = False)
-  #        self.ensemble.generate(50, sobol = False)
-  #        self.ensemble.generate(1000,sobol = True)
+          #self.ensemble.generate(10000, sobol = False)
           #We could also load the ensemble with ensemble.load("data_ensemble_final", N = 100, population = 5)
 
       def calculate(self):
@@ -284,6 +285,23 @@ For that we create another object, "Search_instabilities" to do the job.[...]
 
           # Print all the frequency converting them into cm-1 (They are in Ry)
           print("\n".join(["{:16.4f} cm-1".format(w * CC.Units.RY_TO_CM) for w in w_hessian]))
+
+Lets see what this code do:
+
+1. In the initialization function the "ff_calculator" toy potential is defined as we have seen in the previous object.
+
+2. In "load_dyn" function, it will load the dynamical matrix calculated previously with the "ff_calculator" toy potential, so there is no need to calculate it again.
+
+3. Then, as the Hessian calculation is more sensible, we generate a new ensemble with more configurations in "ensemble_sscha".
+   To compute the hessian we will use an ensemble of 10000 configurations.
+   Note here that we can use less if we use Sobol sequence or we can load a previously generated ensemble.
+
+4. We now compute forces and energies using the force field calculator.
+
+5. Finally the free energy hessian is calculated in the "hessian" function.
+   We can choose if we neglect or not in the calculation the four phonon scattering process. Four phonon scattering processes require a huge memory allocation for big systems, that scales as (3⋅N)^4 with N the number of atoms in the supercell. Moreover, it may require also more configurations to converge.
+
+   In almost all the systems we studied up to now, we found this four phonon scattering at high order to be negligible. We remark, that the SSCHA minimization already includes four phonon scattering at the lowest order perturbation theory, thus neglecting this term only affects combinations of one or more four phonon scattering with two three phonon scatterings (high order diagrams). For more details, see `Bianco et. al. Phys. Rev. B 96, 014111. <https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111>`_
 
 We can then print the frequencies of the hessian. If an imaginary frequency is present, then the system wants to spontaneosly break the high symmetry phase.
 
