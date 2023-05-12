@@ -210,12 +210,15 @@ Next the automatic relaxation is set with the option here to use the Sobol seque
 
   <span class="n">Calculus</span> <span class="o">=</span> <span class="n">SnTe_initial</span><span class="p">(</span><span class="n">Files_ForceFields</span><span class="p">,</span><span class="n">Files_dyn_SnTe</span><span class="p">,</span><span class="n">nqirr</span><span class="p">,</span><span class="n">configuration_number</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">)</span>
   <span class="n">Calculus</span><span class="o">.</span><span class="n">ensemble_sscha</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)</span>
-  <span class="n">Calculo</span><span class="o">.</span><span class="n">minimizing</span><span class="p">(</span><span class="n">File_frequencies</span><span class="p">,</span><span class="n">File_final_dyn</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)))</span>
+  <span class="n">Calculus</span><span class="o">.</span><span class="n">minimizing</span><span class="p">(</span><span class="n">File_frequencies</span><span class="p">,</span><span class="n">File_final_dyn</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)))</span>
 
   <span class="k">return</span> <span class="mi">0</span>
 </pre></div>
 </div>
-<p>This code will calculate the SSCHA minimization with the “ff_calculator”.</p>
+<p>This code will calculate the SSCHA minimization with the “ff_calculator”. We cat use “sscha-plot-data.py” to take a look at the minimization.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>sscha-plot-data.py<span class="w"> </span>frequencies.dat
+</pre></div>
+</div>
 <p>Note: this force field model is not able to compute stress, as it is defined only at fixed volume, so we cannot use it for a variable cell relaxation.</p>
 <p><strong>Now we can search for instabilities.</strong></p>
 <p>If we have a very small mode in the SSCHA frequencies, it means that associated to that mode we have huge fluctuations. This can indicate an instability. However, to test this we need to compute the free energy curvature along this mode. This can be obtained in one shot thanks to the theory developed in <a class="reference external" href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111">Bianco et. al. Phys. Rev. B 96, 014111.</a></p>
@@ -295,10 +298,36 @@ Note here that we can use less if we use Sobol sequence or we can load a previou
 <li><p class="first">Finally the free energy hessian is calculated in the “hessian” function.
 We can choose if we neglect or not in the calculation the four phonon scattering process. Four phonon scattering processes require a huge memory allocation for big systems, that scales as (3⋅N)^4 with N the number of atoms in the supercell. Moreover, it may require also more configurations to converge.</p>
 <p>In almost all the systems we studied up to now, we found this four phonon scattering at high order to be negligible. We remark, that the SSCHA minimization already includes four phonon scattering at the lowest order perturbation theory, thus neglecting this term only affects combinations of one or more four phonon scattering with two three phonon scatterings (high order diagrams). For more details, see <a class="reference external" href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111">Bianco et. al. Phys. Rev. B 96, 014111.</a></p>
+<p>We can then print the frequencies of the hessian. If an imaginary frequency is present, then the system wants to spontaneously break the high symmetry phase.</p>
 </li>
 </ol>
-<p>We can then print the frequencies of the hessian. If an imaginary frequency is present, then the system wants to spontaneosly break the high symmetry phase.</p>
 <p>The frequencies in the free energy hessian are temperature dependent.</p>
+<p>Lets put this object into the main function and calculate:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+  <span class="c1">#Setting the variables:</span>
+  <span class="c1">#Setting the temperature in Kelvin:</span>
+  <span class="n">Temperature</span> <span class="o">=</span> <span class="mi">250</span>
+  <span class="c1">#Setting the number of configurations:</span>
+  <span class="n">configuration_number</span> <span class="o">=</span> <span class="mi">50</span>
+  <span class="c1">#Setting the names and location of the files:</span>
+  <span class="n">Files_ForceFields</span> <span class="o">=</span> <span class="s2">&quot;ffield_dynq&quot;</span>
+  <span class="n">Files_dyn_SnTe</span> <span class="o">=</span> <span class="s2">&quot;ffield_dynq&quot;</span>
+  <span class="c1">#Set the number of irreducible q (reated to the supercell size):</span>
+  <span class="n">nqirr</span> <span class="o">=</span> <span class="mi">3</span>
+  <span class="c1">#Setting the frequencies output file:</span>
+  <span class="n">File_frequencies</span> <span class="o">=</span> <span class="s2">&quot;frequencies.dat&quot;</span>
+  <span class="c1">#Setting the dynamical matrix output filename:</span>
+  <span class="n">File_final_dyn</span> <span class="o">=</span> <span class="s2">&quot;final_sscha_T</span><span class="si">{}</span><span class="s2">_&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperature</span><span class="p">))</span>
+  <span class="n">sobol</span> <span class="o">=</span> <span class="kc">False</span>
+  <span class="n">sobol_scatter</span> <span class="o">=</span> <span class="kc">False</span>
+
+  <span class="n">Calculus</span> <span class="o">=</span> <span class="n">SnTe_initial</span><span class="p">(</span><span class="n">Files_ForceFields</span><span class="p">,</span><span class="n">Files_dyn_SnTe</span><span class="p">,</span><span class="n">nqirr</span><span class="p">,</span><span class="n">configuration_number</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">)</span>
+  <span class="n">Calculus</span><span class="o">.</span><span class="n">ensemble_sscha</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)</span>
+  <span class="n">Calculus</span><span class="o">.</span><span class="n">minimizing</span><span class="p">(</span><span class="n">File_frequencies</span><span class="p">,</span><span class="n">File_final_dyn</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperature</span><span class="p">)))</span>
+
+  <span class="k">return</span> <span class="mi">0</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="phase-transition">
 <h3>Phase transition:<a class="headerlink" href="#phase-transition" title="Permalink to this headline">¶</a></h3>

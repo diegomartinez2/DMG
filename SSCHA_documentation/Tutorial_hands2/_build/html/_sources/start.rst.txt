@@ -209,11 +209,16 @@ Now we fill the main function with this new object:
 
     Calculus = SnTe_initial(Files_ForceFields,Files_dyn_SnTe,nqirr,configuration_number,sobol,sobol_scatter)
     Calculus.ensemble_sscha(Temperature)
-    Calculo.minimizing(File_frequencies,File_final_dyn.format(int(Temperature)))
+    Calculus.minimizing(File_frequencies,File_final_dyn.format(int(Temperature)))
 
     return 0
 
-This code will calculate the SSCHA minimization with the "ff_calculator".
+This code will calculate the SSCHA minimization with the "ff_calculator". We cat use "sscha-plot-data.py" to take a look at the minimization.
+
+.. code-block:: bash
+
+    python sscha-plot-data.py frequencies.dat
+
 
 Note: this force field model is not able to compute stress, as it is defined only at fixed volume, so we cannot use it for a variable cell relaxation.
 
@@ -303,9 +308,38 @@ Lets see what this code do:
 
    In almost all the systems we studied up to now, we found this four phonon scattering at high order to be negligible. We remark, that the SSCHA minimization already includes four phonon scattering at the lowest order perturbation theory, thus neglecting this term only affects combinations of one or more four phonon scattering with two three phonon scatterings (high order diagrams). For more details, see `Bianco et. al. Phys. Rev. B 96, 014111. <https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111>`_
 
-We can then print the frequencies of the hessian. If an imaginary frequency is present, then the system wants to spontaneosly break the high symmetry phase.
+   We can then print the frequencies of the hessian. If an imaginary frequency is present, then the system wants to spontaneously break the high symmetry phase.
 
 The frequencies in the free energy hessian are temperature dependent.
+
+Lets put this object into the main function and calculate:
+
+.. code-block:: python
+
+  def main(args):
+    #Setting the variables:
+    #Setting the temperature in Kelvin:
+    Temperature = 250
+    #Setting the number of configurations:
+    configuration_number = 50
+    #Setting the names and location of the files:
+    Files_ForceFields = "ffield_dynq"
+    Files_dyn_SnTe = "ffield_dynq"
+    #Set the number of irreducible q (reated to the supercell size):
+    nqirr = 3
+    #Setting the frequencies output file:
+    File_frequencies = "frequencies.dat"
+    #Setting the dynamical matrix output filename:
+    File_final_dyn = "final_sscha_T{}_".format(int(Temperature))
+    sobol = False
+    sobol_scatter = False
+
+    Calculus = SnTe_initial(Files_ForceFields,Files_dyn_SnTe,nqirr,configuration_number,sobol,sobol_scatter)
+    Calculus.ensemble_sscha(Temperature)
+    Calculus.minimizing(File_frequencies,File_final_dyn.format(int(Temperature)))
+
+    return 0
+
 
 Phase transition:
 -----------------
