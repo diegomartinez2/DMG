@@ -192,7 +192,7 @@ Now we fill the main function with this new object:
   def main(args):
     #Setting the variables:
     #Setting the temperature in Kelvin:
-    Temperature = 250
+    Temperature = 0
     #Setting the number of configurations:
     configuration_number = 50
     #Setting the names and location of the files:
@@ -319,7 +319,7 @@ Lets put this object into the main function and calculate:
   def main(args):
     #Setting the variables:
     #Setting the temperature in Kelvin:
-    Temperature = 250
+    Temperature = 0
     #Setting the number of configurations:
     configuration_number = 50
     #Setting the names and location of the files:
@@ -353,7 +353,7 @@ We can look at the eigenmodes of the free energy hessian to check if we have ima
 Phase transition:
 -----------------
 
-
+Up to now we studied the system at T=0K and we found that there is an instability. However, we can repeat the minimization at many temperatures, and track the phonon frequency to see which is the temperature at which the system becomes stable.
 
 .. code-block:: python
 
@@ -482,7 +482,7 @@ Phase transition:
           plt.savefig('{}_Temp_Omeg.png'.format(self.configurations))
           #plt.show()
 
-As exercise, put this object into the main function.
+As exercise, you can modify this "Hessian_Vs_Temperature" object by calling the "Search_instabilities" into the "cycle_T" function.
 
 
 

@@ -193,7 +193,7 @@ Next the automatic relaxation is set with the option here to use the Sobol seque
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
   <span class="c1">#Setting the variables:</span>
   <span class="c1">#Setting the temperature in Kelvin:</span>
-  <span class="n">Temperature</span> <span class="o">=</span> <span class="mi">250</span>
+  <span class="n">Temperature</span> <span class="o">=</span> <span class="mi">0</span>
   <span class="c1">#Setting the number of configurations:</span>
   <span class="n">configuration_number</span> <span class="o">=</span> <span class="mi">50</span>
   <span class="c1">#Setting the names and location of the files:</span>
@@ -306,7 +306,7 @@ We can choose if we neglect or not in the calculation the four phonon scattering
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
   <span class="c1">#Setting the variables:</span>
   <span class="c1">#Setting the temperature in Kelvin:</span>
-  <span class="n">Temperature</span> <span class="o">=</span> <span class="mi">250</span>
+  <span class="n">Temperature</span> <span class="o">=</span> <span class="mi">0</span>
   <span class="c1">#Setting the number of configurations:</span>
   <span class="n">configuration_number</span> <span class="o">=</span> <span class="mi">50</span>
   <span class="c1">#Setting the names and location of the files:</span>
@@ -340,6 +340,7 @@ We can choose if we neglect or not in the calculation the four phonon scattering
 </div>
 <div class="section" id="phase-transition">
 <h3>Phase transition:<a class="headerlink" href="#phase-transition" title="Permalink to this headline">¶</a></h3>
+<p>Up to now we studied the system at T=0K and we found that there is an instability. However, we can repeat the minimization at many temperatures, and track the phonon frequency to see which is the temperature at which the system becomes stable.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Hessian_Vs_Temperature</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T0</span><span class="p">,</span><span class="n">temperatures_i</span><span class="p">,</span><span class="n">files_ForceFields</span><span class="p">,</span><span class="n">configurations</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">):</span>
         <span class="c1"># Load the dynamical matrix for the force field</span>
@@ -466,7 +467,7 @@ We can choose if we neglect or not in the calculation the four phonon scattering
         <span class="c1">#plt.show()</span>
 </pre></div>
 </div>
-<p>As exercise, put this object into the main function.</p>
+<p>As exercise, you can modify this “Hessian_Vs_Temperature” object by calling the “Search_instabilities” into the “cycle_T” function.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="plot-the-hessian-phonon-dispersion">
