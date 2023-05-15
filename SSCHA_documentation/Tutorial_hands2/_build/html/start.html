@@ -104,7 +104,7 @@ The free energy curvature can be written in matrix form as:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SnTe_initial</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">file_ForceFields</span><span class="p">,</span><span class="n">file_dyn</span><span class="p">,</span><span class="n">nqirr</span><span class="p">,</span><span class="n">configurations</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">):</span>
       <span class="c1"># Load the dynamical matrix for the force field</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">ff_dyn</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="n">fichero_ForceFields</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">ff_dyn</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="n">file_ForceFields</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
       <span class="c1"># Setup the forcefield with the correct parameters</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="n">Calculator</span><span class="o">.</span><span class="n">ToyModelCalculator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ff_dyn</span><span class="p">)</span>
@@ -114,7 +114,7 @@ The free energy curvature can be written in matrix form as:</p>
       <span class="bp">self</span><span class="o">.</span><span class="n">ff_calculator</span><span class="o">.</span><span class="n">p4x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.014</span>
 
       <span class="c1"># Initialization of the SSCHA matrix</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="n">fichero_dyn</span><span class="p">,</span> <span class="n">nqirr</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="n">file_dyn</span><span class="p">,</span> <span class="n">nqirr</span><span class="p">)</span>
       <span class="c1"># Flip the imaginary frequencies into real ones</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">dyn_sscha</span><span class="o">.</span><span class="n">ForcePositiveDefinite</span><span class="p">()</span>
       <span class="c1"># Apply the ASR and the symmetry group</span>
@@ -160,7 +160,7 @@ The free energy curvature can be written in matrix form as:</p>
       <span class="c1"># CFP stands for Custom Function Post (Post = after the minimization step)</span>
       <span class="c1">#self.relax.setup_custom_functions(custom_function_post = self.io_func.CFP_SaveFrequencies)</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">setup_custom_functions</span><span class="p">(</span><span class="n">custom_function_post</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">io_func</span><span class="o">.</span><span class="n">CFP_SaveAll</span><span class="p">)</span>
-      <span class="c1"># Finalmente hacemos todos los calculos de busqueda de la energia libre.</span>
+      <span class="c1"># Finally we do all the free energy calculations.</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">relax</span><span class="p">(</span><span class="n">sobol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol</span><span class="p">,</span> <span class="n">sobol_scramble</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sobol_scatter</span><span class="p">)</span>
       <span class="c1">#self.relax.vc_relax(static_bulk_modulus=40, fix_volume = False)</span>
 
@@ -397,7 +397,7 @@ We can choose if we neglect or not in the calculation the four phonon scattering
 
             <span class="c1"># Detect space group</span>
             <span class="n">symm</span><span class="o">=</span><span class="n">spglib</span><span class="o">.</span><span class="n">get_spacegroup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">get_ase_atoms</span><span class="p">(),</span> <span class="mf">0.005</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Current SG = &#39;</span><span class="p">,</span> <span class="n">symm</span><span class="p">,</span><span class="s1">&#39; at T=&#39;</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperatura</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Current SG = &#39;</span><span class="p">,</span> <span class="n">symm</span><span class="p">,</span><span class="s1">&#39; at T=&#39;</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">Temperature</span><span class="p">))</span>
 
             <span class="c1"># Recompute the ensemble for the hessian calculation</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">sscha</span><span class="o">.</span><span class="n">Ensemble</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relax</span><span class="o">.</span><span class="n">minim</span><span class="o">.</span><span class="n">dyn</span><span class="p">,</span> <span class="n">T0</span> <span class="o">=</span> <span class="n">Temperature</span><span class="p">,</span> <span class="n">supercell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dyn</span><span class="o">.</span><span class="n">GetSupercell</span><span class="p">())</span>
@@ -466,9 +466,9 @@ We can choose if we neglect or not in the calculation the four phonon scattering
 </div>
 <p>Lets see the code:</p>
 <ol class="arabic simple">
-<li></li>
-<li></li>
-<li></li>
+<li>The initialization is similar to the one we did for the “Search_instabilities”.</li>
+<li>In “cycle_T” we condense in one function the calculation of the hessians in a loop for different temperatures. In the end, it searches for the lowest non acoustic frequency to save with the correspondent auxiliar sscha frequency.</li>
+<li>Finally, in the last function of this object, we make a graphic output of the data.</li>
 </ol>
 <p>Lets put this object into the main function and calculate:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
@@ -504,7 +504,7 @@ We can choose if we neglect or not in the calculation the four phonon scattering
   <span class="c1">#Unstable.hessian(Temperature)</span>
 
   <span class="c1">#</span>
-  <span class="n">HessianVsTemperature</span> <span class="o">=</span> <span class="n">Hessian_Vs_Temperature</span><span class="p">(</span><span class="n">T0</span><span class="p">,</span><span class="n">Temperature_i</span><span class="p">,</span><span class="n">Files_ForceFields</span><span class="p">,</span><span class="n">configuration_number</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">)</span>
+  <span class="n">HessianVsTemperature</span> <span class="o">=</span> <span class="n">Hessian_Vs_Temperature</span><span class="p">(</span><span class="n">Temperature</span><span class="p">,</span><span class="n">Temperature_i</span><span class="p">,</span><span class="n">Files_ForceFields</span><span class="p">,</span><span class="n">configuration_number</span><span class="p">,</span><span class="n">sobol</span><span class="p">,</span><span class="n">sobol_scatter</span><span class="p">)</span>
   <span class="n">HessianVsTemperature</span><span class="o">.</span><span class="n">cycle_T</span><span class="p">(</span><span class="n">File_final_dyn</span><span class="p">,</span><span class="n">nqirr</span><span class="p">)</span>
   <span class="n">HessianVsTemperature</span><span class="o">.</span><span class="n">draw_figure</span><span class="p">()</span>
 
@@ -513,6 +513,7 @@ We can choose if we neglect or not in the calculation the four phonon scattering
 </div>
 <p>We will simulate the temperatures up to room temperature (300 K) with steps of 50 K. Note, this will perform all the steps above 6 times, so it may take some minutes, depending on the PC (on a i3 from 2015, with one core, it took 2 hours).
 If it takes too long you can reduce the number of steps by changing ‘Temperature_i = np.linspace(50, 300, 6)’.</p>
+<p>We are using only 50 configurations in the ensemble. Note that this makes a fast calculation but is a low number. How the calculation changes with the number of configurations?</p>
 <p>As exercise, you can modify this “Hessian_Vs_Temperature” object by calling the “Search_instabilities” into the “cycle_T” function.</p>
 </div>
 <hr class="docutils" />

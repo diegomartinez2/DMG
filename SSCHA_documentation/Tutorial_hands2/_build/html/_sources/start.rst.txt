@@ -97,7 +97,7 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
   class SnTe_initial(object):
     def __init__(self,file_ForceFields,file_dyn,nqirr,configurations,sobol,sobol_scatter):
         # Load the dynamical matrix for the force field
-        self.ff_dyn = CC.Phonons.Phonons(fichero_ForceFields, 3)
+        self.ff_dyn = CC.Phonons.Phonons(file_ForceFields, 3)
 
         # Setup the forcefield with the correct parameters
         self.ff_calculator = ff.Calculator.ToyModelCalculator(self.ff_dyn)
@@ -107,7 +107,7 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
         self.ff_calculator.p4x = -0.014
 
         # Initialization of the SSCHA matrix
-        self.dyn_sscha = CC.Phonons.Phonons(fichero_dyn, nqirr)
+        self.dyn_sscha = CC.Phonons.Phonons(file_dyn, nqirr)
         # Flip the imaginary frequencies into real ones
         self.dyn_sscha.ForcePositiveDefinite()
         # Apply the ASR and the symmetry group
@@ -153,7 +153,7 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
         # CFP stands for Custom Function Post (Post = after the minimization step)
         #self.relax.setup_custom_functions(custom_function_post = self.io_func.CFP_SaveFrequencies)
         self.relax.setup_custom_functions(custom_function_post = self.io_func.CFP_SaveAll)
-        # Finalmente hacemos todos los calculos de busqueda de la energia libre.
+        # Finally we do all the free energy calculations.
         self.relax.relax(sobol = self.sobol, sobol_scramble = self.sobol_scatter)
         #self.relax.vc_relax(static_bulk_modulus=40, fix_volume = False)
 
@@ -413,7 +413,7 @@ Up to now we studied the system at T=0K and we found that there is an instabilit
 
               # Detect space group
               symm=spglib.get_spacegroup(self.relax.minim.dyn.structure.get_ase_atoms(), 0.005)
-              print('Current SG = ', symm,' at T=',int(Temperatura))
+              print('Current SG = ', symm,' at T=',int(Temperature))
 
               # Recompute the ensemble for the hessian calculation
               self.ensemble = sscha.Ensemble.Ensemble(self.relax.minim.dyn, T0 = Temperature, supercell = self.dyn.GetSupercell())
@@ -481,11 +481,11 @@ Up to now we studied the system at T=0K and we found that there is an instabilit
 
 Lets see the code:
 
-1.
+1. The initialization is similar to the one we did for the "Search_instabilities".
 
-2.
+2. In "cycle_T" we condense in one function the calculation of the hessians in a loop for different temperatures. In the end, it searches for the lowest non acoustic frequency to save with the correspondent auxiliar sscha frequency.
 
-3.
+3. Finally, in the last function of this object, we make a graphic output of the data.
 
 Lets put this object into the main function and calculate:
 
@@ -524,7 +524,7 @@ Lets put this object into the main function and calculate:
               #Unstable.hessian(Temperature)
 
               #
-              HessianVsTemperature = Hessian_Vs_Temperature(T0,Temperature_i,Files_ForceFields,configuration_number,sobol,sobol_scatter)
+              HessianVsTemperature = Hessian_Vs_Temperature(Temperature,Temperature_i,Files_ForceFields,configuration_number,sobol,sobol_scatter)
               HessianVsTemperature.cycle_T(File_final_dyn,nqirr)
               HessianVsTemperature.draw_figure()
 
@@ -533,7 +533,7 @@ Lets put this object into the main function and calculate:
 We will simulate the temperatures up to room temperature (300 K) with steps of 50 K. Note, this will perform all the steps above 6 times, so it may take some minutes, depending on the PC (on a i3 from 2015, with one core, it took 2 hours).
 If it takes too long you can reduce the number of steps by changing 'Temperature_i = np.linspace(50, 300, 6)'.
 
-
+We are using only 50 configurations in the ensemble. Note that this makes a fast calculation but is a low number. How the calculation changes with the number of configurations?
 
 As exercise, you can modify this "Hessian_Vs_Temperature" object by calling the "Search_instabilities" into the "cycle_T" function.
 

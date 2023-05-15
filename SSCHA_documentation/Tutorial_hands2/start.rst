@@ -533,7 +533,7 @@ Lets put this object into the main function and calculate:
 We will simulate the temperatures up to room temperature (300 K) with steps of 50 K. Note, this will perform all the steps above 6 times, so it may take some minutes, depending on the PC (on a i3 from 2015, with one core, it took 2 hours).
 If it takes too long you can reduce the number of steps by changing 'Temperature_i = np.linspace(50, 300, 6)'.
 
-
+We are using only 50 configurations in the ensemble. Note that this makes a fast calculation but is a low number. How the calculation changes with the number of configurations?
 
 As exercise, you can modify this "Hessian_Vs_Temperature" object by calling the "Search_instabilities" into the "cycle_T" function.
 
