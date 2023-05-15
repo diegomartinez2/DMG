@@ -413,7 +413,7 @@ Up to now we studied the system at T=0K and we found that there is an instabilit
 
               # Detect space group
               symm=spglib.get_spacegroup(self.relax.minim.dyn.structure.get_ase_atoms(), 0.005)
-              print('Current SG = ', symm,' at T=',int(Temperatura))
+              print('Current SG = ', symm,' at T=',int(Temperature))
 
               # Recompute the ensemble for the hessian calculation
               self.ensemble = sscha.Ensemble.Ensemble(self.relax.minim.dyn, T0 = Temperature, supercell = self.dyn.GetSupercell())
@@ -481,9 +481,9 @@ Up to now we studied the system at T=0K and we found that there is an instabilit
 
 Lets see the code:
 
-1.
+1. The initialization is similar to the one we did for the "Search_instabilities".
 
-2.
+2. In "cycle_T" we condense in one function the calculation of the hessians in a loop for different temperatures.
 
 3.
 
@@ -524,7 +524,7 @@ Lets put this object into the main function and calculate:
               #Unstable.hessian(Temperature)
 
               #
-              HessianVsTemperature = Hessian_Vs_Temperature(T0,Temperature_i,Files_ForceFields,configuration_number,sobol,sobol_scatter)
+              HessianVsTemperature = Hessian_Vs_Temperature(Temperature,Temperature_i,Files_ForceFields,configuration_number,sobol,sobol_scatter)
               HessianVsTemperature.cycle_T(File_final_dyn,nqirr)
               HessianVsTemperature.draw_figure()
 
