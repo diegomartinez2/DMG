@@ -483,9 +483,9 @@ Lets see the code:
 
 1. The initialization is similar to the one we did for the "Search_instabilities".
 
-2. In "cycle_T" we condense in one function the calculation of the hessians in a loop for different temperatures.
+2. In "cycle_T" we condense in one function the calculation of the hessians in a loop for different temperatures. In the end, it searches for the lowest non acoustic frequency to save with the correspondent auxiliar sscha frequency.
 
-3.
+3. Finally, in the last function of this object, we make a graphic output of the data.
 
 Lets put this object into the main function and calculate:
 
