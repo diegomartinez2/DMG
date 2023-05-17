@@ -178,9 +178,9 @@ The free energy curvature can be written in matrix form as:</p>
 This force field needs the harmonic dynamical matrix to be initialized, and the higher order parameters.
 Finally, the dynamical matrix for the minimization is loaded and readied. Since we are studying a system that has a spontaneous symmetry breaking at low temperature, the harmonic dynamical matrices will have imaginary phonons. We must enforce phonons to be positive definite to start a SSCHA minimization.</p>
 </li>
-<li><p class="first">The next function of this object “ensemble_sscha” just creates the ensembles for the specified temperature. As an extra, we also look for the space group of the structure.</p>
+<li><p class="first">The next function of this object, <em>ensemble_sscha</em>, just creates the ensembles for the specified temperature. As an extra, we also look for the space group of the structure.</p>
 </li>
-<li><p class="first">Next comes the minimization function. In the “minimizing” function we can set the fourth root minimization, in which, instead of optimizing the auxiliary dynamical matrices themselves, we will optimize their fourth root.</p>
+<li><p class="first">Next comes the minimization function. In the <em>minimizing</em> function we can set the fourth root minimization, in which, instead of optimizing the auxiliary dynamical matrices themselves, we will optimize their fourth root.</p>
 <div class="math notranslate nohighlight">
 \[\Phi = \left({\sqrt[4]{\Phi}}\right)^4\]</div>
 <p>This constrains the dynamical matrix to be positive definite during the minimization.
@@ -215,14 +215,14 @@ Next the automatic relaxation is set with the option here to use the Sobol seque
   <span class="k">return</span> <span class="mi">0</span>
 </pre></div>
 </div>
-<p>This code will calculate the SSCHA minimization with the “ff_calculator”. We cat use “sscha-plot-data.py” to take a look at the minimization.</p>
+<p>This code will calculate the SSCHA minimization with the <em>ff_calculator</em>. We cat use <strong>sscha-plot-data.py</strong> to take a look at the minimization.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>sscha-plot-data.py<span class="w"> </span>frequencies.dat
 </pre></div>
 </div>
 <p>Note: this force field model is not able to compute stress, as it is defined only at fixed volume, so we cannot use it for a variable cell relaxation.</p>
 <p><strong>Now we can search for instabilities.</strong></p>
 <p>If we have a very small mode in the SSCHA frequencies, it means that associated to that mode we have huge fluctuations. This can indicate an instability. However, to test this we need to compute the free energy curvature along this mode. This can be obtained in one shot thanks to the theory developed in <a class="reference external" href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111">Bianco et. al. Phys. Rev. B 96, 014111.</a></p>
-<p>For that we create another object, “Search_instabilities” to do the job.</p>
+<p>For that we create another object, <em>Search_instabilities</em> to do the job.</p>
 <p>[…]</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Search_instabilities</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">files_ForceFields</span><span class="p">,</span><span class="n">files_dyn</span><span class="p">,</span><span class="n">nqirr</span><span class="p">):</span>
@@ -285,11 +285,11 @@ Next the automatic relaxation is set with the option here to use the Sobol seque
 </div>
 <p>Lets see what this code do:</p>
 <ol class="arabic">
-<li><p class="first">In the initialization function the “ff_calculator” toy potential is defined as we have seen in the previous object.</p>
+<li><p class="first">In the initialization function the <em>ff_calculator</em> toy potential is defined as we have seen in the previous object.</p>
 </li>
-<li><p class="first">In “load_dyn” function, it will load the dynamical matrix calculated previously with the “ff_calculator” toy potential, so there is no need to calculate it again.</p>
+<li><p class="first">With the <em>load_dyn</em> function, we will load the dynamical matrix calculated previously with the <em>ff_calculator</em> toy potential, so there is no need to calculate it again.</p>
 </li>
-<li><p class="first">Then, as the Hessian calculation is more sensible, we generate a new ensemble with more configurations in “ensemble_sscha”.
+<li><p class="first">Then, as the Hessian calculation is more sensible, we generate a new ensemble with more configurations in <em>ensemble_sscha</em>.
 To compute the hessian we will use an ensemble of 10000 configurations.
 Note here that we can use less if we use Sobol sequence or we can load a previously generated ensemble.</p>
 </li>
