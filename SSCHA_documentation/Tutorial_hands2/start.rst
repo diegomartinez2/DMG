@@ -167,7 +167,7 @@ Now we need to calculate the SSCHA dynamical matrix. For that we can use this ob
 
 We've seen most of this before, so let's review what's there in detail:
 
-1. First this object is initialized in "__init__" where the toy model potential is set for the next calculations.
+1. First this object is initialized in *__init__* where the toy model potential is set for the next calculations.
    This force field needs the harmonic dynamical matrix to be initialized, and the higher order parameters.
    Finally, the dynamical matrix for the minimization is loaded and readied. Since we are studying a system that has a spontaneous symmetry breaking at low temperature, the harmonic dynamical matrices will have imaginary phonons. We must enforce phonons to be positive definite to start a SSCHA minimization.
 
