@@ -46,22 +46,6 @@ print (peaks,Frequency[peaks])
 print (peaks,_["widths"])
 print (_["widths"][1],_["widths"][2],_["widths"][3])
 #print (Frequency.max())
-#-------------------------------
-amp1 = 0.009
-cen1 = Frequency[peaks[1]] #0.0009
-wid1 = _["widths"][1] #0.0001
-
-amp2 = 0.001
-cen2 = Frequency[peaks[2]] #0.07
-wid2 = 0.001
-
-amp3 = 0.007
-cen3 = Frequency[peaks[3]] #0.08
-wid3 = 0.001
-
-amp4 = 0.0
-cen4 = 0.0
-wid4 = 0.0
 #--------------------------------
 x_array = Frequency
 y_array_3lorentz = Spec
@@ -78,7 +62,23 @@ def _base(x):
     else:
         x_out = 0
     return x_out
+#-------------------------------
+amp1 = Spec[peaks[1]]-_base(peaks[1]) #0.009
+cen1 = Frequency[peaks[1]] #0.0009
+wid1 = _["widths"][1] #0.0001
 
+amp2 = Spec[peaks[2]]-_base(peaks[2]) #0.001
+cen2 = Frequency[peaks[2]] #0.07
+wid2 = _["widths"][2] #0.001
+
+amp3 = Spec[peaks[3]]-_base(peaks[3]) #0.007
+cen3 = Frequency[peaks[3]] #0.08
+wid3 = _["widths"][3] #0.001
+
+amp4 = 0.0
+cen4 = 0.0
+wid4 = 0.0
+#-------------------------------
 def _1Lorentzian(x, amp1, cen1, wid1):
     return amp1*wid1**2/((x-cen1)**2+wid1**2)
 
