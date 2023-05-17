@@ -541,7 +541,7 @@ We are using only 50 configurations in the ensemble. Note that this makes a fast
    :width: 400
    :alt: Freq. vs. Confs..
 
-   Evolution of the lowest 'soft' frequency in relation to the number of configurations in the ensemble with a stable configuration.
+   Evolution of the lowest 'soft' frequency in relation to the number of configurations in the ensemble with a stable configuration. The line is the media and the shade is the standard deviation.
 
 As exercise, you can modify this "Hessian_Vs_Temperature" object by calling the "Search_instabilities" into the "cycle_T" function.
 
