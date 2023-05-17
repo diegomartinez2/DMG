@@ -43,11 +43,13 @@ x_max_range=Frequency.max()
 y_max_range=Spec.max()
 #print (x_max_range)
 print (peaks,Frequency[peaks])
+print (peaks,_["widths"])
+print (_["widths"][1],_["widths"][2],_["widths"][3])
 #print (Frequency.max())
 #-------------------------------
 amp1 = 0.009
 cen1 = Frequency[peaks[1]] #0.0009
-wid1 = 0.0001
+wid1 = _["widths"][1] #0.0001
 
 amp2 = 0.001
 cen2 = Frequency[peaks[2]] #0.07
