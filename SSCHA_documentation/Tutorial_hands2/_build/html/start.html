@@ -295,7 +295,7 @@ Note here that we can use less if we use Sobol sequence or we can load a previou
 </li>
 <li><p class="first">We now compute forces and energies using the force field calculator.</p>
 </li>
-<li><p class="first">Finally the free energy hessian is calculated in the “hessian” function.
+<li><p class="first">Finally the free energy hessian is calculated in the <em>hessian</em> function.
 We can choose if we neglect or not in the calculation the four phonon scattering process. Four phonon scattering processes require a huge memory allocation for big systems, that scales as (3⋅N)^4 with N the number of atoms in the supercell. Moreover, it may require also more configurations to converge.</p>
 <p>In almost all the systems we studied up to now, we found this four phonon scattering at high order to be negligible. We remark, that the SSCHA minimization already includes four phonon scattering at the lowest order perturbation theory, thus neglecting this term only affects combinations of one or more four phonon scattering with two three phonon scatterings (high order diagrams). For more details, see <a class="reference external" href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111">Bianco et. al. Phys. Rev. B 96, 014111.</a></p>
 <p>We can then print the frequencies of the hessian. If an imaginary frequency is present, then the system wants to spontaneously break the high symmetry phase.</p>
@@ -466,8 +466,8 @@ We can choose if we neglect or not in the calculation the four phonon scattering
 </div>
 <p>Lets see the code:</p>
 <ol class="arabic simple">
-<li>The initialization is similar to the one we did for the “Search_instabilities”.</li>
-<li>In “cycle_T” we condense in one function the calculation of the hessians in a loop for different temperatures. In the end, it searches for the lowest non acoustic frequency to save with the correspondent auxiliar sscha frequency.</li>
+<li>The initialization is similar to the one we did for the <em>Search_instabilities</em>.</li>
+<li>In <em>cycle_T</em> we condense in one function the calculation of the hessians in a loop for different temperatures. In the end, it searches for the lowest non acoustic frequency to save with the correspondent auxiliar sscha frequency.</li>
 <li>Finally, in the last function of this object, we make a graphic output of the data.</li>
 </ol>
 <p>Lets put this object into the main function and calculate:</p>
@@ -512,7 +512,7 @@ We can choose if we neglect or not in the calculation the four phonon scattering
 </pre></div>
 </div>
 <p>We will simulate the temperatures up to room temperature (300 K) with steps of 50 K. Note, this will perform all the steps above 6 times, so it may take some minutes, depending on the PC (on a i3 from 2015, with one core, it took 2 hours).
-If it takes too long you can reduce the number of steps by changing ‘Temperature_i = np.linspace(50, 300, 6)’.</p>
+If it takes too long you can reduce the number of steps by changing <em>Temperature_i = np.linspace(50, 300, 6)</em>.</p>
 <p>We are using only 50 configurations in the ensemble. Note that this makes a fast calculation but is a low number. How the calculation changes with the number of configurations?</p>
 <div class="figure" id="id5">
 <span id="id3"></span><a class="reference internal image-reference" href="_images/Conf_Freq.png"><img alt="Freq. vs. Confs.." src="_images/Conf_Freq.png" style="width: 400px;" /></a>

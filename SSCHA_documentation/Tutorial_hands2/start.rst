@@ -303,7 +303,7 @@ Lets see what this code do:
 
 4. We now compute forces and energies using the force field calculator.
 
-5. Finally the free energy hessian is calculated in the "hessian" function.
+5. Finally the free energy hessian is calculated in the *hessian* function.
    We can choose if we neglect or not in the calculation the four phonon scattering process. Four phonon scattering processes require a huge memory allocation for big systems, that scales as (3⋅N)^4 with N the number of atoms in the supercell. Moreover, it may require also more configurations to converge.
 
    In almost all the systems we studied up to now, we found this four phonon scattering at high order to be negligible. We remark, that the SSCHA minimization already includes four phonon scattering at the lowest order perturbation theory, thus neglecting this term only affects combinations of one or more four phonon scattering with two three phonon scatterings (high order diagrams). For more details, see `Bianco et. al. Phys. Rev. B 96, 014111. <https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.014111>`_
@@ -481,9 +481,9 @@ Up to now we studied the system at T=0K and we found that there is an instabilit
 
 Lets see the code:
 
-1. The initialization is similar to the one we did for the "Search_instabilities".
+1. The initialization is similar to the one we did for the *Search_instabilities*.
 
-2. In "cycle_T" we condense in one function the calculation of the hessians in a loop for different temperatures. In the end, it searches for the lowest non acoustic frequency to save with the correspondent auxiliar sscha frequency.
+2. In *cycle_T* we condense in one function the calculation of the hessians in a loop for different temperatures. In the end, it searches for the lowest non acoustic frequency to save with the correspondent auxiliar sscha frequency.
 
 3. Finally, in the last function of this object, we make a graphic output of the data.
 
@@ -531,7 +531,7 @@ Lets put this object into the main function and calculate:
               return 0
 
 We will simulate the temperatures up to room temperature (300 K) with steps of 50 K. Note, this will perform all the steps above 6 times, so it may take some minutes, depending on the PC (on a i3 from 2015, with one core, it took 2 hours).
-If it takes too long you can reduce the number of steps by changing 'Temperature_i = np.linspace(50, 300, 6)'.
+If it takes too long you can reduce the number of steps by changing the temperature array in *Temperature_i = np.linspace(50, 300, 6)*.
 
 We are using only 50 configurations in the ensemble. Note that this makes a fast calculation but is a low number. How the calculation changes with the number of configurations?
 
@@ -541,9 +541,9 @@ We are using only 50 configurations in the ensemble. Note that this makes a fast
    :width: 400
    :alt: Freq. vs. Confs..
 
-   Evolution of the lowest 'soft' frequency in relation to the number of configurations in the ensemble with a stable configuration. The line is the media and the shade is the standard deviation.
+   Evolution of the lowest *soft* frequency in relation to the number of configurations in the ensemble with a stable configuration. The line is the media and the shade is the standard deviation.
 
-As exercise, you can modify this "Hessian_Vs_Temperature" object by calling the "Search_instabilities" into the "cycle_T" function.
+As exercise, you can modify this **Hessian_Vs_Temperature** object by calling the **Search_instabilities** into the *cycle_T* function.
 
 
 
