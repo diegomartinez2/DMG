@@ -535,6 +535,14 @@ If it takes too long you can reduce the number of steps by changing 'Temperature
 
 We are using only 50 configurations in the ensemble. Note that this makes a fast calculation but is a low number. How the calculation changes with the number of configurations?
 
+.. _fig-second_order:
+
+.. figure:: figures/Conf_Freq.png
+   :width: 400
+   :alt: Freq. vs. Confs..
+
+   Evolution of the lowest 'soft' frequency in relation to the number of configurations in the ensemble.
+
 As exercise, you can modify this "Hessian_Vs_Temperature" object by calling the "Search_instabilities" into the "cycle_T" function.
 
 
