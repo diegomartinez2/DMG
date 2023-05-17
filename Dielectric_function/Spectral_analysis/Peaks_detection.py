@@ -13,8 +13,8 @@ import numpy as np
 #namefile="xju"
 #namefile="xjv"
 #namefile="xjw"
-#namefile="xjx"
-namefile="xjy"
+namefile="xjx"
+#namefile="xjy"
 #freq_range=5001
 freq_range=900
 y_max_range=0.02    #0.015
