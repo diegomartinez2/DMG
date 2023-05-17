@@ -10,18 +10,20 @@ import numpy as np
 #with open("xtg") as file:
 #with open("xjz") as file:
 
-#namefile="xju"
+namefile="xju"
 #namefile="xjv"
 #namefile="xjw"
-namefile="xjx"
+#namefile="xjx"
 #namefile="xjy"
+#namefile="xjz"
 #freq_range=5001
-freq_range=900
+freq_range=1000
 y_max_range=0.02    #0.015
 with open(namefile) as file:
      lines = [line.rsplit() for line in file]
 Frequency = np.zeros(5001)
 Spec = np.zeros(5001)
+Data5 = np.zeros(5001)
 #for i in range(5001):
 #for i in range(555):
 #for i in range(700):
@@ -29,6 +31,7 @@ for i in range(freq_range):
 #     print (lines[i][2])
      Frequency[i]=lines[i][2]
      Spec[i]=lines[i][6]
+     Data5[i]=lines[i][4]
 #hacemos nulo lo que está fuera de marco
 #     if (Frequency[i] > 0.15):
 #           print (i, Frequency[i], Spec[i])
@@ -36,7 +39,7 @@ for i in range(freq_range):
 
 
 
-peaks, _ = find_peaks(Spec,width=5)
+peaks, _ = find_peaks(Spec,width=5,rel_height=0.3)
 #m = np.zeros(Frequency.shape, dtype=bool)
 #m[peaks] = True
 x_max_range=Frequency.max()
@@ -44,11 +47,21 @@ y_max_range=Spec.max()
 #print (x_max_range)
 print (peaks,Frequency[peaks])
 print (peaks,_["widths"])
-print (_["widths"][0],_["widths"][1],_["widths"][2])
+#print (_["widths"][0],_["widths"][1],_["widths"][2])
 #print (Frequency.max())
 #--------------------------------
 x_array = Frequency
 y_array_3lorentz = Spec
+#--------------------------------
+plt.plot(Frequency, Spec, label="original")
+plt.plot(Frequency, Data5*0.000006, label="Im(Epsilon)", ls=":")
+plt.plot(Frequency, Spec-(Data5*0.000006), label="Substraction")
+plt.xlim([0, x_max_range])
+plt.ylim([0, y_max_range])
+plt.legend()
+plt.tight_layout()
+plt.savefig("Epsilon_{}".format(namefile))
+plt.show()
 #--------------------------------
 def _base(x):
     if (x < 0.0):
@@ -58,22 +71,23 @@ def _base(x):
         #x_out = -1.9985*x*x+0.0651067*x+0.000119668
         x_out = 0
     elif ((x >= 0.0271)and(x <= 0.107)):
-        x_out = -1.99329*x*x+0.264442*x-0.00527247
+        #x_out = -1.99329*x*x+0.264442*x-0.00527247
+        x_out = -1.99329*x*x+0.264442*x-0.00627247
     else:
         x_out = 0
     return x_out
 #-------------------------------
-amp1 = Spec[peaks[0]]-_base(peaks[0]) #0.009
-cen1 = Frequency[peaks[0]] #0.0009
-wid1 = _["widths"][0] #0.0001
+#amp1 = Spec[peaks[0]]-_base(peaks[0]) #0.009
+#cen1 = Frequency[peaks[0]] #0.0009
+#wid1 = _["widths"][0] #0.0001
 
-amp2 = Spec[peaks[1]]-_base(peaks[1]) #0.001
-cen2 = Frequency[peaks[1]] #0.07
-wid2 = _["widths"][1] #0.001
+#amp2 = Spec[peaks[1]]-_base(peaks[1]) #0.001
+#cen2 = Frequency[peaks[1]] #0.07
+#wid2 = _["widths"][1] #0.001
 
-amp3 = Spec[peaks[2]]-_base(peaks[2]) #0.007
-cen3 = Frequency[peaks[2]] #0.08
-wid3 = _["widths"][2] #0.001
+#amp3 = Spec[peaks[2]]-_base(peaks[2]) #0.007
+#cen3 = Frequency[peaks[2]] #0.08
+#wid3 = _["widths"][2] #0.001
 
 amp4 = 0.0
 cen4 = 0.0
@@ -104,6 +118,22 @@ plt.legend()
 plt.tight_layout()
 plt.savefig("Original_{}".format(namefile))
 plt.show()
+#-------------------------------
+amp1 = Spec[peaks[1]]-_base(peaks[1]) #0.009
+cen1 = Frequency[peaks[1]] #0.0009
+wid1 = _["widths"][1] #0.0001
+
+amp2 = Spec[peaks[2]]-_base(peaks[2]) #0.001
+cen2 = Frequency[peaks[2]] #0.07
+wid2 = _["widths"][2] #0.001
+
+amp3 = Spec[peaks[3]]-_base(peaks[3]) #0.007
+cen3 = Frequency[peaks[3]] #0.08
+wid3 = _["widths"][3] #0.001
+
+amp4 = 0.0
+cen4 = 0.0
+wid4 = 0.0
 #--------------------------------------------
 if (amp2==0.0):
     popt_1lorentz, pcov_1lorentz = scipy.optimize.curve_fit(_1Lorentzian, x_array, (y_array_3lorentz - base), p0=[amp1, cen1, wid1], bounds=(0,np.inf))
