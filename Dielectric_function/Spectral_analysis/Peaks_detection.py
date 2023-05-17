@@ -16,7 +16,7 @@ import numpy as np
 namefile="xjx"
 #namefile="xjy"
 #freq_range=5001
-freq_range=800
+freq_range=900
 y_max_range=0.02    #0.015
 with open(namefile) as file:
      lines = [line.rsplit() for line in file]
@@ -46,15 +46,15 @@ print (peaks,Frequency[peaks])
 #print (Frequency.max())
 #-------------------------------
 amp1 = 0.009
-cen1 = Frequency[peaks[0]] #0.0009
+cen1 = Frequency[peaks[1]] #0.0009
 wid1 = 0.0001
 
 amp2 = 0.001
-cen2 = Frequency[peaks[1]] #0.07
+cen2 = Frequency[peaks[2]] #0.07
 wid2 = 0.001
 
 amp3 = 0.007
-cen3 = Frequency[peaks[2]] #0.08
+cen3 = Frequency[peaks[3]] #0.08
 wid3 = 0.001
 
 amp4 = 0.0
