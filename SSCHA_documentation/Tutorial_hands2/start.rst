@@ -171,9 +171,9 @@ We've seen most of this before, so let's review what's there in detail:
    This force field needs the harmonic dynamical matrix to be initialized, and the higher order parameters.
    Finally, the dynamical matrix for the minimization is loaded and readied. Since we are studying a system that has a spontaneous symmetry breaking at low temperature, the harmonic dynamical matrices will have imaginary phonons. We must enforce phonons to be positive definite to start a SSCHA minimization.
 
-2. The next function of this object "ensemble_sscha" just creates the ensembles for the specified temperature. As an extra, we also look for the space group of the structure.
+2. The next function of this object *ensemble_sscha* just creates the ensembles for the specified temperature. As an extra, we also look for the space group of the structure.
 
-3. Next comes the minimization function. In the "minimizing" function we can set the fourth root minimization, in which, instead of optimizing the auxiliary dynamical matrices themselves, we will optimize their fourth root.
+3. Next comes the minimization function. In the *minimizing* function we can set the fourth root minimization, in which, instead of optimizing the auxiliary dynamical matrices themselves, we will optimize their fourth root.
 
    .. math:: \Phi = \left({\sqrt[4]{\Phi}}\right)^4
 

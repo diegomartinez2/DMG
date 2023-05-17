@@ -129,7 +129,7 @@ In this example, most of the time is spent in the minimization, however, if we r
 The total (maximum) number of energy/forces calculations is equal to the number of configurations times the number of iterations (passed through the `max_pop` argument).
 
 The calculation is submitted with `relax.relax()`. However, before running the calculation we introduce another object, the `IOInfo`.
-This tells the `relax` to save information of the free energy, its gradient and the anharmonic phonon frequencies during the minimization in the files *minim_info.dat° and *minim_info.freqs*. It is not mandatory to introduce them, but it is very usefull as it allows to visualize the minimization while it is running.
+This tells the `relax` to save information of the free energy, its gradient and the anharmonic phonon frequencies during the minimization in the files *minim_info.dat* and *minim_info.freqs*. It is not mandatory to introduce them, but it is very usefull as it allows to visualize the minimization while it is running.
 
 The full input file in the form of a python script is then:
 
