@@ -13,8 +13,8 @@ import numpy as np
 #namefile="xju"
 #namefile="xjv"
 #namefile="xjw"
-namefile="xjx"
-#namefile="xjy"
+#namefile="xjx"
+namefile="xjy"
 #freq_range=5001
 freq_range=900
 y_max_range=0.02    #0.015
@@ -44,7 +44,7 @@ y_max_range=Spec.max()
 #print (x_max_range)
 print (peaks,Frequency[peaks])
 print (peaks,_["widths"])
-print (_["widths"][1],_["widths"][2],_["widths"][3])
+print (_["widths"][0],_["widths"][1],_["widths"][2])
 #print (Frequency.max())
 #--------------------------------
 x_array = Frequency
@@ -63,17 +63,17 @@ def _base(x):
         x_out = 0
     return x_out
 #-------------------------------
-amp1 = Spec[peaks[1]]-_base(peaks[1]) #0.009
-cen1 = Frequency[peaks[1]] #0.0009
-wid1 = _["widths"][1] #0.0001
+amp1 = Spec[peaks[0]]-_base(peaks[0]) #0.009
+cen1 = Frequency[peaks[0]] #0.0009
+wid1 = _["widths"][0] #0.0001
 
-amp2 = Spec[peaks[2]]-_base(peaks[2]) #0.001
-cen2 = Frequency[peaks[2]] #0.07
-wid2 = _["widths"][2] #0.001
+amp2 = Spec[peaks[1]]-_base(peaks[1]) #0.001
+cen2 = Frequency[peaks[1]] #0.07
+wid2 = _["widths"][1] #0.001
 
-amp3 = Spec[peaks[3]]-_base(peaks[3]) #0.007
-cen3 = Frequency[peaks[3]] #0.08
-wid3 = _["widths"][3] #0.001
+amp3 = Spec[peaks[2]]-_base(peaks[2]) #0.007
+cen3 = Frequency[peaks[2]] #0.08
+wid3 = _["widths"][2] #0.001
 
 amp4 = 0.0
 cen4 = 0.0
