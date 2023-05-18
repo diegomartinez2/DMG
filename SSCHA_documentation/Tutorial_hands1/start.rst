@@ -752,7 +752,7 @@ The complete code is inside Examples/sscha_and_dft/nvt_local.py
 		#			command = command,
 		#			kpts = kpts,
 		#			koffset = koffset)
-    calculator = CC.calculators.Espresso(input_data =  imput_data,
+    calculator = Espresso(input_data =  imput_data,
        					pseudopotentials = pseudopotentials,
        					command = command,
        					kpts = kpts,
