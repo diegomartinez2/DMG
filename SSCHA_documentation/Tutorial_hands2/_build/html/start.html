@@ -512,13 +512,13 @@ We can choose if we neglect or not in the calculation the four phonon scattering
 </pre></div>
 </div>
 <p>We will simulate the temperatures up to room temperature (300 K) with steps of 50 K. Note, this will perform all the steps above 6 times, so it may take some minutes, depending on the PC (on a i3 from 2015, with one core, it took 2 hours).
-If it takes too long you can reduce the number of steps by changing <em>Temperature_i = np.linspace(50, 300, 6)</em>.</p>
+If it takes too long you can reduce the number of steps by changing the temperature array in <em>Temperature_i = np.linspace(50, 300, 6)</em>.</p>
 <p>We are using only 50 configurations in the ensemble. Note that this makes a fast calculation but is a low number. How the calculation changes with the number of configurations?</p>
 <div class="figure" id="id5">
 <span id="id3"></span><a class="reference internal image-reference" href="_images/Conf_Freq.png"><img alt="Freq. vs. Confs.." src="_images/Conf_Freq.png" style="width: 400px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Evolution of the lowest ‘soft’ frequency in relation to the number of configurations in the ensemble with a stable configuration. The line is the media and the shade is the standard deviation.</span></p>
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Evolution of the lowest <em>soft</em> frequency in relation to the number of configurations in the ensemble with a stable configuration. The line is the media and the shade is the standard deviation.</span></p>
 </div>
-<p>As exercise, you can modify this “Hessian_Vs_Temperature” object by calling the “Search_instabilities” into the “cycle_T” function.</p>
+<p>As exercise, you can modify this <strong>Hessian_Vs_Temperature</strong> object by calling the <strong>Search_instabilities</strong> into the <em>cycle_T</em> function.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="plot-the-hessian-phonon-dispersion">

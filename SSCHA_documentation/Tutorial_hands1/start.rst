@@ -325,7 +325,7 @@ You can use it even in your simulation, simply edit the value of the uppercase k
    # --------------------- THE SCRIPT FOLLOWS ---------------------
 
    # Load the harmonic and sscha phonons
-   harmonic_dyn = CC.Phonons.Phonons(, NQIRR)
+   harmonic_dyn = CC.Phonons.Phonons('harmonic_dyn', NQIRR)
    sscha_dyn = CC.Phonons.Phonons('sscha_T300_dyn', NQIRR)
 
    # Get the band path
@@ -350,14 +350,14 @@ You can use it even in your simulation, simply edit the value of the uppercase k
        lblsscha = None
        if i == 0:
            lbl = 'Harmonic'
-	   lblsscha = 'SSCHA'
+	         lblsscha = 'SSCHA'
 
        ax.plot(xaxis, harmonic_dispersion[:,i], color = 'k', ls = 'dashed', label = lbl)
        ax.plot(xaxis, sscha_dispersion[:,i], color = 'r', label = lblsscha)
 
    # Plot vertical lines for each high symmetry points
    for x in xticks:
-   ax.axvline(x, 0, 1, color = "k", lw = 0.4)
+      ax.axvline(x, 0, 1, color = "k", lw = 0.4)
    ax.axhline(0, 0, 1, color = 'k', ls = ':', lw = 0.4)
 
    # Set the x labels to the high symmetry points
