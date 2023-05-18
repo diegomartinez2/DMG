@@ -640,6 +640,7 @@ In the following example, we initialize the quantum espresso calculator for Gold
 .. code-block:: python
 
    import cellconstructor.calculators
+   from ase.calculators.espresso import Espresso
 
    # Initialize the DFT (Quantum Espresso) calculator for gold
    # The input data is a dictionary that encodes the pw.x input file namelist
@@ -674,10 +675,12 @@ In the following example, we initialize the quantum espresso calculator for Gold
 
 
    # Prepare the quantum espresso calculator
-   calculator = CC.calculators.Espresso(input_data,
-					pseudopotentials,
-					kpts = kpts,
-					koffset = koffset)
+   #calculator = CC.calculators.Espresso(input_data,
+		#			pseudopotentials,
+		#			kpts = kpts,
+		#			koffset = koffset)
+   calculator = Espresso(input_data = input_data, pseudopotentials = pseudopotentials,
+                        					kpts = kpts, koffset = koffset)
 
 
 If you are familiar with the quantum espresso input files, you should recognize all the options inside the input_data dictionary. For more options and more information, refer to the `quantum ESPRESSO pw.x input guide <https://www.quantum-espresso.org/Doc/INPUT_PW.html>`_.
