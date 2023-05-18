@@ -754,7 +754,7 @@ The complete code is inside Examples/sscha_and_dft/nvt_local.py
    TEMPERATURE = 300
    N_CONFIGS = 50
    MAX_ITERATIONS = 20
-   START_DYN = 'start_dyn'
+   START_DYN = 'harmonic_dyn'
    NQIRR = 13
 
    # Let us load the starting dynamical matrix
