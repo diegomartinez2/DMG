@@ -704,6 +704,7 @@ The complete code is inside Examples/sscha_and_dft/nvt_local.py
 
    # Import the DFT calculator
    import cellconstructor.calculators
+   from ase.calculators.espresso import Espresso
 
    # Import numerical and general pourpouse libraries
    import numpy as np, matplotlib.pyplot as plt
@@ -746,11 +747,16 @@ The complete code is inside Examples/sscha_and_dft/nvt_local.py
 
 
    # Prepare the quantum espresso calculator
-   calculator = CC.calculators.Espresso(input_data,
-					pseudopotentials,
-					command = command,
-					kpts = kpts,
-					koffset = koffset)
+   #calculator = CC.calculators.Espresso(input_data,
+		#			pseudopotentials,
+		#			command = command,
+		#			kpts = kpts,
+		#			koffset = koffset)
+    calculator = CC.calculators.Espresso(input_data =  imput_data,
+       					pseudopotentials = pseudopotentials,
+       					command = command,
+       					kpts = kpts,
+       					koffset = koffset)
 
 
 
