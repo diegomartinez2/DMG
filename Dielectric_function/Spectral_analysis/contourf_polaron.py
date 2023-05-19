@@ -10,18 +10,22 @@ import numpy as np
 
 plt.style.use('_mpl-gallery-nogrid')
 # read data
+namefile = "xae"
 with open(namefile) as file:
      lines = [line.rsplit() for line in file]
-Qx = np.zeros(5001)
+#Qx = np.zeros(5001)
 Qy = np.zeros(5001)
 Frequency = np.zeros(5001)
-Spec = np.zeros(5001)
+Spec = np.zeros(255051)
 for i in range(5001):
+    Qy[i]=lines[i][1]
+    Frequency[i]=lines[i][2]
+for i in range(255051):
 #     print (lines[i][2])
-  if (lines[i][0]==0.04346):
+#  if (lines[i][0]==0.04346):
      #Qx[i]=lines[i][0]
-     Qy[i]=lines[i][1]
-     Frequency[i]=lines[i][2]
+     #Qy[i]=lines[i][1]
+     #Frequency[i]=lines[i][2]
      Spec[i]=lines[i][6]
 # make data
 #X, Y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
