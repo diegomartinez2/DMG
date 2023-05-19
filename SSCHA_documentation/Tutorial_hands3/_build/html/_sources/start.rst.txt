@@ -542,11 +542,12 @@ If it takes too long you can reduce the number of steps by changing the temperat
 In :ref:`fig-results1` we can see that the phase transition...
 [...]
 
+
 .. _fig-results2:
 
 .. figure:: figures/5000_Temp_Omeg.png
    :with: 400
-   :alt: Freqs² vs Temps..
+   :alt: Freqs^2 vs Temps..
 
 For this reason is better to plot the temperature versus the square of the frequency as in :ref:`fig-results2`.
 [...]
