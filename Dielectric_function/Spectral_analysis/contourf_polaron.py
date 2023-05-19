@@ -20,8 +20,9 @@ Spec = np.zeros(255051)
 for i in range(5001):
     Qy[i]=lines[i][1]
     Frequency[i]=lines[i][2]
-    for j in range(5001):
-        Spec[i][j]=lines[i][6]
+for j in range(255051):
+    Spec[i]=lines[i][6]
+Z    np.reshape(A, (-1, 2))
 #for i in range(255051):
 #     print (lines[i][2])
 #  if (lines[i][0]==0.04346):
@@ -33,7 +34,7 @@ for i in range(5001):
 #X, Y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
 #Z = (1 - X/2 + X**5 + Y**3) * np.exp(-X**2 - Y**2)
 X, Y = np.meshgrid(Qy, Frequency)
-z = Spec
+z = np.reshape(Spec, (5001,5001))
 levels = np.linspace(Z.min(), Z.max(), 7)
 
 # plot
