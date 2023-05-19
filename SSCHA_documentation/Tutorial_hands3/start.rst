@@ -538,6 +538,7 @@ If it takes too long you can reduce the number of steps by changing the temperat
 .. figure:: figures/5000_Temp_Freq.png
    :width: 400
    :alt: Freq. vs. Temps..
+   Frequencies versus Temperatures
 
 In :ref:`fig-results1` we can see that the phase transition...
 [...]
@@ -548,6 +549,11 @@ In :ref:`fig-results1` we can see that the phase transition...
 .. figure:: figures/5000_Temp_Omeg.png
    :with: 400
    :alt: Freqs^2 vs Temps..
+   squared Frequencies versus Teperatures.
+
+For the Landau theory of phase transition, since the SSCHA is a mean-field approach, we expect that around the transition the critical exponent of the temperature goes as
+
+.. math:: \omega \sim \sqrt{\Phi}
 
 For this reason is better to plot the temperature versus the square of the frequency as in :ref:`fig-results2`.
 [...]
