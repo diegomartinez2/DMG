@@ -305,7 +305,7 @@ Here, all the frequencies in the supercell (at each q point commensurate with th
 <span class="c1"># --------------------- THE SCRIPT FOLLOWS ---------------------</span>
 
 <span class="c1"># Load the harmonic and sscha phonons</span>
-<span class="n">harmonic_dyn</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(,</span> <span class="n">NQIRR</span><span class="p">)</span>
+<span class="n">harmonic_dyn</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="s1">&#39;harmonic_dyn&#39;</span><span class="p">,</span> <span class="n">NQIRR</span><span class="p">)</span>
 <span class="n">sscha_dyn</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">Phonons</span><span class="o">.</span><span class="n">Phonons</span><span class="p">(</span><span class="s1">&#39;sscha_T300_dyn&#39;</span><span class="p">,</span> <span class="n">NQIRR</span><span class="p">)</span>
 
 <span class="c1"># Get the band path</span>
@@ -330,14 +330,14 @@ Here, all the frequencies in the supercell (at each q point commensurate with th
     <span class="n">lblsscha</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">lbl</span> <span class="o">=</span> <span class="s1">&#39;Harmonic&#39;</span>
-        <span class="n">lblsscha</span> <span class="o">=</span> <span class="s1">&#39;SSCHA&#39;</span>
+              <span class="n">lblsscha</span> <span class="o">=</span> <span class="s1">&#39;SSCHA&#39;</span>
 
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">harmonic_dispersion</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">lbl</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">sscha_dispersion</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">lblsscha</span><span class="p">)</span>
 
 <span class="c1"># Plot vertical lines for each high symmetry points</span>
 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xticks</span><span class="p">:</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">)</span>
+   <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span> <span class="o">=</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">)</span>
 
 <span class="c1"># Set the x labels to the high symmetry points</span>
@@ -553,6 +553,7 @@ The simplest way of interfacing the SSCHA to an other ab initio code is to direc
 <p>In the case of DFT, unfortunately, we cannot simply create the calculator in one line, like we did for EMT force-field, as we need also to provide a lot of parameters, as pseudopotentials, the choice of exchange correlation, the cutoff of the basis set, and the k mesh grid for Brilluin zone sampling.</p>
 <p>In the following example, we initialize the quantum espresso calculator for Gold.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cellconstructor.calculators</span>
+<span class="kn">from</span> <span class="nn">ase.calculators.espresso</span> <span class="kn">import</span> <span class="n">Espresso</span>
 
 <span class="c1"># Initialize the DFT (Quantum Espresso) calculator for gold</span>
 <span class="c1"># The input data is a dictionary that encodes the pw.x input file namelist</span>
@@ -587,10 +588,12 @@ The simplest way of interfacing the SSCHA to an other ab initio code is to direc
 
 
 <span class="c1"># Prepare the quantum espresso calculator</span>
-<span class="n">calculator</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">calculators</span><span class="o">.</span><span class="n">Espresso</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span>
-                                     <span class="n">pseudopotentials</span><span class="p">,</span>
-                                     <span class="n">kpts</span> <span class="o">=</span> <span class="n">kpts</span><span class="p">,</span>
-                                     <span class="n">koffset</span> <span class="o">=</span> <span class="n">koffset</span><span class="p">)</span>
+<span class="c1">#calculator = CC.calculators.Espresso(input_data,</span>
+             <span class="c1">#                       pseudopotentials,</span>
+             <span class="c1">#                       kpts = kpts,</span>
+             <span class="c1">#                       koffset = koffset)</span>
+<span class="n">calculator</span> <span class="o">=</span> <span class="n">Espresso</span><span class="p">(</span><span class="n">input_data</span> <span class="o">=</span> <span class="n">input_data</span><span class="p">,</span> <span class="n">pseudopotentials</span> <span class="o">=</span> <span class="n">pseudopotentials</span><span class="p">,</span>
+                                                     <span class="n">kpts</span> <span class="o">=</span> <span class="n">kpts</span><span class="p">,</span> <span class="n">koffset</span> <span class="o">=</span> <span class="n">koffset</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>If you are familiar with the quantum espresso input files, you should recognize all the options inside the input_data dictionary. For more options and more information, refer to the <a class="reference external" href="https://www.quantum-espresso.org/Doc/INPUT_PW.html">quantum ESPRESSO pw.x input guide</a>.</p>
@@ -608,6 +611,7 @@ Instead, we take the result obtained with EMT in the previous sections, and try 
 
 <span class="c1"># Import the DFT calculator</span>
 <span class="kn">import</span> <span class="nn">cellconstructor.calculators</span>
+<span class="kn">from</span> <span class="nn">ase.calculators.espresso</span> <span class="kn">import</span> <span class="n">Espresso</span>
 
 <span class="c1"># Import numerical and general pourpouse libraries</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -650,8 +654,13 @@ Instead, we take the result obtained with EMT in the previous sections, and try 
 
 
 <span class="c1"># Prepare the quantum espresso calculator</span>
-<span class="n">calculator</span> <span class="o">=</span> <span class="n">CC</span><span class="o">.</span><span class="n">calculators</span><span class="o">.</span><span class="n">Espresso</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span>
-                                     <span class="n">pseudopotentials</span><span class="p">,</span>
+<span class="c1">#calculator = CC.calculators.Espresso(input_data,</span>
+             <span class="c1">#                       pseudopotentials,</span>
+             <span class="c1">#                       command = command,</span>
+             <span class="c1">#                       kpts = kpts,</span>
+             <span class="c1">#                       koffset = koffset)</span>
+ <span class="n">calculator</span> <span class="o">=</span> <span class="n">Espresso</span><span class="p">(</span><span class="n">input_data</span> <span class="o">=</span>  <span class="n">imput_data</span><span class="p">,</span>
+                                     <span class="n">pseudopotentials</span> <span class="o">=</span> <span class="n">pseudopotentials</span><span class="p">,</span>
                                      <span class="n">command</span> <span class="o">=</span> <span class="n">command</span><span class="p">,</span>
                                      <span class="n">kpts</span> <span class="o">=</span> <span class="n">kpts</span><span class="p">,</span>
                                      <span class="n">koffset</span> <span class="o">=</span> <span class="n">koffset</span><span class="p">)</span>
@@ -661,7 +670,7 @@ Instead, we take the result obtained with EMT in the previous sections, and try 
 <span class="n">TEMPERATURE</span> <span class="o">=</span> <span class="mi">300</span>
 <span class="n">N_CONFIGS</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">MAX_ITERATIONS</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="n">START_DYN</span> <span class="o">=</span> <span class="s1">&#39;start_dyn&#39;</span>
+<span class="n">START_DYN</span> <span class="o">=</span> <span class="s1">&#39;harmonic_dyn&#39;</span>
 <span class="n">NQIRR</span> <span class="o">=</span> <span class="mi">13</span>
 
 <span class="c1"># Let us load the starting dynamical matrix</span>

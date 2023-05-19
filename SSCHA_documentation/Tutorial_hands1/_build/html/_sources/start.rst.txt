@@ -325,7 +325,7 @@ You can use it even in your simulation, simply edit the value of the uppercase k
    # --------------------- THE SCRIPT FOLLOWS ---------------------
 
    # Load the harmonic and sscha phonons
-   harmonic_dyn = CC.Phonons.Phonons(, NQIRR)
+   harmonic_dyn = CC.Phonons.Phonons('harmonic_dyn', NQIRR)
    sscha_dyn = CC.Phonons.Phonons('sscha_T300_dyn', NQIRR)
 
    # Get the band path
@@ -350,14 +350,14 @@ You can use it even in your simulation, simply edit the value of the uppercase k
        lblsscha = None
        if i == 0:
            lbl = 'Harmonic'
-	   lblsscha = 'SSCHA'
+	         lblsscha = 'SSCHA'
 
        ax.plot(xaxis, harmonic_dispersion[:,i], color = 'k', ls = 'dashed', label = lbl)
        ax.plot(xaxis, sscha_dispersion[:,i], color = 'r', label = lblsscha)
 
    # Plot vertical lines for each high symmetry points
    for x in xticks:
-   ax.axvline(x, 0, 1, color = "k", lw = 0.4)
+      ax.axvline(x, 0, 1, color = "k", lw = 0.4)
    ax.axhline(0, 0, 1, color = 'k', ls = ':', lw = 0.4)
 
    # Set the x labels to the high symmetry points
@@ -640,6 +640,7 @@ In the following example, we initialize the quantum espresso calculator for Gold
 .. code-block:: python
 
    import cellconstructor.calculators
+   from ase.calculators.espresso import Espresso
 
    # Initialize the DFT (Quantum Espresso) calculator for gold
    # The input data is a dictionary that encodes the pw.x input file namelist
@@ -674,10 +675,12 @@ In the following example, we initialize the quantum espresso calculator for Gold
 
 
    # Prepare the quantum espresso calculator
-   calculator = CC.calculators.Espresso(input_data,
-					pseudopotentials,
-					kpts = kpts,
-					koffset = koffset)
+   #calculator = CC.calculators.Espresso(input_data,
+		#			pseudopotentials,
+		#			kpts = kpts,
+		#			koffset = koffset)
+   calculator = Espresso(input_data = input_data, pseudopotentials = pseudopotentials,
+                        				kpts = kpts, koffset = koffset)
 
 
 If you are familiar with the quantum espresso input files, you should recognize all the options inside the input_data dictionary. For more options and more information, refer to the `quantum ESPRESSO pw.x input guide <https://www.quantum-espresso.org/Doc/INPUT_PW.html>`_.
@@ -701,6 +704,7 @@ The complete code is inside Examples/sscha_and_dft/nvt_local.py
 
    # Import the DFT calculator
    import cellconstructor.calculators
+   from ase.calculators.espresso import Espresso
 
    # Import numerical and general pourpouse libraries
    import numpy as np, matplotlib.pyplot as plt
@@ -743,18 +747,23 @@ The complete code is inside Examples/sscha_and_dft/nvt_local.py
 
 
    # Prepare the quantum espresso calculator
-   calculator = CC.calculators.Espresso(input_data,
-					pseudopotentials,
-					command = command,
-					kpts = kpts,
-					koffset = koffset)
+   #calculator = CC.calculators.Espresso(input_data,
+		#			pseudopotentials,
+		#			command = command,
+		#			kpts = kpts,
+		#			koffset = koffset)
+    calculator = Espresso(input_data =  imput_data,
+       					pseudopotentials = pseudopotentials,
+       					command = command,
+       					kpts = kpts,
+       					koffset = koffset)
 
 
 
    TEMPERATURE = 300
    N_CONFIGS = 50
    MAX_ITERATIONS = 20
-   START_DYN = 'start_dyn'
+   START_DYN = 'harmonic_dyn'
    NQIRR = 13
 
    # Let us load the starting dynamical matrix
