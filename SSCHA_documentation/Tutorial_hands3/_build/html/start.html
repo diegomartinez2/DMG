@@ -513,10 +513,11 @@ We can choose if we neglect or not in the calculation the four phonon scattering
 </div>
 <p>We will simulate the temperatures up to room temperature (300 K) with steps of 50 K. Note, this will perform all the steps above 6 times, so it may take some minutes, depending on the PC (on a i3 from 2015, with one core, it took 2 hours).
 If it takes too long you can reduce the number of steps by changing the temperature array in <em>Temperature_i = np.linspace(50, 300, 6)</em>.</p>
-<div class="figure" id="fig-results1">
-<a class="reference internal image-reference" href="_images/5000_Temp_Freq.png"><img alt="Freq. vs. Temps.." src="_images/5000_Temp_Freq.png" style="width: 400px;" /></a>
+<div class="figure" id="id5">
+<span id="fig-results1"></span><a class="reference internal image-reference" href="_images/5000_Temp_Freq.png"><img alt="Freq. vs. Temps.." src="_images/5000_Temp_Freq.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Frequencies versus Temperatures</span></p>
 </div>
-<p>In <span class="xref std std-ref">fig-results1</span> we can see that the phase transition…
+<p>In <a class="reference internal" href="#fig-results1"><span class="std std-ref">Frequencies versus Temperatures</span></a> we can see that the phase transition…
 […]</p>
 <p>For the Landau theory of phase transition, since the SSCHA is a mean-field approach, we expect that around the transition the critical exponent of the temperature goes as</p>
 <div class="math notranslate nohighlight">
@@ -524,7 +525,7 @@ If it takes too long you can reduce the number of steps by changing the temperat
 <p>For this reason is better to plot the temperature versus the square of the frequency as in <span class="xref std std-ref">fig-results2</span>.
 […]</p>
 <p>We are using only 50 configurations in the ensemble. Note that this makes a fast calculation but is a low number. How the calculation changes with the number of configurations?</p>
-<div class="figure" id="id5">
+<div class="figure" id="id6">
 <span id="id3"></span><a class="reference internal image-reference" href="_images/Conf_Freq.png"><img alt="Freq. vs. Confs.." src="_images/Conf_Freq.png" style="width: 400px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Evolution of the lowest <em>soft</em> frequency in relation to the number of configurations in the ensemble with a stable configuration. The line is the media and the shade is the standard deviation.</span></p>
 </div>
