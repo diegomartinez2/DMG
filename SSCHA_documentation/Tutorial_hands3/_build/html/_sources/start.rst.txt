@@ -539,7 +539,7 @@ If it takes too long you can reduce the number of steps by changing the temperat
    :width: 400
    :alt: Freq. vs. Temps..
 
-In :ref:`_fig-results1` we can see that the phase transition...
+In :ref:`fig-results1` we can see that the phase transition...
 [...]
 
 .. _fig-results2:
@@ -548,7 +548,7 @@ In :ref:`_fig-results1` we can see that the phase transition...
    :with: 400
    :alt: Freqs² vs Temps..
 
-For this reason is better to plot the temperature versus the square of the frequency as in :ref:`_fig-results2`.
+For this reason is better to plot the temperature versus the square of the frequency as in :ref:`fig-results2`.
 [...]
 
 We are using only 50 configurations in the ensemble. Note that this makes a fast calculation but is a low number. How the calculation changes with the number of configurations?
