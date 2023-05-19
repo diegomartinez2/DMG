@@ -547,6 +547,8 @@ If it takes too long you can reduce the number of steps by changing the temperat
    :with: 400
    :alt: Freqs² vs Temps..
 
+[...]   
+
 We are using only 50 configurations in the ensemble. Note that this makes a fast calculation but is a low number. How the calculation changes with the number of configurations?
 
 .. _fig-second_order:
