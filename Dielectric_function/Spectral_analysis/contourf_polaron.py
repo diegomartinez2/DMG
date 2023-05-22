@@ -36,12 +36,28 @@ for i in range(255051):
 #Z = (1 - X/2 + X**5 + Y**3) * np.exp(-X**2 - Y**2)
 X, Y = np.meshgrid(Qy, Frequency)
 Z = np.reshape(Spec, (5001,51))
+data = np.resize(Spec,(int(len(X)/51),51))
 print (Z, Z.min(), Z.max())
-levels = np.linspace(Z.min(), Z.max(), 7)
+levels = np.linspace(Z.min(), Z.max(), 70000)
+#levels = np.linspace(0.0, 0.3, 7)
 print (levels)
 # plot
 fig, ax = plt.subplots()
 
-ax.contourf(X, Y, Z, levels=levels)
+#ax.contourf(X, Y, Z, levels=levels)
+#ax.contourf(Z , levels=levels)
+ax.imshow(Z, aspect= 'auto',cmap ='Greens', 
+		vmin = 0.0, vmax = 0.01,
+#		vmin = Z.min(), vmax = Z.max(),
+#                 extent =[X.min(), X.max(), Y.min(), Y.max()],
+                    interpolation ='nearest', origin ='lower')
 
+plt.show()
+fig, ax1 = plt.subplots(1,1)
+cax = ax1.imshow(data.T, 
+	vmin = 0.0 , vmax = 0.004,
+	cmap=plt.colormaps['jet'], origin='lower')
+ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
+
+cbar = fig.colorbar(cax)
 plt.show()
