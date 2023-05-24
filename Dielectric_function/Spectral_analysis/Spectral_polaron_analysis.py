@@ -73,6 +73,20 @@ class Polaron_analysis(object):
         plt.show()
         return 0
 
+    def drawn_3D2(self, data):
+        #data = np.resize(Spec,(51,int(len(Spec)/51)))
+        fig, ax1 = plt.subplots(1,1)
+        cax = ax1.imshow(data.T,
+        #	vmin = 0.0 , vmax = 0.004,
+        #	vmin = 0.0 , vmax = 0.3,
+	              cmap=plt.colormaps['jet'], origin='lower',
+	              interpolation='gaussian', aspect='auto')
+        ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
+
+        cbar = fig.colorbar(cax)
+        plt.show()
+        return 0
+
     def drawn_2D(self):
         return 0
 
