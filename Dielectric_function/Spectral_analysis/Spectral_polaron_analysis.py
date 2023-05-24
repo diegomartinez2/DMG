@@ -102,6 +102,15 @@ class Polaron_analysis(object):
     def remove_noise(self):
         return 0
 
+    def locate_1Lorenztian(self):
+        def _1Lorentzian(x, amp1, cen1, wid1):
+            return amp1*wid1**2/((x-cen1)**2+wid1**2)
+        popt_lorentz, pcov_lorentz = scipy.optimize.curve_fit(_1Lorentzian, x_array, y_array_lorentz, p0=[amp, cen, wid])
+
+        perr_3lorentz = np.sqrt(np.diag(pcov_lorentz))
+
+        return 0
+
     def locate_3Lorenztians(self,amp1, cen1, wid1,amp2, cen2, wid2, amp3, cen3, wid3):
         def _1Lorentzian(x, amp, cen, wid):
             return amp*wid**2/((x-cen)**2+wid**2)
@@ -319,6 +328,8 @@ def Detecta_picos(arg):
     pass
 
 def main(args):
+    Spec = np.zeros(5001)
+    Data5 = np.zeros(5001)
     polaron = Polaron_analysis(args)
     polaron.read_data()
     return 0
