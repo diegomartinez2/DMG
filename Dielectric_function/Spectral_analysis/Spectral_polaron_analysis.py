@@ -273,6 +273,11 @@ class Polaron_analysis(object):
         plt.savefig("Ajuste_{}".format(namefile))
         plt.show()
 
+class Plot_3D(self):
+    def __init__(self):
+        return 0
+    return 0
+
 # ----------
 # Funciones
 # ----------
@@ -290,6 +295,7 @@ def Detecta_picos(arg):
     pass
 
 def main(args):
+    Polaron = Polaron_analysis(args)
     return 0
 
 if __name__ == '__main__':
