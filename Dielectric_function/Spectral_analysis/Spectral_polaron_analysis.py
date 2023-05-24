@@ -50,10 +50,11 @@ class Polaron_analysis(object):
         with open("A7_EPS.dat") as file:
              lines = [line.rsplit() for line in file]
         for i in range(51*51*5001):
-                    i=int(lines[i][0]/0.00869)
-                    j=int(lines[i][1]/0.00869)
-                    k=int(lines[i][2]/0.0002)
-                    self.Spect[i][j][k]=lines[index][6]
+                    ii=int(lines[i][0]/0.00869)
+                    ij=int(lines[i][1]/0.00869)
+                    ik=int(lines[i][2]/0.0002)
+                    print (i,ii,ij,ik)
+                    self.Spect[ii][ij][ik]=lines[index][6]
         # for i in range(5001*50*51):
         #     if lines[i][0]=0.31290
         #     for j in range(50):
@@ -61,7 +62,7 @@ class Polaron_analysis(object):
         #      Spec[j][i]=lines[i][6]
         return 0
 
-    def drawn_3D(self):
+    def drawn_3D(self, X, Y, Z):
         levels = np.linspace(Z.min(), Z.max(), 7)
 
         # plot
@@ -295,7 +296,8 @@ def Detecta_picos(arg):
     pass
 
 def main(args):
-    Polaron = Polaron_analysis(args)
+    polaron = Polaron_analysis(args)
+    polaron.read_data()
     return 0
 
 if __name__ == '__main__':
