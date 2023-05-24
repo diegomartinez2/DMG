@@ -87,7 +87,16 @@ class Polaron_analysis(object):
         plt.show()
         return 0
 
-    def drawn_2D(self):
+    def drawn_2D(self, Frequency, Spec, Data5):
+        plt.plot(Frequency, Spec, label="original")
+        plt.plot(Frequency, Data5*0.000006, label="Im(Epsilon)", ls=":")
+        plt.plot(Frequency, Spec-(Data5*0.000006), label="Substraction")
+        plt.xlim([0, Frequency.max()])
+        plt.ylim([0, Spec.max()])
+        plt.legend()
+        plt.tight_layout()
+        #plt.savefig("Epsilon_{}".format(namefile))
+        plt.show()
         return 0
 
     def remove_noise(self):
