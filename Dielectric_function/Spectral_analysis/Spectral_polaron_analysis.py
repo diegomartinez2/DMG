@@ -102,13 +102,15 @@ class Polaron_analysis(object):
     def remove_noise(self):
         return 0
 
-    def locate_1Lorenztian(self):
+    def locate_1Lorenztian(self, Frequency, Spec):
         def _1Lorentzian(x, amp1, cen1, wid1):
             return amp1*wid1**2/((x-cen1)**2+wid1**2)
-        popt_lorentz, pcov_lorentz = scipy.optimize.curve_fit(_1Lorentzian, x_array, y_array_lorentz, p0=[amp, cen, wid])
+        popt_lorentz, pcov_lorentz = scipy.optimize.curve_fit(_1Lorentzian, Frequency, Spec, p0=[amp, cen, wid])
 
         perr_3lorentz = np.sqrt(np.diag(pcov_lorentz))
-
+        peaks, _ = find_peaks(Spec,width=5,rel_height=0.3)
+        print (peaks,Frequency[peaks])
+        print (peaks,_["widths"])
         return 0
 
     def locate_3Lorenztians(self,amp1, cen1, wid1,amp2, cen2, wid2, amp3, cen3, wid3):
