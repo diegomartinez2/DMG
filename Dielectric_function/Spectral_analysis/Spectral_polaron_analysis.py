@@ -54,7 +54,7 @@ class Polaron_analysis(object):
                     ij=int(lines[i][1]/0.00869)
                     ik=int(lines[i][2]/0.0002)
                     print (i,ii,ij,ik)
-                    self.Spect[ii][ij][ik]=lines[index][6]
+                    self.Spec[ii][ij][ik]=lines[index][6]
         # for i in range(5001*50*51):
         #     if lines[i][0]=0.31290
         #     for j in range(50):
