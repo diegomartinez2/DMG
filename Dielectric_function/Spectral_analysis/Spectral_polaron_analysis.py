@@ -311,7 +311,7 @@ class Polaron_analysis(object):
 class Plot_3D(self):
     def __init__(self):
         return 0
-    return 0
+
 
 # ----------
 # Funciones
