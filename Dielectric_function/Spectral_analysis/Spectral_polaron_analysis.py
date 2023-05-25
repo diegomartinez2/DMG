@@ -49,9 +49,9 @@ class Polaron_analysis(object):
         with open("A7_EPS.dat") as file:
              lines = [line.rsplit() for line in file]
         for i in range(51*51*5001):
-                    ii=int(lines[i][0]/0.00869)
-                    ij=int(lines[i][1]/0.00869)
-                    ik=int(lines[i][2]/0.0002)
+                    ii=int(float(lines[i][0])/0.00869)
+                    ij=int(float(lines[i][1])/0.00869)
+                    ik=int(float(lines[i][2])/0.0002)
                     print (i,ii,ij,ik)
                     self.Spec[ii][ij][ik]=lines[index][6]
         # for i in range(5001*50*51):
