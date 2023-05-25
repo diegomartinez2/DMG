@@ -39,12 +39,11 @@ class Polaron_analysis(object):
     """docstring for NombredeClase."""
 
     def __init__(self, arg):
-        super(NombredeClase, self).__init__()
+        #super(NombredeClase, self).__init__()
         self.arg = arg
 
         self.Spec = np.zeros((51,51,5001))
 
-        return 0
 
     def read_data(self):
         with open("A7_EPS.dat") as file:
@@ -308,7 +307,7 @@ class Polaron_analysis(object):
         plt.savefig("Ajuste_{}".format(namefile))
         plt.show()
 
-class Plot_3D(self):
+class Plot_3D(object):
     def __init__(self):
         return 0
 
