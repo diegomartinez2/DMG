@@ -329,8 +329,8 @@ def Detecta_picos(arg):
     pass
 
 def main(args):
-    Spec = np.zeros(5001)
-    Data5 = np.zeros(5001)
+    #Spec = np.zeros(5001)
+    #Data5 = np.zeros(5001)
     polaron = Polaron_analysis(args)
     polaron.read_data()
     return 0
