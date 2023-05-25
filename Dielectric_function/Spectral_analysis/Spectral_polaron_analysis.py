@@ -109,17 +109,17 @@ class Polaron_analysis(object):
         print (peaks,_["widths"])
         amp = 0.009
         cen = 0.009
-        wid = 0.001    
+        wid = 0.001
         popt_lorentz, pcov_lorentz = scipy.optimize.curve_fit(_1Lorentzian, Frequency, Spec, p0=[amp, cen, wid])
 
-        perr_3lorentz = np.sqrt(np.diag(pcov_lorentz))
-        pars = popt_3lorentz[:]
-        lorentz_peak = _1Lorentzian(Frequency, *pars)
+        perr_lorentz = np.sqrt(np.diag(pcov_lorentz))
+        pars = popt_lorentz[:]
+        self.lorentz_peak = _1Lorentzian(Frequency, *pars)
         print ("-------------Peak 1-------------")
-        print ("amplitude = %0.2f (+/-) %0.2f" % (pars_1[0], perr_3lorentz[0]))
-        print ("center = %0.2f (+/-) %0.2f" % (pars_1[1], perr_3lorentz[1]))
-        print ("width = %0.2f (+/-) %0.2f" % (pars_1[2], perr_3lorentz[2]))
-        print ("area = %0.2f" % np.trapz(lorentz_peak_1))
+        print ("amplitude = %0.2f (+/-) %0.2f" % (pars_1[0], perr_lorentz[0]))
+        print ("center = %0.2f (+/-) %0.2f" % (pars_1[1], perr_lorentz[1]))
+        print ("width = %0.2f (+/-) %0.2f" % (pars_1[2], perr_lorentz[2]))
+        print ("area = %0.2f" % np.trapz(self.lorentz_peak))
         print ("--------------------------------")
 
         return 0
