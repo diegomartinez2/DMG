@@ -104,12 +104,24 @@ class Polaron_analysis(object):
     def locate_1Lorenztian(self, Frequency, Spec):
         def _1Lorentzian(x, amp1, cen1, wid1):
             return amp1*wid1**2/((x-cen1)**2+wid1**2)
-        popt_lorentz, pcov_lorentz = scipy.optimize.curve_fit(_1Lorentzian, Frequency, Spec, p0=[amp, cen, wid])
-
-        perr_3lorentz = np.sqrt(np.diag(pcov_lorentz))
         peaks, _ = find_peaks(Spec,width=5,rel_height=0.3)
         print (peaks,Frequency[peaks])
         print (peaks,_["widths"])
+        amp = 0.009
+        cen = 0.009
+        wid = 0.001    
+        popt_lorentz, pcov_lorentz = scipy.optimize.curve_fit(_1Lorentzian, Frequency, Spec, p0=[amp, cen, wid])
+
+        perr_3lorentz = np.sqrt(np.diag(pcov_lorentz))
+        pars = popt_3lorentz[:]
+        lorentz_peak = _1Lorentzian(Frequency, *pars)
+        print ("-------------Peak 1-------------")
+        print ("amplitude = %0.2f (+/-) %0.2f" % (pars_1[0], perr_3lorentz[0]))
+        print ("center = %0.2f (+/-) %0.2f" % (pars_1[1], perr_3lorentz[1]))
+        print ("width = %0.2f (+/-) %0.2f" % (pars_1[2], perr_3lorentz[2]))
+        print ("area = %0.2f" % np.trapz(lorentz_peak_1))
+        print ("--------------------------------")
+
         return 0
 
     def locate_3Lorenztians(self,amp1, cen1, wid1,amp2, cen2, wid2, amp3, cen3, wid3):
