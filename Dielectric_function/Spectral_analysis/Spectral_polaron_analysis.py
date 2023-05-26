@@ -341,17 +341,18 @@ def Detecta_picos(arg):
     pass
 
 def main(args):
-    #Spec = np.zeros(5001)
+    Spect = np.zeros(5001)
     #Data5 = np.zeros(5001)
     polaron = Polaron_analysis(args)
     polaron.read_data()
     for i in range(51):
-        for j in range():
-            for k in range():
-                Spect[j][k]=self.Spec[i][j][k]
-        #--------------------
-        polaron.locate_1Lorenztian(self.Frequency,Spect)
-        
+        for j in range(51):
+            for k in range(5001):
+                #Spect[j][k]=self.Spec[i][j][k]
+                #--------------------
+                Spect[k]=self.Spec[i][j][k]
+                polaron.locate_1Lorenztian(self.Frequency,Spect)
+
     return 0
 
 if __name__ == '__main__':
