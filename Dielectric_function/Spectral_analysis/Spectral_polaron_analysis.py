@@ -46,6 +46,8 @@ class Polaron_analysis(object):
 
 
     def read_data(self):
+        Frequency = np.zeros(5001)
+        Spec = np.zeros(5001*51*51)
         with open("A7_EPS.dat") as file:
              lines = [line.rsplit() for line in file]
         for i in range(51*51*5001):
@@ -53,12 +55,10 @@ class Polaron_analysis(object):
                     ij=int(float(lines[i][1])/0.00869)
                     ik=int(float(lines[i][2])/0.0002)
                     print (i,ii,ij,ik)
+                    #self.Frequency[ik]=lines[ik][2]
                     self.Spec[ii][ij][ik]=lines[i][6]
-        # for i in range(5001*50*51):
-        #     if lines[i][0]=0.31290
-        #     for j in range(50):
-        #
-        #      Spec[j][i]=lines[i][6]
+         for i in range(5001):
+             self.Frequency[i]=lines[i][2]
         return 0
 
     def drawn_3D(self, X, Y, Z):
@@ -345,9 +345,12 @@ def main(args):
     #Data5 = np.zeros(5001)
     polaron = Polaron_analysis(args)
     polaron.read_data()
-    
-    #--------------------
-    polaron.locate_1Lorenztian()
+    for i in range(51):
+        for j in range():
+            for k in range():
+                Spect[j][k]=self.Spec[i][j][k]
+                #--------------------
+                polaron.locate_1Lorenztian(Frequency,Spect)
     return 0
 
 if __name__ == '__main__':
