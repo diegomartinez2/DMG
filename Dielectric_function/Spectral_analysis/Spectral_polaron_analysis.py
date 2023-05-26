@@ -349,8 +349,9 @@ def main(args):
         for j in range():
             for k in range():
                 Spect[j][k]=self.Spec[i][j][k]
-                #--------------------
-                polaron.locate_1Lorenztian(self.Frequency,Spect)
+        #--------------------
+        polaron.locate_1Lorenztian(self.Frequency,Spect)
+        
     return 0
 
 if __name__ == '__main__':
