@@ -321,6 +321,7 @@ class Polaron_analysis(object):
 
     def plot_original_2D(self, Spec, save = False):
         plt.plot(self.Frequency, Spec, label="original")
+        plt.plot(self.Frequency, self.lorentz_peak, label="Lorentzian")
         plt.xlim([0, self.Frequency.max()])
         plt.ylim([0, Spec.max()])
         plt.legend()
