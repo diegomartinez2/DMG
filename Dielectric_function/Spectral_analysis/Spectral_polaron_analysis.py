@@ -319,6 +319,16 @@ class Polaron_analysis(object):
         plt.savefig("Ajuste_{}".format(namefile))
         plt.show()
 
+    def plot_original_2D(self, Spec, save = False):
+        plt.plot(self.Frequency, Spec, label="original")
+        plt.xlim([0, self.Frequency.max()])
+        plt.ylim([0, Spec.max()])
+        plt.legend()
+        plt.tight_layout()
+        if (save):
+            plt.savefig("Epsilon_{}".format(namefile))
+        plt.show()
+
 class Plot_3D(object):
     def __init__(self):
         return 0
@@ -352,6 +362,7 @@ def main(args):
                 #--------------------
                 Spect[k]=self.Spec[i][j][k]
                 polaron.locate_1Lorenztian(self.Frequency,Spect)
+                polaron.plot_original_2D(Spect)
 
     return 0
 
