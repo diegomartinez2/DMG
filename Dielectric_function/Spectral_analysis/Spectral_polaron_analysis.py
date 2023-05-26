@@ -46,8 +46,8 @@ class Polaron_analysis(object):
 
 
     def read_data(self):
-        Frequency = np.zeros(5001)
-        Spec = np.zeros(5001*51*51)
+        self.Frequency = np.zeros(5001)
+        self.Spec = np.zeros(5001*51*51)
         with open("A7_EPS.dat") as file:
              lines = [line.rsplit() for line in file]
         for i in range(51*51*5001):
@@ -350,7 +350,7 @@ def main(args):
             for k in range():
                 Spect[j][k]=self.Spec[i][j][k]
                 #--------------------
-                polaron.locate_1Lorenztian(Frequency,Spect)
+                polaron.locate_1Lorenztian(self.Frequency,Spect)
     return 0
 
 if __name__ == '__main__':
