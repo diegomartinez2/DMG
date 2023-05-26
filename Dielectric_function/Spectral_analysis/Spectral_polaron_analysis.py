@@ -345,6 +345,9 @@ def main(args):
     #Data5 = np.zeros(5001)
     polaron = Polaron_analysis(args)
     polaron.read_data()
+    
+    #--------------------
+    polaron.locate_1Lorenztian()
     return 0
 
 if __name__ == '__main__':
