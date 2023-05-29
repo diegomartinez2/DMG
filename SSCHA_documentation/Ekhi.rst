@@ -3,16 +3,18 @@ Ekhi
 
 Ekhi cluster, designed specifically for novel Quantum ESPRESSO calculations, is composed of 28 computing nodes with two Xeon Cascade Lake-SP 6230 processors (40 computing cores) and 96 GB of memory in each node, with an Infiniband FDR interconnection network, giving a total of 1120 cores and 2.7 TB of memory.
 
+This is an example of a batch input for the cluster Ekhi:
+
 .. code:: bash
 
   #!/bin/bash
-  #SBATCH --job-name=VASP_300            # Job name
+  #SBATCH --job-name=Test_Espresso            # Job name
   #SBATCH --mail-type=ALL                     # Mail events (NONE, BEGIN, END, FAIL, ALL)
   #SBATCH --mail-user=diego.martinez@ehu.eus  # Where to send mail
-  #!#SBATCH -p test                             # queue
+  #SBATCH -p test                             # queue
   #SBATCH --nodes=1                           # Run all processes on a single node
   #SBATCH --ntasks=40                         # Number of processes
-  #SBATCH --time=44:30:00                     # Time limit hrs:min:sec
+  #SBATCH --time=00:30:00                     # Time limit hrs:min:sec
   #SBATCH --output=job.log                    # Standard output and error log
 
   module load intel/2021a
@@ -66,3 +68,10 @@ Ekhi cluster, designed specifically for novel Quantum ESPRESSO calculations, is 
   rmdir BACKUP
 
   echo "DONE"
+
+
+This batch is run with:
+
+.. code:: bash
+
+  sbatch run.sh
