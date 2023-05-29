@@ -33,9 +33,10 @@ Ekhi cluster, designed specifically for novel Quantum ESPRESSO calculations, is 
   export NPROCS=$SLURM_NTASKS
   rm slurm*.out
   ############################################################################
-  module load QuamtumESPRESSO
+  module load QuantumESPRESSO
   ############################################################################
   echo "put your jobs here"
+  mpirun -np 40 pw.x -npool 20 -i input_espresso.pwi > output_espresso.pwo
   ############################################################################
 
 
