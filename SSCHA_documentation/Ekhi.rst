@@ -8,7 +8,7 @@ Ekhi cluster, designed specifically for novel Quantum ESPRESSO calculations, is 
 
 You can view the cluster information with *sinfo*:
 
-.. code:: bash
+.. code-block:: bash
 
   PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
   all*         up 2-00:00:00      1    mix ekhi31
@@ -24,7 +24,7 @@ You can view the cluster information with *sinfo*:
 
 This is an example of a batch input for the cluster Ekhi:
 
-.. code:: bash
+.. code-block:: bash
 
   #!/bin/bash
   #SBATCH --job-name=Test_Espresso            # Job name
@@ -91,7 +91,7 @@ This is an example of a batch input for the cluster Ekhi:
 
 This batch is run with:
 
-.. code:: bash
+.. code-block:: bash
 
   sbatch run.sh
 
@@ -160,3 +160,9 @@ This batch is run with:
   # And check the connection
   my_hpc.setup_workdir()
   #-----------------------------------------------------------------------
+
+Then we can use in relax with:
+
+.. code-block:: python
+
+  relax = sscha.Relax.SSCHA(minim, ase_calculator = espresso_calc, N_configs=configurations, max_pop=20, cluster = my_hpc)
