@@ -55,8 +55,8 @@ class Polaron_analysis(object):
                     ij=int(float(lines[i][1])/0.00869)
                     ik=int(float(lines[i][2])/0.0002)
                     print (i,ii,ij,ik)
-                    ##self.Frequency[ik]=lines[ik][2]
-                    #self.Spec[ii][ij][ik]=lines[i][6]
+                    #self.Frequency[ik]=lines[ik][2]
+                    self.Spec[ii][ij][ik]=lines[i][6]
         for i in range(5001):
              self.Frequency[i]=lines[i][2]
         return 0
