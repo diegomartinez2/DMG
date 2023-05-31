@@ -27,9 +27,9 @@ This is an example of a batch input for the cluster Ekhi:
 .. code-block:: bash
 
   #!/bin/bash
-  #SBATCH --job-name=Test_Espresso            # Job name
-  #SBATCH --mail-type=ALL                     # Mail events (NONE, BEGIN, END, FAIL, ALL)
-  #SBATCH --mail-user=diego.martinez@ehu.eus  # Where to send mail
+  #SBATCH --job-name=Test_job                 # Job name
+  #SBATCH --mail-type=NONE                    # Mail events (NONE, BEGIN, END, FAIL, ALL)
+  #SBATCH --mail-user=                        # Where to send mail
   #SBATCH -p test                             # queue (in this example the queue for test)
   #SBATCH --nodes=1                           # Run all processes on a single node
   #SBATCH --ntasks=40                         # Number of processes
@@ -101,6 +101,7 @@ This batch is run with:
 .. code-block:: python
 
   #-----------------------------------------------------------------------
+  username = user_name   # Put here your login name for the cluster.
   pseudo = {"Sr": "Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF",
             "Ti": "Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF",
             "O" : "O.pbesol-n-kjpaw_psl.1.0.0.UPF"}
@@ -124,8 +125,8 @@ This batch is run with:
                   kpts = k_points, koffset = k_offset)
   my_hpc = sscha.Cluster.Cluster(pwd = None)
   # We setup the connection info
-  my_hpc.hostname = "sscha_user@ekhi.cfm.ehu.es" # The command to connect via ssh to the cluster (pippo@login.cineca.marconi.it)
-  my_hpc.workdir = "/scratch/sscha_user/my_calculation" # the directory in which the calculations are performed
+  my_hpc.hostname = "{}@ekhi.cfm.ehu.es".format(username) # The command to connect via ssh to the cluster (pippo@login.cineca.marconi.it)
+  my_hpc.workdir = "/scratch/{}/my_calculation".format(username) # the directory in which the calculations are performed
 
   # Now we need to setup the espresso
   # First we must tell the cluster where to find him:
