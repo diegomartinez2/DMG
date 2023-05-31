@@ -32,6 +32,8 @@ from scipy import optimize
 from matplotlib.ticker import AutoMinorLocator
 from matplotlib import gridspec
 import matplotlib.ticker as ticker
+
+import time
 # -------
 # Clases
 # -------
@@ -354,15 +356,22 @@ def Detecta_picos(arg):
 def main(args):
     Spect = np.zeros(5001)
     #Data5 = np.zeros(5001)
+    print ("Creando el polaron")
     polaron = Polaron_analysis(args)
+    print ("probando asignacion de datos")
+    print (polaron.Spec[0][0][0])
+    #polaron.Spect[0][0][0]= 0.0
+    print ("sleep...")
+    time.sleep(30)
+    print ("Leyendo datos")
     polaron.read_data()
     for i in range(51):
         for j in range(51):
             for k in range(5001):
                 #Spect[j][k]=self.Spec[i][j][k]
                 #--------------------
-                Spect[k]=self.Spec[i][j][k]
-                polaron.locate_1Lorenztian(self.Frequency,Spect)
+                Spect[k]=polaron.Spec[i][j][k]
+                polaron.locate_1Lorenztian(polaron.Frequency,Spect)
                 polaron.plot_original_2D(Spect)
 
     return 0
