@@ -359,10 +359,10 @@ def main(args):
     print ("Creando el polaron")
     polaron = Polaron_analysis(args)
     print ("probando asignacion de datos")
-    print (polaron.Spec[0][0][0])
+    #print (polaron.Spec[0][0][0])
     #polaron.Spect[0][0][0]= 0.0
-    print ("sleep...")
-    time.sleep(30)
+    #print ("sleep...")
+    #time.sleep(30)
     print ("Leyendo datos")
     polaron.read_data()
     for i in range(51):
