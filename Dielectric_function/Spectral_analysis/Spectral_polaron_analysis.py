@@ -360,7 +360,7 @@ def Detecta_picos(arg):
 def main(args):
     Spect = np.zeros(5001)
     #Data5 = np.zeros(5001)
-    print ("Creando el polaron")
+    print ("Creando el objeto polaron")
     polaron = Polaron_analysis(args)
     print ("Leyendo datos")
     polaron.read_data()
@@ -370,8 +370,10 @@ def main(args):
                 #Spect[j][k]=self.Spec[i][j][k]
                 #--------------------
                 Spect[k]=polaron.Spec[i][j][k]
-                polaron.locate_1Lorenztian(polaron.Frequency,Spect)
-                polaron.plot_original_2D(Spect)
+                print (Spect.max(),polaron.Frequency.max())
+                #time.sleep(10)
+                #polaron.locate_1Lorenztian(polaron.Frequency,Spect)
+                #polaron.plot_original_2D(Spect)
 
     return 0
 
