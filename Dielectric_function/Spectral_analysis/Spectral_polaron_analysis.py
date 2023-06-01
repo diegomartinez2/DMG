@@ -359,13 +359,13 @@ def Detecta_picos(arg):
 
 def main(args):
     #Spect = np.zeros(5001)
-    Spect = np.zeros(51,5001)
+    Spect = np.zeros((51,5001))
     #Data5 = np.zeros(5001)
     print ("Creando el objeto polaron")
     polaron = Polaron_analysis(args)
     print ("Leyendo datos")
     polaron.read_data()
-    for i in range(51):
+    for i in range(23,25): #(51):
         for j in range(51):
             for k in range(5001):
                 #Spect[j][k]=self.Spec[i][j][k]
