@@ -52,15 +52,13 @@ class Polaron_analysis(object):
         #self.Spec = np.zeros(5001*51*51)
         with open("A7_EPS.dat") as file:
              lines = [line.rsplit() for line in file]
-        for i in range(51*51*5001):
+        for i in range(50*51*5001):
                     ii=int(float(lines[i][0])/0.00869)
                     ij=int(float(lines[i][1])/0.00869)
                     ik=int(float(lines[i][2])/0.0002)
-                    print (i,ii,ij,ik,":",lines[i][6],":",self.Spec[ii][ij][ik])
                     #self.Frequency[ik]=lines[ik][2]
-#                    temp=lines[i][6]
-#                    self.Spec[ii][ij][ik]=temp
                     self.Spec[ii][ij][ik]=lines[i][6]
+                    print (i,ii,ij,ik,":",lines[i][6],"=",self.Spec[ii][ij][ik])
         for i in range(5001):
              self.Frequency[i]=lines[i][2]
         return 0
@@ -360,11 +358,6 @@ def main(args):
     #Data5 = np.zeros(5001)
     print ("Creando el polaron")
     polaron = Polaron_analysis(args)
-    print ("probando asignacion de datos")
-    #print (polaron.Spec[0][0][0])
-    #polaron.Spect[0][0][0]= 0.0
-    #print ("sleep...")
-    #time.sleep(30)
     print ("Leyendo datos")
     polaron.read_data()
     for i in range(51):
