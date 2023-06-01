@@ -49,15 +49,17 @@ class Polaron_analysis(object):
 
     def read_data(self):
         self.Frequency = np.zeros(5001)
-        self.Spec = np.zeros(5001*51*51)
+        #self.Spec = np.zeros(5001*51*51)
         with open("A7_EPS.dat") as file:
              lines = [line.rsplit() for line in file]
         for i in range(51*51*5001):
                     ii=int(float(lines[i][0])/0.00869)
                     ij=int(float(lines[i][1])/0.00869)
                     ik=int(float(lines[i][2])/0.0002)
-                    print (i,ii,ij,ik)
+                    print (i,ii,ij,ik,":",lines[i][6],":",self.Spec[ii][ij][ik])
                     #self.Frequency[ik]=lines[ik][2]
+#                    temp=lines[i][6]
+#                    self.Spec[ii][ij][ik]=temp
                     self.Spec[ii][ij][ik]=lines[i][6]
         for i in range(5001):
              self.Frequency[i]=lines[i][2]
