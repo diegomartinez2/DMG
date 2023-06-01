@@ -328,7 +328,7 @@ class Polaron_analysis(object):
     def plot_original_2D(self, Spec, save = False):
         plt.plot(self.Frequency, Spec, label="original")
         plt.plot(self.Frequency, self.lorentz_peak, label="Lorentzian")
-        plt.xlim([0, self.Frequency.max()])
+        plt.xlim([0, 0.12]) #self.Frequency.max()])
         plt.ylim([0, Spec.max()])
         plt.legend()
         plt.tight_layout()
@@ -372,8 +372,9 @@ def main(args):
                 Spect[k]=polaron.Spec[i][j][k]
                 print (Spect.max(),polaron.Frequency.max())
                 #time.sleep(10)
-                #polaron.locate_1Lorenztian(polaron.Frequency,Spect)
-                #polaron.plot_original_2D(Spect)
+                if (Spect.max() != 0.0):
+                    polaron.locate_1Lorenztian(polaron.Frequency,Spect)
+                    polaron.plot_original_2D(Spect)
 
     return 0
 
