@@ -53,7 +53,7 @@ class Polaron_analysis(object):
         #self.Spec = np.zeros(5001*51*51)
         with open("A7_EPS.dat") as file:
              lines = [line.rsplit() for line in file]
-        #del line     
+        #del line
         for i in range(50*51*5001):
                     ii=int(float(lines[i][0])/0.00869)
                     ij=int(float(lines[i][1])/0.00869)
@@ -122,9 +122,9 @@ class Polaron_analysis(object):
         pars = popt_lorentz[:]
         self.lorentz_peak = _1Lorentzian(Frequency, *pars)
         print ("-------------Peak 1-------------")
-        print ("amplitude = %0.2f (+/-) %0.2f" % (pars_1[0], perr_lorentz[0]))
-        print ("center = %0.2f (+/-) %0.2f" % (pars_1[1], perr_lorentz[1]))
-        print ("width = %0.2f (+/-) %0.2f" % (pars_1[2], perr_lorentz[2]))
+        print ("amplitude = %0.2f (+/-) %0.2f" % (pars[0], perr_lorentz[0]))
+        print ("center = %0.2f (+/-) %0.2f" % (pars[1], perr_lorentz[1]))
+        print ("width = %0.2f (+/-) %0.2f" % (pars[2], perr_lorentz[2]))
         print ("area = %0.2f" % np.trapz(self.lorentz_peak))
         print ("--------------------------------")
 
