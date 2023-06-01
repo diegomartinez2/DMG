@@ -32,6 +32,7 @@ from scipy import optimize
 from matplotlib.ticker import AutoMinorLocator
 from matplotlib import gridspec
 import matplotlib.ticker as ticker
+from scipy.signal import find_peaks
 
 import time
 # -------
