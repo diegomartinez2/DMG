@@ -60,9 +60,11 @@ class Polaron_analysis(object):
 def main(arg):
     namefile = "xbw"
     print ("Creando el objeto polaron")
-    polaron = Polaron_analysis(args)
+    polaron = Polaron_analysis(arg)
     print ("Leyendo datos")
-    polaron.read_data(namefile)
+    data = polaron.load_data(namefile)
+    print ("dibuja")
+    polaron.plot_contour(data)
     pass
 
 if __name__ == '__main__':
