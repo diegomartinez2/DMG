@@ -29,8 +29,34 @@ import numpy as np
 import scipy as scipy
 from scipy.signal import find_peaks
 
+class File_splitter(object):
+    """docstring for File_splitter."""
+
+    def __init__(self, arg):
+        super(File_splitter, self).__init__()
+        self.arg = arg
+        self.Spec = np.zeros((51,51,5001))
+        self.Frequency = np.zeros(5001)
+
+    def Load_big_file(self,filename="A7_EPS.dat"):
+        with open(filename) as file:
+            lines = [line.rsplit() for line in file]
+        for i in range(50*51*5001):
+                    ii=int(float(lines[i][0])/0.00869)
+                    ij=int(float(lines[i][1])/0.00869)
+                    ik=int(float(lines[i][2])/0.0002)
+                    self.Spec[ii][ij][ik]=lines[i][6]
+                    #print (i,ii,ij,ik,":",lines[i][6],"=",self.Spec[ii][ij][ik])
+                    #print ("*", end='')
+        for i in range(5001):
+             self.Frequency[i]=lines[i][2]
+        del lines
+        return 0
+
+
+
 class Polaron_analysis(object):
-    """docstring fo Polaron_analysis."""
+    """Code for the analysis of Silkin's polaron data."""
 
     def __init__(self, arg, namefile):
         super(Polaron_analysis, self).__init__()
@@ -106,14 +132,14 @@ class Polaron_analysis(object):
         print ("area = %0.2f" % np.trapz(lorentz_peak))
         print ("--------------------------------")
 
-        #plt.plot(Frequency, Spec, label="original")
-        #plt.plot(Frequency, lorentz_peak, "r",ls=':', label="ajuste")
-        #plt.legend()
-        #plt.xlim([0, Frequency.max()])
-        #plt.ylim([0, Spec.max()])
-        #plt.tight_layout()
-        #plt.savefig("Ajuste_{}_{}".format(self.namefile,index))
-        #plt.show()
+        # plt.plot(Frequency, Spec, label="original")
+        # plt.plot(Frequency, lorentz_peak, "r",ls=':', label="ajuste")
+        # plt.legend()
+        # plt.xlim([0, Frequency.max()])
+        # plt.ylim([0, Spec.max()])
+        # plt.tight_layout()
+        # plt.savefig("Ajuste_{}_{}".format(self.namefile,index))
+        # plt.show()
         return lorentz_peak
 
     def fitting_Lorentz(self,frequencies,data):
@@ -123,7 +149,9 @@ class Polaron_analysis(object):
         pass
 
 def main(arg):
-    namefile = "xbw"
+    print (arg[1])
+    #namefile = "xbv"
+    namefile = arg[1]
     print ("Creando el objeto polaron")
     polaron = Polaron_analysis(arg,namefile)
     print ("Leyendo datos")
