@@ -26,6 +26,8 @@
 # ---------------------------
 import matplotlib.pyplot as plt
 import numpy as np
+import scipy as scipy
+from scipy.signal import find_peaks
 
 class Polaron_analysis(object):
     """docstring fo Polaron_analysis."""
@@ -41,13 +43,10 @@ class Polaron_analysis(object):
         for i in range(255051):
              Spec[i]=lines[i][6]
         data = np.resize(Spec,(51,int(len(Spec)/51)))
-        return data
-
-    def load_frequencies(self,namefile):
         Frequency = np.zeros(5001)
         for i in range(5001):
              Frequency[i]=lines[i][2]
-        return Frequency
+        return data, Frequency
 
     def plot_contour(self,data):
         plt.style.use('_mpl-gallery-nogrid')
@@ -76,23 +75,30 @@ class Polaron_analysis(object):
 
         perr_lorentz = np.sqrt(np.diag(pcov_lorentz))
         pars = popt_lorentz[:]
-        self.lorentz_peak = _1Lorentzian(Frequency, *pars)
+        lorentz_peak = _1Lorentzian(Frequency, *pars)
         print ("-------------Peak 1-------------")
         print ("amplitude = %0.2f (+/-) %0.2f" % (pars[0], perr_lorentz[0]))
         print ("center = %0.2f (+/-) %0.2f" % (pars[1], perr_lorentz[1]))
         print ("width = %0.2f (+/-) %0.2f" % (pars[2], perr_lorentz[2]))
-        print ("area = %0.2f" % np.trapz(self.lorentz_peak))
+        print ("area = %0.2f" % np.trapz(lorentz_peak))
         print ("--------------------------------")
 
-        return 0
+        plt.plot(Frequency, Spec, label="original")
+        plt.plot(Frequency, lorentz_peak, "r",ls=':', label="ajuste")
+        plt.legend()
+        plt.xlim([0, Frequency.max()])
+        plt.ylim([0, Spec.max()])
+        plt.tight_layout()
+        #plt.savefig("Ajuste_{}".format(namefile))
+        plt.show()
+        return lorentz_peak
 
 def main(arg):
     namefile = "xbw"
     print ("Creando el objeto polaron")
     polaron = Polaron_analysis(arg)
     print ("Leyendo datos")
-    data = polaron.load_data(namefile)
-    frequencies = polaron.load_frequencies(namefile)
+    data, frequencies = polaron.load_data(namefile)
     print ("dibuja")
     polaron.plot_contour(data)
     print("calcula ajuste loretzian")
