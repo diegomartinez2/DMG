@@ -67,6 +67,9 @@ class Polaron_analysis(object):
         print (len(np. unique(w)))
         self.data = np.resize(epsilon,(51,51,5001))
         #plot.contour(data[i])
+        #direccion q_y -> data[i]
+        #direccion q_x=q_y=i -> data = data[i][i] for i in {0..51}
+        #direccion
         return w[:51], self.data[index]
 
     def plot_contour(self,data):
@@ -143,15 +146,16 @@ class Polaron_analysis(object):
         pass
 
 def main(arg):
-    print (arg[1])
     #namefile = "xbv"
+    #print (len(sys.argv))
     if (len( sys.argv ) > 1):
+        print ("nombre de fichero:"arg[1])
         namefile = arg[1]
         print ("Creando el objeto polaron")
         polaron = Polaron_analysis(arg,namefile)
         print ("Leyendo datos")
         data, frequencies = polaron.load_data()
-        if (len( sys.argv) = 3):
+        if (len( sys.argv) == 3):
             index = arg[2]
             data, frequencies = polaron.load_big_file(index, arg[1])
         print ("dibuja")
