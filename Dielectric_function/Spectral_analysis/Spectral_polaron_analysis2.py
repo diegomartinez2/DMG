@@ -54,7 +54,8 @@ class Polaron_analysis(object):
         Spec = np.zeros(255051)
         for i in range(255051):
              Spec[i]=lines[i][6]
-        data = np.resize(Spec,(51,int(len(Spec)/51)))
+        #data = np.resize(Spec,(51,int(len(Spec)/51)))
+        data = np.resize(Spec,(51,5001))
         Frequency = np.zeros(5001)
         for i in range(5001):
              Frequency[i]=lines[i][2]
@@ -70,7 +71,9 @@ class Polaron_analysis(object):
         #direccion q_y -> data[i]
         #direccion q_x=q_y=i -> data = data[i][i] for i in {0..51}
         #direccion
-        return w[:51], self.data[index]
+        print (np.shape(self.data[int(index)]))
+        data = self.data[int(index)]
+        return w[:5001], data
 
     def plot_contour(self,data):
         plt.style.use('_mpl-gallery-nogrid')
