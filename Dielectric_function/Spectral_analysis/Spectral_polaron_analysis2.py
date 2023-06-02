@@ -60,14 +60,14 @@ class Polaron_analysis(object):
              Frequency[i]=lines[i][2]
         return data, Frequency
 
-    def load_big_file(self,filename="A7_EPS.dat"):
+    def load_big_file(self, index, filename="A7_EPS.dat"):
         q_x, q_y, w, epsilon = np.loadtxt(filename,usecols=(0,1,2,6), unpack=True)
         print (len(np. unique(q_x))) #np. unique(my_array, return_counts=True)
         print (len(np. unique(q_y)))
         print (len(np. unique(w)))
         self.data = np.resize(epsilon,(51,51,5001))
         #plot.contour(data[i])
-        pass
+        return w[:51], self.data[index]
 
     def plot_contour(self,data):
         plt.style.use('_mpl-gallery-nogrid')
@@ -145,19 +145,25 @@ class Polaron_analysis(object):
 def main(arg):
     print (arg[1])
     #namefile = "xbv"
-    namefile = arg[1]
-    print ("Creando el objeto polaron")
-    polaron = Polaron_analysis(arg,namefile)
-    print ("Leyendo datos")
-    data, frequencies = polaron.load_data()
-    print ("dibuja")
-    polaron.plot_contour(data)
-    print("calcula ajuste loretzian")
-    #none = polaron.locate_1Lorenztian(frequencies,data[30])
-    polaron.fitting_Lorentz(frequencies,data)
-    print ("dibuja")
-    polaron.plot_contour(polaron.Fitted_data)
-    polaron.plot_contour2(data,polaron.Fitted_data)
+    if (len( sys.argv ) > 1):
+        namefile = arg[1]
+        print ("Creando el objeto polaron")
+        polaron = Polaron_analysis(arg,namefile)
+        print ("Leyendo datos")
+        data, frequencies = polaron.load_data()
+        if (len( sys.argv) = 3):
+            index = arg[2]
+            data, frequencies = polaron.load_big_file(index, arg[1])
+        print ("dibuja")
+        polaron.plot_contour(data)
+        print("calcula ajuste loretzian")
+        #none = polaron.locate_1Lorenztian(frequencies,data[30])
+        polaron.fitting_Lorentz(frequencies,data)
+        print ("dibuja")
+        polaron.plot_contour(polaron.Fitted_data)
+        polaron.plot_contour2(data,polaron.Fitted_data)
+    else:
+        print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
 
 if __name__ == '__main__':
