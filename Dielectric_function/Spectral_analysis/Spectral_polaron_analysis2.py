@@ -29,31 +29,16 @@ import numpy as np
 import scipy as scipy
 from scipy.signal import find_peaks
 
-class File_splitter(object):
-    """docstring for File_splitter."""
 
-    def __init__(self, arg):
-        super(File_splitter, self).__init__()
-        self.arg = arg
-        self.Spec = np.zeros((51,51,5001))
-        self.Frequency = np.zeros(5001)
-
-    def Load_big_file(self,filename="A7_EPS.dat"):
-        with open(filename) as file:
-            lines = [line.rsplit() for line in file]
-        for i in range(50*51*5001):
-                    ii=int(float(lines[i][0])/0.00869)
-                    ij=int(float(lines[i][1])/0.00869)
-                    ik=int(float(lines[i][2])/0.0002)
-                    self.Spec[ii][ij][ik]=lines[i][6]
-                    #print (i,ii,ij,ik,":",lines[i][6],"=",self.Spec[ii][ij][ik])
-                    #print ("*", end='')
-        for i in range(5001):
-             self.Frequency[i]=lines[i][2]
-        del lines
-        return 0
-
-
+# def write_file(arg):
+#     lines = ['Readme', 'How to write text files in Python']
+#     with open('readme.txt', 'w') as f:
+#         f.write('readme')
+#         f.write('\n')
+#         f.writelines('\n')
+#     with open() 'readme.txt', 'a', encoding='utf-8') as f:  #add new text each element into a new line.
+#         f.write('\n'.join(lines))
+#     pass # usar numpy.savetxt(fname, X, fmt='%.18e', delimiter=' ', newline='\n', header='', footer='', comments='# ', encoding=None)
 
 class Polaron_analysis(object):
     """Code for the analysis of Silkin's polaron data."""
@@ -74,6 +59,15 @@ class Polaron_analysis(object):
         for i in range(5001):
              Frequency[i]=lines[i][2]
         return data, Frequency
+
+    def load_big_file(self,filename="A7_EPS.dat"):
+        q_x, q_y, w, epsilon = np.loadtxt(filename,usecols=(0,1,2,6), unpack=True)
+        print (len(np. unique(q_x))) #np. unique(my_array, return_counts=True)
+        print (len(np. unique(q_y)))
+        print (len(np. unique(w)))
+        self.data = np.resize(epsilon,(51,51,5001))
+        #plot.contour(data[i])
+        pass
 
     def plot_contour(self,data):
         plt.style.use('_mpl-gallery-nogrid')
