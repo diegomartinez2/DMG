@@ -32,12 +32,13 @@ from scipy.signal import find_peaks
 class Polaron_analysis(object):
     """docstring fo Polaron_analysis."""
 
-    def __init__(self, arg):
+    def __init__(self, arg, namefile):
         super(Polaron_analysis, self).__init__()
         self.arg = arg
+        self.namefile = namefile
 
-    def load_data(self,namefile):
-        with open(namefile) as file:
+    def load_data(self):
+        with open(self.namefile) as file:
              lines = [line.rsplit() for line in file]
         Spec = np.zeros(255051)
         for i in range(255051):
@@ -62,7 +63,29 @@ class Polaron_analysis(object):
         plt.show()
         pass
 
-    def locate_1Lorenztian(self, Frequency, Spec):
+    def plot_contour2(self,data,data2):
+        plt.style.use('_mpl-gallery-nogrid')
+        fig, ax1 = plt.subplots(2,1)
+        cax = ax1[0].imshow(data.T,
+        #	vmin = 0.0 , vmax = 0.004,
+        #	vmin = 0.0 , vmax = 0.3,
+        	cmap=plt.colormaps['jet'], origin='lower',
+        	interpolation='gaussian', aspect='auto')
+        cax2 = ax1[1].imshow(data2.T,
+        #	vmin = 0.0 , vmax = 0.004,
+        #	vmin = 0.0 , vmax = 0.3,
+        	cmap=plt.colormaps['jet'], origin='lower',
+        	interpolation='gaussian', aspect='auto')
+        #ax1[0].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
+        #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
+
+        cbar = fig.colorbar(cax)
+        cbar2 = fig.colorbar(cax2)
+        plt.savefig("Ajuste_{}_{}".format(self.namefile,"original_vs_fitted"))
+        plt.show()
+        pass
+
+    def locate_1Lorenztian(self, Frequency, Spec, index):
         def _1Lorentzian(x, amp1, cen1, wid1):
             return amp1*wid1**2/((x-cen1)**2+wid1**2)
         peaks, _ = find_peaks(Spec,width=5,rel_height=0.3)
@@ -76,33 +99,43 @@ class Polaron_analysis(object):
         perr_lorentz = np.sqrt(np.diag(pcov_lorentz))
         pars = popt_lorentz[:]
         lorentz_peak = _1Lorentzian(Frequency, *pars)
-        print ("-------------Peak 1-------------")
+        print ("-------------Peak ",index,"-------------")
         print ("amplitude = %0.2f (+/-) %0.2f" % (pars[0], perr_lorentz[0]))
         print ("center = %0.2f (+/-) %0.2f" % (pars[1], perr_lorentz[1]))
         print ("width = %0.2f (+/-) %0.2f" % (pars[2], perr_lorentz[2]))
         print ("area = %0.2f" % np.trapz(lorentz_peak))
         print ("--------------------------------")
 
-        plt.plot(Frequency, Spec, label="original")
-        plt.plot(Frequency, lorentz_peak, "r",ls=':', label="ajuste")
-        plt.legend()
-        plt.xlim([0, Frequency.max()])
-        plt.ylim([0, Spec.max()])
-        plt.tight_layout()
-        #plt.savefig("Ajuste_{}".format(namefile))
-        plt.show()
+        #plt.plot(Frequency, Spec, label="original")
+        #plt.plot(Frequency, lorentz_peak, "r",ls=':', label="ajuste")
+        #plt.legend()
+        #plt.xlim([0, Frequency.max()])
+        #plt.ylim([0, Spec.max()])
+        #plt.tight_layout()
+        #plt.savefig("Ajuste_{}_{}".format(self.namefile,index))
+        #plt.show()
         return lorentz_peak
+
+    def fitting_Lorentz(self,frequencies,data):
+        self.Fitted_data = np.zeros((51,5001))
+        for i in range(51):
+            self.Fitted_data[i] = self.locate_1Lorenztian(frequencies,data[i],i)
+        pass
 
 def main(arg):
     namefile = "xbw"
     print ("Creando el objeto polaron")
-    polaron = Polaron_analysis(arg)
+    polaron = Polaron_analysis(arg,namefile)
     print ("Leyendo datos")
-    data, frequencies = polaron.load_data(namefile)
+    data, frequencies = polaron.load_data()
     print ("dibuja")
     polaron.plot_contour(data)
     print("calcula ajuste loretzian")
-    polaron.locate_1Lorenztian(frequencies,data[25])
+    #none = polaron.locate_1Lorenztian(frequencies,data[30])
+    polaron.fitting_Lorentz(frequencies,data)
+    print ("dibuja")
+    polaron.plot_contour(polaron.Fitted_data)
+    polaron.plot_contour2(data,polaron.Fitted_data)
     pass
 
 if __name__ == '__main__':
