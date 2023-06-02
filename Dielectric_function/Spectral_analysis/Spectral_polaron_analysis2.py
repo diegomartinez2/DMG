@@ -149,7 +149,7 @@ def main(arg):
     #namefile = "xbv"
     #print (len(sys.argv))
     if (len( sys.argv ) > 1):
-        print ("nombre de fichero:"arg[1])
+        print ("nombre de fichero:",arg[1])
         namefile = arg[1]
         print ("Creando el objeto polaron")
         polaron = Polaron_analysis(arg,namefile)
