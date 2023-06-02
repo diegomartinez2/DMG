@@ -71,9 +71,8 @@ class Polaron_analysis(object):
         #direccion q_y -> data[i]
         #direccion q_x=q_y=i -> data = data[i][i] for i in {0..51}
         #direccion
-        print (np.shape(self.data[int(index)]))
-        data = self.data[int(index)]
-        return w[:5001], data
+        print (np.shape(self.data[int(index)]),"=(51,5001)?")
+        return self.data[int(index)], w[:5001]
 
     def plot_contour(self,data):
         plt.style.use('_mpl-gallery-nogrid')
@@ -107,7 +106,10 @@ class Polaron_analysis(object):
 
         cbar = fig.colorbar(cax)
         cbar2 = fig.colorbar(cax2)
-        plt.savefig("Ajuste_{}_{}".format(self.namefile,"original_vs_fitted"))
+        if (len( sys.argv) == 3):
+            plt.savefig("Ajuste_{}".format("original_vs_fitted"))
+        else:
+            plt.savefig("Ajuste_{}_{}".format(self.namefile,"original_vs_fitted"))
         plt.show()
         pass
 
@@ -157,10 +159,14 @@ def main(arg):
         print ("Creando el objeto polaron")
         polaron = Polaron_analysis(arg,namefile)
         print ("Leyendo datos")
-        data, frequencies = polaron.load_data()
+
         if (len( sys.argv) == 3):
             index = arg[2]
             data, frequencies = polaron.load_big_file(index, arg[1])
+        else:
+            data, frequencies = polaron.load_data()
+
+        print (np.shape(data),"=(51,5001)?")
         print ("dibuja")
         polaron.plot_contour(data)
         print("calcula ajuste loretzian")
