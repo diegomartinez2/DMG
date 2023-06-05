@@ -26,19 +26,20 @@
 # ---------------------------
 
 
-def File_Sort_Function(filename_sp, nsm):
-    name = "{:6.2f}".format(smear_cm[ism]).strip()
-    filename_data = filename_sp+'_'+name+'.dat'
-    f = open(filename_data, 'rw')
-    data = np.loadtxt(f)
-    X = data[:,0]
-    Y = data[:,1]
-    data_out = [data[i] for i in np.lexsort((Y,X))] # <= Here is the sorting part
-    np.savetxt(f,data_out)
+def File_Sort_Function(filename_sp,smear_cm, nsm):
+    for ism in range(nsm):
+        name = "{:6.2f}".format(smear_cm[ism]).strip()
+        filename_data = filename_sp+'_'+name+'.dat'
+        f = open(filename_data, 'rw')
+        data = np.loadtxt(f)
+        X = data[:,0]
+        Y = data[:,1]
+        data_out = [data[i] for i in np.lexsort((Y,X))] # <= Here is the sorting part
+        np.savetxt(f,data_out)
     pass
 
 def main(args):
-    File_Sort_Function("test.txt", 1.0)
+    File_Sort_Function("test", 1.0)
     return 0
 
 if __name__ == '__main__':
