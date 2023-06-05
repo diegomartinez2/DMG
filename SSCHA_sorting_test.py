@@ -24,6 +24,7 @@
 # ---------------------------
 # Importación de los módulos
 # ---------------------------
+import numpy as np
 
 
 def File_Sort_Function(filename_sp, smear_cm, nsm):
