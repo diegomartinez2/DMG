@@ -47,6 +47,8 @@ class Polaron_analysis(object):
         super(Polaron_analysis, self).__init__()
         self.arg = arg
         self.namefile = namefile
+        self.pars = np.zeros((51,3))
+        self.perr_lorentz = np.zeros((51,3))
 
     def load_data(self):
         with open(self.namefile) as file:
@@ -142,6 +144,8 @@ class Polaron_analysis(object):
         # plt.tight_layout()
         # plt.savefig("Ajuste_{}_{}".format(self.namefile,index))
         # plt.show()
+        self.pars[index] = pars
+        self.perr_lorentz[index] = perr_lorentz
         return lorentz_peak
 
     def fitting_Lorentz(self,frequencies,data):
