@@ -146,6 +146,8 @@ class Polaron_analysis(object):
         # plt.show()
         self.pars[index] = pars
         self.perr_lorentz[index] = perr_lorentz
+        #np.savetxt(f, (pars[0], perr_lorentz[0],pars[1], perr_lorentz[1],pars[2], perr_lorentz[2]) , fmt='%1.3f', newline=", ")
+        #f.write("\n")
         return lorentz_peak
 
     def fitting_Lorentz(self,frequencies,data):
@@ -175,7 +177,10 @@ def main(arg):
         polaron.plot_contour(data)
         print("calcula ajuste loretzian")
         #none = polaron.locate_1Lorenztian(frequencies,data[30])
+        #f=open('file.txt','a')
+        #f.write("-amplitude--(+/-)error--center--(+/-)error--width--(+/-)error-\n")
         polaron.fitting_Lorentz(frequencies,data)
+        #f.close()
         np.savetxt("data_fitting_amplitudes.txt",(self.pars[0], self.perr_lorentz[0]),header='#-----amplitude--(+/-)error---', footer='-------------')
         np.savetxt("data_fitting_center.txt",(self.pars[1], self.perr_lorentz[1]),header='#-----center--(+/-)error---', footer='-------------')
         np.savetxt("data_fitting_width.txt",(self.pars[2], self.perr_lorentz[2]),header='#-----width--(+/-)error---', footer='-------------')
