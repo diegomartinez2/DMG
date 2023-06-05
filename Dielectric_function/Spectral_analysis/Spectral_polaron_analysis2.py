@@ -177,7 +177,7 @@ def main(arg):
         polaron.plot_contour(data)
         print("calcula ajuste loretzian")
         #none = polaron.locate_1Lorenztian(frequencies,data[30])
-        #f=open('file.txt','a')
+        #f=open('file_data_fittings.txt','a')
         #f.write("-amplitude--(+/-)error--center--(+/-)error--width--(+/-)error-\n")
         polaron.fitting_Lorentz(frequencies,data)
         #f.close()
