@@ -30,16 +30,6 @@ import scipy as scipy
 from scipy.signal import find_peaks
 
 
-# def write_file(arg):
-#     lines = ['Readme', 'How to write text files in Python']
-#     with open('readme.txt', 'w') as f:
-#         f.write('readme')
-#         f.write('\n')
-#         f.writelines('\n')
-#     with open() 'readme.txt', 'a', encoding='utf-8') as f:  #add new text each element into a new line.
-#         f.write('\n'.join(lines))
-#     pass # usar numpy.savetxt(fname, X, fmt='%.18e', delimiter=' ', newline='\n', header='', footer='', comments='# ', encoding=None)
-
 class Polaron_analysis(object):
     """Code for the analysis of Silkin's polaron data."""
 
