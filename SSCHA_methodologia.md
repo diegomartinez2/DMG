@@ -1,4 +1,4 @@
-#Pre-processing crear la matriz dinámica
+# Pre-processing crear la matriz dinámica
 1. Crea el objeto con la estructura:
 
    structure = CC.Structure.Structure()
