@@ -91,7 +91,7 @@ class Polaron_analysis(object):
         fig.set_dpi(100)
         cax = ax1[0].imshow(data.T,
         #	vmin = 0.0 , vmax = 0.004,
-        #	vmin = 0.0 , vmax = 0.3,
+        #	vmin = 0.0 , vmax = 0.175,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
         cax2 = ax1[1].imshow(data2.T,
@@ -172,7 +172,11 @@ def main(arg):
             data, frequencies = polaron.load_big_file(index, arg[1])
         else:
             data, frequencies = polaron.load_data()
-
+#--------------------------diagonal-----------------------------
+#        if (len(sys.argv[3]) == 4):
+#            for i in range(51):
+#                data[i,:] = polaron.data[i,i,:]
+#---------------------------------end---diagonal----------------
         print (np.shape(data),"=(51,5001)?")
         print ("dibuja")
         polaron.plot_contour(data)
