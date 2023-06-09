@@ -71,6 +71,8 @@ class Polaron_analysis(object):
     def plot_contour(self,data):
         plt.style.use('_mpl-gallery-nogrid')
         fig, ax1 = plt.subplots(1,1)
+        fig.set_size_inches(10, 5)
+        fig.set_dpi(100)
         cax = ax1.imshow(data.T,
         #	vmin = 0.0 , vmax = 0.004,
         #	vmin = 0.0 , vmax = 0.3,
@@ -85,6 +87,8 @@ class Polaron_analysis(object):
     def plot_contour2(self,data,data2):
         plt.style.use('_mpl-gallery-nogrid')
         fig, ax1 = plt.subplots(2,1)
+        fig.set_size_inches(10, 5)
+        fig.set_dpi(100)
         cax = ax1[0].imshow(data.T,
         #	vmin = 0.0 , vmax = 0.004,
         #	vmin = 0.0 , vmax = 0.3,
@@ -95,7 +99,6 @@ class Polaron_analysis(object):
         #	vmin = 0.0 , vmax = 0.3,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
-        #ax1[0].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
         #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
         print (self.pars[:,1])
         cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = self.pars[:,1]*5000,c='k',marker='x',s=10)
