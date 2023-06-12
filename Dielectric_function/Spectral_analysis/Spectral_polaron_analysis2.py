@@ -51,7 +51,8 @@ class Polaron_analysis(object):
         Frequency = np.zeros(5001)
         for i in range(5001):
              Frequency[i]=lines[i][2]
-        return data, Frequency
+        print ("q_x=",lines[0][0])
+        return data, Frequency, lines[0][0]
 
     def load_big_file(self, index, filename="A7_EPS.dat"):
         q_x, q_y, w, epsilon = np.loadtxt(filename,usecols=(0,1,2,6), unpack=True)
@@ -171,7 +172,7 @@ def main(arg):
             index = arg[2]
             data, frequencies = polaron.load_big_file(index, arg[1])
         else:
-            data, frequencies = polaron.load_data()
+            data, frequencies, qx= polaron.load_data()
 #--------------------------diagonal-----------------------------
 #        if (len(sys.argv[3]) == 4):
 #            for i in range(51):
@@ -186,9 +187,15 @@ def main(arg):
         #f.write("-amplitude--(+/-)error--center--(+/-)error--width--(+/-)error-\n")
         polaron.fitting_Lorentz(frequencies,data)
         #f.close()
-        np.savetxt("data_fitting_amplitudes_{}.txt".format(namefile),np.c_[polaron.pars[:,0], polaron.perr_lorentz[:,0]],header='#-----amplitude--(+/-)error---', footer='-------------')
-        np.savetxt("data_fitting_center_{}.txt".format(namefile),np.c_[polaron.pars[:,1], polaron.perr_lorentz[:,1]],header='#-----center(e.V.)--(+/-)error---', footer='-------------')
-        np.savetxt("data_fitting_width_{}.txt".format(namefile),np.c_[polaron.pars[:,2], polaron.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---', footer='-------------')
+        if (len( sys.argv) == 3):
+            np.savetxt("data_fitting_amplitudes_{}.txt".format(namefile),np.c_[polaron.pars[:,0], polaron.perr_lorentz[:,0]],header='#-----amplitude--(+/-)error---', footer='-------------')
+            np.savetxt("data_fitting_center_{}.txt".format(namefile),np.c_[polaron.pars[:,1], polaron.perr_lorentz[:,1]],header='#-----center(e.V.)--(+/-)error---', footer='-------------')
+            np.savetxt("data_fitting_width_{}.txt".format(namefile),np.c_[polaron.pars[:,2], polaron.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---', footer='-------------')
+        else:
+            np.savetxt("data_fitting_amplitudes_{}.txt".format(namefile),np.c_[polaron.pars[:,0], polaron.perr_lorentz[:,0]],header='#-----amplitude--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+            np.savetxt("data_fitting_center_{}.txt".format(namefile),np.c_[polaron.pars[:,1], polaron.perr_lorentz[:,1]],header='#-----center(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+            np.savetxt("data_fitting_width_{}.txt".format(namefile),np.c_[polaron.pars[:,2], polaron.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+
         print ("dibuja")
         polaron.plot_contour(polaron.Fitted_data)
         polaron.plot_contour2(data,polaron.Fitted_data)
