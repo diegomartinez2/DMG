@@ -59,13 +59,21 @@ class Polaron_analysis(object):
         print (len(np. unique(q_x))) #np. unique(my_array, return_counts=True)
         print (len(np. unique(q_y)))
         print (len(np. unique(w)))
-        self.data = np.resize(epsilon,(51,51,5001))
+        #self.data = np.resize(epsilon,(51,51,5001))
+        self.data = np.resize(epsilon,(len(np. unique(q_x)),
+                                        len(np. unique(q_y)),
+                                        len(np. unique(w))))
         #plot.contour(data[i])
         """
         direccion q_y -> data[i]
         direccion q_x=q_y=i -> data = data[i][i] for i in {0..51}
         direccion
         """
+        print ("*************")
+        print (np.diagonal(self.data,axis1=0, axis2=1).T)
+        print (np.diagonal(self.data,axis1=0, axis2=1).shape)
+        print ("--------------")
+
         print (np.shape(self.data[int(index)]),"=(51,5001)?")
         return self.data[int(index)], w[:5001]
 
