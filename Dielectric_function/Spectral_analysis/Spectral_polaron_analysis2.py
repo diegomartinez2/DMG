@@ -69,13 +69,25 @@ class Polaron_analysis(object):
         direccion q_x=q_y=i -> data = data[i][i] for i in {0..51}
         direccion
         """
+        data = np.zeros((len(np. unique(q_x)),len(np. unique(w))))
+        print ("+++++")
+        if (True):
+            for i in range(len(np. unique(q_x))):
+                print ("[" + "=" * i +  " " * ((len(np. unique(q_x)) - i)) + "]" +  str(i) + "%",end='\r', flush=True)
+                for j in range(len(np. unique(w))):
+                    data[i,j] = self.data[i,i,j]
+
         print ("*************")
-        print (np.diagonal(self.data,axis1=0, axis2=1).T)
-        print (np.diagonal(self.data,axis1=0, axis2=1).shape)
+        print (data.shape)
+        # print (np.diagonal(self.data,axis1=0, axis2=1).T)
+        # print (np.diagonal(self.data,axis1=0, axis2=1).shape)
         print ("--------------")
 
         print (np.shape(self.data[int(index)]),"=(51,5001)?")
-        return self.data[int(index)], w[:5001]
+        if (True):
+            return data, w[:5001]
+        else:
+            return self.data[int(index)], w[:5001]
 
     def plot_contour(self,data):
         plt.style.use('_mpl-gallery-nogrid')
@@ -101,6 +113,7 @@ class Polaron_analysis(object):
         cax = ax1[0].imshow(data.T,
         #	vmin = 0.0 , vmax = 0.004,
         #	vmin = 0.0 , vmax = 0.175,
+        	vmin = 0.0 , vmax = 0.12,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
         cax2 = ax1[1].imshow(data2.T,
