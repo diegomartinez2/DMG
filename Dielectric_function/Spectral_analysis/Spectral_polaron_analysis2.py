@@ -54,7 +54,7 @@ class Polaron_analysis(object):
         print ("q_x=",lines[0][0])
         return data, Frequency, lines[0][0]
 
-    def load_big_file(self, index, filename="A7_EPS.dat"):
+    def load_big_file(self, index, filename="A7_EPS.dat", diagonal=False):
         q_x, q_y, w, epsilon = np.loadtxt(filename,usecols=(0,1,2,6), unpack=True)
         print (len(np. unique(q_x))) #np. unique(my_array, return_counts=True)
         print (len(np. unique(q_y)))
@@ -71,7 +71,7 @@ class Polaron_analysis(object):
         """
         data = np.zeros((len(np. unique(q_x)),len(np. unique(w))))
         print ("+++++")
-        if (True):
+        if (diagonal == True):
             for i in range(len(np. unique(q_x))):
                 print ("[" + "=" * i +  " " * ((len(np. unique(q_x)) - i)) + "]" +  str(i) + "%",end='\r', flush=True)
                 for j in range(len(np. unique(w))):
@@ -84,7 +84,7 @@ class Polaron_analysis(object):
         print ("--------------")
 
         print (np.shape(self.data[int(index)]),"=(51,5001)?")
-        if (True):
+        if (diagonal == True):
             return data, w[:5001]
         else:
             return self.data[int(index)], w[:5001]
