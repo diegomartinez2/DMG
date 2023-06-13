@@ -182,9 +182,9 @@ class Polaron_analysis(object):
 class Eliashberg(object):
     """docstring for Eliashberg."""
 
-    def __init__(self, arg):
-        super(Eliashberg, self).__init__()
-        self.arg = arg
+    def __init__(self, pars):
+        #super(Eliashberg, self).__init__()
+        self.pars = pars
 
     def e_spectral_function(self):
         print ("shape = ",np.shape(self.pars))
