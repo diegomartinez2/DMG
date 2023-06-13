@@ -179,6 +179,23 @@ class Polaron_analysis(object):
             self.Fitted_data[i] = self.locate_1Lorenztian(frequencies,data[i],i)
         pass
 
+class Eliashberg(object):
+    """docstring for Eliashberg."""
+
+    def __init__(self, arg):
+        super(Eliashberg, self).__init__()
+        self.arg = arg
+
+    def e_spectral_function(self):
+        factor1 = 1/(2*np.pi*Ne*N)
+        for i in range(numero):
+            suma += (with/center) * gaussian(center)
+        return factor1*summa
+
+    def gaussian(self):
+            g = np. exp(-( (d-mu)**2 / ( 2.0 * sigma**2 ) ) )
+        return g        
+
 def main(arg):
     #namefile = "xbv"
     #print (len(sys.argv))
