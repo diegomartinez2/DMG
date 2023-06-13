@@ -187,14 +187,17 @@ class Eliashberg(object):
         self.arg = arg
 
     def e_spectral_function(self):
+        print ("shape = ",np.shape(self.pars))
+        center = self.pars[:,1]
+        width = self.pars[:,2]
         factor1 = 1/(2*np.pi*Ne*N)
         for i in range(numero):
-            suma += (with/center) * gaussian(center)
+            suma += (width/center) * gaussian(center)
         return factor1*summa
 
     def gaussian(self):
             g = np. exp(-( (d-mu)**2 / ( 2.0 * sigma**2 ) ) )
-        return g        
+        return g
 
 def main(arg):
     #namefile = "xbv"
