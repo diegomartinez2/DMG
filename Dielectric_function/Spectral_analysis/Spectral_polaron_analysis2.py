@@ -201,7 +201,8 @@ class Eliashberg(object):
         return g
 
     def read_Ne(self):
-        self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
+        energy, Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
+        self.Ne[np.where(energy==0.0)]
         pass
 
 def main(arg):
