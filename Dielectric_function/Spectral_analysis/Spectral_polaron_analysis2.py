@@ -190,14 +190,19 @@ class Eliashberg(object):
         print ("shape = ",np.shape(self.pars))
         center = self.pars[:,1]
         width = self.pars[:,2]
-        factor1 = 1/(2*np.pi*Ne*N)
-        for i in range(numero):
+        N = 2 #electron spin up and down
+        factor1 = 1/(2*np.pi*self.Ne*N)
+        for i in range(len(center)):
             suma += (width/center) * gaussian(center)
         return factor1*summa
 
     def gaussian(self):
             g = np. exp(-( (d-mu)**2 / ( 2.0 * sigma**2 ) ) )
         return g
+
+    def read_Ne(self):
+        self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
+        pass
 
 def main(arg):
     #namefile = "xbv"
