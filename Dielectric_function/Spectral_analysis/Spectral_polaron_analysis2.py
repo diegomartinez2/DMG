@@ -196,8 +196,11 @@ class Eliashberg(object):
             suma += (width/center) * gaussian(center)
         return factor1*summa
 
-    def gaussian(self):
-            g = np. exp(-( (d-mu)**2 / ( 2.0 * sigma**2 ) ) )
+    def gaussian(self, center):
+        d = self.pars[:,0] #amplitude
+        mu = center
+        sigma = self.pars[:,2] #width
+        g = np. exp(-( (d-mu)**2 / ( 2.0 * sigma**2 ) ) )
         return g
 
     def read_Ne(self):
