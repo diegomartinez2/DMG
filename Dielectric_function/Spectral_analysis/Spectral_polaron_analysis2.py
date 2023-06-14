@@ -203,6 +203,7 @@ class Eliashberg(object):
     def read_Ne(self):
         energy, Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
         self.Ne[np.where(energy==0.0)]
+        print ("Density of states at Fermi level per cell=",self.Ne)
         pass
 
 def main(arg):
