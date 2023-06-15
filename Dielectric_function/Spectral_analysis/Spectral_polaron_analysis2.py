@@ -204,10 +204,13 @@ class Eliashberg(object):
         return g
 
     def read_Ne(self):
-        energy, Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
-        self.Ne[np.where(energy==0.0)]
-        print ("Density of states at Fermi level per cell=",self.Ne)
+        self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
+        #self.Ne_0[np.where(energy==0.0)]
+        numero_de_elementos = np.trapz(self.Ne[:(np.where(energy==0.0)[0][0])+1])
+        print ("Density of states at Fermi level per cell=",self.Ne[np.where(energy==0.0)])
+        print ("Number of elements (for the factor)=",numero_de_elementos)
         pass
+
 
 def main(arg):
     #namefile = "xbv"
