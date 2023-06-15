@@ -203,7 +203,7 @@ class Eliashberg(object):
         g = np. exp(-( (d-mu)**2 / ( 2.0 * sigma**2 ) ) )
         return g
 
-    def read_Ne(self):
+    def read_Ne(self,filename="out_DOS.dat"):
         self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
         #self.Ne_0[np.where(energy==0.0)]
         numero_de_elementos = np.trapz(self.Ne[:(np.where(energy==0.0)[0][0])+1])
