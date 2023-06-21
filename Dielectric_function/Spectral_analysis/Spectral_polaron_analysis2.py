@@ -212,7 +212,7 @@ class Eliashberg(object):
         print ("shape = ",np.shape(self.pars))
         center = self.pars[:,1]
         width = self.pars[:,2]
-        factor1 = 1/(2*self.Ne)
+        factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
         for i in range(len(center)):
             suma += (width*center) * gaussian(x,center)
         return factor1*summa
@@ -223,6 +223,13 @@ class Eliashberg(object):
         sigma = gauss_width #self.pars[:,2] #width
         g = d*np.exp(-( (x-mu)**2 / ( 2.0 * sigma**2 ) ) )
         return g
+
+    def Lambda(self):
+        for i in range(len(center)):
+            summa1 += Lambda_q(width,center,self.Ne[np.where(self.energy==0.0)])
+        Lambda_1=summa1/self.Ne[np.where(self.energy==0.0)]
+        lambda_2=2*np.trapz((a2F()/center),dx=center) #check this expression!!!
+        pass
 
 
 def main(arg):
