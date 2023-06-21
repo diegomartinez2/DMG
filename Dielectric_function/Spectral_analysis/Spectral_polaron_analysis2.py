@@ -186,7 +186,7 @@ class Eliashberg(object):
         #super(Eliashberg, self).__init__()
         self.pars = pars
 
-    def e_spectral_function(self):
+    def a2F(self):
         print ("shape = ",np.shape(self.pars))
         center = self.pars[:,1]
         width = self.pars[:,2]
@@ -210,6 +210,10 @@ class Eliashberg(object):
         print ("Density of states at Fermi level per cell=",self.Ne[np.where(self.energy==0.0)])
         print ("Number of elements (for the factor)=",numero_de_elementos)
         pass
+
+    def Lambda_q(self,gamma_q,omega_q,Nef):
+        Lamb_q=1/(np.pi*Nef) * gamma_q/omega_q
+        return Lamb_q
 
 
 def main(arg):
