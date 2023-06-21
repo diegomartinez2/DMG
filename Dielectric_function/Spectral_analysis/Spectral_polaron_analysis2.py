@@ -186,22 +186,15 @@ class Eliashberg(object):
         #super(Eliashberg, self).__init__()
         self.pars = pars
 
-    def a2F(self):
+    def e_spectral_function(self):
         print ("shape = ",np.shape(self.pars))
         center = self.pars[:,1]
         width = self.pars[:,2]
         N = 2 #electron spin up and down
         factor1 = 1/(2*np.pi*self.Ne*N)
         for i in range(len(center)):
-            suma += (width/center) * gaussian(x,center)
+            suma += (width/center) * gaussian(center)
         return factor1*summa
-
-    def gaussian(self,x, center,gauss_width):
-        d = self.pars[:,0] #amplitude
-        mu = center
-        sigma = gauss_width #self.pars[:,2] #width
-        g = d*np.exp(-( (x-mu)**2 / ( 2.0 * sigma**2 ) ) )
-        return g
 
     def read_Ne(self,filename="out_DOS.dat"):
         self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
@@ -214,6 +207,22 @@ class Eliashberg(object):
     def Lambda_q(self,gamma_q,omega_q,Nef):
         Lamb_q=1/(np.pi*Nef) * gamma_q/omega_q
         return Lamb_q
+
+    def a2F(self):
+        print ("shape = ",np.shape(self.pars))
+        center = self.pars[:,1]
+        width = self.pars[:,2]
+        factor1 = 1/(2*self.Ne)
+        for i in range(len(center)):
+            suma += (width*center) * gaussian(x,center)
+        return factor1*summa
+
+    def gaussian(self,x, center,gauss_width):
+        d = self.pars[:,0] #amplitude
+        mu = center
+        sigma = gauss_width #self.pars[:,2] #width
+        g = d*np.exp(-( (x-mu)**2 / ( 2.0 * sigma**2 ) ) )
+        return g
 
 
 def main(arg):
