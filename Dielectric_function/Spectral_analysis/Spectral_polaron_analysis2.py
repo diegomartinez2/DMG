@@ -193,14 +193,14 @@ class Eliashberg(object):
         N = 2 #electron spin up and down
         factor1 = 1/(2*np.pi*self.Ne*N)
         for i in range(len(center)):
-            suma += (width/center) * gaussian(center)
+            suma += (width/center) * gaussian(x,center)
         return factor1*summa
 
-    def gaussian(self, center):
+    def gaussian(self,x, center,gauss_width):
         d = self.pars[:,0] #amplitude
         mu = center
-        sigma = self.pars[:,2] #width
-        g = np. exp(-( (d-mu)**2 / ( 2.0 * sigma**2 ) ) )
+        sigma = gauss_width #self.pars[:,2] #width
+        g = d*np.exp(-( (x-mu)**2 / ( 2.0 * sigma**2 ) ) )
         return g
 
     def read_Ne(self,filename="out_DOS.dat"):
