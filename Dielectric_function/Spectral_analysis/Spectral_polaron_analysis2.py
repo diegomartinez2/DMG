@@ -276,7 +276,6 @@ def main(arg):
         polaron.plot_contour2(data,polaron.Fitted_data)
         superconductor = Eliashberg(polaron.pars)
         superconductor.read_Ne()
-        #superconductor.Lambda_q(gamma_q,omega_q,superconductor.Ne[np.where(superconductor.energy==0.0)])
         superconductor.Lambda()
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
