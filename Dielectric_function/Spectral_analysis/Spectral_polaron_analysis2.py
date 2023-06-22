@@ -205,7 +205,7 @@ class Eliashberg(object):
         pass
 
     def Lambda_q(self,gamma_q,omega_q,Nef):
-        Lamb_q=1/(np.pi*Nef) * gamma_q/omega_q
+        Lamb_q=(1/(np.pi*Nef)) * (gamma_q/omega_q)
         return Lamb_q
 
     def a2F(self):
