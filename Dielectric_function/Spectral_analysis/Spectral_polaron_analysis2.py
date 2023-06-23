@@ -219,7 +219,7 @@ class Eliashberg(object):
 
     def gaussian(self,x, center,gauss_width):
         d = self.pars[:,0] #amplitude
-        mu = center
+        mu = center #self.pars[:1] #center
         sigma = gauss_width #self.pars[:,2] #width
         g = d*np.exp(-( (x-mu)**2 / ( 2.0 * sigma**2 ) ) )
         return g
