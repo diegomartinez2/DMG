@@ -233,6 +233,15 @@ class Eliashberg(object):
         print ("Lambda="Lambda_1,"=",lambda_2)
         pass
 
+    def a2F_2(self,x):
+        print ("shape = ",np.shape(self.pars))
+        center = self.pars[:,1]
+        width = self.pars[:,2]
+        factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
+        for i in range(len(center)):
+            suma += (width*center) * gaussian(x,center)
+        return factor1*summa
+
 
 def main(arg):
     #namefile = "xbv"
