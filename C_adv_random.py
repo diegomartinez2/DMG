@@ -318,7 +318,16 @@ def main(args):
     'TECNOLOGÍA AVANZADA: Guante multiherramienta portátil',
     'TECNOLOGÍA AVANZADA: Sistema auto objetivo militar con efectos de mejora de la visión de lujo',
     'TECNOLOGÍA AVANZADA: Alguna tecnología alíen... nadie sabe que hace ¡todavía!',
-    'CAMPAÑA POLÍTICA: ',
+    'CAMPAÑA POLÍTICA: Idealistas antitecnología',
+    'CAMPAÑA POLÍTICA: Candidato corrupto',
+    'CAMPAÑA POLÍTICA: Partido supremacista humano aumentado',
+    'CAMPAÑA POLÍTICA: Nuevo partido populista linchando al actual consejo',
+    'CAMPAÑA POLÍTICA: CEO megacorporativo apoya la ley marcial',
+    'CAMPAÑA POLÍTICA: Activistas hackers',
+    'CAMPAÑA POLÍTICA: Pacifistas cabezacromo',
+    'CAMPAÑA POLÍTICA: Gente contra crueldad robot',
+    'CAMPAÑA POLÍTICA: Salvadores medio ambiente',
+    'CAMPAÑA POLÍTICA: Culto al salvador',
     'FIESTAS: ',
     'EXTRAÑO: '
     ]
