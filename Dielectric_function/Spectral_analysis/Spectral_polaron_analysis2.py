@@ -239,7 +239,7 @@ class Eliashberg(object):
         width = self.pars[:,2]
         factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
         for i in range(len(center)):
-            suma += (width*center) * gaussian(x,center)
+            suma += (width*center) * gaussian(x,center) #in qe-5.1.0_elph/elph_fc.f90 also has a weight related to Ne
         return factor1*summa
 
 
