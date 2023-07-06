@@ -26,6 +26,17 @@ export OMP_NUM_THREADS=1
 
     cluster.setup_workdir()
 
+    def cp_files(lbls):
+        extrain = f"cd {scratch_workdir}\n"
+        extraout = "sleep 1\n"
+        for lbl in lbls:
+            extrain += f"cp {home_workdir}/{lbl}.pwi {scratch_workdir}/\n"
+            extraout += f"mv {scratch_workdir}/{lbl}.pwo {home_workdir}/\n"
+
+        return extrain, extraout
+
+    # Add the possibility to copy the input files
+    #cluster.additional_script_parameters = cp_files
     #Check the communication
     if not cluster.CheckCommunication():
         raise ValueError("Impossible to connect to the cluster")
