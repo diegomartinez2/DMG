@@ -288,6 +288,7 @@ def main(arg):
         superconductor = Eliashberg(polaron.pars)
         superconductor.read_Ne()
         lambda_1, lambda_2 = superconductor.Lambda()
+        np.savetxt('Lambda.txt', (lambda_1,lambda_2))
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
