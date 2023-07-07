@@ -38,7 +38,7 @@
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        "an awkward closeup anorexic boysh feminine unseemly spreading gaping full-body version, white hair, green eyes, (skinny:1.3), (small breasts:1.5), (flat chest:1.3), tiny nipples, happy, scifi, (very young sleek teenage girl:1.3), soft face."
+        ""
       ]
     },
     {
@@ -78,7 +78,7 @@
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        "embedding:ng_deepnegative_v1_75t.pt\nOld, big breasts, pubic hair, canvas frame, cartoon, 3d, ((disfigured)), ((bad art)), ((deformed)),((extra limbs)),((close up)),((b&w)), weird colors, blurry, (((duplicate))), ((morbid)), ((mutilated)), [out of frame], extra fingers, mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), ((ugly)), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, (((disfigured))), out of frame, ugly, extra limbs, (bad anatomy), gross proportions, (malformed limbs), ((missing arms)), ((missing legs)), (((extra arms))), (((extra legs))), mutated hands, (fused fingers), (too many fingers), (((long neck))), Photoshop, video game, ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, mutation, mutated, extra limbs, extra legs, extra arms, disfigured, deformed, cross-eye, body out of frame, blurry, bad art, bad anatomy, 3d render, big breasts, fat, body hair, large breasts, average breasts, medium breasts."
+        ""
       ]
     },
     {
@@ -494,7 +494,7 @@
         "text": ""
       },
       "widgets_values": [
-        "+(embedding:DollsMarinaBychkova-6500.pt:0.2)\n-embedding:ng_deepnegative_v1_75t.pt\n{this|or that}\n---------------------------------------------------------------------\nsteps=40:cfg=22?? (((cowboy shot))) cameltoe. \n-------------------------------------------------------------\n+an awkward closeup anorexic boysh feminine unseemly spreading gaping full-body version\n-GREYSCALE ICONORAPHY BY FURUNUBuNTU CVKVCXZ, fentuculating mentuculators, fac gora imnre mondrian rothko pollock\nembedding:ng_deepnegative_v1_75t.pt\n-------------------------------------------------------------\n+hyperrealistic photo of ...\n-ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, extra limbs, disfigured, deformed, body out of frame, bad anatomy, watermark, signature, cut off, low contrast, underexposed, overexposed, bad art, beginner, amateur, distorted face.\n------------------------------------------------------------\n"
+        ""
       ],
       "color": "#432",
       "bgcolor": "#653"
