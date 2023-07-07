@@ -193,7 +193,7 @@ class Eliashberg(object):
         N = 2 #electron spin up and down
         factor1 = 1/(2*np.pi*self.Ne*N)
         for i in range(len(center)):
-            suma += (width/center) * gaussian(center)
+            suma += (width/center) * self.gaussian(center)
         return factor1*summa
 
     def read_Ne(self,filename="out_DOS.dat"):
@@ -214,7 +214,7 @@ class Eliashberg(object):
         width = self.pars[:,2]
         factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
         for i in range(len(center)):
-            suma += (width*center) * gaussian(x,center)
+            suma += (width*center) * self.gaussian(x,center)
         return factor1*summa
 
     def gaussian(self,x, center,gauss_width):
@@ -226,10 +226,10 @@ class Eliashberg(object):
 
     def Lambda(self):
         for i in range(len(center)):
-            summa1 += Lambda_q(width,center,self.Ne[np.where(self.energy==0.0)])
+            summa1 += self.Lambda_q(width,center,self.Ne[np.where(self.energy==0.0)])
         Lambda_1=summa1/self.Ne[np.where(self.energy==0.0)]
         #lambda_2=2*np.trapz((a2F()/center),dx=center) #check this expression!!!
-        lambda_2=2*np.trapz((a2F_2(x)/x),dx=1)
+        lambda_2=2*np.trapz((self.a2F_2(x)/x),dx=1)
         print ("Lambda="Lambda_1,"=",lambda_2)
         pass
 
@@ -239,7 +239,7 @@ class Eliashberg(object):
         width = self.pars[:,2]
         factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
         for i in range(len(center)):
-            suma += (width*center) * gaussian(x,center) #in qe-5.1.0_elph/elph_fc.f90 also has a weight related to Ne
+            suma += (width*center) * self.gaussian(x,center) #in qe-5.1.0_elph/elph_fc.f90 also has a weight related to Ne
         return factor1*summa
 
 
