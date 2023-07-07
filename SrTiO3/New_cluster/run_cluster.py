@@ -6,7 +6,7 @@ import sscha.SchaMinimizer, sscha.Relax
 import espresso_calculator
 import cluster
 
-# Generate an ensemble with 10 configurations
+# Generate an ensemble with 300 configurations
 dyn = CC.Phonons.Phonons("start_sscha", 3)
 ensemble = sscha.Ensemble.Ensemble(dyn, 300)
 
