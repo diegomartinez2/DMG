@@ -231,7 +231,8 @@ class Eliashberg(object):
         #lambda_2=2*np.trapz((a2F()/center),dx=center) #check this expression!!!
         lambda_2=2*np.trapz((self.a2F_2(x)/x),dx=1)
         print ("Lambda="Lambda_1,"=",lambda_2)
-        pass
+        #pass
+        return Lambda_1, lambda_2
 
     def a2F_2(self,x):
         print ("shape = ",np.shape(self.pars))
@@ -286,7 +287,7 @@ def main(arg):
         polaron.plot_contour2(data,polaron.Fitted_data)
         superconductor = Eliashberg(polaron.pars)
         superconductor.read_Ne()
-        superconductor.Lambda()
+        lambda_1, lambda_2 = superconductor.Lambda()
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
