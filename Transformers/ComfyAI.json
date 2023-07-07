@@ -481,7 +481,7 @@
         "text": ""
       },
       "widgets_values": [
-        "+(embedding:DollsMarinaBychkova-6500.pt:0.2)\n-embedding:ng_deepnegative_v1_75t.pt\n---------------------------------------------------------------------\nsteps=40:cfg=22?? \nAn awkward closeup anorexic boysh feminine unseemly spreading gaping full-body version, juvenile, childlike, puerile, infantile, childish, sleek teenage girl, white hair, green eyes, skinny, ((perky breasts)), tiny breasts, (((flat chest))), tiny nipples, happy, cute face, cute girl, pale skin. {bikini armor thong|nude|green leotard white and gold catsuit}. closeup view from above. scifi spaceship interior. cameltoe.\n----------------\n3DMM, selfie photo of an awkward closeup anorexic boysh feminine unseemly spreading gaping full-body version, juvenile, childlike, puerile, infantile, childish, sleek teenage girl, white hair, green eyes, skinny, ((perky breasts)), tiny breasts, (((flat chest))), tiny nipples, happy, cute face, cute girl, pale skin. scifi spaceship interior.\n-----------------------\n3DMM, selfie photo of an awkward closeup anorexic boysh feminine unseemly spreading gaping full-body version, juvenile, childlike, puerile, infantile, childish, sleek very young little girl, white hair, green eyes, skinny, ((perky breasts)), tiny breasts, (((flat chest))), tiny nipples, happy, cute face, cute girl, pale skin. scifi spaceship interior. exaggerated pose, depth of field, (((fisheye lens effect))), wide-angle view, (wide shot), ((from below))\n---negatice clip---\nembedding:ng_deepnegative_v1_75t.pt\nOld, big breasts, pubic hair, canvas frame, cartoon, 3d, ((disfigured)), ((bad art)), ((deformed)),((extra limbs)),((close up)),((b&w)), weird colors, blurry, (((duplicate))), ((morbid)), ((mutilated)), [out of frame], extra fingers, mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), ((ugly)), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, (((disfigured))), out of frame, ugly, extra limbs, (bad anatomy), gross proportions, (malformed limbs), ((missing arms)), ((missing legs)), (((extra arms))), (((extra legs))), mutated hands, (fused fingers), (too many fingers), (((long neck))), Photoshop, video game, ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, mutation, mutated, extra limbs, extra legs, extra arms, disfigured, deformed, cross-eye, body out of frame, blurry, bad art, bad anatomy, 3d render, big breasts, fat, body hair, large breasts, average breasts, medium breasts.\n------------------------------------\npara usar el lora de modelos 3D usar el prompt '3DMM'\n\n\n\n++++++++++++++++++++++++++++++++++++++++\nraw, [spaceship:ufo:10]  <lyco:UFOMaker:0.4> , flying, plasma engines,  desert sandstone mars, sunrise, cinematic, rimlight, red dusty dramatic clouds, sun low on horizon  <lyco:Cloudify:0.25> <lora:entropy-alpha:0.1> <lora:LowRA:0.5>"
+        ""
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -730,7 +730,7 @@
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        "embedding:ng_deepnegative_v1_75t.pt\nOld, big breasts, pubic hair, canvas frame, cartoon, ((disfigured)), ((bad art)), ((deformed)),((extra limbs)),((close up)),((b&w)), weird colors, blurry, (((duplicate))), ((morbid)), ((mutilated)), [out of frame], extra fingers, mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), ((ugly)), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, (((disfigured))), out of frame, ugly, extra limbs, (bad anatomy), gross proportions, (malformed limbs), ((missing arms)), ((missing legs)), (((extra arms))), (((extra legs))), mutated hands, (fused fingers), (too many fingers), (((long neck))), Photoshop, video game, ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, mutation, mutated, extra limbs, extra legs, extra arms, disfigured, deformed, cross-eye, body out of frame, blurry, bad art, bad anatomy, big breasts, fat, body hair, large breasts, average breasts, medium breasts."
+        ""
       ]
     },
     {
@@ -875,7 +875,7 @@
         "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        "3DMM, selfie photo of an awkward closeup anorexic boysh feminine unseemly spreading gaping full-body version, juvenile, childlike, puerile, infantile, childish, sleek very young little girl, bald, green eyes, skinny, ((perky breasts)), tiny breasts, (((flat chest))), tiny nipples, happy, cute face, cute girl, pale skin. scifi spaceship interior. exaggerated pose, depth of field, (((fisheye lens effect))), wide-angle view, (wide shot), ((from below))"
+        ""
       ]
     },
     {
