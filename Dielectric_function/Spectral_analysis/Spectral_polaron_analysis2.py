@@ -247,7 +247,7 @@ class Eliashberg(object):
             if (x == 0):
                 a2F_x = 0
             else:
-                a2F_x = self.a2F_2(x)/x)
+                a2F_x = self.a2F_2(x)/x
             print ("a2F_x=",a2F_x)
             lambda_2.append(2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10))
         print ("Lambda=",Lambda_1,"=",lambda_2)
