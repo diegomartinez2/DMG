@@ -229,7 +229,11 @@ class Eliashberg(object):
             summa1 += self.Lambda_q(width,center,self.Ne[np.where(self.energy==0.0)])
         Lambda_1=summa1/self.Ne[np.where(self.energy==0.0)]
         #lambda_2=2*np.trapz((a2F()/center),dx=center) #check this expression!!!
-        lambda_2=2*np.trapz((self.a2F_2(x)/x),dx=1)
+        #lambda_2=2*np.trapz((self.a2F_2(x)/x),dx=1)
+        a2F_x=[]
+        for x in range(max_freq):
+            a2F_x.append(self.a2F_2(x)/x)
+        lambda_2=2*np.trapz(a2F_x)
         print ("Lambda="Lambda_1,"=",lambda_2)
         #pass
         return Lambda_1, lambda_2
