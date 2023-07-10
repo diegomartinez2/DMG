@@ -321,7 +321,7 @@ def main(arg):
         lambda_1 = superconductor.Lambda(frequencies)
         #np.savetxt('Lambda.txt', (lambda_1,lambda_2))
         np.savetxt('Lambda.txt', (lambda_1))
-        np.savetxt('Lambda_from_a2F.txt', self.lambda_2)
+        np.savetxt('Lambda_from_a2F.txt', superconductor.lambda_2)
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
