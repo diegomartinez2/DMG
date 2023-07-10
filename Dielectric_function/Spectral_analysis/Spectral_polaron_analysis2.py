@@ -251,8 +251,10 @@ class Eliashberg(object):
             print ("a2F_x=",a2F_x)
             lambda_2.append(2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10))
         print ("Lambda=",Lambda_1,"=",lambda_2)
-        #pass
-        return Lambda_1, lambda_2
+        self.plot_lambda(lambda_1)
+        self.plot_lambda(lambda_2)
+        pass
+        #return Lambda_1, lambda_2
 
     def a2F_2(self,x):
         print ("shape = ",np.shape(self.pars))
@@ -264,6 +266,11 @@ class Eliashberg(object):
         for i in range(len(center)):
             suma += (width*center) * self.gaussian(x,center,gauss_width) #in qe-5.1.0_elph/elph_fc.f90 also has a weight related to Ne
         return factor1*suma
+
+    def plot_lambda(self,lambda):
+        plt.plot(lambda)
+        plt.show()
+        pass
 
 
 def main(arg):
