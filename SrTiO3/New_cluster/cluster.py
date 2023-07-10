@@ -21,7 +21,7 @@ def configure_cluster(cluster_workdir = "SrTiO3_workdir"):
 
 module load QuantumESPRESSO
 
-export OMP_NUM_THREADS=1,2,4,6,8
+export OMP_NUM_THREADS=1,2,4,6,8,16,32,40
 """
 
     cluster.setup_workdir()
