@@ -245,7 +245,7 @@ class Eliashberg(object):
         lambda_2=[]
         for x in Frequencies:
             if (x == 0):
-                a2F_x = 0
+                continue
             else:
                 a2F_x = self.a2F_2(x)/x
             print ("a2F_x=",a2F_x)
