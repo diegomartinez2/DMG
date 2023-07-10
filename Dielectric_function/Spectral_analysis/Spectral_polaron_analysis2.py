@@ -227,6 +227,7 @@ class Eliashberg(object):
 
     def Lambda(self,Frequencies):
         center = self.pars[:,1]
+        summa1 = 0
         for i in range(len(center)):
             summa1 += self.Lambda_q(width,center,self.Ne[np.where(self.energy==0.0)])
         Lambda_1=summa1/self.Ne[np.where(self.energy==0.0)]
@@ -245,6 +246,7 @@ class Eliashberg(object):
         center = self.pars[:,1]
         width = self.pars[:,2]
         factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
+        summa = 0
         for i in range(len(center)):
             suma += (width*center) * self.gaussian(x,center) #in qe-5.1.0_elph/elph_fc.f90 also has a weight related to Ne
         return factor1*summa
