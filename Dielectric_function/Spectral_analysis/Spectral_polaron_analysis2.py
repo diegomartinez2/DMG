@@ -234,14 +234,22 @@ class Eliashberg(object):
         Lambda_1=summa1/self.Ne[np.where(self.energy==0.0)]
         #lambda_2=2*np.trapz((a2F()/center),dx=center) #check this expression!!!
         #lambda_2=2*np.trapz((self.a2F_2(x)/x),dx=1)
-        a2F_x=[]
+        # a2F_x=[]
+        # for x in Frequencies:
+        #     if (x == 0):
+        #         a2F_x.append(0)
+        #     else:
+        #         a2F_x.append(self.a2F_2(x)/x)
+        # print ("a2F_x=",a2F_x)
+        # lambda_2=2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10)
+        lambda_2=[]
         for x in Frequencies:
             if (x == 0):
-                a2F_x.append(0)
+                a2F_x = 0
             else:
-                a2F_x.append(self.a2F_2(x)/x)
-        print ("a2F_x=",a2F_x)        
-        lambda_2=2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10)
+                a2F_x = self.a2F_2(x)/x)
+            print ("a2F_x=",a2F_x)
+            lambda_2.append(2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10))
         print ("Lambda=",Lambda_1,"=",lambda_2)
         #pass
         return Lambda_1, lambda_2
