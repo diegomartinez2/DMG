@@ -224,14 +224,14 @@ class Eliashberg(object):
         g = d*np.exp(-( (x-mu)**2 / ( 2.0 * sigma**2 ) ) )
         return g
 
-    def Lambda(self):
+    def Lambda(self,Frequencies):
         for i in range(len(center)):
             summa1 += self.Lambda_q(width,center,self.Ne[np.where(self.energy==0.0)])
         Lambda_1=summa1/self.Ne[np.where(self.energy==0.0)]
         #lambda_2=2*np.trapz((a2F()/center),dx=center) #check this expression!!!
         #lambda_2=2*np.trapz((self.a2F_2(x)/x),dx=1)
         a2F_x=[]
-        for x in range(max_freq):
+        for x in Frequencies:
             a2F_x.append(self.a2F_2(x)/x)
         lambda_2=2*np.trapz(a2F_x)
         print ("Lambda="Lambda_1,"=",lambda_2)
@@ -291,7 +291,7 @@ def main(arg):
         polaron.plot_contour2(data,polaron.Fitted_data)
         superconductor = Eliashberg(polaron.pars)
         superconductor.read_Ne()
-        lambda_1, lambda_2 = superconductor.Lambda()
+        lambda_1, lambda_2 = superconductor.Lambda(frequencies)
         np.savetxt('Lambda.txt', (lambda_1,lambda_2))
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
