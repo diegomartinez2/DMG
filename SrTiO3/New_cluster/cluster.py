@@ -10,9 +10,9 @@ def configure_cluster(cluster_workdir = "SrTiO3_workdir"):
 
     cluster.time = "00:30:00" #total time
     cluster.n_cpu = 40 #specify how many processors to call quantum Espresso with
-    cluster.n_pool = 4 #is the number of pools for the quantum espresso parallelization; it should be the greatest common divisor between the number of CPUs and K points.
-    cluster.job_number = 10 #how many jobs will be submitted simultaneously (executed in parallel, but with queue time)
-    cluster.batch_size = 1 #how many pw.x calculations to group in the same job (executed one after the other without queue time)
+    cluster.n_pool = 8 #is the number of pools for the quantum espresso parallelization; it should be the greatest common divisor between the number of CPUs and K points.
+    cluster.job_number = 100 #how many jobs will be submitted simultaneously (executed in parallel, but with queue time)
+    cluster.batch_size = 10 #how many pw.x calculations to group in the same job (executed one after the other without queue time)
 
     scratch_workdir = os.path.join("/scratch/$USER/", cluster_workdir)
     cluster.workdir = scratch_workdir
