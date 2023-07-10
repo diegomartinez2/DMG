@@ -251,7 +251,7 @@ class Eliashberg(object):
         suma = 0
         for i in range(len(center)):
             suma += (width*center) * self.gaussian(x,center,gauss_width) #in qe-5.1.0_elph/elph_fc.f90 also has a weight related to Ne
-        return factor1*summa
+        return factor1*suma
 
 
 def main(arg):
