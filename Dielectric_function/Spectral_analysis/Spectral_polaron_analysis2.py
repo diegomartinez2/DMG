@@ -319,6 +319,7 @@ def main(arg):
         superconductor.read_Ne()
         #lambda_1, lambda_2 = superconductor.Lambda(frequencies)
         lambda_1 = superconductor.Lambda(frequencies)
+        #np.savetxt('Lambda.txt', (lambda_1,lambda_2))
         np.savetxt('Lambda.txt', (lambda_1))
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
