@@ -236,7 +236,8 @@ class Eliashberg(object):
         #lambda_2=2*np.trapz((self.a2F_2(x)/x),dx=1)
         a2F_x=[]
         for x in Frequencies:
-            a2F_x.append(self.a2F_2(x)/x)
+            if (x != 0):
+                a2F_x.append(self.a2F_2(x)/x)
         lambda_2=2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10)
         print ("Lambda=",Lambda_1,"=",lambda_2)
         #pass
