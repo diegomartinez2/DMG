@@ -253,8 +253,9 @@ class Eliashberg(object):
         print ("Lambda=",Lambda_1,"=",lambda_2)
         self.plot_lambda(Lambda_1)
         self.plot_lambda(lambda_2)
-        pass
+        #pass
         #return Lambda_1, lambda_2
+        return Lambda_1
 
     def a2F_2(self,x):
         print ("shape = ",np.shape(self.pars))
@@ -316,8 +317,9 @@ def main(arg):
         polaron.plot_contour2(data,polaron.Fitted_data)
         superconductor = Eliashberg(polaron.pars)
         superconductor.read_Ne()
-        lambda_1, lambda_2 = superconductor.Lambda(frequencies)
-        np.savetxt('Lambda.txt', (lambda_1,lambda_2))
+        #lambda_1, lambda_2 = superconductor.Lambda(frequencies)
+        lambda_1 = superconductor.Lambda(frequencies)
+        np.savetxt('Lambda.txt', (lambda_1))
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
