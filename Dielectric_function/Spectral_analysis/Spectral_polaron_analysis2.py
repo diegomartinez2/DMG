@@ -227,6 +227,7 @@ class Eliashberg(object):
 
     def Lambda(self,Frequencies):
         center = self.pars[:,1]
+        width = self.pars[:,2]
         summa1 = 0
         for i in range(len(center)):
             summa1 += self.Lambda_q(width,center,self.Ne[np.where(self.energy==0.0)])
