@@ -272,7 +272,8 @@ class Eliashberg(object):
         center = self.pars[:,1]
         width = self.pars[:,2]
         #gauss_width = width/20
-        gauss_width = 0.0002 # what is the best width?
+        #gauss_width = 0.0002 # what is the best width?
+        gauss_width = 0.001
         #print('gauss_width=',gauss_width)
         factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
         suma = 0
@@ -338,7 +339,7 @@ def main(arg):
         np.savetxt('Lambda.txt', (lambda_1))
         print('Lambda_1=',np.sum(lambda_1))
         np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
-        print('Lambda_2',np.sum(superconductor.lambda_2))
+        print('Lambda_2=',np.sum(superconductor.lambda_2))
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
