@@ -263,6 +263,11 @@ class Eliashberg(object):
         return Lambda_1
 
     def a2F_2(self,x):
+        """
+        This tries to calculate the Eliashberg function.
+        Inputs:
+        x: The frequencies (but what frequencies, the plasmon ones?)
+        """
         #print ("shape = ",np.shape(self.pars))
         center = self.pars[:,1]
         width = self.pars[:,2]
