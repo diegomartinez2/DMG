@@ -248,8 +248,8 @@ class Eliashberg(object):
                 continue
             else:
                 a2F_x = self.a2F_2(x)/x
-            print ("a2F_x=",a2F_x)
-            self.plot_lambda(a2F_x)
+            #print ("a2F_x=",a2F_x)
+            #self.plot_lambda(a2F_x)
             self.lambda_2.append(2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10))
         #print('freq[0]=',Frequencies[0])
         print ("Lambda=",Lambda_1,"=",self.lambda_2)
@@ -262,7 +262,7 @@ class Eliashberg(object):
         return Lambda_1
 
     def a2F_2(self,x):
-        print ("shape = ",np.shape(self.pars))
+        #print ("shape = ",np.shape(self.pars))
         center = self.pars[:,1]
         width = self.pars[:,2]
         gauss_width = width/10
