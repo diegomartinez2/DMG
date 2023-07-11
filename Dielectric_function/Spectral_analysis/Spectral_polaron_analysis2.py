@@ -277,6 +277,8 @@ class Eliashberg(object):
 
     def plot_lambda(self,x):
         plt.figure(figsize=(10,6))
+        #plt.figure().set_figwidth(15)
+        #plt.figure().set_figheight(2)
         plt.plot(x)
         plt.show()
         pass
