@@ -228,6 +228,10 @@ class Eliashberg(object):
         return g
 
     def Lambda(self,Frequencies):
+        """
+        Calculates the Lambda by two methods, notice that it must calculate the integral
+        in a range that takes the Lorenztian obtained by the Polaron_analysis object.
+        """
         center = self.pars[:,1]
         width = self.pars[:,2]
         summa1 = 0
@@ -265,7 +269,7 @@ class Eliashberg(object):
 
     def a2F_2(self,x):
         """
-        This tries to calculate the Eliashberg function.
+        This tries to calculate the Eliashberg function. It must be calculated in the full 'q'
         Inputs:
         x: The frequencies (but what frequencies, the plasmon ones?)
         """
