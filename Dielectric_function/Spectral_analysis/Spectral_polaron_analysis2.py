@@ -267,7 +267,7 @@ class Eliashberg(object):
         center = self.pars[:,1]
         width = self.pars[:,2]
         #gauss_width = width/20
-        gauss_width = 0.01
+        gauss_width = 0.0002 # what is the best width?
         print('gauss_width=',gauss_width)
         factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
         suma = 0
