@@ -276,6 +276,7 @@ class Eliashberg(object):
         return factor1*suma
 
     def plot_lambda(self,x):
+        plt.figure(figsize=(10,6))
         plt.plot(x)
         plt.show()
         pass
