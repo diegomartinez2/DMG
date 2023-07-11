@@ -219,10 +219,11 @@ class Eliashberg(object):
         return factor1*summa
 
     def gaussian(self,x, center,gauss_width):
-        d = self.pars[:,0] #amplitude
+        #d = self.pars[:,0] #amplitude
         center = self.pars[:,1]
         mu = center #self.pars[:1] #center
         sigma = gauss_width #self.pars[:,2] #width
+        d = 1/(np.sqrt(2*np.pi())*sigma)
         g = d*np.exp(-( (x-mu)**2 / ( 2.0 * sigma**2 ) ) )
         return g
 
@@ -272,7 +273,7 @@ class Eliashberg(object):
         center = self.pars[:,1]
         width = self.pars[:,2]
         #gauss_width = width/20
-        #gauss_width = 0.0002 # what is the best width?
+        #gauss_width = 0.0002 # what is the best width? It should be independent of the width to a point
         gauss_width = 0.01
         #print('gauss_width=',gauss_width)
         factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
