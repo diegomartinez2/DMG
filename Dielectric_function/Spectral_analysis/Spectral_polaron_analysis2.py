@@ -213,8 +213,9 @@ class Eliashberg(object):
         center = self.pars[:,1]
         width = self.pars[:,2]
         factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
+        summa = 0
         for i in range(len(center)):
-            suma += (width*center) * self.gaussian(x,center)
+            summa += (width*center) * self.gaussian(x,center)
         return factor1*summa
 
     def gaussian(self,x, center,gauss_width):
