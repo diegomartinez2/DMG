@@ -249,8 +249,12 @@ class Eliashberg(object):
             else:
                 a2F_x = self.a2F_2(x)/x
             print ("a2F_x=",a2F_x)
+            self.plot_lambda(a2F_x)
             self.lambda_2.append(2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10))
+        #print('freq[0]=',Frequencies[0])
         print ("Lambda=",Lambda_1,"=",self.lambda_2)
+        print("len(freq[1:]),len(lambda1),len(lambda2)")
+        print(len(Frequencies[1:]),len(Lambda_1),len(self.lambda_2))
         self.plot_lambda(Lambda_1)
         self.plot_lambda(self.lambda_2)
         #pass
@@ -321,7 +325,7 @@ def main(arg):
         lambda_1 = superconductor.Lambda(frequencies)
         #np.savetxt('Lambda.txt', (lambda_1,lambda_2))
         np.savetxt('Lambda.txt', (lambda_1))
-        np.savetxt('Lambda_from_a2F.txt', superconductor.lambda_2)
+        np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
