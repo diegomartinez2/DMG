@@ -9,7 +9,7 @@ def main(arg):
     'xbm','xbn','xbo','xbp','xbq','xbr','xbs','xbt','xbu','xbv','xbw','xbx')
     pars = []
     for i in filelist:
-        plasmon = Plasmon_analysis(arg,namefile)
+        plasmon = Spectral_plasmons_analysis.Plasmon_analysis(arg,namefile)
         data, frequencies, qx= plasmon.load_data()
         print (np.shape(data),"=(51,5001)?")
         plasmon.fitting_Lorentz(frequencies,data)
