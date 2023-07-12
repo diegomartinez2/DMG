@@ -12,7 +12,7 @@ def main():
         data, frequencies, qx= polaron.load_data()
         print (np.shape(data),"=(51,5001)?")
         polaron.fitting_Lorentz(frequencies,data)
-        np.append(pars,polaron.pars)
+        pars = np.append(pars,polaron.pars)
 
     superconductor = Eliashberg(pars)
     superconductor.read_Ne()
