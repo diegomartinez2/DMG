@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Spectral_polaron_analysis2.py
+#  Spectral_plasmons_analysis.py
 #
 #  Copyright 2023 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
