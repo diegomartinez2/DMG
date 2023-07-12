@@ -9,11 +9,11 @@ def main(arg):
     'xbm','xbn','xbo','xbp','xbq','xbr','xbs','xbt','xbu','xbv','xbw','xbx')
     pars = []
     for i in filelist:
-        polaron = Polaron_analysis(arg,namefile)
-        data, frequencies, qx= polaron.load_data()
+        plasmon = Plasmon_analysis(arg,namefile)
+        data, frequencies, qx= plasmon.load_data()
         print (np.shape(data),"=(51,5001)?")
-        polaron.fitting_Lorentz(frequencies,data)
-        pars = np.append(pars,polaron.pars)
+        plasmon.fitting_Lorentz(frequencies,data)
+        pars = np.append(pars,plasmon.pars)
 
     superconductor = Eliashberg(pars)
     superconductor.read_Ne()
