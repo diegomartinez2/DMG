@@ -14,7 +14,13 @@ def main():
         polaron.fitting_Lorentz(frequencies,data)
         np.append(pars,polaron.pars)
 
-        
+    superconductor = Eliashberg(pars)
+    superconductor.read_Ne()
+    lambda_1 = superconductor.Lambda(frequencies)
+    np.savetxt('Lambda.txt', (lambda_1))
+    print('Lambda_1=',np.sum(lambda_1)/len(lambda_1))
+    np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
+    print('Lambda_2=',np.sum(superconductor.lambda_2))
 
 if __name__ == '__main__':
     import sys
