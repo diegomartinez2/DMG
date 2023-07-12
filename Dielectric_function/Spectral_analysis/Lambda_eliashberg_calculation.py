@@ -15,7 +15,7 @@ def main(arg):
         plasmon.fitting_Lorentz(frequencies,data)
         pars = np.append(pars,plasmon.pars)
 
-    superconductor = Eliashberg(pars)
+    superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     superconductor.read_Ne()
     lambda_1 = superconductor.Lambda(frequencies)
     np.savetxt('Lambda.txt', (lambda_1))
