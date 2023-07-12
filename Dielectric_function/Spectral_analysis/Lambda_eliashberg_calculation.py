@@ -8,7 +8,7 @@ def main(arg):
     'xaz','xba','xbb','xbc','xbd','xbe','xbf','xbg','xbh','xbi','xbj','xbk','xbl',
     'xbm','xbn','xbo','xbp','xbq','xbr','xbs','xbt','xbu','xbv','xbw','xbx')
     pars = []
-    for i in filelist:
+    for namefile in filelist:
         plasmon = Spectral_plasmons_analysis.Plasmon_analysis(arg,namefile)
         data, frequencies, qx= plasmon.load_data()
         print (np.shape(data),"=(51,5001)?")
