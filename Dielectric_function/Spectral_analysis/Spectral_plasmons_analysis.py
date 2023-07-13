@@ -235,10 +235,12 @@ class Eliashberg(object):
         """
         center = self.pars[:,1]
         width = self.pars[:,2]
+        Ne = self.Ne[np.where(self.energy==0.0)]
         summa1 = 0
         for i in range(len(center)):
-            summa1 += self.Lambda_q(width,center,self.Ne[np.where(self.energy==0.0)])
-        Lambda_1=summa1/self.Ne[np.where(self.energy==0.0)]
+            summa1 += self.Lambda_q(width,center,Ne)
+        #Lambda_1=summa1/Ne
+        Lambda_1=summa1/len(center)
         #lambda_2=2*np.trapz((a2F()/center),dx=center) #check this expression!!!
         #lambda_2=2*np.trapz((self.a2F_2(x)/x),dx=1)
         # a2F_x=[]
