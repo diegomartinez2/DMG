@@ -14,8 +14,10 @@ def main(arg):
         plasmon.fitting_Lorentz(frequencies,data)
         if (namefile == filelist[0]):
             pars = plasmon.pars
+            print('pars_1=',pars)
         else:
             pars = np.append(pars,plasmon.pars)
+            print('pars_n=',pars)
 
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     superconductor.read_Ne()
