@@ -13,11 +13,16 @@ def main(arg):
         print (np.shape(data),"=(51,5001)?")
         plasmon.fitting_Lorentz(frequencies,data)
         if (namefile == filelist[0]):
-            pars = plasmon.pars
+            pars_1 = plasmon.pars[:,1]
+            pars_2 = plasmon.pars[:,2]
+            pars_3 = plasmon.pars[:,3]
             print('pars_1=',pars)
         else:
-            pars = np.append(pars,plasmon.pars)
+            pars_1 = np.append(pars_1,plasmon.pars[:,1])
+            pars_2 = np.append(pars_2,plasmon.pars[:,2])
+            pars_3 = np.append(pars_3,plasmon.pars[:,3])
             print('pars_n=',pars)
+    pars = 
 
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     superconductor.read_Ne()
