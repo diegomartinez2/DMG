@@ -254,7 +254,7 @@ class Eliashberg(object):
         self.lambda_2=[]
         Frequncies = Frequencies+1
         Frequencies = np.append((Frequencies,Frequncies), axis=0)
-        np.savetxt('Frequencies.txt',(Frequencies)
+        np.savetxt('Frequencies.txt',(Frequencies))
         for x in Frequencies:
             if (x == 0):
                 continue
