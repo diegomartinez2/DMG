@@ -18,7 +18,7 @@ def main(arg):
         else:
             pars = np.concatenate((pars,plasmon.pars), axis=0)
             print('pars_n=',pars)
-
+    np.savetxt('pars_txt.dat', pars)
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     superconductor.read_Ne()
     lambda_1 = superconductor.Lambda(frequencies)
