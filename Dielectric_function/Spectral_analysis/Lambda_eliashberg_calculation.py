@@ -16,7 +16,7 @@ def main(arg):
             pars = plasmon.pars
             print('pars_1=',pars)
         else:
-            pars = np.concatenate(pars,plasmon.pars)
+            pars = np.concatenate((pars,plasmon.pars), axis=0)
             print('pars_n=',pars)
 
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
