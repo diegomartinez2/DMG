@@ -252,7 +252,9 @@ class Eliashberg(object):
         # print ("a2F_x=",a2F_x)
         # lambda_2=2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10)
         self.lambda_2=[]
-        print('Frequencies=',Frequencies)
+        Frequncies = Frequencies+1
+        Frequencies = np.append((Frequencies,Frequncies), axis=0)
+        np.savetxt('Frequencies.txt',(Frequencies)
         for x in Frequencies:
             if (x == 0):
                 continue
