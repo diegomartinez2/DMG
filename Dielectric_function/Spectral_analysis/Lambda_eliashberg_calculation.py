@@ -3,22 +3,26 @@ import numpy as np
 
 
 def main(arg):
-    filelist=('xaa','xab','xac','xad','xae','xaf','xag','xah','xai','xaj','xak','xal',
-    'xam','xan','xao','xap','xaq','xar','xas','xat','xau','xav','xaw','xax','xay',
-    'xaz','xba','xbb','xbc','xbd','xbe','xbf','xbg','xbh','xbi','xbj','xbk','xbl',
-    'xbm','xbn','xbo','xbp','xbq','xbr','xbs','xbt','xbu','xbv','xbw','xbx')
-    for namefile in filelist:
-        plasmon = Spectral_plasmons_analysis.Plasmon_analysis(arg,namefile)
-        data, frequencies, qx= plasmon.load_data()
-        print (np.shape(data),"=(51,5001)?")
-        plasmon.fitting_Lorentz(frequencies,data)
-        if (namefile == filelist[0]):
-            pars = plasmon.pars
-            #print('pars_1=',pars)
-        else:
-            pars = np.concatenate((pars,plasmon.pars), axis=0)
-            #print('pars_n=',pars)
-    #np.savetxt('pars_txt.dat', pars) #no negative values
+    pars_create=True
+    if pars_create:
+        filelist=('xaa','xab','xac','xad','xae','xaf','xag','xah','xai','xaj','xak','xal',
+        'xam','xan','xao','xap','xaq','xar','xas','xat','xau','xav','xaw','xax','xay',
+        'xaz','xba','xbb','xbc','xbd','xbe','xbf','xbg','xbh','xbi','xbj','xbk','xbl',
+        'xbm','xbn','xbo','xbp','xbq','xbr','xbs','xbt','xbu','xbv','xbw','xbx')
+        for namefile in filelist:
+            plasmon = Spectral_plasmons_analysis.Plasmon_analysis(arg,namefile)
+            data, frequencies, qx= plasmon.load_data()
+            print (np.shape(data),"=(51,5001)?")
+            plasmon.fitting_Lorentz(frequencies,data)
+            if (namefile == filelist[0]):
+                pars = plasmon.pars
+                #print('pars_1=',pars)
+            else:
+                pars = np.concatenate((pars,plasmon.pars), axis=0)
+                #print('pars_n=',pars)
+        np.savetxt('pars_txt.dat', pars) #no negative values
+    else:
+        np.loadtxt('pars_txt.dat', pars) #no negative values
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     superconductor.read_Ne()
     lambda_1 = superconductor.Lambda(frequencies)
