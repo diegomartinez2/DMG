@@ -348,10 +348,11 @@ def main(arg):
         #lambda_1, lambda_2 = superconductor.Lambda(frequencies)
         lambda_1 = superconductor.Lambda(frequencies)
         #np.savetxt('Lambda.txt', (lambda_1,lambda_2))
-        np.savetxt('Lambda.txt', (lambda_1))
+
         print('Lambda_1=',np.sum(lambda_1)/len(lambda_1))
-        np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
         print('Lambda_2=',np.sum(superconductor.lambda_2))
+        np.savetxt('Lambda.txt', (lambda_1))
+        np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
