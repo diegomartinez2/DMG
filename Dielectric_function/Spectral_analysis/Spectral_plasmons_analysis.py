@@ -261,7 +261,7 @@ class Eliashberg(object):
             else:
                 a2F_x = self.a2F_2(x)/x
             #print ("a2F_x=",a2F_x)
-            self.plot_lambda(a2F_x)
+            #self.plot_lambda(a2F_x)
             print('Integrando(',x,')')
             self.lambda_2.append(2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10))
         #print('freq[0]=',Frequencies[0])
@@ -288,6 +288,12 @@ class Eliashberg(object):
         gauss_width = 0.01
         #print('gauss_width=',gauss_width)
         factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
+        #self.plot_lambda(center)
+        print('center=',center)
+        #self.plot_lambda(width)
+        print('width=',width)
+        #self.plot_lambda(factor1)
+        print('factor1=',factor1)
         suma = 0
         for i in range(len(center)):
             suma += (width*center) * self.gaussian(x,center,gauss_width) #in qe-5.1.0_elph/elph_fc.f90 also has a weight related to Ne
@@ -347,10 +353,10 @@ def main(arg):
         superconductor.read_Ne()
         #lambda_1, lambda_2 = superconductor.Lambda(frequencies)
         lambda_1 = superconductor.Lambda(frequencies)
-        #np.savetxt('Lambda.txt', (lambda_1,lambda_2))
 
         print('Lambda_1=',np.sum(lambda_1)/len(lambda_1))
         print('Lambda_2=',np.sum(superconductor.lambda_2))
+
         np.savetxt('Lambda.txt', (lambda_1))
         np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
     else:
