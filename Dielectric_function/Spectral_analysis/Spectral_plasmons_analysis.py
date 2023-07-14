@@ -253,13 +253,14 @@ class Eliashberg(object):
         # lambda_2=2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10)
         self.lambda_2=[]
         Frequncies = Frequencies+1
-        Frequencies = np.append((Frequencies,Frequncies), axis=0)
-        np.savetxt('Frequencies.txt',(Frequencies))
+        Frequencies = np.append(Frequencies,Frequncies, axis=0)
+        #np.savetxt('Frequencies.txt',(Frequencies))
         for x in Frequencies:
             if (x == 0):
                 continue
             else:
                 a2F_x = self.a2F_2(x)/x
+                np.savetxt('a2F_x.txt',(a2F_x))
             #print ("a2F_x=",a2F_x)
             #self.plot_lambda(a2F_x)
             self.lambda_2.append(2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10))
