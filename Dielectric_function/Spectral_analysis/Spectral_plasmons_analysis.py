@@ -263,6 +263,7 @@ class Eliashberg(object):
                 np.savetxt('a2F_x.txt',(a2F_x))
             #print ("a2F_x=",a2F_x)
             #self.plot_lambda(a2F_x)
+            print('Integrando(',x,')')
             self.lambda_2.append(2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10))
         #print('freq[0]=',Frequencies[0])
         #print ("Lambda=",Lambda_1,"=",self.lambda_2)
