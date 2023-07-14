@@ -27,7 +27,9 @@ def main(arg):
     #np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
     print('Lambda_2=',np.sum(superconductor.lambda_2))
     print("len(freq[1:]),len(superconductor.lambda_2)")
-    print(len(frequencies[1:]),len(superconductor.lambda_2))
+    Frequncies = frequencies+1
+    Frequencies = np.append(frequencies,Frequncies, axis=0)
+    print(len(Frequencies[1:]),len(superconductor.lambda_2))
 
 
 if __name__ == '__main__':
