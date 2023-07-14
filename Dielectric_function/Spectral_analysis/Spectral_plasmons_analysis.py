@@ -290,10 +290,13 @@ class Eliashberg(object):
         factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
         #self.plot_lambda(center)
         print('center=',center)
+        center = np.absolute(center) #test to force the abs
         #self.plot_lambda(width)
         print('width=',width)
+        width = np.absolute(width)
         #self.plot_lambda(factor1)
         print('factor1=',factor1)
+        factor1 = np.absolute(factor1)
         suma = 0
         for i in range(len(center)):
             suma += (width*center) * self.gaussian(x,center,gauss_width) #in qe-5.1.0_elph/elph_fc.f90 also has a weight related to Ne
