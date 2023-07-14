@@ -18,13 +18,13 @@ def main(arg):
         else:
             pars = np.concatenate((pars,plasmon.pars), axis=0)
             #print('pars_n=',pars)
-    #np.savetxt('pars_txt.dat', pars) #no negative values 
+    #np.savetxt('pars_txt.dat', pars) #no negative values
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     superconductor.read_Ne()
     lambda_1 = superconductor.Lambda(frequencies)
     np.savetxt('Lambda.txt', (lambda_1))
     print('Lambda_1=',np.sum(lambda_1)/len(lambda_1))
-    np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
+    #np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
     print('Lambda_2=',np.sum(superconductor.lambda_2))
 
 if __name__ == '__main__':
