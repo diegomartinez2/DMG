@@ -243,31 +243,16 @@ class Eliashberg(object):
             summa1 += self.Lambda_q(width,center,Ne)
         #Lambda_1=summa1/Ne
         Lambda_1=summa1/len(center)
-        #lambda_2=2*np.trapz((a2F()/center),dx=center) #check this expression!!!
-        #lambda_2=2*np.trapz((self.a2F_2(x)/x),dx=1)
-        # a2F_x=[]
-        # for x in Frequencies:
-        #     if (x == 0):
-        #         a2F_x.append(0)
-        #     else:
-        #         a2F_x.append(self.a2F_2(x)/x)
-        # print ("a2F_x=",a2F_x)
-        # lambda_2=2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10)
         self.lambda_2=[]
         Frequncies = Frequencies+1
         Frequencies = np.append(Frequencies,Frequncies, axis=0)
-        #np.savetxt('Frequencies.txt',(Frequencies))
         for x in Frequencies:
             if (x == 0):
                 continue
             else:
                 a2F_x = self.a2F_2(x)/x
-            #print ("a2F_x=",a2F_x)
-            #self.plot_lambda(a2F_x)
             print('Integrando(',x,')')
             self.lambda_2.append(2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10))
-        #print('freq[0]=',Frequencies[0])
-        #print ("Lambda=",Lambda_1,"=",self.lambda_2)
         print("len(freq[1:]),len(lambda1),len(lambda2)")
         print(len(Frequencies[1:]),len(Lambda_1),len(self.lambda_2))
         self.plot_lambda(Lambda_1)
