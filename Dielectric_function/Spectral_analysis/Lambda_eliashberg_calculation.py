@@ -6,7 +6,11 @@ def main(arg):
     pars_create=False
     file = './pars_txt.dat'
     check_file = os.path.isfile(path)
-    if pars_create:
+    #if pars_create:
+    if not check_file:
+        print('------------------------')
+        print('Creating parameters file')
+        print('------------------------')
         filelist=('xaa','xab','xac','xad','xae','xaf','xag','xah','xai','xaj','xak','xal',
         'xam','xan','xao','xap','xaq','xar','xas','xat','xau','xav','xaw','xax','xay',
         'xaz','xba','xbb','xbc','xbd','xbe','xbf','xbg','xbh','xbi','xbj','xbk','xbl',
