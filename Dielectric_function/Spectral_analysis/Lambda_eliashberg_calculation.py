@@ -3,10 +3,10 @@ import numpy as np
 import os.path
 
 def main(arg):
-    pars_create=False
+    pars_create=True
     file = './pars_txt.dat'
-    #if pars_create:
-    if not os.path.isfile(file):
+    if pars_create:
+    #if not os.path.isfile(file):
         print('------------------------')
         print('Creating parameters file')
         print('------------------------')
@@ -25,6 +25,7 @@ def main(arg):
             else:
                 pars = np.concatenate((pars,plasmon.pars), axis=0)
                 #print('pars_n=',pars)
+        print (np.shape(pars),"=(51,5001)?")
         #np.savetxt('pars_txt.dat', pars) #no negative values
         np.savetxt(file, pars) #no negative values
     else:
