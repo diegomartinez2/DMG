@@ -4,9 +4,10 @@ import os.path
 
 def main(arg):
     #pars_create=True
-    file = './pars_frequencies.dat'
+    file1 = './pars_data.txt'
+    file2 = './frequencies_data.txt'
     #if pars_create:
-    if not os.path.isfile(file):
+    if not (os.path.isfile(file1) and os.path.isfile(file2)):
         print('------------------------')
         print('Creating parameters file')
         print('------------------------')
@@ -27,11 +28,13 @@ def main(arg):
                 #print('pars_n=',pars)
         print (np.shape(pars),"=(2550,3)?")
         #np.savetxt('pars_txt.dat', pars) #no negative values
-        np.savetxt(file, (pars,frequencies)) #no negative values
+        np.savetxt(file1, pars) #no negative values
+        np.savetxt(file2, frequencies) #no negative values
     else:
         #np.loadtxt('pars_txt.dat', pars) #no negative values
-        pars = [] #np.zeros((2550,3))
-        pars, frequencies = np.loadtxt(file) #no negative values
+        #pars = [] #np.zeros((2550,3))
+        pars = np.loadtxt(file1) #no negative values,
+        frequencies = np.loadtxt(file2) #no negative values
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     superconductor.read_Ne()
     lambda_1 = superconductor.Lambda(frequencies)
