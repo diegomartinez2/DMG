@@ -1,9 +1,11 @@
 import Spectral_plasmons_analysis
 import numpy as np
-
+import os.path
 
 def main(arg):
     pars_create=False
+    file = './pars_txt.dat'
+    check_file = os.path.isfile(path)
     if pars_create:
         filelist=('xaa','xab','xac','xad','xae','xaf','xag','xah','xai','xaj','xak','xal',
         'xam','xan','xao','xap','xaq','xar','xas','xat','xau','xav','xaw','xax','xay',
@@ -20,9 +22,11 @@ def main(arg):
             else:
                 pars = np.concatenate((pars,plasmon.pars), axis=0)
                 #print('pars_n=',pars)
-        np.savetxt('pars_txt.dat', pars) #no negative values
+        #np.savetxt('pars_txt.dat', pars) #no negative values
+        np.savetxt(file, pars) #no negative values
     else:
-        np.loadtxt('pars_txt.dat', pars) #no negative values
+        #np.loadtxt('pars_txt.dat', pars) #no negative values
+        np.loadtxt(file, pars) #no negative values
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     superconductor.read_Ne()
     lambda_1 = superconductor.Lambda(frequencies)
