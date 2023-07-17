@@ -29,6 +29,7 @@ def main(arg):
         np.savetxt(file, pars) #no negative values
     else:
         #np.loadtxt('pars_txt.dat', pars) #no negative values
+        pars = []
         np.loadtxt(file, pars) #no negative values
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     superconductor.read_Ne()
