@@ -242,7 +242,7 @@ class Eliashberg(object):
         for i in range(len(center)):
             summa1 += self.Lambda_q(width,center,Ne)
         #Lambda_1=summa1/Ne
-        Lambda_1=summa1/(len(center)*np.pi) #adding pi, is this OK?
+        Lambda_1=summa1/len(center)
         self.lambda_2=[]
         Frequncies = Frequencies+1
         Frequencies = np.append(Frequencies,Frequncies, axis=0)
