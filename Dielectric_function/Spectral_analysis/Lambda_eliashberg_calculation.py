@@ -4,10 +4,9 @@ import os.path
 
 def main(arg):
     pars_create=False
-    file = './pars_txt.dat'
-    check_file = os.path.isfile(path)
+    file = './pars_txt.dat' 
     #if pars_create:
-    if not check_file:
+    if not os.path.isfile(path):
         print('------------------------')
         print('Creating parameters file')
         print('------------------------')
