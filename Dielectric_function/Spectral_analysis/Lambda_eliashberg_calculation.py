@@ -3,7 +3,7 @@ import numpy as np
 
 
 def main(arg):
-    pars_create=True
+    pars_create=False
     if pars_create:
         filelist=('xaa','xab','xac','xad','xae','xaf','xag','xah','xai','xaj','xak','xal',
         'xam','xan','xao','xap','xaq','xar','xas','xat','xau','xav','xaw','xax','xay',
