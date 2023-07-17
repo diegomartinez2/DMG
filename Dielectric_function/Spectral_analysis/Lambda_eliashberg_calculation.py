@@ -3,10 +3,10 @@ import numpy as np
 import os.path
 
 def main(arg):
-    pars_create=True
+    #pars_create=True
     file = './pars_txt.dat'
-    if pars_create:
-    #if not os.path.isfile(file):
+    #if pars_create:
+    if not os.path.isfile(file):
         print('------------------------')
         print('Creating parameters file')
         print('------------------------')
@@ -25,12 +25,12 @@ def main(arg):
             else:
                 pars = np.concatenate((pars,plasmon.pars), axis=0)
                 #print('pars_n=',pars)
-        print (np.shape(pars),"=(51,5001)?")
+        print (np.shape(pars),"=(2550,3)?")
         #np.savetxt('pars_txt.dat', pars) #no negative values
         np.savetxt(file, pars) #no negative values
     else:
         #np.loadtxt('pars_txt.dat', pars) #no negative values
-        pars = []
+        pars = np.zeros((2550,3))
         np.loadtxt(file, pars) #no negative values
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     superconductor.read_Ne()
