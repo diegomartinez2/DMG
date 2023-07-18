@@ -255,9 +255,9 @@ class Eliashberg(object):
             else:
                 a2F_x = self.a2F_2(x)/x
             print('Integrando(',x,')')
-            #self.lambda_2.append(2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10))
-            #self.lambda_2.append(2*np.trapz(a2F_x,Frequencies)) #test this way of doing the integral
-            self.lambda_2.append(2*np.trapz(a2F_x)) #test this way of doing the integral
+            self.lambda_2.append(2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10))  #<--This is OK?? (I think not, the integral is on frequencies -outside of the loop-)
+            #self.lambda_2.append(2*np.trapz(a2F_x,Frequencies[1:])) #test this way of doing the integral
+            #self.lambda_2.append(2*np.trapz(a2F_x)) #test this way of doing the integral <-NO
         print("len(freq[1:]),len(lambda1),len(lambda2)")
         print(len(Frequencies[1:]),len(Lambda_1),len(self.lambda_2))
         self.plot_lambda(Lambda_1)
