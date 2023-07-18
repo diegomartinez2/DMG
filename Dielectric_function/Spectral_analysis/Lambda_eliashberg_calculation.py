@@ -51,7 +51,7 @@ def main(arg):
     gauss = []
     for freq in Frequncies:
         gauss.append(superconductor.gaussian(freq, superconductor.pars[:,1],0.01))
-    print(np.trapz(gauss))
+    print(np.trapz(np.sum(gauss)))
 
 if __name__ == '__main__':
     import sys
