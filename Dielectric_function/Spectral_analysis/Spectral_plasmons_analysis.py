@@ -219,7 +219,7 @@ class Eliashberg(object):
             summa += (width*center) * self.gaussian(x,center)
             # a2F(i) + gaussian * lambda(j,l) * w(j,l) * weightq(j) &
             #           / (2.0d0 * dble(total_qpoints_a2f))
-        return factor1*summa/2
+        return factor1*summa # /2 ???
 
     def gaussian(self,x, center,gauss_width):
         #d = self.pars[:,0] #amplitude
