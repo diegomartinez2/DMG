@@ -47,6 +47,11 @@ def main(arg):
     Frequencies = np.append(frequencies,Frequncies, axis=0)
     print(len(Frequencies[1:]),len(superconductor.lambda_2))
     np.savetxt('Lambda_from_a2F.txt', np.array((Frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
+    print('Test Gaussian->')
+    gauss = []
+    for freq in Frequncies:
+        gauss.append(superconductor.gaussian(freq, superconductor.pars[:,1],0.01))
+    print(np.trapz(gauss))   
 
 
 if __name__ == '__main__':
