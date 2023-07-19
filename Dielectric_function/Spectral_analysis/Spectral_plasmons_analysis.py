@@ -259,14 +259,14 @@ class Eliashberg(object):
         #     #self.lambda_2.append(2*np.trapz(a2F_x,Frequencies[1:])) #test this way of doing the integral
         #     #self.lambda_2.append(2*np.trapz(a2F_x)) #test this way of doing the integral <-NO
         for w in Frequencies:
-            print('Frequence(',w,')           ', end="\r", flush=True)
+            print('Frequence(',w,')              ', end="\r", flush=True)
             if (w == 0):
                 a2F_x = []
             else:
                 a2F_x.append(self.a2F_2(w)/w)
         self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10)
-        print("len(freq[1:]),len(lambda1),len(lambda2)")
-        print(len(Frequencies[1:]),len(Lambda_1),len(self.lambda_2))
+        print("len(freq[1:]),len(lambda1),len(lambda2),len(a2F_x)")
+        print(len(Frequencies[1:]),len(Lambda_1),len(self.lambda_2)),len(a2F_x)
         self.plot_lambda(Lambda_1)
         self.plot_lambda(self.lambda_2)
         lambda_2 = 2*np.trapz(self.lambda_2,dx=(Frequencies[9]-Frequencies[0])/10)
