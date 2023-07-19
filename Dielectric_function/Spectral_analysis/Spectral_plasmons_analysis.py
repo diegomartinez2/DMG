@@ -259,6 +259,7 @@ class Eliashberg(object):
         #     #self.lambda_2.append(2*np.trapz(a2F_x,Frequencies[1:])) #test this way of doing the integral
         #     #self.lambda_2.append(2*np.trapz(a2F_x)) #test this way of doing the integral <-NO
         for w in Frequencies:
+            print('Frequence(',w,')', end="\r", flush=True)
             if (w == 0):
                 a2F_x = []
             else:
