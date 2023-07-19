@@ -41,7 +41,7 @@ def main(arg):
     np.savetxt('Lambda.txt', (lambda_1))
     print('Lambda_1=',np.sum(lambda_1)/len(lambda_1))
     #
-    print('Lambda_2=',np.sum(superconductor.lambda_2))
+    print('Lambda_2=',np.sum(superconductor.lambda_2)*frequencies[9]-frequencies[0]/10) # "integration in w"
     print("len(freq[1:]),len(superconductor.lambda_2)")
     Frequncies = frequencies+1
     Frequencies = np.append(frequencies,Frequncies, axis=0)
