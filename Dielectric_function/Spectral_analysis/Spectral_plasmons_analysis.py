@@ -295,7 +295,8 @@ class Eliashberg(object):
                     #/len(center) # following the formula commented below
             # a2F(i) + gaussian * lambda(j,l) * w(j,l) * weightq(j) &
             #           / (2.0d0 * dble(total_qpoints_a2f))
-        return factor1*suma
+        #return factor1*suma
+        return suma #I do not think a2F uses Ne factor
 
     def plot_lambda(self,x):
         plt.figure(figsize=(10,6))
