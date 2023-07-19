@@ -291,10 +291,11 @@ class Eliashberg(object):
         factor1 = np.absolute(factor1)
         suma = 0
         for i in range(len(center)):
-            suma += (width*center) * self.gaussian(x,center,gauss_width) #in qe-5.1.0_elph/elph_fc.f90 also has a weight related to Ne
+            suma += (width*center) * self.gaussian(x,center,gauss_width) \ #in qe-5.1.0_elph/elph_fc.f90 also has a weight related to Ne
+                    /len(center) # following the formula commented below
             # a2F(i) + gaussian * lambda(j,l) * w(j,l) * weightq(j) &
             #           / (2.0d0 * dble(total_qpoints_a2f))
-        return factor1*suma*0.5 # factor 1/2 ??
+        return factor1*suma
 
     def plot_lambda(self,x):
         plt.figure(figsize=(10,6))
