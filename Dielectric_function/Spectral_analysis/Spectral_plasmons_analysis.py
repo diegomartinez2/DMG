@@ -269,9 +269,10 @@ class Eliashberg(object):
         print(len(Frequencies[1:]),len(Lambda_1),len(self.lambda_2))
         self.plot_lambda(Lambda_1)
         self.plot_lambda(self.lambda_2)
+        lambda_2 = 2*np.trapz(self.lambda_2,dx=(Frequencies[9]-Frequencies[0])/10)
         #pass
-        #return Lambda_1, lambda_2
-        return Lambda_1
+        return Lambda_1, lambda_2
+        #return Lambda_1
 
     def a2F_2(self,x):
         """
