@@ -50,7 +50,7 @@ def main(arg):
     print('Test Gaussian->')
     gauss = []
     for freq in Frequncies:
-        gauss.append(superconductor.gaussian(freq, superconductor.pars[:,1],0.01))
+        gauss.append(superconductor.gaussian(freq, superconductor.pars[:,1],0.1))
     print(np.sum(gauss))
     print(np.sum(np.trapz(gauss)))
 
