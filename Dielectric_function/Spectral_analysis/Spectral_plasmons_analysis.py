@@ -243,7 +243,7 @@ class Eliashberg(object):
         width = np.absolute(width)
         summa1 = 0
         for i in range(len(center)):
-            summa1 += self.Lambda_q(width,center,Ne)
+            summa1 += self.Lambda_q(width[i],center[i],Ne)
         #Lambda_1=summa1/Ne
         Lambda_1=summa1/len(center)
         self.lambda_2=[]

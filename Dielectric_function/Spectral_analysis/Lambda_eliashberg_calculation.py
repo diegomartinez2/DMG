@@ -39,9 +39,9 @@ def main(arg):
     superconductor.read_Ne()
     #lambda_1, lambda_2 = superconductor.Lambda(frequencies)
     lambda_1 = superconductor.Lambda(frequencies)
-    np.savetxt('Lambda.txt', (lambda_1))
+    #np.savetxt('Lambda.txt', (lambda_1))
     #print('Lambda_1=',np.sum(lambda_1)/len(lambda_1))
-    print('Lambda_1=',np.sum(lambda_1)) # Why the summation?
+    print('Lambda_1=',lambda_1) # Why the summation?
     #
     #print('Lambda_2=',np.sum(superconductor.lambda_2)*frequencies[9]-frequencies[0]/10) # "integration in w"
     print('Lambda_2=',superconductor.lambda_2)
