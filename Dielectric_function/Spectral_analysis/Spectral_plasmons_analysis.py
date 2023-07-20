@@ -303,8 +303,10 @@ class Eliashberg(object):
                     #/len(center) # following the formula commented below # also choosing one element of the array
             # a2F(i) + gaussian * lambda(j,l) * w(j,l) * weightq(j) &
             #           / (2.0d0 * dble(total_qpoints_a2f))
+            print('width[',i,'],center[',i,']','gaussian(',x,',',center[i],')=',width[i],center[i]), self.gaussian(x,center[i],gauss_width))
         #return factor1*suma
-        np.savetxt("a2F.txt",suma)
+        #np.savetxt("a2F.txt",suma)
+        #print('SUMA=',suma)
         return suma #I do not think a2F uses Ne factor
 
     def plot_lambda(self,x):
