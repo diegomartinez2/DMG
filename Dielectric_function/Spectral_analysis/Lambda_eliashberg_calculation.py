@@ -52,7 +52,7 @@ def main(arg):
     #np.savetxt('Lambda_from_a2F.txt', np.array((Frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
     print('Test Gaussian->')
     gauss = []
-    for freq in Frequncies:
+    for freq in Frequencies:
         gauss.append(superconductor.gaussian(freq, superconductor.pars[:,1],0.1))
     print(np.sum(gauss))
     print(np.sum(np.trapz(gauss)))
