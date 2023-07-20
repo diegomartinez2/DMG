@@ -265,14 +265,13 @@ class Eliashberg(object):
             else:
                 a2F_x.append(self.a2F_2(w)/w)
         self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10)
-        print("len(freq[1:]),len(lambda1),len(lambda2),len(a2F_x) and shape of a2F_x")
-        print(len(Frequencies[1:]),len(Lambda_1),self.lambda_2,len(a2F_x),np.array(a2F_x).shape)
+        print("len(freq[1:])=",len(Frequencies[1:]),",len(lambda1)=",len(Lambda_1),",lambda2=",self.lambda_2,",len(a2F_x)=",len(a2F_x)," and shape of a2F_x=",np.array(a2F_x).shape")
         self.plot_lambda(Lambda_1)
         self.plot_lambda(self.lambda_2)
-        lambda_2 = 2*np.trapz(self.lambda_2,dx=(Frequencies[9]-Frequencies[0])/10)
+        #lambda_2 = 2*np.trapz(self.lambda_2,dx=(Frequencies[9]-Frequencies[0])/10)
         #pass
-        return Lambda_1, lambda_2
-        #return Lambda_1
+        #return Lambda_1, lambda_2
+        return Lambda_1
 
     def a2F_2(self,x):
         """
