@@ -60,6 +60,10 @@ def main(arg):
     # print(gauss)
     #print(np.sum(gauss[x]))
     #print(np.trapz(gauss[0]))
+    gauss = np.zeros(100)
+    for w in range(100):
+        gauss[w] = superconductor.gaussian(w, 0.0,0.1)
+    print(np.trapz(gauss))    
 
 if __name__ == '__main__':
     import sys
