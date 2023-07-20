@@ -52,11 +52,12 @@ def main(arg):
     #print(len(Frequencies[1:]),len(superconductor.lambda_2))
     #np.savetxt('Lambda_from_a2F.txt', np.array((Frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
     print('Test Gaussian->')
-    gauss = np.zeros(len(superconductor.pars[:,1]))
+    gauss = np.zeros((len(superconductor.pars[:,1]),len(Frequncies)))
     for x in range(len(superconductor.pars[:,1])):
-        for freq in Frequncies:
-            gauss[x].append(superconductor.gaussian(freq, superconductor.pars[x,1],0.01))
-        print(np.sum(gauss[x]))
+        for freq in range(len(Frequncies)):
+            gauss[x][freq]=(superconductor.gaussian(Frequncies[freq], superconductor.pars[x,1],0.01))
+    print(gauss)        
+    #print(np.sum(gauss[x]))
     print(np.trapz(gauss))
 
 if __name__ == '__main__':
