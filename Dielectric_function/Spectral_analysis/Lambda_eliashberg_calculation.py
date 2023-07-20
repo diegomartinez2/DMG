@@ -55,10 +55,11 @@ def main(arg):
     gauss = np.zeros((len(superconductor.pars[:,1]),len(Frequncies)))
     for x in range(len(superconductor.pars[:,1])):
         for freq in range(len(Frequncies)):
-            gauss[x][freq]=(superconductor.gaussian(Frequncies[freq], superconductor.pars[x,1],0.01))
-    print(gauss)        
+            gauss[x][freq]=(superconductor.gaussian(Frequncies[freq], superconductor.pars[x,1],0.1))
+        print(np.trapz(gauss[x],Frequncies))    
+    print(gauss)
     #print(np.sum(gauss[x]))
-    print(np.trapz(gauss))
+    #print(np.trapz(gauss[0]))
 
 if __name__ == '__main__':
     import sys
