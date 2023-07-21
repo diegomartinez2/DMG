@@ -40,30 +40,20 @@ def main(arg):
     #lambda_1, lambda_2 = superconductor.Lambda(frequencies)
     lambda_1 = superconductor.Lambda(frequencies)
     #np.savetxt('Lambda.txt', (lambda_1))
-    #print('Lambda_1=',np.sum(lambda_1)/len(lambda_1))
-    print('Lambda_1=',lambda_1) # Why the summation?
+    print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
     #
-    #print('Lambda_2=',np.sum(superconductor.lambda_2)*frequencies[9]-frequencies[0]/10) # "integration in w"
-    print('Lambda_2=',superconductor.lambda_2)
+    print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
     #print('Lambda_2(new double integration)=',lambda_2)
     #print("len(freq[1:]),len(superconductor.lambda_2)")
     # Frequncies = frequencies+1
     # Frequencies = np.append(frequencies,Frequncies, axis=0)
     #print(len(Frequencies[1:]),len(superconductor.lambda_2))
     #np.savetxt('Lambda_from_a2F.txt', np.array((Frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
-    # print('Test Gaussian->')
-    # gauss = np.zeros((len(superconductor.pars[:,1]),len(Frequncies)))
-    # for x in range(len(superconductor.pars[:,1])):
-    #     for freq in range(len(Frequncies)):
-    #         gauss[x][freq]=(superconductor.gaussian(Frequncies[freq], superconductor.pars[x,1],0.01))
-    #     print(np.trapz(gauss[x],Frequncies))
-    # print(gauss)
-    #print(np.sum(gauss[x]))
-    #print(np.trapz(gauss[0]))
+    print('Test Gaussian->')
     gauss = np.zeros(100)
     for w in range(100):
         gauss[w] = superconductor.gaussian(w, 0.0,0.1)
-    print(np.trapz(gauss))    
+    print(np.trapz(gauss))
 
 if __name__ == '__main__':
     import sys
