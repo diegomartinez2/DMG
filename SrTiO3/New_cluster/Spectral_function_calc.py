@@ -29,15 +29,19 @@
 # Clases
 # -------
 class Funcion_espectral(object):
-    def __init__(self,Fichero_dyn_SnTe,nqirr):
-        self.dyn = CC.Phonons.Phonons(Fichero_dyn_SnTe,nqirr)
+    def __init__(self,Fichero_dyn,nqirr):
+        self.dyn = CC.Phonons.Phonons(Fichero_dyn,nqirr)
         self.supercell = self.dyn.GetSupercell()
+        self.SPECIAL_POINTS = {"G": [0,0,0],
+                      "X": [0, 0, .5],
+                      "M": [0, .5, .5],
+                      "R": [.5, .5, .5]}
     def prepara_tensor(self):
         self.tensor3 =  CC.ForceTensor.Tensor3(self.dyn.structure,
                                 self.dyn.structure.generate_supercell(self.supercell),
                                 self.supercell)
          #! Assign the tensor3 values
-        d3 = np.load("d3_realspace_sym.npy")*2.0 # The 2 factor is because of units, needs to be passed to Ry
+        d3 = np.load("d3_realspace_sym.npy")
         self.tensor3.SetupFromTensor(d3)
           #! Center and apply ASR, which is needed to interpolate the third order force constant
 #        self.tensor3.Center()
