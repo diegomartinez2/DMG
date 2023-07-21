@@ -209,17 +209,17 @@ class Eliashberg(object):
         return Lamb_q
 
     def a2F(self):
-        print ("shape = ",np.shape(self.pars))
+        #print ("shape = ",np.shape(self.pars))
         center = self.pars[:,1]
+        center = np.absolute(center)
         width = self.pars[:,2]
-        #factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
-        factor1 = 1/len(center)     #test
+        width = np.absolute(width)
+        gauss_width = 0.01
         summa = 0
+        factor1 = 1 / (2*len(center))
         for i in range(len(center)):
-            summa += (width*center) * self.gaussian(x,center)
-            # a2F(i) + gaussian * lambda(j,l) * w(j,l) * weightq(j) &
-            #           / (2.0d0 * dble(total_qpoints_a2f))
-        return factor1*summa # /2 or *0.5 ???
+            summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width)
+        return factor1*summa
 
     def gaussian(self,x, center,gauss_width):
         #d = self.pars[:,0] #amplitude
