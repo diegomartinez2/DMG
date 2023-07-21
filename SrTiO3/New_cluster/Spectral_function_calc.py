@@ -478,7 +478,19 @@ class Funcion_espectral(object):
         plt.savefig("{}_dispersion{}.png".format(filename, PATH))
         #plt.show()
 
+    def calcula_espectro_correction_SrTiO3(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
 
+        CC.Spectral.get_diag_dynamic_correction_along_path(dyn=self.dyn,
+                                                   tensor3=self.tensor3,
+                                                   k_grid=k_grid,
+                                                   q_path=self.qpath,
+                                                   T =T0,
+                                                   e1=145, de=0.1, e0=0,
+                                                   sm1=1.0, nsm=1, sm0=1.0,
+                                                   sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
+                                                   filename_sp = 'nomm_spectral_func2')
 
 # ----------
 # Funciones
@@ -495,6 +507,8 @@ def main(args):
     Espectro.calcula_espectro_basico_SrTiO3_multiprocessing(T0,4)
 
     print("The time difference is :", timeit.default_timer() - starttime)
+    Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat")
+
     return 0
 
 if __name__ == '__main__':
