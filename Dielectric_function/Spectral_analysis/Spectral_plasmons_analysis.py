@@ -284,10 +284,10 @@ class Eliashberg(object):
         #gauss_width = width/20
         #gauss_width = 0.0002 # what is the best width? It should be independent of the width to a point
         gauss_width = 0.01
-        factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
+        #factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
-        factor1 = np.absolute(factor1)
+        #factor1 = np.absolute(factor1)
         suma = 0
         for i in range(len(center)):
             suma += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width) / (2*len(center)) #in qe-5.1.0_elph/elph_fc.f90 also has a weight related to Ne
