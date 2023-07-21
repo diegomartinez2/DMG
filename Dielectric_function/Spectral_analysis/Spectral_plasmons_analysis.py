@@ -279,22 +279,14 @@ class Eliashberg(object):
         Inputs:
         x: The frequencies (but what frequencies, the plasmon ones?)
         """
-        #print ("shape = ",np.shape(self.pars))
         center = self.pars[:,1]
         width = self.pars[:,2]
         #gauss_width = width/20
         #gauss_width = 0.0002 # what is the best width? It should be independent of the width to a point
         gauss_width = 0.01
-        #print('gauss_width=',gauss_width)
         factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
-        #self.plot_lambda(center)
-        #print('center=',center)
         center = np.absolute(center) #test to force the abs
-        #self.plot_lambda(width)
-        #print('width=',width)
         width = np.absolute(width)
-        #self.plot_lambda(factor1)
-        #print('factor1=',factor1)
         factor1 = np.absolute(factor1)
         suma = 0
         for i in range(len(center)):
