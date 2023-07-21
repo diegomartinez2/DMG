@@ -333,7 +333,7 @@ def main(arg):
         print (np.shape(data),"=(51,5001)?")
         print ("dibuja")
         plasmon.plot_contour(data)
-        print("calcula ajuste loretzian")
+        print("calcula ajuste lorentzian")
         #none = plasmon.locate_1Lorenztian(frequencies,data[30])
         #f=open('file_data_fittings.txt','a')
         #f.write("-amplitude--(+/-)error--center--(+/-)error--width--(+/-)error-\n")
