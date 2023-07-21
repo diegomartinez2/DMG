@@ -29,13 +29,21 @@
 # Clases
 # -------
 class Funcion_espectral(object):
-    def __init__(self,Fichero_dyn,nqirr):
+    """
+    Object:
+    """
+    def __init__(self,Fichero_dyn,nqirr, PATH = "GXMGRX"):
         self.dyn = CC.Phonons.Phonons(Fichero_dyn,nqirr)
         self.supercell = self.dyn.GetSupercell()
-        self.SPECIAL_POINTS = {"G": [0,0,0],
+        N_POINTS = 1000
+        SPECIAL_POINTS = {"G": [0,0,0],
                       "X": [0, 0, .5],
                       "M": [0, .5, .5],
                       "R": [.5, .5, .5]}
+        self.qpath, self.data = CC.Methods.get_bandpath(harmonic_dyn.structure.unit_cell,
+                                          PATH,
+                                          SPECIAL_POINTS,
+                                          N_POINTS)
     def prepara_tensor(self):
         self.tensor3 =  CC.ForceTensor.Tensor3(self.dyn.structure,
                                 self.dyn.structure.generate_supercell(self.supercell),
@@ -374,6 +382,7 @@ class Funcion_espectral(object):
         data1 = np.resize(z,(int(len(X)/1450),1450))
         cax = ax1.imshow(data1.transpose(), cmap=cm.coolwarm, origin='lower')
         ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
+        xaxis, xticks, xlabels = self.data # Info to plot correclty the x axis
         plt.xticks(ticks=[0,499,999], labels=['X','G','X'])
         plt.yticks(ticks=[0,200,400,600,800,1000], labels=['0','20','40','60','80','100'])
         cbar = fig.colorbar(cax)
@@ -381,6 +390,90 @@ class Funcion_espectral(object):
         plt.savefig('nomm_spectral_func2_multiprocessing_imshow_1.00.png')
         plt.show()
         return 0
+
+
+#-------------------------SrTiO3--------------
+    def calcula_espectro_basico_SrTiO3(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+
+        CC.Spectral.get_static_correction_along_path(dyn=self.dyn,
+                                             tensor3=self.tensor3,
+                                             k_grid=k_grid,
+                                             q_path=self.qpath,
+                                             filename_st="SrTiO3_static.dat",
+                                             T = T0,
+                                             print_dyn = False) # set true to print the Hessian dynamical matrices
+                                                                # for each q point
+    def calcula_espectro_basico_SrTiO3_multiprocessing(self,T0,processes):
+        # integration grid
+        k_grid=[20,20,20]
+
+
+        CC.Spectral.get_static_correction_along_path_multiprocessing(dyn=self.dyn,
+                                             tensor3=self.tensor3,
+                                             k_grid=k_grid,
+                                             q_path=self.qpath,
+                                             filename_st="SrTiO3_static_multiprocessing.dat",
+                                             T = T0,
+                                             print_dyn = False, processes = processes) # set true to print the Hessian dynamical matrices
+                                                                # for each q point
+    def dibuja_espectro_basico_SrTiO3(self,filename = "SrTiO3_static.dat"):
+        plot_data = np.loadtxt(filename)
+
+        nmodes = self.dyn.structure.N_atoms * 3
+        # Plot the two dispersions
+        plt.figure(dpi = 150)
+        ax = plt.gca()
+        xaxis, xticks, xlabels = self.data # Info to plot correclty the x axis
+        for i in range(nmodes):
+            lbl=None
+            lblsscha = None
+            if i == 0:
+                lbl = 'Static'
+                lblsscha = 'Static+bubble'
+
+            ax.plot(xaxis, plot_data[:,i+1]*0.124, color = 'k', ls = 'dashed', label = lbl)
+            ax.plot(xaxis, plot_data[:,i+nmodes+1]*0.124, color = 'r', label = lblsscha)
+
+        # Plot vertical lines for each high symmetry points
+        for x in xticks:
+            ax.axvline(x, 0, 1, color = "k", lw = 0.4)
+        ax.axhline(0, 0, 1, color = 'k', ls = ':', lw = 0.4)
+
+        ax.legend()
+
+        # Set the x labels to the high symmetry points
+        ax.set_xticks(xticks)
+        ax.set_xticklabels(xlabels)
+
+        ax.set_xlabel("Q path")
+    #    ax.set_ylabel("Phonons [cm-1]")
+        ax.set_ylabel("Phonons [meV]")
+
+        plt.tight_layout()
+        plt.savefig("SrTiO3_static_dispersion{}.png".format(PATH))
+        #plt.show()
+
+
+    def dibuja2multiprocessing(self):
+        plot_data = np.loadtxt("v2_v2+d3static_freq2_multiprocessing.dat")
+
+        plt.figure(dpi = 120)
+        plt.plot(plot_data[:,0], plot_data[:,1])
+        plt.plot(plot_data[:,0], plot_data[:,2])
+        plt.plot(plot_data[:,0], plot_data[:,3])
+        plt.plot(plot_data[:,0], plot_data[:,4])
+        plt.plot(plot_data[:,0], plot_data[:,5])
+        plt.plot(plot_data[:,0], plot_data[:,6])
+#        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
+        plt.xlabel("XGX")
+        plt.ylabel("Frequency [cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('v2_v2+d3static_freq2_multiprocessing.png')
+        #plt.show()
 # ----------
 # Funciones
 # ----------
