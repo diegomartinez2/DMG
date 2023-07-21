@@ -491,7 +491,8 @@ def main(args):
     Espectro.prepara_tensor()
     starttime = timeit.default_timer()
     print("The start time is :",starttime)
-
+    Espectro.calcula_espectro_basico_SrTiO3(T0)
+    Espectro.calcula_espectro_basico_SrTiO3_multiprocessing(T0,4)
 
     print("The time difference is :", timeit.default_timer() - starttime)
     return 0
