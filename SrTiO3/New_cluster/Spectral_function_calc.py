@@ -24,7 +24,29 @@
 # ---------------------------
 # Importación de los módulos
 # ---------------------------
+# Import the cellconstructor stuff
+import cellconstructor as CC
+import cellconstructor.Phonons
+import cellconstructor.ForceTensor
+import cellconstructor.Structure
+import cellconstructor.Spectral
 
+# Import the modules of the force field
+import fforces as ff
+import fforces.Calculator
+
+# Import the modules to run the sscha
+import sscha, sscha.Ensemble, sscha.SchaMinimizer
+import sscha.Relax, sscha.Utilities
+
+import spglib
+from ase.visualize import view
+
+# Import Matplotlib to plot
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import cm
+import timeit
 # -------
 # Clases
 # -------
@@ -453,27 +475,11 @@ class Funcion_espectral(object):
         ax.set_ylabel("Phonons [meV]")
 
         plt.tight_layout()
-        plt.savefig("SrTiO3_static_dispersion{}.png".format(PATH))
+        plt.savefig("{}_dispersion{}.png".format(filename, PATH))
         #plt.show()
 
 
-    def dibuja2multiprocessing(self):
-        plot_data = np.loadtxt("v2_v2+d3static_freq2_multiprocessing.dat")
 
-        plt.figure(dpi = 120)
-        plt.plot(plot_data[:,0], plot_data[:,1])
-        plt.plot(plot_data[:,0], plot_data[:,2])
-        plt.plot(plot_data[:,0], plot_data[:,3])
-        plt.plot(plot_data[:,0], plot_data[:,4])
-        plt.plot(plot_data[:,0], plot_data[:,5])
-        plt.plot(plot_data[:,0], plot_data[:,6])
-#        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
-        plt.xlabel("XGX")
-        plt.ylabel("Frequency [cm-1]")
-        plt.legend()
-        plt.tight_layout()
-        plt.savefig('v2_v2+d3static_freq2_multiprocessing.png')
-        #plt.show()
 # ----------
 # Funciones
 # ----------
@@ -481,6 +487,13 @@ def NombredeFuncion(arg):
     pass
 
 def main(args):
+    Espectro =  Funcion_espectral(Fichero_dyn,nqirr)
+    Espectro.prepara_tensor()
+    starttime = timeit.default_timer()
+    print("The start time is :",starttime)
+
+
+    print("The time difference is :", timeit.default_timer() - starttime)
     return 0
 
 if __name__ == '__main__':
