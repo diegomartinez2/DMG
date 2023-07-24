@@ -226,8 +226,9 @@ class Eliashberg(object):
         #center = self.pars[:,1]
         mu = center #self.pars[:1] #center
         sigma = gauss_width #self.pars[:,2] #width
-        d = 1/(2*np.sqrt(2*np.pi)*sigma)
-        g = d*np.exp(-( (x-mu)**2 / ( 2.0 * sigma**2 ) ) )
+        #d = 1/(2*np.sqrt(2*np.pi)*sigma)
+        d = 1/(sigma*np.sqrt(2*np.pi))
+        g = d*np.exp(-(x-mu)**2 / ( 2.0 * sigma**2 )  )
         #exp(-(w_aux-w(j,l))**2.0d0/(2.0d0*broad**2.0d0))/ (broad*sqrt(twopi)) #copy from qe-5.1.0_elph
         return g
 

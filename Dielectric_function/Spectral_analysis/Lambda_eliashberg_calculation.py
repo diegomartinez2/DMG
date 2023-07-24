@@ -1,6 +1,7 @@
 import Spectral_plasmons_analysis
 import numpy as np
 import os.path
+import matplotlib.pyplot as plt
 
 def main(arg):
     #pars_create=True
@@ -53,7 +54,10 @@ def main(arg):
     print('Test Gaussian->')
     gauss = np.zeros(100)
     for w in range(100):
-        gauss[w] = superconductor.gaussian(w, 0.0,1.0)
+        gauss[w] = superconductor.gaussian(w, 50.0,10.0)
+    plt.figure(figsize=(10,6))
+    plt.plot(gauss)
+    plt.show()
     print(np.trapz(gauss))
 
 if __name__ == '__main__':
