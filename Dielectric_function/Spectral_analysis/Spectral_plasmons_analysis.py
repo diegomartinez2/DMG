@@ -310,7 +310,35 @@ class Eliashberg(object):
         plt.show()
         pass
 
+    def Lambda_2(self,Frequencies):
+        """
+        Calculates the Lambda by two methods, notice that it must calculate the integral
+        in a range that takes the Lorenztian obtained by the Plasmon_analysis object.
+        """
+        center = self.pars[:,1]
+        width = self.pars[:,2]
+        Ne = self.Ne[np.where(self.energy==0.0)+1]
+        center = np.absolute(center) #test to force the abs
+        width = np.absolute(width)
+        summa1 = 0
+        for i in range(len(center)):
+            summa1 += self.Lambda_q(width[i],center[i],Ne)
+        #Lambda_1=summa1/Ne
+        Lambda_1=summa1/len(center)
+        self.lambda_2=[]
+        Frequncies = Frequencies+1
+        Frequencies = np.append(Frequencies,Frequncies, axis=0)
+        for w in Frequencies:
+            print('Frequence(',w,')              ', end="\r", flush=True)
+            if (w == 0):
+                a2F_x = []
+            else:
+                a2F_x.append(self.a2F(w)/w)
+        self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10)
+        self.plot_lambda(a2F_x)
+        return Lambda_1
 
+#-------------------------------------------------------------
 def main(arg):
     #namefile = "xbv"
     #print (len(sys.argv))
