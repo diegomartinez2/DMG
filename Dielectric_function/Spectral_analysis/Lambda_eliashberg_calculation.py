@@ -39,7 +39,7 @@ def main(arg):
     superconductor.read_Ne()
     #lambda_1, lambda_2 = superconductor.Lambda(frequencies)
 #    lambda_1 = superconductor.Lambda(frequencies)
-    lambda_1 = superconductor.Lambda_2(frequencies)
+    lambda_1 = superconductor.Lambda(frequencies)
     #np.savetxt('Lambda.txt', (lambda_1))
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
     #

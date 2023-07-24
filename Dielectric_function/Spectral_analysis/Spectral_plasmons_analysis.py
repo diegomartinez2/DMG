@@ -231,7 +231,7 @@ class Eliashberg(object):
         #exp(-(w_aux-w(j,l))**2.0d0/(2.0d0*broad**2.0d0))/ (broad*sqrt(twopi)) #copy from qe-5.1.0_elph
         return g
 
-    def Lambda(self,Frequencies):
+    def Lambda_2(self,Frequencies):
         """
         Calculates the Lambda by two methods, notice that it must calculate the integral
         in a range that takes the Lorenztian obtained by the Plasmon_analysis object.
@@ -312,7 +312,7 @@ class Eliashberg(object):
         plt.show()
         pass
 
-    def Lambda_2(self,Frequencies):
+    def Lambda(self,Frequencies):
         """
         Calculates the Lambda by two methods, notice that it must calculate the integral
         in a range that takes the Lorenztian obtained by the Plasmon_analysis object.
