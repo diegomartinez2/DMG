@@ -238,6 +238,7 @@ class Eliashberg(object):
         """
         center = self.pars[:,1]
         width = self.pars[:,2]
+        #print('Ne_index=',np.where(self.energy==0.0)[0][0],';len(enegry)=',len(self.energy))
         Ne = self.Ne[np.where(self.energy==0.0)]
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
@@ -317,7 +318,6 @@ class Eliashberg(object):
         """
         center = self.pars[:,1]
         width = self.pars[:,2]
-        print('Ne_index=',np.where(self.energy==0.0)[0][0],';len(enegry)=',len(self.energy))
         Ne = self.Ne[np.where(self.energy==0.0)[0][0]]
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
