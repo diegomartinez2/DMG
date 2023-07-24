@@ -32,8 +32,8 @@ import cellconstructor.Structure
 import cellconstructor.Spectral
 
 # Import the modules of the force field
-import fforces as ff
-import fforces.Calculator
+#import fforces as ff
+#import fforces.Calculator
 
 # Import the modules to run the sscha
 import sscha, sscha.Ensemble, sscha.SchaMinimizer
@@ -62,7 +62,7 @@ class Funcion_espectral(object):
                       "X": [0, 0, .5],
                       "M": [0, .5, .5],
                       "R": [.5, .5, .5]}
-        self.qpath, self.data = CC.Methods.get_bandpath(harmonic_dyn.structure.unit_cell,
+        self.qpath, self.data = CC.Methods.get_bandpath(self.dyn.structure.unit_cell,
                                           PATH,
                                           SPECIAL_POINTS,
                                           N_POINTS)
@@ -499,8 +499,9 @@ def NombredeFuncion(arg):
     pass
 
 def main(args):
-    Fichero_dyn = "dyn_start_population25"
+    Fichero_dyn = "dyn_start_population25_"
     nqirr = 10
+    T0 = 50
     Espectro =  Funcion_espectral(Fichero_dyn,nqirr)
     Espectro.prepara_tensor()
     starttime = timeit.default_timer()
