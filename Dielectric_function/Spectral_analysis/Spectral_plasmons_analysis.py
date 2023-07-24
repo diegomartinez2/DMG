@@ -208,7 +208,7 @@ class Eliashberg(object):
         Lamb_q=(1/(np.pi*Nef)) * (gamma_q/omega_q**2) #fix from omega to omega²
         return Lamb_q
 
-    def a2F(self):
+    def a2F(self,x):
         #print ("shape = ",np.shape(self.pars))
         center = self.pars[:,1]
         center = np.absolute(center)
