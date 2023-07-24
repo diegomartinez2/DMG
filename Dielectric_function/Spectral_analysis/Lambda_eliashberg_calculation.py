@@ -53,7 +53,7 @@ def main(arg):
     print('Test Gaussian->')
     gauss = np.zeros(100)
     for w in range(100):
-        gauss[w] = superconductor.gaussian(w, 0.0,0.01)
+        gauss[w] = superconductor.gaussian(w, 0.0,1.0)
     print(np.trapz(gauss))
 
 if __name__ == '__main__':
