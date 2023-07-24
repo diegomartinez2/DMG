@@ -318,7 +318,7 @@ class Eliashberg(object):
         center = self.pars[:,1]
         width = self.pars[:,2]
         print('Ne_index=',np.where(self.energy==0.0)[0][0],';len(enegry)=',len(self.energy))
-        Ne = self.Ne[np.where(self.energy==0.0)[0][0]+1]
+        Ne = self.Ne[np.where(self.energy==0.0)[0][0]]
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
         summa1 = 0
@@ -335,7 +335,7 @@ class Eliashberg(object):
                 a2F_x = []
             else:
                 a2F_x.append(self.a2F(w)/w)
-        self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/10)
+        self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/9)
         self.plot_lambda(a2F_x)
         return Lambda_1
 
