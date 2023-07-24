@@ -36,6 +36,8 @@ def main(arg):
         #pars = [] #np.zeros((2550,3))
         pars = np.loadtxt(file1) #no negative values,
         frequencies = np.loadtxt(file2) #no negative values
+    print(pars[:,0])
+    print('Max(pars[0])=',np.amax(pars[:,0]))
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     superconductor.read_Ne()
     #lambda_1, lambda_2 = superconductor.Lambda(frequencies)

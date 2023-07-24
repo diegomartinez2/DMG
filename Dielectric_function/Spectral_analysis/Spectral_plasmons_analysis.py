@@ -214,7 +214,7 @@ class Eliashberg(object):
         center = np.absolute(center)
         width = self.pars[:,2]
         width = np.absolute(width)
-        gauss_width = 0.01
+        gauss_width = 0.1
         summa = 0
         factor1 = 1 / (2*len(center))
         for i in range(len(center)):
@@ -287,7 +287,8 @@ class Eliashberg(object):
         width = self.pars[:,2]
         #gauss_width = width/20
         #gauss_width = 0.0002 # what is the best width? It should be independent of the width to a point
-        gauss_width = 0.01
+        #gauss_width = 0.01
+        gauss_width = np.amax(pars[:,0]) # testing choosing the gaussian width from the fitting data...
         #factor1 = 1/(2*self.Ne[np.where(self.energy==0.0)])
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
