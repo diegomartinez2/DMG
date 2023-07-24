@@ -332,7 +332,7 @@ class Eliashberg(object):
         for w in Frequencies[0:int(2*len(Frequencies)/3)]:
             print('Frequence(',w,')              ', end="\r", flush=True)
             if (w == 0):
-                a2F_x = [0.0]
+                a2F_x = [0.8]
             else:
                 a2F_x.append(self.a2F(w)/w)
         self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/9)
