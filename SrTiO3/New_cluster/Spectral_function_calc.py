@@ -499,6 +499,8 @@ def NombredeFuncion(arg):
     pass
 
 def main(args):
+    Fichero_dyn = "dyn_start_population25"
+    nqirr = 10
     Espectro =  Funcion_espectral(Fichero_dyn,nqirr)
     Espectro.prepara_tensor()
     starttime = timeit.default_timer()
