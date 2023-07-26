@@ -255,12 +255,12 @@ class Eliashberg(object):
         center = self.pars[:,1]
         width = self.pars[:,2]
         #print('Ne_index=',np.where(self.energy==0.0)[0][0],';len(enegry)=',len(self.energy))
-        Ne = self.Ne[np.where(self.energy==0.0)]
+        Nef = self.Ne[np.where(self.energy==0.0)]
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
         summa1 = 0
         for i in range(len(center)):
-            summa1 += self.Lambda_q(width[i],center[i],Ne)
+            summa1 += self.Lambda_q(width[i],center[i],Nef)
         #Lambda_1=summa1/Ne
         Lambda_1=summa1/len(center)
         self.lambda_2=[]
@@ -336,12 +336,12 @@ class Eliashberg(object):
         """
         center = self.pars[:,1]
         width = self.pars[:,2]
-        Ne = self.Ne[np.where(self.energy==0.0)[0][0]]
+        Nef = self.Ne[np.where(self.energy==0.0)[0][0]]
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
         summa1 = 0
         for i in range(len(center)):
-            summa1 += self.Lambda_q(width[i],center[i],Ne)
+            summa1 += self.Lambda_q(width[i],center[i],Nef)
         Lambda_1=summa1/len(center)
         self.lambda_2=[]
         Frequncies = Frequencies+1
