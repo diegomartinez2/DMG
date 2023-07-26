@@ -209,7 +209,7 @@ class Eliashberg(object):
 
     def a2F(self,x):
         """
-        Calculates the Eliashberg functions
+        Calculates the Eliashberg spectral functions
         ---input---
         x: coordiate to calculate the Eliashberg function.
         ---output---
