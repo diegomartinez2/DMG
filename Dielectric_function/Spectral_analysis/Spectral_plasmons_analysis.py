@@ -205,6 +205,15 @@ class Eliashberg(object):
         pass
 
     def Lambda_q(self,gamma_q,omega_q,Nef):
+        """
+        Calculates the Lambda(q) functions
+        ---input---
+        gamma_q: widths of the lorentzian fitting of the plasmon
+        omega_q: Frequencies of the plasmon, fitted to lorentzian
+        Nef:
+        ---output---
+        Lamb_q: Lambda(q)
+        """
         Lamb_q=(1/(np.pi*Nef)) * (gamma_q/omega_q**2) #fix from omega to omega²
         return Lamb_q
 
