@@ -210,7 +210,7 @@ class Eliashberg(object):
         ---input---
         gamma_q: widths of the lorentzian fitting of the plasmon
         omega_q: Frequencies of the plasmon, fitted to lorentzian
-        Nef:
+        Nef: Density of states at Fermi level per cell
         ---output---
         Lamb_q: Lambda(q)
         """
