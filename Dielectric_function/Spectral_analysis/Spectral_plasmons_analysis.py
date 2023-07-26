@@ -340,8 +340,11 @@ class Eliashberg(object):
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
         summa1 = 0
+        Lq = []
         for i in range(len(center)):
             summa1 += self.Lambda_q(width[i],center[i],Nef)
+            Lq = np.append(Lq, self.Lambda_q(width[i],center[i],Nef))
+        np.savetxt('Lambda_q.txt',Lq)
         Lambda_1=summa1/len(center)
         self.lambda_2=[]
         Frequncies = Frequencies+1
