@@ -209,6 +209,13 @@ class Eliashberg(object):
         return Lamb_q
 
     def a2F(self,x):
+        """
+        Calculates the Eliashberg functions
+        ---input---
+        x: coordiate to calculate the Eliashberg function.
+        ---output---
+        a2F = factor1*summa: The Eliashberg function at "x"
+        """
         #print ("shape = ",np.shape(self.pars))
         center = self.pars[:,1]
         center = np.absolute(center)
