@@ -44,8 +44,9 @@ def main(arg):
     lambda_1 = superconductor.Lambda(frequencies)
     #np.savetxt('Lambda.txt', (lambda_1))
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
-    print('Lambda_1=',lambda_1*superconductor.Ne[np.where(superconductor.energy==0.0)[0][0]]) # Lambda calculated from Lambda_q#self.Ne[np.where(self.energy==0.0)[0][0]]
+    #print('Lambda_1=',lambda_1*superconductor.Ne[np.where(superconductor.energy==0.0)[0][0]]) # Lambda calculated from Lambda_q#self.Ne[np.where(self.energy==0.0)[0][0]]
     print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
+    print('Lambda_2??=',superconductor.lambda_2/superconductor.Ne[np.where(superconductor.energy==0.0)[0][0]]) #Lambda calculated fron Eliashberg function
     # Frequncies = frequencies+1
     # Frequencies = np.append(frequencies,Frequncies, axis=0)
     #print(len(Frequencies[1:]),len(superconductor.lambda_2))
