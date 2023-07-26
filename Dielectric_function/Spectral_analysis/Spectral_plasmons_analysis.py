@@ -186,16 +186,6 @@ class Eliashberg(object):
         #super(Eliashberg, self).__init__()
         self.pars = pars
 
-    def e_spectral_function(self):
-        print ("shape = ",np.shape(self.pars))
-        center = self.pars[:,1]
-        width = self.pars[:,2]
-        N = 2 #electron spin up and down
-        factor1 = 1/(2*np.pi*self.Ne*N)
-        for i in range(len(center)):
-            suma += (width/center) * self.gaussian(center)
-        return factor1*summa
-
     def read_Ne(self,filename="out_DOS.dat"):
         self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
         #self.Ne_0[np.where(energy==0.0)]
