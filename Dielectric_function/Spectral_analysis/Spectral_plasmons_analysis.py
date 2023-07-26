@@ -222,6 +222,15 @@ class Eliashberg(object):
         return factor1*summa
 
     def gaussian(self,x, center,gauss_width):
+        """
+        Gaussian distribution
+        ---input---
+        x: x position of the gaussian graph, in this case the frequency
+        center: center of the gaussian distribution, in this case the frequency of the plasmon Lorenztian approximation
+        gauss_width: width of the gaussian distribution, in this case the witdh of the plasmon lorentzian aproximation
+        ---output---
+        g: gaussian value in 'x'
+        """
         #d = self.pars[:,0] #amplitude
         #center = self.pars[:,1]
         mu = center #self.pars[:1] #center
