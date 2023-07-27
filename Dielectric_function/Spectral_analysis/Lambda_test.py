@@ -8,7 +8,7 @@ def main(arg):
     if not (os.path.isfile(file)):
         print('Error, file not found')
     else:
-        pars = np.loadtxt(file)
+        pars = np.loadtxt(file, usecols = (6,10,13))
     pass
 
 
