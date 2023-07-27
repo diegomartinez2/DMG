@@ -16,8 +16,9 @@ def main(arg):
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     Nef = np.loadtxt('DOS', usecols = (2))
     print('Nef=',Nef)
-    energy = [0.0]
-    Ne = [Nef]
+    superconductor.energy = [0.0]
+    superconductor.Ne = [Nef]
+    frequencies = np.arange(1,1000,1)
     lambda_1 = superconductor.Lambda(frequencies)
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
     print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
