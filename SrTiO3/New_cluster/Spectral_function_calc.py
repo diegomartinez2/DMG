@@ -441,7 +441,7 @@ class Funcion_espectral(object):
                                              T = T0,
                                              print_dyn = False, processes = processes) # set true to print the Hessian dynamical matrices
                                                                 # for each q point
-    def dibuja_espectro_basico_SrTiO3(self,filename = "SrTiO3_static.dat"):
+    def dibuja_espectro_basico_SrTiO3(self,filename = "SrTiO3_static.dat", PATH = "GXMGRX"):
         plot_data = np.loadtxt(filename)
 
         nmodes = self.dyn.structure.N_atoms * 3
@@ -536,9 +536,10 @@ def main(args):
     print("The start time is :",starttime)
     Espectro.calcula_espectro_basico_SrTiO3(T0)
     Espectro.calcula_espectro_basico_SrTiO3_multiprocessing(T0,4)
-
+    calcula_full_correction_en_punto_G(T0)
+    calcula_full_correction_en_punto_R(T0)
     print("The time difference is :", timeit.default_timer() - starttime)
-    Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat")
+    Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
 
     return 0
 
