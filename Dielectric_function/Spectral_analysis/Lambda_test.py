@@ -1,4 +1,4 @@
-import Spectral_plasmons_analysis
+import Eliashberg
 import numpy as np
 import os.path
 import matplotlib.pyplot as plt
