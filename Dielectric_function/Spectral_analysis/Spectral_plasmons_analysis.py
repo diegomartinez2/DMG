@@ -188,7 +188,7 @@ class Eliashberg(object):
 
     def read_Ne(self,filename="out_DOS.dat"):
         self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
-#        self.Ne_0[np.where(energy==0.0)]
+        self.Ne_0[np.where(energy==0.0)]
         numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0])+1],dx=(self.energy[9]-self.energy[0])/10)
         print ("Density of states at Fermi level per cell=",self.Ne[np.where(self.energy==0.0)])
         print ("Number of elements (for the factor)=",numero_de_elementos)
@@ -340,8 +340,7 @@ class Eliashberg(object):
         center = self.pars[:,1]
         width = self.pars[:,2]
         print('len(Center)=',len(center))
-#        Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
-        Nef = self.Nef
+        Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
         summa1 = 0
@@ -349,9 +348,9 @@ class Eliashberg(object):
             summa1 += self.Lambda_q(width[i],center[i],Nef)
         Lambda_1=summa1/len(center)
         self.lambda_2=[]
-#        Frequncies = Frequencies+1
-#        Frequencies = np.append(Frequencies,Frequncies, axis=0)
-#        for w in Frequencies[0:int(2*len(Frequencies)/3)]:
+        Frequncies = Frequencies+1
+        Frequencies = np.append(Frequencies,Frequncies, axis=0)
+        for w in Frequencies[0:int(2*len(Frequencies)/3)]:
         for w in Frequencies[0:int(2*len(Frequencies))]:
             print('Frequencie(',w,')              ', end="\r", flush=True)
             if (w == 0):
