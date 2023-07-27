@@ -220,7 +220,7 @@ class Eliashberg(object):
         center = np.absolute(center)
         width = self.pars[:,2]
         width = np.absolute(width)
-        gauss_width = 0.1
+        gauss_width = 0.01
         summa = 0
         factor1 = 1 / (2*len(center))
         for i in range(len(center)):
@@ -339,6 +339,7 @@ class Eliashberg(object):
         """
         center = self.pars[:,1]
         width = self.pars[:,2]
+        print('len(Center)=',len(center))
         #Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
         Nef = self.Nef
         center = np.absolute(center) #test to force the abs
@@ -348,9 +349,10 @@ class Eliashberg(object):
             summa1 += self.Lambda_q(width[i],center[i],Nef)
         Lambda_1=summa1/len(center)
         self.lambda_2=[]
-        Frequncies = Frequencies+1
-        Frequencies = np.append(Frequencies,Frequncies, axis=0)
-        for w in Frequencies[0:int(2*len(Frequencies)/3)]:
+#        Frequncies = Frequencies+1
+#        Frequencies = np.append(Frequencies,Frequncies, axis=0)
+#        for w in Frequencies[0:int(2*len(Frequencies)/3)]:
+        for w in Frequencies[0:int(2*len(Frequencies))]:
             print('Frequence(',w,')              ', end="\r", flush=True)
             if (w == 0):
                 a2F_x = []
