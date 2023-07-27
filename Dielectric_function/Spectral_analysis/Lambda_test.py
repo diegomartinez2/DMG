@@ -4,6 +4,8 @@ import os.path
 import matplotlib.pyplot as plt
 
 def main(arg):
+    factor_Gamma = 4.55633e-6 # from cm-1 to Hartree
+    factor_Omega = 4.55633e-6/29.9793 # from GHz to Hartree
     file = 'texto2.txt'
     if not (os.path.isfile(file)):
         print('Error, file not found')
@@ -11,8 +13,11 @@ def main(arg):
         pars = np.loadtxt(file, usecols = (1,5,9))
     print(pars)
     print('0--------------0')
-    print(pars[:,0])
-    print('Min(pars[0])=',np.amin(pars[:,0]))
+    print(pars[:,1])
+    print('Min(pars[0])=',np.amin(pars[:,1]))
+    pars[:,1] *= factor_Gamma
+    pats[:,2] *= factor_Omega
+
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     Nef = np.loadtxt('DOS', usecols = (2))
     print('Nef=',Nef)
