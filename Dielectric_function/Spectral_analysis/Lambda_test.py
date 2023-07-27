@@ -11,10 +11,10 @@ def main(arg):
         print('Error, file not found')
     else:
         pars = np.loadtxt(file, usecols = (1,5,9))
-    print(pars)
+    #print(pars)
     print('0--------------0')
-    print(pars[:,1])
-    print('Min(pars[0])=',np.amin(pars[:,1]))
+    #print(pars[:,1])
+    #print('Min(pars[0])=',np.amin(pars[:,1]))
     pars[:,1] *= factor_Gamma
     pars[:,2] *= factor_Omega
 
@@ -24,7 +24,7 @@ def main(arg):
     superconductor.energy = [0.0]
     superconductor.Ne = [Nef]
     superconductor.Nef = Nef
-    frequencies = np.arange(0,0.01,0.0001)
+    frequencies = np.arange(0,1,0.001)
     lambda_1 = superconductor.Lambda(frequencies)
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
     print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
