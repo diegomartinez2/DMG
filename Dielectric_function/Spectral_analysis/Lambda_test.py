@@ -9,6 +9,9 @@ def main(arg):
         print('Error, file not found')
     else:
         pars = np.loadtxt(file, usecols = (6,10,13))
+    print(pars)
+    print('0--------------0')
+    print(pars[:,0])
     pass
 
 
