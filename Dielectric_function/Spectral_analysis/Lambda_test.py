@@ -18,7 +18,7 @@ def main(arg):
     pars[:,1] *= factor_Gamma
     pars[:,2] *= factor_Omega
 
-    superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
+    superconductor = Eliashberg.Eliashberg(pars)
     Nef = np.loadtxt('DOS', usecols = (2))
     print('Nef=',Nef)
     superconductor.energy = [0.0]
