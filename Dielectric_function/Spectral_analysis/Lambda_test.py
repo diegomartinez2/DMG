@@ -14,7 +14,7 @@ def main(arg):
     print(pars[:,0])
     print('Min(pars[0])=',np.amin(pars[:,0]))
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
-    superconductor.read_Ne()
+    Nef = np.loadtxt('DOS', usecols = (2))
     pass
 
 
