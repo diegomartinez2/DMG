@@ -16,7 +16,7 @@ def main(arg):
     print(pars[:,1])
     print('Min(pars[0])=',np.amin(pars[:,1]))
     pars[:,1] *= factor_Gamma
-    pats[:,2] *= factor_Omega
+    pars[:,2] *= factor_Omega
 
     superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
     Nef = np.loadtxt('DOS', usecols = (2))
