@@ -5,7 +5,10 @@ import matplotlib.pyplot as plt
 
 def main(arg):
     file = 'text.txt'
-    
+    if not (os.path.isfile(file)):
+        print('Error, file not found')
+    else:
+        pars = np.loadtxt(file)
     pass
 
 
