@@ -4,7 +4,7 @@ import os.path
 import matplotlib.pyplot as plt
 
 def main(arg):
-    file = 'text.txt'
+    file = 'texto2.txt'
     if not (os.path.isfile(file)):
         print('Error, file not found')
     else:
