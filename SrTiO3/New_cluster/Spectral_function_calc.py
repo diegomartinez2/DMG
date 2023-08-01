@@ -559,7 +559,7 @@ class Funcion_espectral(object):
                                            filename_sp='full_spectral_func_X')
 
 
-    def calcula_oneshot_correction_en_punto_Gamma(self,T=):
+    def calcula_oneshot_correction_en_punto_Gamma(self,T0):
 
 
         # integration grid
@@ -572,7 +572,7 @@ class Funcion_espectral(object):
                                            nsm=1,
                                            q_path=[0.0,0.0,0.0],
                                            T=T0)
-    def calcula_oneshot_correction_en_punto_R(self,T=):
+    def calcula_oneshot_correction_en_punto_R(self,T0):
 
 
         # integration grid
@@ -601,8 +601,10 @@ def main(args):
     print("The start time is :",starttime)
     Espectro.calcula_espectro_basico_SrTiO3(T0)
     Espectro.calcula_espectro_basico_SrTiO3_multiprocessing(T0,4)
-    calcula_full_correction_en_punto_G(T0)
-    calcula_full_correction_en_punto_R(T0)
+    Espectro.calcula_full_correction_en_punto_G(T0)
+    Espectro.calcula_full_correction_en_punto_R(T0)
+    Espectro.calcula_oneshot_correction_en_punto_Gamma(T0)
+    Espectro.calcula_oneshot_correction_en_punto_R(T0)
     print("The time difference is :", timeit.default_timer() - starttime)
     Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
 
