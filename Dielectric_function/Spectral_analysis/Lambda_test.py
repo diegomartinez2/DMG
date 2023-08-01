@@ -20,7 +20,7 @@ def main(arg):
     pars[:,2] *= factor_Omega
 
     superconductor = Eliashberg.Eliashberg(pars)
-    Nef = np.loadtxt('DOS', usecols = (2))
+    Nef = np.loadtxt('DOS', usecols = (2)) * factor_Nef
     print('Nef=',Nef)
     superconductor.energy = [0.0]
     superconductor.Ne = [Nef]
