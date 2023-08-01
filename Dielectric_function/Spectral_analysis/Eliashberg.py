@@ -7,6 +7,7 @@ class Eliashberg(object):
     def __init__(self, pars):
         #super(Eliashberg, self).__init__()
         self.pars = pars
+        self.from_cm1_to_Hartree = 4.55633e-6 # from cm-1 to Hartree
 
     def read_Ne(self,filename="out_DOS.dat"):
         self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
