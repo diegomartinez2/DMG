@@ -413,6 +413,44 @@ class Funcion_espectral(object):
         plt.show()
         return 0
 
+    def calcula_espectro_full_Gamma(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+        # q point
+        G=[0.0,0.0,0.0]
+
+
+        CC.Spectral.get_full_dynamic_correction_along_path(dyn=self.dyn,
+                                           tensor3=self.tensor3,
+                                           k_grid=k_grid,
+                                           e1=145, de=0.1, e0=0,
+                                           sm1=1, sm0=1,nsm=1,
+                                           sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
+                                           T = T0,
+                                           q_path=G,
+                                           notransl = True,
+                                           filename_sp='full_spectral_Gamma')
+
+    def calcula_espectro_full_R(self,T0):
+        # integration grid
+        k_grid=[20,20,20]
+
+        # q point
+        G=[0.5,0.5,0.5]
+
+
+        CC.Spectral.get_full_dynamic_correction_along_path(dyn=self.dyn,
+                                           tensor3=self.tensor3,
+                                           k_grid=k_grid,
+                                           e1=145, de=0.1, e0=0,
+                                           sm1=1, sm0=1,nsm=1,
+                                           sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
+                                           T = T0,
+                                           q_path=G,
+                                           notransl = True,
+                                           filename_sp='full_spectral_R')
+
 
 #-------------------------SrTiO3--------------
     def calcula_espectro_basico_SrTiO3(self,T0):
