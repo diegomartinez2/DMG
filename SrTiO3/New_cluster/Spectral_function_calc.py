@@ -585,6 +585,20 @@ class Funcion_espectral(object):
                                            nsm=1,
                                            q_path=[0.5,0.5,0.5],
                                            T=T0)
+
+    def calcula_oneshot_correction_along_PATH(self,T0):
+
+
+        # integration grid
+        k_grid=[20,20,20]
+
+        CC.Spectral.get_os_perturb_dynamic_correction_along_path(dyn,
+                                           tensor3=FC3,
+                                           k_grid=k_grid,
+                                           sm1=1.0, sm0=1.0,
+                                           nsm=1,
+                                           q_path=self.qpath,
+                                           T=T0)
 # ----------
 # Funciones
 # ----------
@@ -605,6 +619,7 @@ def main(args):
     Espectro.calcula_full_correction_en_punto_R(T0)
     Espectro.calcula_oneshot_correction_en_punto_Gamma(T0)
     Espectro.calcula_oneshot_correction_en_punto_R(T0)
+    Espectro.calcula_oneshot_correction_along_PATH(T0)
     print("The time difference is :", timeit.default_timer() - starttime)
     Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
 
