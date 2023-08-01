@@ -571,8 +571,20 @@ class Funcion_espectral(object):
                                            sm1=1.0, sm0=1.0,
                                            nsm=1,
                                            q_path=[0.0,0.0,0.0],
-                                           T=T0)                                       
+                                           T=T0)
+    def calcula_oneshot_correction_en_punto_R(self,T=):
 
+
+        # integration grid
+        k_grid=[20,20,20]
+
+        CC.Spectral.get_os_perturb_dynamic_correction_along_path(dyn,
+                                           tensor3=FC3,
+                                           k_grid=k_grid,
+                                           sm1=1.0, sm0=1.0,
+                                           nsm=1,
+                                           q_path=[0.5,0.5,0.5],
+                                           T=T0)
 # ----------
 # Funciones
 # ----------
