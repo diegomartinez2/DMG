@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 def main(arg):
     factor_Omega = 4.55633e-6 # from cm-1 to Hartree
     factor_Gamma = 4.55633e-6/29.9793 # from GHz to Hartree
+    factor_Nef = 0.5 # from Ry to Hartree
     file = 'texto2.txt'
     if not (os.path.isfile(file)):
         print('Error, file not found')
