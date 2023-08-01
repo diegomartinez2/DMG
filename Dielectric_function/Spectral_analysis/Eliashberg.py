@@ -9,6 +9,7 @@ class Eliashberg(object):
         self.pars = pars
         self.from_cm1_to_Hartree = 4.55633e-6 # from cm-1 to Hartree
         self.from_GHz_to_Hartree = self.from_cm1_to_Hartree /29.9793 # from GHz to Hartree
+        self.from_Ry_to_Hartree = 0.5 # from Ry to Hartree
 
     def read_Ne(self,filename="out_DOS.dat"):
         self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
