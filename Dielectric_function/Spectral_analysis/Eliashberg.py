@@ -100,7 +100,7 @@ class Eliashberg(object):
 #        Frequncies = Frequencies+1
 #        Frequencies = np.append(Frequencies,Frequncies, axis=0)
 #        for w in Frequencies[0:int(2*len(Frequencies)/3)]:
-        for w in Frequencies[0:int(2*len(Frequencies))]:
+        for w in Frequencies[0:int(len(Frequencies))]: #edit for test
             print('Frequencie(',w,')              ', end="\r", flush=True)
             if (w == 0):
                 a2F_x = []
