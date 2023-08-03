@@ -620,6 +620,8 @@ def main(args):
     Espectro.calcula_oneshot_correction_en_punto_Gamma(T0)
     Espectro.calcula_oneshot_correction_en_punto_R(T0)
     Espectro.calcula_oneshot_correction_along_PATH(T0)
+    Espectro.calcula_espectro_correction_SrTiO3(T0)
+    Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T0,8)
     print("The time difference is :", timeit.default_timer() - starttime)
     Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
 
