@@ -106,6 +106,6 @@ class Eliashberg(object):
                 a2F_x = []
             else:
                 a2F_x.append(self.a2F(w)/w)
-        self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[9]-Frequencies[0])/9)
+        self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies))
         self.plot_lambda(a2F_x)
         return Lambda_1
