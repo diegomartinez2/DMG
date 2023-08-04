@@ -106,6 +106,10 @@ class Eliashberg(object):
                 a2F_x = []
             else:
                 a2F_x.append(self.a2F(w)/w)
+        #import multiprocessing as mp
+        #with mp.Pool() as pool:
+        #    res = pool.map(self.a2F,Frequencies)
+        #res = res/Frequencies
         self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies))
         self.plot_lambda(a2F_x)
         return Lambda_1
