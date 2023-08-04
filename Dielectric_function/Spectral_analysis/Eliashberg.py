@@ -100,6 +100,10 @@ class Eliashberg(object):
         self.lambda_2=[]
 #        Frequncies = Frequencies+1
 #        Frequencies = np.append(Frequencies,Frequncies, axis=0)
+        # if (Frequencies[0] != 0):
+        #     Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
+        # else:
+        #     Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])    
 #        for w in Frequencies[0:int(2*len(Frequencies)/3)]:
         # for w in Frequencies[0:int(len(Frequencies))]: #edit for test
         #     print('Frequencie(',w,')              ', end="\r", flush=True)
@@ -107,7 +111,7 @@ class Eliashberg(object):
         #         a2F_x = []
         #     else:
         #         a2F_x.append(self.a2F(w)/w)
-#---test--v--multiprocessing*****        
+#---test--v--multiprocessing*****
         #import multiprocessing as mp #multiprocessing calculation of the a2F()
         with mp.Pool() as pool:
            res = pool.map(self.a2F,Frequencies)
