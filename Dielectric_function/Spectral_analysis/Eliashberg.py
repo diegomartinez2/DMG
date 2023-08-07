@@ -103,19 +103,19 @@ class Eliashberg(object):
         # if (Frequencies[0] != 0):
         #     Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
         # else:
-        #     Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])    
+        #     Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
 #        for w in Frequencies[0:int(2*len(Frequencies)/3)]:
-        # for w in Frequencies[0:int(len(Frequencies))]: #edit for test
-        #     print('Frequencie(',w,')              ', end="\r", flush=True)
-        #     if (w == 0):
-        #         a2F_x = []
-        #     else:
-        #         a2F_x.append(self.a2F(w)/w)
+        for w in Frequencies[0:int(len(Frequencies))]: #edit for test
+            print('Frequencie(',w,')              ', end="\r", flush=True)
+            if (w == 0):
+                a2F_x = []
+            else:
+                a2F_x.append(self.a2F(w)/w)
 #---test--v--multiprocessing*****
         #import multiprocessing as mp #multiprocessing calculation of the a2F()
-        with mp.Pool() as pool:
-           res = pool.map(self.a2F,Frequencies)
-        a2F_x = res / Frequencies #or np.divide(res, Frequencies)
+        # with mp.Pool() as pool:
+        #    res = pool.map(self.a2F,Frequencies)
+        # a2F_x = res / Frequencies #or np.divide(res, Frequencies)
 #---test--^--multiprocessing*****
         self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies))
         self.plot_lambda(a2F_x)
