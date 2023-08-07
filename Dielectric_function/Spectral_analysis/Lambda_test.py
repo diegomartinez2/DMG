@@ -27,7 +27,7 @@ def main(arg):
     superconductor.Ne = [Nef]
     superconductor.Nef = Nef
     #frequencies = np.arange(0,0.001,1e-9)
-    frequencies = np.arange(0,20,5e-6)
+    frequencies = np.arange(0,20,1e-6)
     lambda_1 = superconductor.Lambda(frequencies)
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
     print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
