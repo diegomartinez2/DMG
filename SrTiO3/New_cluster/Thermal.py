@@ -7,79 +7,74 @@ import cellconstructor.Phonons
 import cellconstructor.ForceTensor
 import cellconstructor.ThermalConductivity
 import time
-
-dyn_prefix = 'final_dyn'
-nqirr = 8
-
-SSCHA_TO_MS = cellconstructor.ThermalConductivity.SSCHA_TO_MS
-RY_TO_THZ = cellconstructor.ThermalConductivity.SSCHA_TO_THZ
-dyn = CC.Phonons.Phonons(dyn_prefix, nqirr)
-
-supercell = dyn.GetSupercell()
-
-fc3 = CC.ForceTensor.Tensor3(dyn.structure,
-dyn.structure.generate_supercell(supercell), supercell)
-
-d3 = np.load("d3.npy")
-fc3.SetupFromTensor(d3)
-fc3 = CC.ThermalConductivity.centering_fc3(fc3)
-
-mesh = [10,10,10]
-smear = 0.03/RY_TO_THZ
-
-tc = CC.ThermalConductivity.ThermalConductivity(dyn, fc3,
-kpoint_grid = mesh, scattering_grid = mesh, smearing_scale = None,
-smearing_type = 'constant', cp_mode = 'quantum', off_diag = False)
-
-temperatures = np.linspace(200,1200,10,dtype=float)
-start_time = time.time()
-tc.setup_harmonic_properties(smear)
-tc.write_harmonic_properties_to_file()
-
-tc.calculate_kappa(mode = 'SRTA', temperatures = temperatures,
-write_lifetimes = True, gauss_smearing = True, offdiag_mode = 'wigner',
-kappa_filename = 'Thermal_conductivity_SRTA', lf_method = 'fortran-LA')
-
-print('Calculated SSCHA kappa in: ', time.time() - start_time)
-
-tc.calculate_kappa(mode = 'GK', write_lineshapes=False,
-ne = 1000, temperatures = temperatures,
-kappa_filename = 'Thermal_conductivity_GK')
-
-print('Calculated SSCHA kappa in: ', time.time() - start_time)
-# Save ThermalConductivity object for postprocessing.
-tc.save_pickle()
-
-#----------------------------------------------------------------
-#from __future__ import print_function
-#from __future__ import division
-
-# Import the modules to read the dynamical matrix
-#import numpy as np
-#import cellconstructor as CC
-#import cellconstructor.Phonons
-#import cellconstructor.ForceTensor
-#import cellconstructor.ThermalConductivity
-#import time
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
-tc = CC.ThermalConductivity.load_thermal_conductivity()
+def thermal_calculo(arg):
+    """pass"""
+    dyn_prefix = 'final_dyn'
+    nqirr = 8
 
-# See at which temperatures we calculated stuff
-tc.what_temperatures()
+    SSCHA_TO_MS = cellconstructor.ThermalConductivity.SSCHA_TO_MS
+    RY_TO_THZ = cellconstructor.ThermalConductivity.SSCHA_TO_THZ
+    dyn = CC.Phonons.Phonons(dyn_prefix, nqirr)
 
-key = list(tc.lineshapes.keys()) # Get Ts for lineshapes
+    supercell = dyn.GetSupercell()
 
-# DOS calculated from auxiliary force constants
-harm_dos = tc.get_dos()
-# Temperature dependent DOS calculated from lineshapes
-# first two arrays are raw data
-# second two is gaussian smoothed results \
-#for the distance between energy points de
-anharm_dos = tc.get_dos_from_lineshapes(float(key[-1]), de = 0.1)
+    fc3 = CC.ForceTensor.Tensor3(dyn.structure,
+    dyn.structure.generate_supercell(supercell), supercell)
 
-def plot(self, harm_dos, anharm_dos):
+    d3 = np.load("d3.npy")
+    fc3.SetupFromTensor(d3)
+    fc3 = CC.ThermalConductivity.centering_fc3(fc3)
+
+    mesh = [10,10,10]
+    smear = 0.03/RY_TO_THZ
+
+    tc = CC.ThermalConductivity.ThermalConductivity(dyn, fc3,
+    kpoint_grid = mesh, scattering_grid = mesh, smearing_scale = None,
+    smearing_type = 'constant', cp_mode = 'quantum', off_diag = False)
+
+    temperatures = np.linspace(200,1200,10,dtype=float)
+    start_time = time.time()
+    tc.setup_harmonic_properties(smear)
+    tc.write_harmonic_properties_to_file()
+
+    tc.calculate_kappa(mode = 'SRTA', temperatures = temperatures,
+    write_lifetimes = True, gauss_smearing = True, offdiag_mode = 'wigner',
+    kappa_filename = 'Thermal_conductivity_SRTA', lf_method = 'fortran-LA')
+
+    print('Calculated SSCHA kappa in: ', time.time() - start_time)
+
+    tc.calculate_kappa(mode = 'GK', write_lineshapes=False,
+    ne = 1000, temperatures = temperatures,
+    kappa_filename = 'Thermal_conductivity_GK')
+
+    print('Calculated SSCHA kappa in: ', time.time() - start_time)
+    # Save ThermalConductivity object for postprocessing.
+    tc.save_pickle()
+
+#----------------------------------------------------------------
+
+def processing():
+    """manual"""
+    tc = CC.ThermalConductivity.load_thermal_conductivity()
+
+    # See at which temperatures we calculated stuff
+    tc.what_temperatures()
+
+    key = list(tc.lineshapes.keys()) # Get Ts for lineshapes
+
+    # DOS calculated from auxiliary force constants
+    harm_dos = tc.get_dos()
+    # Temperature dependent DOS calculated from lineshapes
+    # first two arrays are raw data
+    # second two is gaussian smoothed results \
+    #for the distance between energy points de
+    anharm_dos = tc.get_dos_from_lineshapes(float(key[-1]), de = 0.1)
+    return harm_dos,anharm_dos
+
+def plot(harm_dos, anharm_dos):
     """# Plot results"""
     fig = plt.figure(figsize=(6.4, 4.8))
     gs1 = gridspec.GridSpec(1, 1)
