@@ -51,16 +51,16 @@ print('Calculated SSCHA kappa in: ', time.time() - start_time)
 tc.save_pickle()
 
 #----------------------------------------------------------------
-from __future__ import print_function
-from __future__ import division
+#from __future__ import print_function
+#from __future__ import division
 
 # Import the modules to read the dynamical matrix
-import numpy as np
-import cellconstructor as CC
-import cellconstructor.Phonons
-import cellconstructor.ForceTensor
-import cellconstructor.ThermalConductivity
-import time
+#import numpy as np
+#import cellconstructor as CC
+#import cellconstructor.Phonons
+#import cellconstructor.ForceTensor
+#import cellconstructor.ThermalConductivity
+#import time
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
@@ -79,20 +79,28 @@ harm_dos = tc.get_dos()
 #for the distance between energy points de
 anharm_dos = tc.get_dos_from_lineshapes(float(key[-1]), de = 0.1)
 
+def plot(self, harm_dos, anharm_dos):
+    """# Plot results"""
+    fig = plt.figure(figsize=(6.4, 4.8))
+    gs1 = gridspec.GridSpec(1, 1)
+    ax = fig.add_subplot(gs1[0, 0])
+    ax.plot(harm_dos[0], harm_dos[1], 'k-',
+    zorder=0, label = 'Harmonic')
+    ax.plot(anharm_dos[0], anharm_dos[1], 'r-',
+    zorder=0, label = 'Anharmonic raw @ ' + key[-1] + ' K')
+    ax.plot(anharm_dos[2], anharm_dos[3], 'b-',
+    zorder=0, label = 'Anharmonic smooth @ ' + key[-1] + ' K')
+    ax.set_xlabel('Frequency (THz)')
+    ax.set_ylabel('Density of states')
+    ax.legend(loc = 'upper right')
+    ax.set_ylim(bottom = 0.0)
+    fig.savefig('test.pdf')
+    plt.show()
+    pass
 
-# Plot results
-fig = plt.figure(figsize=(6.4, 4.8))
-gs1 = gridspec.GridSpec(1, 1)
-ax = fig.add_subplot(gs1[0, 0])
-ax.plot(harm_dos[0], harm_dos[1], 'k-',
-zorder=0, label = 'Harmonic')
-ax.plot(anharm_dos[0], anharm_dos[1], 'r-',
-zorder=0, label = 'Anharmonic raw @ ' + key[-1] + ' K')
-ax.plot(anharm_dos[2], anharm_dos[3], 'b-',
-zorder=0, label = 'Anharmonic smooth @ ' + key[-1] + ' K')
-ax.set_xlabel('Frequency (THz)')
-ax.set_ylabel('Density of states')
-ax.legend(loc = 'upper right')
-ax.set_ylim(bottom = 0.0)
-fig.savefig('test.pdf')
-plt.show()
+def main(args):
+    pass
+
+if __name__ == '__main__':
+    import sys
+    sys.exit(main(sys.argv))
