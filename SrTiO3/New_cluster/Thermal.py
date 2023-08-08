@@ -10,11 +10,8 @@ import time
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
-def thermal_calculo(arg):
+def thermal_calculo(dyn_prefix = 'final_dyn',nqirr = 8):
     """pass"""
-    dyn_prefix = 'final_dyn'
-    nqirr = 8
-
     SSCHA_TO_MS = cellconstructor.ThermalConductivity.SSCHA_TO_MS
     RY_TO_THZ = cellconstructor.ThermalConductivity.SSCHA_TO_THZ
     dyn = CC.Phonons.Phonons(dyn_prefix, nqirr)
