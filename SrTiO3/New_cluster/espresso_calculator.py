@@ -22,8 +22,8 @@ def get_calculator():
         "system" : {
             "degauss" : 0.03,
             #"smearing" : "mv",# remove for non-conductors and put occupations to 'fixed'
-            "ecutwfc" : 35,# Cutoff for wavefunction
-            "ecutrho" : 350,# Cutoff for the density
+            "ecutwfc" : 50,# Cutoff for wavefunction
+            "ecutrho" : 50*10,# Cutoff for the density
             "occupations" : "fixed"# 'fixed' or 'smearing', smearing for conductors
             },
         "electrons" : {
@@ -36,7 +36,7 @@ def get_calculator():
     }
 
     kpts = (4,4,4)
-    koffset = (1, 1, 1)
+    koffset = (0, 0, 0)
 
     calc = Espresso(pseudopotentials = pseudopotentials,
                     input_data = input_params,
