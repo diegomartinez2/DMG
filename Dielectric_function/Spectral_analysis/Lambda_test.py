@@ -31,6 +31,7 @@ def main(arg):
     lambda_1 = superconductor.Lambda(frequencies)
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
     print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
+    np.savetxt('lambda_1_2.txt',(lambda_1,superconductor.lambda_2))
     pass
 
 
