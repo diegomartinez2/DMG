@@ -117,9 +117,6 @@ class Eliashberg(object):
         with mp.Pool() as pool:
            res = pool.map(self.a2F,w)
         a2F_x = res / w #or np.divide(res, w)
-        # with mp.Pool() as pool:
-        #    res = pool.map(self.a2F,Frequencies)
-        # a2F_x = res / Frequencies #or np.divide(res, Frequencies)
 #---test--^--multiprocessing*****
         self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies))
         self.plot_lambda(a2F_x)
