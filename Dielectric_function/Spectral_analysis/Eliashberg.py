@@ -30,7 +30,7 @@ class Eliashberg(object):
         ---output---
         Lamb_q: Lambda(q)
         """
-        Lamb_q=(1/(np.pi*Nef)) * (gamma_q/omega_q**2) /(self.from_Ry_to_Hartree)#fix from omega to omega² (*2 as Ry to Hartree for test)
+        Lamb_q=(1/(np.pi*Nef)) * (gamma_q/omega_q**2) #/(self.from_Ry_to_Hartree)#fix from omega to omega² (*2 as Ry to Hartree for test)
         return Lamb_q
 
     def a2F(self,x):
@@ -43,9 +43,9 @@ class Eliashberg(object):
         """
         #print ("shape = ",np.shape(self.pars))
         center = self.pars[:,1]
-        center = np.absolute(center) * self.from_cm1_to_Hartree # from cm-1 to Hartree for Test
+        center = np.absolute(center) #* self.from_cm1_to_Hartree # from cm-1 to Hartree for Test
         width = self.pars[:,2]
-        width = np.absolute(width) * self.from_GHz_to_Hartree # from GHz to Hartree for Test
+        width = np.absolute(width) #* self.from_GHz_to_Hartree # from GHz to Hartree for Test
         gauss_width = 0.01
         summa = 0
         factor1 = 1 / (2*len(center))
@@ -86,8 +86,8 @@ class Eliashberg(object):
         Calculates the Lambda by two methods, notice that it must calculate the integral
         in a range that takes the Lorenztian obtained by the Plasmon_analysis object.
         """
-        center = self.pars[:,1] * self.from_cm1_to_Hartree # for Test
-        width = self.pars[:,2] * self.from_GHz_to_Hartree # from GHz to Hartree for Test
+        center = self.pars[:,1] #* self.from_cm1_to_Hartree # for Test
+        width = self.pars[:,2] #* self.from_GHz_to_Hartree # from GHz to Hartree for Test
         print('len(Center)=',len(center))
 #        Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
         Nef = self.Nef
