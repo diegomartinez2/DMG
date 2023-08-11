@@ -35,12 +35,12 @@ def main(arg):
     print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
     np.savetxt('lambda_1_2.txt',(lambda_1,superconductor.lambda_2))
 #----------test--v----lambda_1---
-    # center = superconductor.pars[:,1] #* superconductor.from_cm1_to_Hartree
-    # width = superconductor.pars[:,2] #* superconductor.from_GHz_to_Hartree
-    # lamba = np.array([])
-    # for i in range(len(center)):
-    #         lamba = np.append(lamba,superconductor.Lambda_q(width[i],center[i],Nef))
-    # np.savetxt('lambda_lista.txt',lamba)
+    center = superconductor.pars[:,1] #* superconductor.from_cm1_to_Hartree
+    width = superconductor.pars[:,2] #* superconductor.from_GHz_to_Hartree
+    lamba = np.array([])
+    for i in range(len(center)):
+         lamba = np.append(lamba,superconductor.Lambda_q(width[i],center[i],Nef))
+    np.savetxt('lambda_lista.txt',lamba)
     pass
 
 
