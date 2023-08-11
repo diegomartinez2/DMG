@@ -30,7 +30,7 @@ class Eliashberg(object):
         ---output---
         Lamb_q: Lambda(q)
         """
-        Lamb_q=(1/(np.pi*Nef)) * (gamma_q/omega_q**2) #fix from omega to omega²
+        Lamb_q=(1/(np.pi*Nef)) * (gamma_q/omega_q**2) *2#fix from omega to omega² (*2 as Ry to Hartree for test)
         return Lamb_q
 
     def a2F(self,x):
