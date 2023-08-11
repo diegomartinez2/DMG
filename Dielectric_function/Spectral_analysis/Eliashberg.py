@@ -96,7 +96,7 @@ class Eliashberg(object):
         summa1 = 0
         for i in range(len(center)):
             summa1 += self.Lambda_q(width[i],center[i],Nef)
-        Lambda_1=summa1/len(center)
+        Lambda_1=summa1/len(center) * 33 #misterious factor... joking, this is the number of nodes in the example.
         self.lambda_2=[]
 #        Frequncies = Frequencies+1
 #        Frequencies = np.append(Frequencies,Frequncies, axis=0)
