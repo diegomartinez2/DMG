@@ -26,6 +26,8 @@ def main(arg):
     superconductor.energy = [0.0]
     superconductor.Ne = [Nef]
     superconductor.Nef = Nef * superconductor.from_Ry_to_Hartree
+    superconductor.self.pars[:,1] *= superconductor.from_cm1_to_Hartree
+    superconductor.self.pars[:,2] *= superconductor.from_GHz_to_Hartree
     #frequencies = np.arange(0,0.001,1e-9)
     frequencies = np.arange(0,1,1e-2) #    frequencies = np.arange(0,20,1e-7)
     lambda_1 = superconductor.Lambda(frequencies)
