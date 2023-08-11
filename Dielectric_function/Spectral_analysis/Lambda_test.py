@@ -27,11 +27,11 @@ def main(arg):
     superconductor.Ne = [Nef]
     superconductor.Nef = Nef
     #frequencies = np.arange(0,0.001,1e-9)
-    frequencies = np.arange(0,20,1e-7)
-    lambda_1 = superconductor.Lambda(frequencies)
-    print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
-    print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
-    np.savetxt('lambda_1_2.txt',(lambda_1,superconductor.lambda_2))
+#    frequencies = np.arange(0,20,1e-7)
+#    lambda_1 = superconductor.Lambda(frequencies)
+#    print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
+#    print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
+#    np.savetxt('lambda_1_2.txt',(lambda_1,superconductor.lambda_2))
 #----------test--v----lambda_1---
     center = superconductor.pars[:,1]
     width = superconductor.pars[:,2]
