@@ -94,6 +94,7 @@ def main(args):
     thermal_calculo(dyn_prefix = 'final_dyn',nqirr = 8)
     harm_dos, anharm_dos = processing()
     plot(harm_dos, anharm_dos)
+    np.savetxt("dos.dat",(harm_dos, anharm_dos))
     pass
 
 if __name__ == '__main__':
