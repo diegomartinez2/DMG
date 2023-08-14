@@ -94,7 +94,8 @@ def main(args):
     thermal_calculo(dyn_prefix = 'final_dyn',nqirr = 8)
     harm_dos, anharm_dos = processing()
     plot(harm_dos, anharm_dos)
-    np.savetxt("dos.dat",(harm_dos, anharm_dos))
+    np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
+    np.savetxt("dos_anharmonic.dat",anharm_dos,header='Temperature dependent Anharmonic DOS from lineshapes: 2 lines of raw data 2 lines of gaussian smoothed data')
     pass
 
 if __name__ == '__main__':
