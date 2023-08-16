@@ -240,6 +240,7 @@ class Send_to_cluster(object):
         # Lets remove the specific partition option of SLURM
         # Neither we want to specify the total number of cpus (automatically determined by the node)
         self.cluster.use_partition = False
+        self.cluster.partition_name = "regular" #regular, long, xlong, large, xlarge, test for Atlas
         self.cluster.use_cpu = True #False
         self.cluster.n_cpu = n_cpu
         self.cluster.use_memory = True
