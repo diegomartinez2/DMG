@@ -243,7 +243,7 @@ class Send_to_cluster(object):
         self.cluster.use_cpu = True #False
         self.cluster.n_cpu = n_cpu
         self.cluster.use_memory = True
-        self.cluster.ram = 273GB
+        self.cluster.ram = "273GB"
 
 
         # Now, we need to tell daint which modules to load to run quantum espresso
