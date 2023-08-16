@@ -250,9 +250,9 @@ class Send_to_cluster(object):
         # Now, we need to tell daint which modules to load to run quantum espresso
         # Also this is cluster specific, but very simple to figure it out for you
         self.cluster.load_modules = """
-#SBATCH --partition=regular    # (chose according to your needs: regular, long, xlong, large, ..)
-#SBATCH --cpus-per-task=16   # number of CPU's to use
-#SBATCH --mem=273GB          # RAM memory to use (this has to be coherent with Qchem input script)
+# #SBATCH --partition=regular    # (chose according to your needs: regular, long, xlong, large, ..)
+# #SBATCH --cpus-per-task=16   # number of CPU's to use
+# #SBATCH --mem=273GB          # RAM memory to use (this has to be coherent with Qchem input script)
 #SBATCH --nodes=1           # run on a single node (for Q-Chem always 1)
 #SBATCH --ntasks-per-node=1 # tasks per node (for Q-Chem always 1)
 #SBATCH -e error.log        # queue system custom error output file (optional)
