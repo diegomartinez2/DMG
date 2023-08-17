@@ -10,7 +10,6 @@ def get_calculator():
     'O' : 'O.pbesol-n-kjpaw_psl.1.0.0.UPF',
     'Sr' : 'Sr.pbesol-spn-kjpaw_psl.1.0.0.UPF',
     'Ti' : 'Ti.pbesol-spn-kjpaw_psl.1.0.0.UPF'
-    #"H" : "H.pbe-rrkjus_psl.1.0.0.UPF"
     }
 
     imput_params = {
@@ -27,8 +26,6 @@ def get_calculator():
             "occupations" : "fixed"# 'fixed' or 'smearing', smearing for conductors
             },
         "electrons" : {
-            #"conv_thr" : 1e-10
-            #'conv_thr' : 1e-8,
             'conv_thr' : 1.e-09,
             'electron_maxstep' : 80,
             'mixing_beta' : 4.e-01
