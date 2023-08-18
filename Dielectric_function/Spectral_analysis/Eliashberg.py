@@ -23,6 +23,8 @@ class Eliashberg(object):
         GHz to Hartree: Hartree = GHz / 6.5796839 × 10^9
         Hartree to GHz: GHz = Hartree * 6.5796839 × 10^9
         """
+        self.from_cm1_to_eV = 0.00012398425731484318
+        self.from_GHz_to_eV = 0.000004135669661004052
 
     def read_Ne(self,filename="out_DOS.dat"):
         self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
