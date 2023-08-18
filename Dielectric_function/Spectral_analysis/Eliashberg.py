@@ -8,9 +8,19 @@ class Eliashberg(object):
     def __init__(self, pars):
         #super(Eliashberg, self).__init__()
         self.pars = pars
-        self.from_cm1_to_Hartree = 4.55633e-6 # from cm-1 to Hartree
-        self.from_GHz_to_Hartree = self.from_cm1_to_Hartree /29.9793 # from GHz to Hartree
+        #self.from_cm1_to_Hartree = 4.55633e-6 # from cm-1 to Hartree
+        self.from_cm1_to_Hartree = 1/219474.6 # from cm-1 to Hartree
+        #self.from_GHz_to_Hartree = self.from_cm1_to_Hartree /29.9793 # from GHz to Hartree
+        self.from_GHz_to_Hartree = 1/6579683.879634054
+        #self.from_GHz_to_Hartree = / 6.5796839 × 10^9
         self.from_Ry_to_Hartree = 0.5 # from Ry to Hartree
+        """
+        cm^-1 to Hartree: Hartree = cm^-1 / 219474.6
+        Hartree to cm^-1: cm^-1 = Hartree * 219474.6
+
+        GHz to Hartree: Hartree = GHz / 6.5796839 × 10^9
+        Hartree to GHz: GHz = Hartree * 6.5796839 × 10^9
+        """
 
     def read_Ne(self,filename="out_DOS.dat"):
         self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
