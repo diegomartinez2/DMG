@@ -13,7 +13,7 @@ def main(arg):
 
     superconductor = Eliashberg.Eliashberg(pars)
     Nef = np.loadtxt('DOS', usecols = (2)) #* factor_Nef
-    print('Nef=',Nef)
+    print('Nef=',Nef,':Nef*2=',Nef*2,' for spin up and down')
     superconductor.energy = [0.0]
     superconductor.Ne = [Nef]
     superconductor.Nef = Nef * superconductor.from_Ry_to_Hartree
