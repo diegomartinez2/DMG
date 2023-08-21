@@ -15,7 +15,7 @@ def main(arg):
     Nef = 32.993055569433089 #np.loadtxt('DOS', usecols = (2)) #* factor_Nef
     print('Nef=',Nef,':Nef*2=',Nef*2,' for spin up and down')
     superconductor.energy = [0.0]
-    superconductor.Ne = [Nef]
+    superconductor.Ne = [Nef]*2 #sipn up-down
     superconductor.Nef = Nef * superconductor.from_Ry_to_Hartree
     superconductor.pars[:,1] *= superconductor.from_cm1_to_Hartree
     superconductor.pars[:,2] *= superconductor.from_GHz_to_Hartree
