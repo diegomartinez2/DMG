@@ -12,7 +12,7 @@ def main(arg):
         pars = np.loadtxt(file, usecols = (1,5,9))
 
     superconductor = Eliashberg.Eliashberg(pars)
-    Nef = np.loadtxt('DOS', usecols = (2)) #* factor_Nef
+    Nef = 32.993055569433089 #np.loadtxt('DOS', usecols = (2)) #* factor_Nef
     print('Nef=',Nef,':Nef*2=',Nef*2,' for spin up and down')
     superconductor.energy = [0.0]
     superconductor.Ne = [Nef]
