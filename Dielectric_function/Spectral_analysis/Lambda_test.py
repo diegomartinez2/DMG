@@ -16,7 +16,7 @@ def main(arg):
     print('Nef=',Nef,':Nef*2=',Nef*2,' for spin up and down')
     superconductor.energy = [0.0]
     superconductor.Ne = [Nef]
-    superconductor.Nef = Nef * superconductor.from_Ry_to_Hartree
+    superconductor.Nef = Nef #* superconductor.from_Ry_to_Hartree
     superconductor.pars[:,1] *= superconductor.from_cm1_to_Hartree
     superconductor.pars[:,2] *= superconductor.from_GHz_to_Hartree
     frequencies = np.arange(0,1,1e-2) #    frequencies = np.arange(0,20,1e-7) <- it should have a plateau somewhere!! but with a step of 1e-7 still grows.
