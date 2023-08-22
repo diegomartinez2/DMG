@@ -466,7 +466,7 @@ class Funcion_espectral(object):
                                              T = T0,
                                              print_dyn = False) # set true to print the Hessian dynamical matrices
                                                                 # for each q point
-    def calcula_espectro_basico_SrTiO3_multiprocessing(self,T0, processes = processes):
+    def calcula_espectro_basico_SrTiO3_multiprocessing(self,T0, processes = None):
         # integration grid
         k_grid=[20,20,20]
 
@@ -529,7 +529,7 @@ class Funcion_espectral(object):
                                                    sm1=1.0, nsm=1, sm0=1.0,
                                                    sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
                                                    filename_sp = 'nomm_spectral_func2')
-    def calcula_espectro_correction_multiprocessing_SrTiO3(self,T0, processes = processes):
+    def calcula_espectro_correction_multiprocessing_SrTiO3(self,T0, processes = None):
         # integration grid
         k_grid=[20,20,20]
 
@@ -543,7 +543,7 @@ class Funcion_espectral(object):
                                                    sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
                                                    filename_sp = 'nomm_spectral_func2', processes = processes)
 
-    def calcula_full_correction_en_punto_G(self,T0, processes = processes):
+    def calcula_full_correction_en_punto_G(self,T0, processes = None):
         # integration grid
         k_grid=[20,20,20]
 
@@ -557,7 +557,7 @@ class Funcion_espectral(object):
                                            static_limit = True,
                                            filename_sp='full_spectral_func_X', processes = processes)
 
-    def calcula_full_correction_en_punto_R(self,T0, processes = processes):
+    def calcula_full_correction_en_punto_R(self,T0, processes = None):
         # integration grid
         k_grid=[20,20,20]
 
