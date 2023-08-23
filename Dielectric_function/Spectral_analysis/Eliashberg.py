@@ -66,7 +66,7 @@ class Eliashberg(object):
         center = np.absolute(center)
         width = self.pars[:,2]
         width = np.absolute(width)
-        gauss_width = 0.008 #from 0.01 [0.1,0.05,0.01,0.005,0.001,0.0005,0.0001] añadir más puntos entre 0.01 y 0.001
+        gauss_width = 0.004 #from 0.01 [0.1,0.05,0.01,0.005,0.001,0.0005,0.0001] añadir más puntos entre 0.01 y 0.001
         summa = 0
         factor1 = 1 / (2*len(center))
         for i in range(len(center)):
