@@ -134,6 +134,7 @@ class Eliashberg(object):
 #---test--v--multiprocessing*****
         #import multiprocessing as mp #multiprocessing calculation of the a2F()
         w = Frequencies[Frequencies != 0]
+        # w = np.append(w,w[:len(w)//3]+w[-1]) # to expand the frequencies to cover the widths (and some extra) for the calculations
         with mp.Pool() as pool:
            res = pool.map(self.a2F,w)
         # a2F_x = res / w #or np.divide(res, w)
