@@ -63,7 +63,7 @@ class Eliashberg(object):
         """
         #print ("shape = ",np.shape(self.pars))
         center = self.pars[:,1]
-        center = np.absolute(center)
+        #center = np.absolute(center) #not necessary and better if not
         width = self.pars[:,2]
         width = np.absolute(width)
         gauss_width = 0.004 #from 0.01 [0.1,0.05,0.01,0.005,0.001,0.0005,0.0001] 0.004 is the best option for the test
