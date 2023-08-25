@@ -68,7 +68,7 @@ class Eliashberg(object):
         width = np.absolute(width)
         gauss_width = 0.004 #from 0.01 [0.1,0.05,0.01,0.005,0.001,0.0005,0.0001] 0.004 is the best option for the test
         summa = 0
-        factor1 = 1 / (2*len(center))
+        factor1 = 1 / (2*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
         for i in range(len(center)):
             summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width)
         return factor1*summa
