@@ -17,7 +17,7 @@ class Eliashberg(object):
         #self.from_GHz_to_Hartree = 1/6579683.879634054
         #self.from_GHz_to_Hartree = / 6.5796839 × 10^9
         self.from_GHz_to_Hartree = 1.5198298554969748e-7
-        self.from_Ry_to_Hartree = 0.5 # from Ry to Hartree
+        self.from_Ry_to_Hartree = units.Ry/units.Hartree #0.5 # from Ry to Hartree
         """
         cm^-1 to Hartree: Hartree = cm^-1 / 219474.6
         Hartree to cm^-1: cm^-1 = Hartree * 219474.6
