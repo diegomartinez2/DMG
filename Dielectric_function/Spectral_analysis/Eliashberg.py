@@ -13,10 +13,10 @@ class Eliashberg(object):
         #self.from_cm1_to_Hartree = 4.55633e-6 # from cm-1 to Hartree
         #self.from_cm1_to_Hartree = 1/219474.6 # from cm-1 to Hartree
         self.from_cm1_to_Hartree = units.invcm/units.Hartree #0.0000045563352812122295
-        #self.from_GHz_to_Hartree = self.from_cm1_to_Hartree /29.9793 # from GHz to Hartree
+        self.from_GHz_to_Hartree = self.from_cm1_to_Hartree /29.9792458 # from GHz to Hartree
         #self.from_GHz_to_Hartree = 1/6579683.879634054
         #self.from_GHz_to_Hartree = / 6.5796839 × 10^9
-        self.from_GHz_to_Hartree = 1.5198298554969748e-7
+        #self.from_GHz_to_Hartree = 1.5198298554969748e-7
         self.from_Ry_to_Hartree = units.Ry/units.Hartree #0.5 # from Ry to Hartree
         """
         cm^-1 to Hartree: Hartree = cm^-1 / 219474.6
