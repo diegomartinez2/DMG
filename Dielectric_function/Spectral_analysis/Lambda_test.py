@@ -2,10 +2,10 @@ import Eliashberg
 import numpy as np
 import os.path
 import matplotlib.pyplot as plt
-from ase.units import create_units
+#from ase.units import create_units
 
 def main(arg):
-    units = create_units('2014')
+    #units = create_units('2014')
     #file = 'texto2.txt'
     file = 'texto1.txt'
     if not (os.path.isfile(file)):
