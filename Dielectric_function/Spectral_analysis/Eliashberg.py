@@ -1,11 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import multiprocessing as mp
+from ase.units import create_units
 
 class Eliashberg(object):
     """docstring for Eliashberg."""
 
     def __init__(self, pars):
+        units = create_units('2014')   #new way of defining units
         #super(Eliashberg, self).__init__()
         self.pars = pars
         #self.from_cm1_to_Hartree = 4.55633e-6 # from cm-1 to Hartree
