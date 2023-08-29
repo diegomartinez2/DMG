@@ -2,8 +2,8 @@ import cellconstructor as CC, cellconstructor.Phonons
 import sscha
 import sscha.Cluster
 import sys, os
-def configure_cluster(cluster_workdir = "SrTiO3_workdir"):
-    cluster = sscha.Cluster.Cluster(hostname = "user11@ekhi.cfm.ehu.es", pwd="RsAUUeVo")
+def configure_cluster(cluster_workdir = "SrTiO3_workdir", hostname = "user11@ekhi.cfm.ehu.es"):
+    cluster = sscha.Cluster.Cluster(hostname, pwd="RsAUUeVo")
 
     cluster.n_nodes = 1 #specifies the number of nodes
     cluster.custom_param["ntastks"] = 40
