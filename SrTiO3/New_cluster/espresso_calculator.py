@@ -26,13 +26,13 @@ def get_calculator():
             "occupations" : "fixed"# 'fixed' or 'smearing', smearing for conductors
             },
         "electrons" : {
-            'conv_thr' : 1.e-09,
+            'conv_thr' : 1.e-09, #1.e-09, 1.e-8, 1e-5
             'electron_maxstep' : 80,
             'mixing_beta' : 4.e-01
             }
     }
 
-    kpts = (4,4,4)
+    kpts = (4,4,4)  #(4,4,4), (6,6,6)
     koffset = (0, 0, 0)
 
     calc = Espresso(pseudopotentials = pseudopotentials,
