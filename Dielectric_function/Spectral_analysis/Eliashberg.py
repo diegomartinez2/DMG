@@ -142,6 +142,7 @@ class Eliashberg(object):
         # a2F_x = res / w #or np.divide(res, w)
         a2F_x = np.divide(res, w)
 #---test--^--multiprocessing*****
-        self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies))
+        #self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies))
+        self.lambda_2 = 2*np.trapz(a2F_x) #test
         self.plot_lambda(a2F_x)
         return Lambda_1
