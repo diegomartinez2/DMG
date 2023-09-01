@@ -24,6 +24,8 @@ class Eliashberg(object):
 
         GHz to Hartree: Hartree = GHz / 6.5796839 × 10^9
         Hartree to GHz: GHz = Hartree * 6.5796839 × 10^9
+
+        eV to Hartree: Hartree = eV*0,0367493
         """
         self.from_cm1_to_eV = units.invcm/units.eV #0.00012398425731484318
         self.from_GHz_to_eV = 0.000004135669661004052
