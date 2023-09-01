@@ -1,4 +1,6 @@
-import Spectral_plasmons_analysis
+#import Spectral_plasmons_analysis
+import Eliashberg
+
 import numpy as np
 import os.path
 import matplotlib.pyplot as plt
@@ -17,7 +19,7 @@ def main(arg):
         'xaz','xba','xbb','xbc','xbd','xbe','xbf','xbg','xbh','xbi','xbj','xbk','xbl',
         'xbm','xbn','xbo','xbp','xbq','xbr','xbs','xbt','xbu','xbv','xbw','xbx')
         for namefile in filelist:
-            plasmon = Spectral_plasmons_analysis.Plasmon_analysis(arg,namefile)
+            plasmon = Eliashberg.Plasmon_analysis(arg,namefile)
             data, frequencies, qx= plasmon.load_data()
             print (np.shape(data),"=(51,5001)?")
             plasmon.fitting_Lorentz(frequencies,data)
@@ -38,7 +40,7 @@ def main(arg):
         frequencies = np.loadtxt(file2) #no negative values
     print(pars[:,0])
     print('Min(pars[0])=',np.amin(pars[:,0]))
-    superconductor = Spectral_plasmons_analysis.Eliashberg(pars)
+    superconductor = Eliashberg.Eliashberg(pars)
     superconductor.read_Ne()
     #lambda_1, lambda_2 = superconductor.Lambda(frequencies)
     lambda_1 = superconductor.Lambda(frequencies)
