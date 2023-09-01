@@ -142,7 +142,7 @@ class Eliashberg(object):
         # a2F_x = res / w #or np.divide(res, w)
         a2F_x = np.divide(res, w)
 #---test--^--multiprocessing*****
-        #self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies))
+        #self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies)) <-- this makes lambda1 20 times bigger than lambda2 (???)
         self.lambda_2 = 2*np.trapz(a2F_x) #test <-- this lamba2 is 250 times lambda1 (that corresponds to q_x*q_y ???)
         self.plot_lambda(a2F_x)
         return Lambda_1
