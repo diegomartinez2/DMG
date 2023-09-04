@@ -25,6 +25,7 @@ def main(arg):
     # superconductor.pars[:,2] *= 1
     frequencies = np.arange(0,20,4e-5) #    frequencies = np.arange(0,20,1e-7) <- it should have a plateau somewhere!! but with a step of 1e-7 still grows.
     lambda_1 = superconductor.Lambda(frequencies)
+    lambda_1 *= 33 #misterious factor... joking, this is the number of nodes in the example.
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
     print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
     np.savetxt('lambda_1_2.txt',(lambda_1,superconductor.lambda_2))
