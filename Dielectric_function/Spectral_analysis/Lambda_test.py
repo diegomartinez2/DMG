@@ -19,10 +19,10 @@ def main(arg):
     superconductor.energy = [0.0]
     superconductor.Ne = [Nef]
     superconductor.Nef = Nef *0.367493# 0,0367493 from eV to Hartree #* superconductor.from_Ry_to_Hartree
-    #superconductor.pars[:,1] *= superconductor.from_cm1_to_Hartree
-    #superconductor.pars[:,2] *= superconductor.from_GHz_to_Hartree
-    superconductor.pars[:,1] *= 1 #if using Hartree, 
-    superconductor.pars[:,2] *= 1
+    superconductor.pars[:,1] *= superconductor.from_cm1_to_Hartree
+    superconductor.pars[:,2] *= superconductor.from_GHz_to_Hartree
+    # superconductor.pars[:,1] *= 1 #if using Hartree,
+    # superconductor.pars[:,2] *= 1
     frequencies = np.arange(0,20,4e-5) #    frequencies = np.arange(0,20,1e-7) <- it should have a plateau somewhere!! but with a step of 1e-7 still grows.
     lambda_1 = superconductor.Lambda(frequencies)
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
