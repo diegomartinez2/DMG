@@ -97,13 +97,13 @@ class Eliashberg(object):
         #exp(-(w_aux-w(j,l))**2.0d0/(2.0d0*broad**2.0d0))/ (broad*sqrt(twopi)) #copy from qe-5.1.0_elph
         return g
 
-    def test_gaussian(self,x):
+    def test_gaussian(self,w,w_q,N_q):
         """
         Test for the gaussian, the result must be the DOS.
         """
         width = #1,5,10 cm-1
         test_dos = 1/N_q
-        for i in q: #q=6x6x6 (???) for the test data. q=50x50=250 for the plasmon
+        for i in range(len(W_q)): #q=6x6x6 (???) for the test data. q=50x50=250 for the plasmon
             test_dos += gaussian(w,w_q,width)
 
 
