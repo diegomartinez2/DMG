@@ -99,8 +99,12 @@ class Eliashberg(object):
 
     def test_gaussian(self,x):
         """
-        
+        Test for the gaussian, the result must be the DOS.
         """
+        width = #1,5,10 cm-1
+        test_dos = 1/N_q
+        for i in q: #q=6x6x6 (???) for the test data. q=50x50=250 for the plasmon
+            test_dos += gaussian(w,w_q,width)
 
 
     def plot_lambda(self,x):
