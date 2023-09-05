@@ -166,7 +166,7 @@ class Eliashberg(object):
         """
         center = self.pars[:,1]
         width = self.pars[:,2]
-        print('len(Center)=',len(center),'(=50*50=2500? or =51*51=2550?')
+        print('len(Center)=',len(center),'(=50*50=2500? or =50*51=2550?')
         #method 1 ----------------------------
         Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
         #Nef = self.Nef
