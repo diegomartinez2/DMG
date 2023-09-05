@@ -43,7 +43,10 @@ def main(arg):
     superconductor = Eliashberg.Eliashberg(pars)
     superconductor.read_Ne()
     #lambda_1, lambda_2 = superconductor.Lambda(frequencies)
-    lambda_1 = superconductor.Lambda(frequencies)
+#    lambda_1 = superconductor.Lambda(frequencies)
+
+    lambda_1 = superconductor.Lambda_new(frequencies)
+
     #np.savetxt('Lambda.txt', (lambda_1))
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
     #print('Lambda_1=',lambda_1*superconductor.Ne[np.where(superconductor.energy==0.0)[0][0]]) # Lambda calculated from Lambda_q#self.Ne[np.where(self.energy==0.0)[0][0]]
