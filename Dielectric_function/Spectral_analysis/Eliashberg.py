@@ -158,3 +158,38 @@ class Eliashberg(object):
         self.lambda_2 = 2*np.trapz(a2F_x) #test <-- this lamba2 is 250 times lambda1 (that corresponds to q_x*q_y ???)
         self.plot_lambda(a2F_x)
         return Lambda_1
+
+    def Lambda_new(self,Frequencies):
+        """
+        Calculates the Lambda by two methods, notice that it must calculate the integral
+        in a range that takes the Lorenztian obtained by the Plasmon_analysis object.
+        """
+        center = self.pars[:,1]
+        width = self.pars[:,2]
+        print('len(Center)=',len(center))
+        Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
+        #Nef = self.Nef
+        center = np.absolute(center) #test to force the abs
+        width = np.absolute(width)
+        summa1 = 0
+        for i in range(len('q')):  #summa in q (6x6x6 or q_x*q_y)
+            summa1 += self.Lambda_q(width[i],center[i],Nef)
+        Lambda_1=summa1/len('q') #* 33 #misterious factor... joking, this is the number of nodes in the example.
+        self.lambda_2=[]
+        if (Frequencies[0] != 0):
+             Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
+        else:
+             Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
+        for w in Frequencies[0:int(len(Frequencies))]: #edit for test
+             print('Frequencie(',w,')              ', end="\r", flush=True)
+             if (w == 0):
+                 a2F_x = []
+             else:
+                 a2F_x.append(self.a2F(w)/w)
+        w = Frequencies[Frequencies != 0]
+        with mp.Pool() as pool:
+           res = pool.map(self.a2F,w)
+        a2F_x = np.divide(res, w)
+        self.lambda_2 = 2*np.trapz(a2F_x) #test <-- this lamba2 is 250 times lambda1 (that corresponds to q_x*q_y ???)
+        self.plot_lambda(a2F_x)
+        return Lambda_1
