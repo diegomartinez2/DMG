@@ -198,11 +198,11 @@ class Eliashberg(object):
         a2F = factor1*summa: The Eliashberg function at "x"
         """
         center = self.pars[:,1] #*put units correctly...
-        width = self.pars[:,2]
+        width = self.pars[:,2] #*put units the same as center
         width = np.absolute(width)
         gauss_width = 0.004 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         summa = 0
         factor1 = 1 / (2*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
         for i in range(len(center)):
-            summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width)
+            summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width) #check the units of the gaussian...
         return factor1*summa
