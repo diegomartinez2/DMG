@@ -184,7 +184,7 @@ class Eliashberg(object):
              Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
         w = Frequencies[Frequencies != 0]
         with mp.Pool() as pool:
-           res = pool.map(self.a2F,w)
+           res = pool.map(self.a2F_new,w)
         a2F_x = np.divide(res, w)
         self.lambda_2 = 2*np.trapz(a2F_x) #test <-- this lamba2 is 250 times lambda1 (that corresponds to q_x*q_y ???)
         self.plot_lambda(a2F_x)
