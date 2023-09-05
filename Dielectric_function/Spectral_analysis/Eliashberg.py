@@ -97,6 +97,12 @@ class Eliashberg(object):
         #exp(-(w_aux-w(j,l))**2.0d0/(2.0d0*broad**2.0d0))/ (broad*sqrt(twopi)) #copy from qe-5.1.0_elph
         return g
 
+    def test_gaussian(self,x):
+        """
+        
+        """
+
+
     def plot_lambda(self,x):
         plt.figure(figsize=(10,6))
         #plt.figure().set_figwidth(15)
@@ -113,8 +119,8 @@ class Eliashberg(object):
         center = self.pars[:,1]
         width = self.pars[:,2]
         print('len(Center)=',len(center))
-#        Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
-        Nef = self.Nef
+        Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
+        #Nef = self.Nef
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
         summa1 = 0
@@ -124,17 +130,17 @@ class Eliashberg(object):
         self.lambda_2=[]
 #        Frequncies = Frequencies+1
 #        Frequencies = np.append(Frequencies,Frequncies, axis=0)
-        # if (Frequencies[0] != 0):
-        #     Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
-        # else:
-        #     Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
+        if (Frequencies[0] != 0):
+             Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
+        else:
+             Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
 #        for w in Frequencies[0:int(2*len(Frequencies)/3)]:
-        # for w in Frequencies[0:int(len(Frequencies))]: #edit for test
-        #     print('Frequencie(',w,')              ', end="\r", flush=True)
-        #     if (w == 0):
-        #         a2F_x = []
-        #     else:
-        #         a2F_x.append(self.a2F(w)/w)
+        for w in Frequencies[0:int(len(Frequencies))]: #edit for test
+             print('Frequencie(',w,')              ', end="\r", flush=True)
+             if (w == 0):
+                 a2F_x = []
+             else:
+                 a2F_x.append(self.a2F(w)/w)
 #---test--v--multiprocessing*****
         #import multiprocessing as mp #multiprocessing calculation of the a2F()
         w = Frequencies[Frequencies != 0]
