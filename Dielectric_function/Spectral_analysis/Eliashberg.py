@@ -173,19 +173,13 @@ class Eliashberg(object):
         width = np.absolute(width)
         summa1 = 0
         for i in range(len('q')):  #summa in q (6x6x6 or q_x*q_y)
-            summa1 += self.Lambda_q(width[i],center[i],Nef)
+            summa1 += self.Lambda_q(width[i],center[i],Nef) #1/N_q Sum_q( Lamb_q )
         Lambda_1=summa1/len('q') #* 33 #misterious factor... joking, this is the number of nodes in the example.
         self.lambda_2=[]
         if (Frequencies[0] != 0):
              Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
         else:
              Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
-        for w in Frequencies[0:int(len(Frequencies))]: #edit for test
-             print('Frequencie(',w,')              ', end="\r", flush=True)
-             if (w == 0):
-                 a2F_x = []
-             else:
-                 a2F_x.append(self.a2F(w)/w)
         w = Frequencies[Frequencies != 0]
         with mp.Pool() as pool:
            res = pool.map(self.a2F,w)
