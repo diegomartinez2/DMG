@@ -62,6 +62,7 @@ def main(arg):
     plt.plot(gauss)
     plt.show()
     print(np.trapz(gauss))
+    superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1]))
 
 if __name__ == '__main__':
     import sys

@@ -65,10 +65,19 @@ ens.update_weights(final_dyn, T)
 print("Computing the free energy hessian...")
 # Set get_full_hessian to false to have only the odd correction
 # Usefull if you want to study the convergence with the number of configuration
-dyn_hessian = ens.get_free_energy_hessian(include_v4 = INCLUDE_V4,
+dyn_hessian, d3  = ens.get_free_energy_hessian(include_v4 = INCLUDE_V4,
                                           get_full_hessian = True,
-                                          verbose = True)
+                                          verbose = True,
+                                              return_d3 = True)
 
 print("Saving the hessian to {}...".format(SAVE_PREFIX))
 dyn_hessian.save_qe(SAVE_PREFIX)
+print("Hessian done.")
+############################### FC3 part #############################################
+
+tensor3 = CC.ForceTensor.Tensor3(dyn=sscha_dyn)          # initialize 3rd order tensor
+tensor3.SetupFromTensor(d3)                              # assign values
+tensor3.Center()                                         # center it
+tensor3.Apply_ASR()                                      # apply ASR
+tensor3.WriteOnFile(fname="FC3",file_format='D3Q')       # write on file
 print("Done.")
