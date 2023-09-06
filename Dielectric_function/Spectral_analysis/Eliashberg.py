@@ -35,6 +35,7 @@ class Eliashberg(object):
 #        self.Ne_0[np.where(energy==0.0)]
         #numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0])+1],dx=(self.energy[9]-self.energy[0])/10)
         numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy)) # maybe this is better??
+        print("Número de elementos:",numero_de_elementos)
         #test the selection
         print (self.Ne[:(np.where(self.energy==0.0)[0][0]+1)])
         print (self.Ne[:(np.where(self.energy==0.0)[0][0])+1])
