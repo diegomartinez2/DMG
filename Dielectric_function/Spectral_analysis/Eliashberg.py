@@ -107,7 +107,7 @@ class Eliashberg(object):
         width = 1 #1,5,10 cm-1
         test_dos = 1/N_q # is this equsl to len(W_q)?
         for i in range(len(w_q)): #q=6x6x6 (???) for the test data. q=50x50=250 for the plasmon
-            test_dos += gaussian(w,w_q[i],width) #This must be the DOS, integrate this to check the gaussian.
+            test_dos += self.gaussian(w,w_q[i],width) #This must be the DOS, integrate this to check the gaussian.
         print("Test of the gaussian: this must be the integral of the DOS=",)
 
 
