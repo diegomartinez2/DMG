@@ -40,7 +40,7 @@ def main(arg):
     suma = 0
     for w in range(10):
         suma += superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1]))
-    print(suma)    
+    print(suma,suma/Nef)    
     pass
 
 
