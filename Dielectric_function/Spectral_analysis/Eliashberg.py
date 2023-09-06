@@ -109,6 +109,7 @@ class Eliashberg(object):
         for i in range(len(w_q)): #q=6x6x6 (???) for the test data. q=50x50=250 for the plasmon
             test_dos += self.gaussian(w,w_q[i],width) #This must be the DOS, integrate this to check the gaussian.
         print("Test of the gaussian: this must be the integral of the DOS=",test_dos)
+        return test_dos
 
 
     def plot_lambda(self,x):

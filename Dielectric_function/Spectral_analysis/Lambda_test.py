@@ -37,8 +37,10 @@ def main(arg):
          lamba = np.append(lamba,superconductor.Lambda_q(width[i],center[i],Nef))
     np.savetxt('lambda_lista.txt',lamba)
     print('Test Gaussian->')
+    suma = 0
     for w in range(10):
-        superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1]))
+        suma += superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1]))
+    print(suma)    
     pass
 
 
