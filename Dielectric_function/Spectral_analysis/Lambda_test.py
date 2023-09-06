@@ -15,7 +15,7 @@ def main(arg):
 
     superconductor = Eliashberg.Eliashberg(pars)
     Nef = 32.993055569433089 #np.loadtxt('DOS', usecols = (2)) #* factor_Nef
-    print('Nef=',Nef,':Nef*2=',Nef*2,' for spin up and down')
+    print('Nef=',Nef,' ?=33?')
     superconductor.energy = [0.0]
     superconductor.Ne = [Nef]
     superconductor.Nef = Nef *0.367493# 0,0367493 from eV to Hartree #* superconductor.from_Ry_to_Hartree
@@ -23,9 +23,9 @@ def main(arg):
     superconductor.pars[:,2] *= superconductor.from_GHz_to_Hartree
     # superconductor.pars[:,1] *= 1 #if using Hartree,
     # superconductor.pars[:,2] *= 1
-    frequencies = np.arange(0,20,4e-5) #    frequencies = np.arange(0,20,1e-7) <- it should have a plateau somewhere!! but with a step of 1e-7 still grows.
-    lambda_1 = superconductor.Lambda(frequencies)
-    lambda_1 *= 33 #misterious factor... joking, this is the number of nodes in the example.
+    frequencies = np.arange(0,20,1e-3) #    frequencies = np.arange(0,20,1e-7) <- it should have a plateau somewhere!! but with a step of 1e-7 still grows.
+    lambda_1 = superconductor.Lambda_new(frequencies)
+    lambda_1 *= Nef #misterious factor... joking, this is the number of nodes in the example.
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
     print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
     np.savetxt('lambda_1_2.txt',(lambda_1,superconductor.lambda_2))
@@ -37,7 +37,8 @@ def main(arg):
          lamba = np.append(lamba,superconductor.Lambda_q(width[i],center[i],Nef))
     np.savetxt('lambda_lista.txt',lamba)
     print('Test Gaussian->')
-    superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1]))
+    for w in range(100):
+        print(superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1])))
     pass
 
 

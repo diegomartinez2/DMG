@@ -172,8 +172,8 @@ class Eliashberg(object):
         width = self.pars[:,2]
         print('len(Center)=',len(center),'(=50*50=2500? or =50*51=2550?')
         #method 1 ----------------------------
-        Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
-        #Nef = self.Nef
+        #Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #comment for test and uncomment line under
+        Nef = self.Nef
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
         summa1 = 0
