@@ -36,7 +36,7 @@ class Eliashberg(object):
 #        self.Ne_0[np.where(energy==0.0)]
         #numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0])+1],dx=(self.energy[9]-self.energy[0])/10)
         numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy)) # maybe this is better??
-        total_states, error_states = quad(self.Ne,self.energy[0],self.energy[-1])
+        total_states = np.trapz(self.Ne,dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
         print("Número de elementos:",numero_de_elementos,"|total=",total_states)
         #test the selection
         print (self.Ne[:(np.where(self.energy==0.0)[0][0]+1)])
