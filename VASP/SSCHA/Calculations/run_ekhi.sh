@@ -17,7 +17,8 @@ do
 echo "Sleep..."
 sleep 300
 echo "Awake, checking:"
-files=$(ssh $CLUSTER 'squeue |grep diego')
+#files=$(ssh $CLUSTER 'squeue |grep diego')
+files=$(ssh $CLUSTER 'squeue -u diego -n "VASP_ML"')
 #files=$(ssh diegom@ekhi.cfm.ehu.es 'squeue |grep diego')
 if [[ $? != 0 ]]; then
     echo "No calculations running."
