@@ -162,9 +162,8 @@ class Eliashberg(object):
         # a2F_x = res / w #or np.divide(res, w)
         a2F_x = np.divide(res, w)
 #---test--^--multiprocessing*****
-        self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies)) #<-- this makes lambda1 20 times bigger than lambda2 (???)
-        #self.lambda_2 = 2*np.trapz(a2F_x) #test <-- this lamba2 is 250 times lambda1 (that corresponds to q_x*q_y ???)
-        self.lambda_2_test = 2*integrate.simpson(a2F_x)
+        #self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies)) <-- this makes lambda1 20 times bigger than lambda2 (???)
+        self.lambda_2 = 2*np.trapz(a2F_x) #test <-- this lamba2 is 250 times lambda1 (that corresponds to q_x*q_y ???)
         self.plot_lambda(a2F_x)
         return Lambda_1
 
@@ -195,7 +194,8 @@ class Eliashberg(object):
         with mp.Pool() as pool:
            res = pool.map(self.a2F_new,w)
         a2F_x = np.divide(res, w)
-        self.lambda_2 = 2*np.trapz(a2F_x) #test <-- this lamba2 is 250 times lambda1 (that corresponds to q_x*q_y ???)
+        self.lambda_2 = self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies))
+        self.lambda_2_test = 2*integrate.simpson(a2F_x)
         self.plot_lambda(a2F_x)
         return Lambda_1
     def a2F_new(self,x):
