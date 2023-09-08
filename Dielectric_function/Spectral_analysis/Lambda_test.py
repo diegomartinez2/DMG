@@ -3,6 +3,7 @@ import numpy as np
 import os.path
 import matplotlib.pyplot as plt
 #from ase.units import create_units
+from scipy import integrate
 
 def main(arg):
     #units = create_units('2014')
@@ -38,8 +39,10 @@ def main(arg):
     np.savetxt('lambda_lista.txt',lamba)
     print('Test Gaussian->')
     suma = 0
-    for w in range(200000):
-        suma += superconductor.test_gaussian(w/10000,superconductor.pars[:,1],len(superconductor.pars[:,1]))
+    # for w in range(200000):
+    #     suma += superconductor.test_gaussian(w/10000,superconductor.pars[:,1],len(superconductor.pars[:,1]))
+    w = np.linspace(0,20,10000)
+    suma = integrate.simpson(superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1])), w)
     print(suma,suma/Nef)
     pass
 
