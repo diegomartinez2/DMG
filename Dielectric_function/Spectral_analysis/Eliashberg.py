@@ -2,7 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import multiprocessing as mp
 from ase.units import create_units
-from scipy.integrate import quad
+#from scipy.integrate import quad
+from scipy import integrate
+
 
 class Eliashberg(object):
     """docstring for Eliashberg."""
@@ -36,6 +38,7 @@ class Eliashberg(object):
 #        self.Ne_0[np.where(energy==0.0)]
         #numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0])+1],dx=(self.energy[9]-self.energy[0])/10)
         numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy)) # maybe this is better??
+        numero_de_elementos2 = integrate.simpson(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)])
         total_states = np.trapz(self.Ne,dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
         print("Número de elementos:",numero_de_elementos,"|total=",total_states)
         #test the selection
