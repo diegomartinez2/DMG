@@ -29,6 +29,7 @@ def main(arg):
     lambda_1 *= Nef #misterious factor... joking, this is the number of nodes in the example.
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
     print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
+    print('Lambda_2_test',superconductor.lambda_2_test)
     np.savetxt('lambda_1_2.txt',(lambda_1,superconductor.lambda_2))
 #----------test--v----lambda_1---
     center = superconductor.pars[:,1] #* superconductor.from_cm1_to_Hartree
