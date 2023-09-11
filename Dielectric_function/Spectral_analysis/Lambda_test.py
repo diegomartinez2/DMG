@@ -19,7 +19,7 @@ def main(arg):
     print('Nef=',Nef,' ?=33?')
     superconductor.energy = [0.0]
     superconductor.Ne = [Nef]
-    superconductor.Nef = Nef *0.367493# 0,0367493 from eV to Hartree #* superconductor.from_Ry_to_Hartree
+    superconductor.Nef = Nef *0.0367493# 0,0367493 from eV to Hartree #* superconductor.from_Ry_to_Hartree
     superconductor.pars[:,1] *= superconductor.from_cm1_to_Hartree
     superconductor.pars[:,2] *= superconductor.from_GHz_to_Hartree
     # superconductor.pars[:,1] *= 1 #if using Hartree,
