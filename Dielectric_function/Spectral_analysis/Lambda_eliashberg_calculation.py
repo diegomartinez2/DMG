@@ -4,6 +4,7 @@ import Eliashberg
 import numpy as np
 import os.path
 import matplotlib.pyplot as plt
+from scipy import integrate
 
 def main(arg):
     #pars_create=True
@@ -65,7 +66,7 @@ def main(arg):
     w = np.linspace(-100,100,20000)
     #superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1]))
     suma = integrate.simpson(superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1])), w)
-    print(suma,suma/Nef,':',33/suma,suma/33)
+    print(suma)
     pass
 
 if __name__ == '__main__':
