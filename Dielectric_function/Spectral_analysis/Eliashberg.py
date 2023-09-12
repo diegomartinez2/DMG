@@ -107,7 +107,7 @@ class Eliashberg(object):
         """
         Test for the gaussian, the result must be the DOS.
         """
-        width = 10#*self.from_cm1_to_eV #self.from_cm1_to_Hartree*2 #1,5,10 cm-1
+        width = 5#*self.from_cm1_to_eV #self.from_cm1_to_Hartree*2 #1,5,10 cm-1
         test_dos = 1/N_q # is this equal to len(W_q)?
         for i in range(len(w_q)): #q=6x6x6 (???) for the test data. q=50x50=250 for the plasmon
             test_dos += self.gaussian(w,w_q[i],width) #This must be the DOS, integrate this to check the gaussian.
