@@ -44,7 +44,7 @@ def main(arg):
     #     suma += superconductor.test_gaussian(w/10000,superconductor.pars[:,1],len(superconductor.pars[:,1]))
     w = np.linspace(-100,100,20000)
     suma = integrate.simpson(superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1])), w)
-    print(suma,suma/Nef,':',33/suma,suma/33)
+    print(suma,':',suma/len(superconductor.pars[:,1]))
     pass
 
 
