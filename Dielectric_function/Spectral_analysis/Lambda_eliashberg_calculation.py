@@ -56,13 +56,17 @@ def main(arg):
     #print(len(Frequencies[1:]),len(superconductor.lambda_2))
     print('Test Gaussian->')
     gauss = np.zeros(100)
-    for w in range(100):
+    for w in range(100): #Make this from -100 to 100??
         gauss[w] = superconductor.gaussian(w, 50.0,10.0)
     plt.figure(figsize=(10,6))
     plt.plot(gauss)
     plt.show()
     print(np.trapz(gauss))
-    superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1]))
+    w = np.linspace(-100,100,20000)
+    #superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1]))
+    suma = integrate.simpson(superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1])), w)
+    print(suma,suma/Nef,':',33/suma,suma/33)
+    pass
 
 if __name__ == '__main__':
     import sys
