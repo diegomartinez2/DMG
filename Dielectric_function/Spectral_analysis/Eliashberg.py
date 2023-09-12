@@ -196,6 +196,7 @@ class Eliashberg(object):
         a2F_x = np.divide(res, w)
         self.lambda_2 = self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies))
         self.lambda_2_test = 2*integrate.simpson(a2F_x)
+        self.lambda_2_test2 = 2*integrate.simpson(np.divide(res,w),w)
         self.plot_lambda(a2F_x)
         return Lambda_1
     def a2F_new(self,x):
