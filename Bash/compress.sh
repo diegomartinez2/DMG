@@ -28,7 +28,8 @@ if [[ -z $input_dir || -z $output_file ]]; then
 fi
 
 # Compress the directory using tar and gzip
-tar -cvf "$output_file" "$input_dir" --exclude="$input_dir/Downloads" --exclude="$input_dir/.cache"
-gzip -9 "$output_file"
+#tar -cvf "$output_file" "$input_dir" --exclude="$input_dir/Downloads" --exclude="$input_dir/.cache"
+#gzip -9 "$output_file"
+tar -c "$input_dir" | gzip --best -c > "$output_file"
 
 echo "Compression complete!"
