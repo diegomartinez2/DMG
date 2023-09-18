@@ -7,7 +7,10 @@ from scipy import integrate
 
 
 class Eliashberg(object):
-    """docstring for Eliashberg."""
+    """docstring for Eliashberg.
+    This object calculates the Lambda from two methods:
+    From the Eliashberg function amd fron the lambda at the q points.
+    """
 
     def __init__(self, pars):
         units = create_units('2014')   #new way of defining units
