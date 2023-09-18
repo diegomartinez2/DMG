@@ -27,15 +27,15 @@
 
 # Function to display countdown using 'Dialog'
 countdown_dialog() {
-  local seconds=\$1
+  local seconds=$1
   dialog --infobox "Countdown: $seconds seconds" 0 0
   sleep 1
 }
 
 # Function to perform the countdown
 perform_countdown() {
-  local seconds=\$1
-  seconds=$(($seconds))
+  local seconds=$1
+
   while [ $seconds -ge 0 ]; do
     countdown_dialog $seconds
     seconds=$((seconds - 1))
@@ -49,5 +49,5 @@ clear
 echo "Enter the number of seconds to countdown:"
 read seconds
 
-perform_countdown $seconds
+perform_countdown "$seconds"
 echo $seconds
