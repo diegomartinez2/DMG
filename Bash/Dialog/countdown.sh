@@ -1,20 +1,21 @@
 #!/bin/bash
 
 # Parse command-line arguments
-while [[ $# -gt 0 ]]; do
-    key="\$1"
-    case $key in
-        -t|--time)
-            time="\$2"
-            shift
-            shift
-            ;;
-        *)
-            echo "Unknown option: \$1"
-            exit 1
-            ;;
-    esac
-done
+# while [[ $# -gt 0 ]]; do
+#     key="\$1"
+#     case $key in
+#         --time)
+#             time="\$2"
+#             shift
+#             shift
+#             ;;
+#         *)
+#             echo "Unknown option: \$1"
+#             exit 1
+#             ;;
+#     esac
+# done
+time=1000 #test
 
 # Validate input
 if [[ -z $time ]]; then
