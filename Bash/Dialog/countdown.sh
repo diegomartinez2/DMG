@@ -15,25 +15,39 @@
 #             ;;
 #     esac
 # done
-time=1000 #test
 
 # Validate input
-if [[ -z $time ]]; then
-    echo "Please provide the number of seconds using --time option."
-    exit 1
-fi
+# if [[ -z $time ]]; then
+#     echo "Please provide the number of seconds using --time option."
+#     exit 1
+# fi
 
 # Countdown function
-countdown() {
-    secs=\$1
-    while [[ $secs -gt 0 ]]; do
-        echo "Waiting $secs seconds..."
-        sleep 1
-        ((secs--))
-    done
-    echo "Countdown completed!"
+
+
+# Function to display countdown using 'Dialog'
+countdown_dialog() {
+  local seconds=\$1
+  dialog --infobox "Countdown: $seconds seconds" 0 0
+  sleep 1
 }
 
-# Display countdown using Dialog
-dialog --title "Countdown" --infobox "Countdown started for $time seconds." 5 40
-countdown "$time" | dialog --title "Countdown" --gauge "Countdown in progress..." 7 50
+# Function to perform the countdown
+perform_countdown() {
+  local seconds=\$1
+  seconds=$(($seconds))
+  while [ $seconds -ge 0 ]; do
+    countdown_dialog $seconds
+    seconds=$((seconds - 1))
+  done
+
+#  dialog --msgbox "Countdown complete!" 0 0
+}
+
+# Main script
+clear
+echo "Enter the number of seconds to countdown:"
+read seconds
+
+perform_countdown $seconds
+echo $seconds
