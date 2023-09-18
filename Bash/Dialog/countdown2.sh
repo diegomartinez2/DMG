@@ -7,4 +7,4 @@ declare -i COUNTER=1
             COUNTER=COUNTER+1
             sleep 1
     done
-    } |  dialog --gauge  "This is a progress bar"  10 50 0 
+  } |  dialog --gauge  "Wait for calculation"  10 50 0 
