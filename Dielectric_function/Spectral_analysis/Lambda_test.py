@@ -30,7 +30,7 @@ def main(arg):
     lambda_1 *= Nef #misterious factor... joking, this is the number of nodes in the example.
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
     #print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
-    print('Lambda_2_test',superconductor.lambda_2_test)
+    #print('Lambda_2_test',superconductor.lambda_2_test)
     print('Lambda_2_test2',superconductor.lambda_2_test2)
     np.savetxt('lambda_1_2.txt',(lambda_1,superconductor.lambda_2))
     #print('Lambda_1/Lambda_2,Lambda_1/Lambda_2_test,Lambda_1/Lambda_2_test2:',lambda_1/superconductor.lambda_2,lambda_1/superconductor.lambda_2_test,lambda_1/superconductor.lambda_2_test2)
