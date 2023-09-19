@@ -24,7 +24,7 @@ def main(arg):
     superconductor.pars[:,2] *= superconductor.from_GHz_to_Hartree
     # superconductor.pars[:,1] *= 1 #if using Hartree,
     # superconductor.pars[:,2] *= 1
-    frequencies = np.arange(0,20,0.9e-3) #    frequencies = np.arange(0,20,1e-7) <- it should have a plateau somewhere!! but with a step of 1e-7 still grows.
+    frequencies = np.arange(0,20,1e-3) #    frequencies = np.arange(0,20,1e-7) <- it should have a plateau somewhere!! but with a step of 1e-7 still grows.
     lambda_1 = superconductor.Lambda_new(frequencies)
     lambda_1 *= Nef #misterious factor... joking, this is the number of nodes in the example.
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
