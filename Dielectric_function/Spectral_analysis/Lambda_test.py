@@ -32,6 +32,7 @@ def main(arg):
     print('Lambda_2_test',superconductor.lambda_2_test)
     print('Lambda_2_test',superconductor.lambda_2_test2)
     np.savetxt('lambda_1_2.txt',(lambda_1,superconductor.lambda_2))
+    print('Lambda_1/Lambda_2,Lambda_1/Lambda_2_test,Lambda_1/Lambda_2_test2:',lambda_1/superconductor.Lambda_2,lambda_1/superconductor.Lambda_2_test,lambda_1/superconductor.Lambda_2_test2)
 #----------test--v----lambda_1---
     center = superconductor.pars[:,1] #* superconductor.from_cm1_to_Hartree
     width = superconductor.pars[:,2] #* superconductor.from_GHz_to_Hartree
