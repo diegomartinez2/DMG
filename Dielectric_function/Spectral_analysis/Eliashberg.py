@@ -189,17 +189,22 @@ class Eliashberg(object):
         Lambda_1=summa1/len(center) #* 33 #misterious factor... joking, this is the number of nodes in the example.
         #method 2 -------------------------------
         self.lambda_2=[]
-        if (Frequencies[0] != 0):
-             Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
-        else:
-             Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
+        # if (Frequencies[0] != 0):
+        #      Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
+        # else:
+        #      Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
         w = Frequencies[Frequencies != 0]
         with mp.Pool() as pool:
            res = pool.map(self.a2F_new,w)
         a2F_x = np.divide(res, w)
+        #a2F_x *= self.from_GHz_to_eV
+        a2F_x *= self.from_cm1_to_Hartree /29.9792458
         self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies))
         self.lambda_2_test = 2*integrate.simpson(a2F_x)
-        self.lambda_2_test2 = 2*integrate.simpson(np.divide(res,w),w)
+        #self.lambda_2_test2 = 2*integrate.simpson(np.divide(res,w)*self.from_cm1_to_Hartree /29.9792458,w)
+        #print(self.lambda_2_test2)
+        self.lambda_2_test2 = 2*integrate.simpson(a2F_x,w)
+        #print(self.lambda_2_test2)
         #w = np.linspace(-100,100,20000)
         #self.lambda_2_test2 = 2*integrate.simpson(np.divide(self.a2F_new(w),w),w)
         #self.plot_lambda(a2F_x)
