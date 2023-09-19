@@ -25,12 +25,12 @@ def main(arg):
     # superconductor.pars[:,1] *= 1 #if using Hartree,
     # superconductor.pars[:,2] *= 1
     #frequencies = np.arange(0,20,1e-3) #    frequencies = np.arange(0,20,1e-7) <- it should have a plateau somewhere!! but with a step of 1e-7 still grows.
-    frequencies = np.linspace(0,20,100000)
+    frequencies = np.linspace(-20,20,200000)
     lambda_1 = superconductor.Lambda_new(frequencies)
     lambda_1 *= Nef #misterious factor... joking, this is the number of nodes in the example.
     print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
     #print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
-    print('Lambda_2_test*33',superconductor.lambda_2_test)
+    print('Lambda_2_test',superconductor.lambda_2_test)
     print('Lambda_2_test2',superconductor.lambda_2_test2)
     np.savetxt('lambda_1_2.txt',(lambda_1,superconductor.lambda_2))
     #print('Lambda_1/Lambda_2,Lambda_1/Lambda_2_test,Lambda_1/Lambda_2_test2:',lambda_1/superconductor.lambda_2,lambda_1/superconductor.lambda_2_test,lambda_1/superconductor.lambda_2_test2)
