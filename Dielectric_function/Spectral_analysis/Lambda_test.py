@@ -14,7 +14,7 @@ def main(arg):
     else:
         pars = np.loadtxt(file, usecols = (1,5,9))
 
-    superconductor = Eliashberg.Eliashberg(pars)
+    superconductor = Eliashberg.Eliashberg_test(pars)
     Nef = 32.993055569433089 #np.loadtxt('DOS', usecols = (2)) #* factor_Nef
     print('Nef=',Nef,' ?=33?')
     superconductor.energy = [0.0]
