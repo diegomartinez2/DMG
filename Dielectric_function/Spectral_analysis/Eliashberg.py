@@ -189,10 +189,10 @@ class Eliashberg(object):
         Lambda_1=summa1/len(center) #* 33 #misterious factor... joking, this is the number of nodes in the example.
         #method 2 -------------------------------
         self.lambda_2=[]
-            if (Frequencies[0] != 0):
-                Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
-            else:
-              Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
+        if (Frequencies[0] != 0):
+            Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
+        else:
+            Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
         w = Frequencies[Frequencies != 0]
         with mp.Pool() as pool:
             res = pool.map(self.a2F_new,w)
