@@ -45,8 +45,8 @@ class Eliashberg(object):
         total_states = np.trapz(self.Ne,dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
         print("Número de elementos:",numero_de_elementos,"|total=",total_states)
         #test the selection
-        print (self.Ne[:(np.where(self.energy==0.0)[0][0]+1)])
-        print (self.Ne[:(np.where(self.energy==0.0)[0][0])+1])
+        #print (self.Ne[:(np.where(self.energy==0.0)[0][0]+1)])
+        #print (self.Ne[:(np.where(self.energy==0.0)[0][0])+1])
 
         #------^--------
         print ("Density of states at Fermi level per cell=",self.Ne[np.where(self.energy==0.0)])
@@ -180,13 +180,13 @@ class Eliashberg(object):
         print('len(Center)=',len(center),'(=50*50=2500? or =50*51=2550?')
         #method 1 ----------------------------
         Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #comment for test and uncomment line under
-#        Nef = self.Nef
+
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
         summa1 = 0
         for i in range(len(center)):  #summa in q (6x6x6 or q_x*q_y)
             summa1 += self.Lambda_q(width[i],center[i],Nef) #1/N_q Sum_q( Lamb_q )
-        Lambda_1=summa1/len(center) #* 33 #misterious factor... joking, this is the number of nodes in the example.
+        Lambda_1=summa1/len(center)
         #method 2 -------------------------------
         self.lambda_2=[]
         if (Frequencies[0] != 0):
