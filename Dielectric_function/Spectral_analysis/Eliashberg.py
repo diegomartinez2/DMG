@@ -198,7 +198,7 @@ class Eliashberg(object):
             res = pool.map(self.a2F_new,w)
         a2F_x = np.divide(res, w)
         #a2F_x *= self.from_GHz_to_eV
-        a2F_x /= self.from_cm1_to_Hartree *0.5#self.from_cm1_to_Hartree /29.9792458
+        #a2F_x /= self.from_cm1_to_Hartree *0.5#self.from_cm1_to_Hartree /29.9792458
         #self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies))
         #self.lambda_2_test = 2*integrate.simpson(a2F_x)
         #self.lambda_2_test2 = 2*integrate.simpson(np.divide(res,w)*self.from_cm1_to_Hartree /29.9792458,w)
