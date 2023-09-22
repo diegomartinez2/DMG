@@ -57,16 +57,11 @@ class Eliashberg(object):
 
     def read_Ne(self,filename="out_DOS.dat"):
         self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
-#        self.Ne_0[np.where(energy==0.0)]
-        #numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0])+1],dx=(self.energy[9]-self.energy[0])/10)
         numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy)) # maybe this is better??
         numero_de_elementos2 = integrate.simpson(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)])
         total_states = np.trapz(self.Ne,dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
         print("Número de elementos:",numero_de_elementos,"|total=",total_states)
         print("Número de elementos2:",numero_de_elementos2,"|total=",total_states)
-        #test the selection
-        #print (self.Ne[:(np.where(self.energy==0.0)[0][0]+1)])
-        #print (self.Ne[:(np.where(self.energy==0.0)[0][0])+1])
 
         #------^--------
         print ("Density of states at Fermi level per cell=",self.Ne[np.where(self.energy==0.0)])
@@ -94,9 +89,8 @@ class Eliashberg(object):
         ---output---
         a2F = factor1*summa: The Eliashberg function at "x"
         """
-        #print ("shape = ",np.shape(self.pars))
+
         center = self.pars[:,1]
-        #center = np.absolute(center) #not necessary and better if not
         width = self.pars[:,2]
         width = np.absolute(width)
         gauss_width = 0.004 #from 0.01 [0.1,0.05,0.01,0.005,0.001,0.0005,0.0001] 0.004 is the best option for the test
@@ -116,8 +110,6 @@ class Eliashberg(object):
         ---output---
         g: gaussian value in 'x'
         """
-        #d = self.pars[:,0] #amplitude
-        #center = self.pars[:,1]
         mu = center #self.pars[:1] #center
         sigma = gauss_width #self.pars[:,2] #width
         #d = 1/(2*np.sqrt(2*np.pi)*sigma)
@@ -155,7 +147,6 @@ class Eliashberg(object):
         width = self.pars[:,2]
         print('len(Center)=',len(center))
         Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
-        #Nef = self.Nef
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
         summa1 = 0
@@ -177,7 +168,6 @@ class Eliashberg(object):
              else:
                  a2F_x.append(self.a2F(w)/w)
 #---test--v--multiprocessing*****
-        #import multiprocessing as mp #multiprocessing calculation of the a2F()
         w = Frequencies[Frequencies != 0]
         # w = np.append(w,w[:len(w)//3]+w[-1]) # to expand the frequencies to cover the widths (and some extra) for the calculations
         with mp.Pool() as pool:
@@ -220,15 +210,8 @@ class Eliashberg(object):
         a2F_x = np.divide(res, w)
         #a2F_x *= self.from_GHz_to_eV
         #a2F_x /= self.from_cm1_to_Hartree *0.5#self.from_cm1_to_Hartree /29.9792458
-        #self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies))
-        #self.lambda_2_test = 2*integrate.simpson(a2F_x)
         #self.lambda_2_test2 = 2*integrate.simpson(np.divide(res,w)*self.from_cm1_to_Hartree /29.9792458,w)
-        #print(self.lambda_2_test2)
         self.lambda_2_test2 = 2*integrate.simpson(a2F_x,w)
-        #print(self.lambda_2_test2)
-        #w = np.linspace(-100,100,20000)
-        #self.lambda_2_test2 = 2*integrate.simpson(np.divide(self.a2F_new(w),w),w)
-        #self.plot_lambda(a2F_x)
         self.plot_lambda(res)
         return Lambda_1
     def a2F_new(self,x):
@@ -257,7 +240,6 @@ class Eliashberg_test(object):
 
     def __init__(self, pars):
         units = create_units('2014')   #new way of defining units
-        #super(Eliashberg, self).__init__()
         self.pars = pars
 
         self.from_cm1_to_Hartree = units.invcm/units.Hartree #0.0000045563352812122295
