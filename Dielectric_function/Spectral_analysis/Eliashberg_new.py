@@ -351,7 +351,7 @@ class Eliashberg_test(object):
            res = pool.map(self.a2F_new,w)
         a2F_x = np.divide(res, w)
         #a2F_x *= self.from_GHz_to_eV
-        a2F_x /= self.from_cm1_to_Hartree *0.5#self.from_cm1_to_Hartree /29.9792458
+        a2F_x /= self.from_cm1_to_Hartree /29.9792458#*0.5#self.from_cm1_to_Hartree /29.9792458
         self.lambda_2_test2 = 2*integrate.simpson(a2F_x,w)
         self.plot_lambda(res)
         return Lambda_1
@@ -374,5 +374,5 @@ class Eliashberg_test(object):
         for i in range(len(center)):
             #summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width) #check the units of the gaussian...OK
             #summa += (self.Lambda_q(width[i],center[i],self.Nef)*center[i]) * self.gaussian(x,center[i],gauss_width) #check this...
-            summa += (width[i]/center[i]) * self.gaussian(x,center[i],gauss_width)*(units.invcm/units.Hartree)/np.pi
-        return factor1*summa
+            summa += (width[i]/center[i]) * self.gaussian(x,center[i],gauss_width)#*(units.invcm/units.Hartree)/np.pi
+        return factor1*summa*self.from_cm1_to_Hartree
