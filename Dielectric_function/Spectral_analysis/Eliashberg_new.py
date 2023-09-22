@@ -361,7 +361,7 @@ class Eliashberg_test(object):
         ---input---
         x: coordiate to calculate the Eliashberg function.
         ---output---
-        a2F = factor1*summa: The Eliashberg function at "x"
+        a2F = summa(Lambda_q*W_q)/(2*N_q): The Eliashberg function at "x"
         """
         center = self.pars[:,1] #*put units correctly...
         width = self.pars[:,2] #*put units the same as center
@@ -371,5 +371,6 @@ class Eliashberg_test(object):
         summa = 0
         factor1 = 1 / (2*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
         for i in range(len(center)):
-            summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width) #check the units of the gaussian...
+            #summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width) #check the units of the gaussian...OK
+            summa += (self.Lambda_q(width[i],center[i],self.Nef)*center[i]) * self.gaussian(x,center[i],gauss_width) #check this...
         return factor1*summa
