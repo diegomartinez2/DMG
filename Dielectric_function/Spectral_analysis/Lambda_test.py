@@ -25,7 +25,7 @@
 # Importación de los módulos
 # ---------------------------
 #import Eliashberg
-import Eliashberg_new
+import Eliashberg_new as Eliashberg
 import numpy as np
 import os.path
 import matplotlib.pyplot as plt
