@@ -282,23 +282,6 @@ class Eliashberg_test(object):
         Lamb_q=(1/(np.pi*Nef)) * (gamma_q/omega_q**2) #fix from omega to omega²
         return Lamb_q
 
-    def a2F(self,x):
-        """
-        Calculates the Eliashberg spectral functions
-        ---input---
-        x: coordiate to calculate the Eliashberg function.
-        ---output---
-        a2F = factor1*summa: The Eliashberg function at "x"
-        """
-        center = self.pars[:,1]
-        width = self.pars[:,2]
-        width = np.absolute(width)
-        gauss_width = 0.004 #from 0.01 [0.1,0.05,0.01,0.005,0.001,0.0005,0.0001] 0.004 is the best option for the test
-        summa = 0
-        factor1 = 1 / (2*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
-        for i in range(len(center)):
-            summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width)
-        return factor1*summa
 
     def gaussian(self,x, center,gauss_width):
         """
@@ -337,44 +320,6 @@ class Eliashberg_test(object):
         plt.show()
         pass
 
-    def Lambda(self,Frequencies):
-        """
-        Calculates the Lambda by two methods, notice that it must calculate the integral
-        in a range that takes the Lorenztian obtained by the Plasmon_analysis object.
-        """
-        center = self.pars[:,1]
-        width = self.pars[:,2]
-        print('len(Center)=',len(center))
-        Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
-        center = np.absolute(center) #test to force the abs
-        width = np.absolute(width)
-        summa1 = 0
-        for i in range(len(center)):
-            summa1 += self.Lambda_q(width[i],center[i],Nef)
-        Lambda_1=summa1/len(center) #* 33 #misterious factor... joking, this is the number of nodes in the example.
-        self.lambda_2=[]
-        if (Frequencies[0] != 0):
-             Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
-        else:
-             Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
-        for w in Frequencies[0:int(len(Frequencies))]: #edit for test
-             print('Frequencie(',w,')              ', end="\r", flush=True)
-             if (w == 0):
-                 a2F_x = []
-             else:
-                 a2F_x.append(self.a2F(w)/w)
-#---test--v--multiprocessing*****
-        #import multiprocessing as mp #multiprocessing calculation of the a2F()
-        w = Frequencies[Frequencies != 0]
-        # w = np.append(w,w[:len(w)//3]+w[-1]) # to expand the frequencies to cover the widths (and some extra) for the calculations
-        with mp.Pool() as pool:
-           res = pool.map(self.a2F,w)
-        a2F_x = np.divide(res, w)
-#---test--^--multiprocessing*****
-        #self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies)) <-- this makes lambda1 20 times bigger than lambda2 (???)
-        self.lambda_2 = 2*np.trapz(a2F_x) #test <-- this lamba2 is 250 times lambda1 (that corresponds to q_x*q_y ???)
-        self.plot_lambda(a2F_x)
-        return Lambda_1
 
     def Lambda_new(self,Frequencies):
         """
