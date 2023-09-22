@@ -369,9 +369,10 @@ class Eliashberg_test(object):
         units = create_units('2014')
         gauss_width = 5*(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         summa = 0
-        factor1 = 1 / (2*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
+        #factor1 = 1 / (2*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
+        factor1 = 1 / (2*np.pi*self.Nef*len(center)) #a2F(w)=1/2*pi*N_ef*N Sum{Lambda/Omega*delta(w-Omega)}
         for i in range(len(center)):
             #summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width) #check the units of the gaussian...OK
             #summa += (self.Lambda_q(width[i],center[i],self.Nef)*center[i]) * self.gaussian(x,center[i],gauss_width) #check this...
-            summa += (width[i]/center[i]) * self.gaussian(x,center[i],gauss_width)
+            summa += (width[i]/center[i]) * self.gaussian(x,center[i],gauss_width)*(units.invcm/units.Hartree)/np.pi
         return factor1*summa
