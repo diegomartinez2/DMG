@@ -255,19 +255,19 @@ class Eliashberg_test(object):
         self.from_cm1_to_eV = units.invcm/units.eV #0.00012398425731484318
         self.from_GHz_to_eV = 0.000004135669661004052
 
-    def read_Ne(self,filename="out_DOS.dat"):
-        self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
-        numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy)) # maybe this is better??
-        total_states = np.trapz(self.Ne,dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
-        print("Número de elementos:",numero_de_elementos,"|total=",total_states)
-        #test the selection
-        print (self.Ne[:(np.where(self.energy==0.0)[0][0]+1)])
-        print (self.Ne[:(np.where(self.energy==0.0)[0][0])+1])
-
-        #------^--------
-        print ("Density of states at Fermi level per cell=",self.Ne[np.where(self.energy==0.0)])
-        print ("Number of elements (for the factor)=",numero_de_elementos)
-        pass
+    # def read_Ne(self,filename="out_DOS.dat"):
+    #     self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
+    #     numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy)) # maybe this is better??
+    #     total_states = np.trapz(self.Ne,dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
+    #     print("Número de elementos:",numero_de_elementos,"|total=",total_states)
+    #     #test the selection
+    #     print (self.Ne[:(np.where(self.energy==0.0)[0][0]+1)])
+    #     print (self.Ne[:(np.where(self.energy==0.0)[0][0])+1])
+    #
+    #     #------^--------
+    #     print ("Density of states at Fermi level per cell=",self.Ne[np.where(self.energy==0.0)])
+    #     print ("Number of elements (for the factor)=",numero_de_elementos)
+    #     pass
 
     def Lambda_q(self,gamma_q,omega_q,Nef):
         """
