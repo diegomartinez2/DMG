@@ -50,6 +50,7 @@ def main(arg):
     superconductor.Nef = Nef *0.0367493# 0,0367493 from eV to Hartree #* superconductor.from_Ry_to_Hartree
     superconductor.pars[:,1] *= superconductor.from_cm1_to_Hartree
     superconductor.pars[:,2] *= superconductor.from_GHz_to_Hartree
+    print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
     #frequencies = np.arange(0,20,1e-3) #    frequencies = np.arange(0,20,1e-7) <- it should have a plateau somewhere!! but with a step of 1e-7 still grows.
     frequencies = np.linspace(0,0.01,10000)
     lambda_1 = superconductor.Lambda_new(frequencies)
