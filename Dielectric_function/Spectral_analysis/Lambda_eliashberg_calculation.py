@@ -44,16 +44,16 @@ def main(arg):
     superconductor = Eliashberg.Eliashberg(pars)
     superconductor.read_Ne()
     print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
-    
+
     #lambda_1, lambda_2 = superconductor.Lambda(frequencies)
 #    lambda_1 = superconductor.Lambda(frequencies)
 
     lambda_1 = superconductor.Lambda_new(frequencies)
 
     #np.savetxt('Lambda.txt', (lambda_1))
-    print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
+    print('Lambda_1=',lambda_1,'[]?') # Lambda calculated from Lambda_q
     #print('Lambda_1=',lambda_1*superconductor.Ne[np.where(superconductor.energy==0.0)[0][0]]) # Lambda calculated from Lambda_q#self.Ne[np.where(self.energy==0.0)[0][0]]
-    print('Lambda_2=',superconductor.lambda_2_test2) #Lambda calculated fron Eliashberg function
+    print('Lambda_2=',superconductor.lambda_2_test2,'[]?') #Lambda calculated fron Eliashberg function
     # Frequncies = frequencies+1
     # Frequencies = np.append(frequencies,Frequncies, axis=0)
     #print(len(Frequencies[1:]),len(superconductor.lambda_2))
@@ -68,7 +68,7 @@ def main(arg):
     w = np.linspace(-100,100,20000)
     #superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1]))
     suma = integrate.simpson(superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1])), w)
-    print(suma)
+    print(suma,'::',suma/len(pars[:,1]))
     pass
 
 if __name__ == '__main__':

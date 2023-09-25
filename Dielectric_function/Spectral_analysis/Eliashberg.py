@@ -330,8 +330,8 @@ class Eliashberg_test(object):
         width = self.pars[:,2]
         print('len(Center)=',len(center),'(=50*50=2500? or =50*51=2550?')
         #method 1 ----------------------------
-#        Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #comment for test and uncomment line under
-        Nef = self.Nef
+        Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #comment for test and uncomment line under
+        #Nef = self.Nef
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
         summa1 = 0
@@ -367,7 +367,7 @@ class Eliashberg_test(object):
         #units = create_units('2014')
         gauss_width = 5*self.from_cm1_to_Hartree#*(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         summa = 0
-        factor1 = 1 / (2*np.pi*self.Nef*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
+        factor1 = 1 / (2*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
         for i in range(len(center)):
             summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width) #check the units of the gaussian...
         return factor1*summa
