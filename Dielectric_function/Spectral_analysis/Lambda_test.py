@@ -43,6 +43,7 @@ def main(arg):
 
     superconductor = Eliashberg.Eliashberg_test(pars)
     Nef = 32.993055569433089 #np.loadtxt('DOS', usecols = (2)) #* factor_Nef
+    #Nota en los datos de 'test' DOS = 6.060738 states/spin/Ry/Unit Cell
     print('Nef=',Nef,' ?=33?')
     superconductor.energy = [0.0]
     superconductor.Ne = [Nef]
@@ -54,10 +55,10 @@ def main(arg):
     lambda_1 = superconductor.Lambda_new(frequencies)
     #lambda_1 *= 3.3 #superconductor.Nef #misterious factor...
     #print('3,3=',superconductor.from_cm1_to_Hartree,' or=',superconductor.from_GHz_to_Hartree,superconductor.from_Ry_to_Hartree)
-    print('Lambda_1=',lambda_1) # Lambda calculated from Lambda_q
+    print('Lambda_1=',lambda_1,':: test: must be 2.01') # Lambda calculated from Lambda_q
     #print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
     #print('Lambda_2_test',superconductor.lambda_2_test)
-    print('Lambda_2_test2',superconductor.lambda_2_test2)
+    print('Lambda_2_test2=',superconductor.lambda_2_test2,':: test: must be 2.03')
     np.savetxt('lambda_1_2.txt',(lambda_1,superconductor.lambda_2_test2))
     #print('Lambda_1/Lambda_2,Lambda_1/Lambda_2_test,Lambda_1/Lambda_2_test2:',lambda_1/superconductor.lambda_2,lambda_1/superconductor.lambda_2_test,lambda_1/superconductor.lambda_2_test2)
     #print('Lambda_1,Lambda_2*33,Lambda_2/33,Lambda_2_test*33,Lambda_2_test/33,Lambda_2_test2*33,Lambda_2_test2/33:',lambda_1,superconductor.lambda_2*33,superconductor.lambda_2/33,superconductor.lambda_2_test*33,superconductor.lambda_2_test/33,superconductor.lambda_2_test2*33,superconductor.lambda_2_test2/33)
