@@ -211,7 +211,7 @@ class Eliashberg(object):
         #a2F_x *= self.from_GHz_to_eV
         #a2F_x /= self.from_cm1_to_Hartree *0.5#self.from_cm1_to_Hartree /29.9792458
         #self.lambda_2_test2 = 2*integrate.simpson(np.divide(res,w)*self.from_cm1_to_Hartree /29.9792458,w)
-        self.lambda_2_test2 = 2*integrate.simpson(a2F_x,w)
+        self.lambda_2 = 2*integrate.simpson(a2F_x,w)
         self.plot_lambda(res)
         return Lambda_1
     def a2F_new(self,x):
