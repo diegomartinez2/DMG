@@ -48,7 +48,7 @@ def main(arg):
     print('Nef=',Nef,' ')
     superconductor.energy = [0.0]
     #superconductor.Ne = [Nef]
-    superconductor.Nef = Nef *superconductor.from_Ry_to_Hartree# 0,0367493 from eV to Hartree #* superconductor.from_Ry_to_Hartree
+    superconductor.Nef = Nef # 0,0367493 from eV to Hartree #* superconductor.from_Ry_to_Hartree
     superconductor.pars[:,1] *= superconductor.from_cm1_to_Hartree
     superconductor.pars[:,2] *= superconductor.from_GHz_to_Hartree
     print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
