@@ -380,7 +380,7 @@ class Eliashberg_test(object):
             omega_q = center
             Nef = self.Nef
             for i in range(len(center)):
-                summa += Lambda_q(gamma_q[i],omega_q[i],Nef)*omega_q[i] * self.gaussian(x,omega_q[i],gauss_width)
+                summa += self.Lambda_q(gamma_q[i],omega_q[i],Nef)*omega_q[i] * self.gaussian(x,omega_q[i],gauss_width)
             return summa/(2*len(omega_q))
         else:
             #---------method2------vvvv-
