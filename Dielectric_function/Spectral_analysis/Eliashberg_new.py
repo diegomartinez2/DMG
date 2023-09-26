@@ -224,16 +224,35 @@ class Eliashberg(object):
         ---output---
         a2F = factor1*summa: The Eliashberg function at "x"
         """
+        method = 1
         center = self.pars[:,1] #*put units correctly...
         width = self.pars[:,2] #*put units the same as center
         width = np.absolute(width)
         #nits = create_units('2014')
         gauss_width = 5*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
-        summa = 0
-        factor1 = 1 / (2*np.pi*self.Nef*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
-        for i in range(len(center)):
-            summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width) #check the units of the gaussian...
-        return factor1*summa
+        # summa = 0
+        # factor1 = 1 / (2*np.pi*self.Nef*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
+        # for i in range(len(center)):
+        #     summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width) #check the units of the gaussian...
+        # return factor1*summa
+        if (method == 1):
+            #---------method1-------vvvv---
+            summa = 0
+            gamma_q = width
+            omega_q = center
+            Nef = self.Nef
+            for i in range(len(center)):
+                summa += self.Lambda_q(gamma_q[i],omega_q[i],Nef)*omega_q[i] * self.gaussian(x,omega_q[i],gauss_width)
+            return summa/(2*len(omega_q))
+        else:
+            #---------method2------vvvv-
+            summa = 0
+            gamma_q = width
+            omega_q = center
+            Nef = self.Nef
+            for i in range(len(center)):
+                summa += (gamma_q[i]/omega_q[i]) * self.gaussian(x,omega_q[i],gauss_width)
+            return summa/(2*np.pi*Nef*len(omega_q))
 class Eliashberg_test(object):
     """docstring for Eliashberg.
     This object calculates the Lambda from two methods:
