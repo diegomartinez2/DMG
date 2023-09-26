@@ -42,8 +42,8 @@ def main(arg):
         pars = np.loadtxt(file, usecols = (1,5,9))
 
     superconductor = Eliashberg.Eliashberg_test(pars)
-    #Nef = 32.993055569433089 #np.loadtxt('DOS', usecols = (2)) #* factor_Nef
-    Nef = 6.060738
+    Nef = 32.993055569433089 #np.loadtxt('DOS', usecols = (2)) #* factor_Nef
+    #Nef = 6.060738
     #Nota en los datos de 'test' DOS = 6.060738 states/spin/Ry/Unit Cell
     print('Nef=',Nef,' ')
     superconductor.energy = [0.0]
