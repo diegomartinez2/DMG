@@ -360,31 +360,34 @@ class Eliashberg_test(object):
         ---output---
         a2F = summa(Lambda_q*W_q)/(2*N_q): The Eliashberg function at "x"
         """
+        method = 1
         center = self.pars[:,1] #*put units correctly...
         width = self.pars[:,2] #*put units the same as center
         width = np.absolute(width)
         gauss_width = 5*self.from_cm1_to_Hartree #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
-        summa = 0
-        #factor1 = 1 / (2*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
-        factor1 = 1 / (2*np.pi*self.Nef*len(center)) #a2F(w)=1/2*pi*N_ef*N Sum{Lambda/Omega*delta(w-Omega)}
-        for i in range(len(center)):
-            #summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width) #check the units of the gaussian...OK
-            #summa += (self.Lambda_q(width[i],center[i],self.Nef)*center[i]) * self.gaussian(x,center[i],gauss_width) #check this...
-            summa += (width[i]/center[i]) * self.gaussian(x,center[i],gauss_width)#*(units.invcm/units.Hartree)/np.pi
-        return factor1*summa*self.from_cm1_to_Hartree
-        #---------method1-------vvvv---
-        summa = 0
-        gamma_q = width
-        omega_q = center
-        Nef = self.Nef
-        for i in range(len(center)):
-            summa += Lambda_q(gamma_q[i],omega_q[i],Nef)*omega_q[i] * self.gaussian(x,omega_q[i],gauss_width)
-        return summa/(2*len(omega_q))
-        #---------method2------vvvv-
-        summa = 0
-        gamma_q = width
-        omega_q = center
-        Nef = self.Nef
-        for i in range(len(center)):
-            summa += (gamma_q[i]/omega_q[i]) * self.gaussian(x,omega_q[i],gauss_width)
-        return summa/(2*np.pi*Nef*len(omega_q))
+        # summa = 0
+        # #factor1 = 1 / (2*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
+        # factor1 = 1 / (2*np.pi*self.Nef*len(center)) #a2F(w)=1/2*pi*N_ef*N Sum{Lambda/Omega*delta(w-Omega)}
+        # for i in range(len(center)):
+        #     #summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width) #check the units of the gaussian...OK
+        #     #summa += (self.Lambda_q(width[i],center[i],self.Nef)*center[i]) * self.gaussian(x,center[i],gauss_width) #check this...
+        #     summa += (width[i]/center[i]) * self.gaussian(x,center[i],gauss_width)#*(units.invcm/units.Hartree)/np.pi
+        # return factor1*summa*self.from_cm1_to_Hartree
+        if (method == 1):
+            #---------method1-------vvvv---
+            summa = 0
+            gamma_q = width
+            omega_q = center
+            Nef = self.Nef
+            for i in range(len(center)):
+                summa += Lambda_q(gamma_q[i],omega_q[i],Nef)*omega_q[i] * self.gaussian(x,omega_q[i],gauss_width)
+            return summa/(2*len(omega_q))
+        else:
+            #---------method2------vvvv-
+            summa = 0
+            gamma_q = width
+            omega_q = center
+            Nef = self.Nef
+            for i in range(len(center)):
+                summa += (gamma_q[i]/omega_q[i]) * self.gaussian(x,omega_q[i],gauss_width)
+            return summa/(2*np.pi*Nef*len(omega_q))
