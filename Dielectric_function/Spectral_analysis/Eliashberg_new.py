@@ -147,7 +147,8 @@ class Eliashberg(object):
         center = self.pars[:,1]
         width = self.pars[:,2]
         print('len(Center)=',len(center))
-        Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
+        #Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
+        Nef = self.N_ef
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
         summa1 = 0
@@ -190,13 +191,13 @@ class Eliashberg(object):
         width = self.pars[:,2]
         print('len(Center)=',len(center),'(=50*50=2500? or =50*51=2550?)')
         #method 1 ----------------------------
-        Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #comment for test and uncomment line under
-        self.Nef = Nef
+        #Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #comment for test and uncomment line under
+        self.Nef = self.N_ef
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
         summa1 = 0
         for i in range(len(center)):  #summa in q (6x6x6 or q_x*q_y)
-            summa1 += self.Lambda_q(width[i],center[i],Nef) #1/N_q Sum_q( Lamb_q )
+            summa1 += self.Lambda_q(width[i],center[i],self.Nef) #1/N_q Sum_q( Lamb_q )
         Lambda_1=summa1/len(center)
         #method 2 -------------------------------
         self.lambda_2=[]
