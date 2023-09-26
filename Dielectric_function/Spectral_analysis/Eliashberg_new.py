@@ -58,7 +58,7 @@ class Eliashberg(object):
     def read_Ne(self,filename="out_DOS.dat"):
         self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
         numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy)) # maybe this is better??
-        numero_de_elementos2 = integrate.simpson(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx = np.absolute(self.energy[0]-self.energy[-1])/len(self.energy)
+        numero_de_elementos2 = integrate.simpson(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx = np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
         total_states = np.trapz(self.Ne,dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
         print("Número de elementos:",numero_de_elementos,"|total=",total_states)
         print("Número de elementos2:",numero_de_elementos2,"|total=",total_states)
