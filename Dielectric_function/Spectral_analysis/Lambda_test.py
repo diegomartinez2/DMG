@@ -42,12 +42,13 @@ def main(arg):
         pars = np.loadtxt(file, usecols = (1,5,9))
 
     superconductor = Eliashberg.Eliashberg_test(pars)
-    Nef = 32.993055569433089 #np.loadtxt('DOS', usecols = (2)) #* factor_Nef
+    #Nef = 32.993055569433089 #np.loadtxt('DOS', usecols = (2)) #* factor_Nef
+    Nef = 6.060738
     #Nota en los datos de 'test' DOS = 6.060738 states/spin/Ry/Unit Cell
-    print('Nef=',Nef,' ?=33?')
+    print('Nef=',Nef,' ')
     superconductor.energy = [0.0]
-    superconductor.Ne = [Nef]
-    superconductor.Nef = Nef *0.0367493# 0,0367493 from eV to Hartree #* superconductor.from_Ry_to_Hartree
+    #superconductor.Ne = [Nef]
+    superconductor.Nef = Nef *superconductor.from_Ry_to_Hartree# 0,0367493 from eV to Hartree #* superconductor.from_Ry_to_Hartree
     superconductor.pars[:,1] *= superconductor.from_cm1_to_Hartree
     superconductor.pars[:,2] *= superconductor.from_GHz_to_Hartree
     print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
