@@ -38,6 +38,9 @@ class Eliashberg(object):
     """
 
     def __init__(self, pars):
+        """
+        Set parameters into object and transformation units.
+        """
         units = create_units('2014')   #new way of defining units
         self.pars = pars
         self.from_cm1_to_Hartree = units.invcm/units.Hartree #0.0000045563352812122295
@@ -56,6 +59,10 @@ class Eliashberg(object):
         self.from_GHz_to_eV = 0.000004135669661004052
 
     def read_Ne(self,filename="out_DOS.dat"):
+        """
+        Read the number of particles under the Fermi level (???)
+        Set the numbre of elements.
+        """
         self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
         numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy)) # maybe this is better??
         numero_de_elementos2 = integrate.simpson(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx = np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
