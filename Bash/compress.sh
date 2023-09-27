@@ -31,5 +31,5 @@ fi
 #tar -cvf "$output_file" "$input_dir" --exclude="$input_dir/Downloads" --exclude="$input_dir/.cache"
 #gzip -9 "$output_file"
 tar -c "$input_dir" | gzip --best -c > "$output_file"
-
+#tar cf - "$input_dir" -P | pv -s $(du -sb "$input_dir" | awk '{print $1}') | gzip --best > "$output_file"
 echo "Compression complete!"
