@@ -328,7 +328,16 @@ def main(args):
     'CAMPAÑA POLÍTICA: Gente contra crueldad robot',
     'CAMPAÑA POLÍTICA: Salvadores medio ambiente',
     'CAMPAÑA POLÍTICA: Culto al salvador',
-    'FIESTAS: ',
+    'FIESTAS: Orgía sexual de neón',
+    'FIESTAS: Rave de éxtasis',
+    'FIESTAS: Caos en ciberespacio',
+    'FIESTAS: Estricto código de vestimenta',
+    'FIESTAS: Carnaval de la Tomatina',
+    'FIESTAS: Quedada joven corporación',
+    'FIESTAS: Mosh Pit/muro de la muerte',
+    'FIESTAS: Boda',
+    'FIESTAS: Foso animal (sorteo, alcohol, drogas, boxeo, todas las cosas desagradables)',
+    'FIESTAS: Convenio',
     'EXTRAÑO: '
     ]
     En_posesion_de_list = [
