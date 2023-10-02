@@ -46,7 +46,8 @@ def main(arg):
     #Nef = 6.060738
     #Nota en los datos de 'test' DOS = 6.060738 states/spin/Ry/Unit Cell
     print('Nef=',Nef,' ')
-    print('lambda_q reded from data:',superconductor.pars[np.where(superconductor.pars[:,0]==1),3])
+    #print('lambda_q reded from data:',superconductor.pars[np.where(superconductor.pars[:,0]==1),3])
+    print('lambda_q readed from data:',np.sum(superconductor.pars[:,3])/len(superconductor.pars[:,3])*33)
     superconductor.energy = [0.0]
     #superconductor.Ne = [Nef]
     superconductor.Nef = Nef #* 0,0367493 from eV to Hartree #* superconductor.from_Ry_to_Hartree
