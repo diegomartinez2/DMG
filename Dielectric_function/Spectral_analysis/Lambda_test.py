@@ -57,7 +57,7 @@ def main(arg):
     #frequencies = np.arange(0,20,1e-3) #    frequencies = np.arange(0,20,1e-7) <- it should have a plateau somewhere!! but with a step of 1e-7 still grows.
     frequencies = np.linspace(0,0.01,10000)
     lambda_1 = superconductor.Lambda_new(frequencies)
-    print('Lambda_1=',lambda_1,':: test: must be 2.01',lambda_1/len(superconductor.pars[:,3])*33) # Lambda calculated from Lambda_q
+    print('Lambda_1=',lambda_1,':: test: must be 2.01',lambda_1/len(superconductor.pars[:,1])*33) # Lambda calculated from Lambda_q
     #print('Lambda_2=',superconductor.lambda_2) #Lambda calculated fron Eliashberg function
     #print('Lambda_2_test',superconductor.lambda_2_test)
     print('Lambda_2_test2=',superconductor.lambda_2_test2,':: test: must be 2.03',superconductor.lambda_2_test2/len(superconductor.pars[:,1])*33)
