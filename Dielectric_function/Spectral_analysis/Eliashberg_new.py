@@ -64,8 +64,8 @@ class Eliashberg(object):
         Set the numbre of elements.
         """
         self.energy, self.Ne = np.loadtxt(filename,usecols=(0,1), unpack=True)
-        numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy)) # maybe this is better??
-        numero_de_elementos2 = integrate.simpson(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx = np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
+        numero_de_elementos = np.trapz(self.Ne[:(np.where(self.energy==0.0)[0][0])],dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy)) # maybe this is better??
+        numero_de_elementos2 = integrate.simpson(self.Ne[:(np.where(self.energy==0.0)[0][0])],dx = np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
         total_states = np.trapz(self.Ne,dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
         print("Número de elementos:",numero_de_elementos,"|total=",total_states)
         #print("Número de elementos2:",numero_de_elementos2,"|total=",total_states)
@@ -365,8 +365,10 @@ class Eliashberg_test(object):
         center = np.absolute(center) #test to force the abs
         width = np.absolute(width)
         summa1 = 0
+        self.lambda_q_lista = np.array([])
         for i in range(len(center)):  #summa in q (6x6x6 or q_x*q_y)
             summa1 += self.Lambda_q(width[i],center[i],Nef) #1/N_q Sum_q( Lamb_q )
+            self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q(width[i],center[i],Nef))
         Lambda_1=summa1/len(center) * 33 #misterious factor... joking, this is the number of nodes in the example.
         #method 2 -------------------------------
         self.lambda_2=[]
@@ -408,7 +410,7 @@ class Eliashberg_test(object):
             Nef = self.Nef
             for i in range(len(center)):
                 summa += self.Lambda_q(gamma_q[i],omega_q[i],Nef)*omega_q[i] * self.gaussian(x,omega_q[i],gauss_width)
-            return summa/(2*len(omega_q))
+            return summa/(2*len(omega_q)) * 33
         else:
             #---------method2------vvvv-
             summa = 0

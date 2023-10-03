@@ -69,6 +69,7 @@ def main(arg):
     #superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1]))
     suma = integrate.simpson(superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1])), w)
     print(suma,'::',suma/len(pars[:,1]))
+    np.savetxt('salida.txt',(q_x,q_y,superconductor.N_ef,superconductor.pars[:,1],superconductor.pars[:,2],superconductor.lambda_q_lista))
     pass
 
 if __name__ == '__main__':
