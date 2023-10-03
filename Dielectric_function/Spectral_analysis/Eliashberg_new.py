@@ -358,7 +358,7 @@ class Eliashberg(object):
         self.lambda_q_lista = np.array([])
         for i in range(len(center)):  #summa in q (6x6x6 or q_x*q_y)
             summa1 += self.Lambda_q(width[i],center[i],self.Nef) #1/N_q Sum_q( Lamb_q )
-            self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q(width[i],center[i],Nef))
+            self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q(width[i],center[i],self.Nef))
         Lambda_1=summa1/len(center)
         #method 2 -------------------------------
         self.lambda_2=[]
