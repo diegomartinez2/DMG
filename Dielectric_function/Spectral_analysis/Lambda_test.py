@@ -42,8 +42,8 @@ def main(arg):
         pars = np.loadtxt(file, usecols = (1,5,9,12))  #mode::Omega::Gamma::lambda
 
     superconductor = Eliashberg.Eliashberg_test(pars)
-    Nef = 32.993055569433089 #np.loadtxt('DOS', usecols = (2)) #* factor_Nef
-    #Nef = 6.060738
+    #Nef = 32.993055569433089 #np.loadtxt('DOS', usecols = (2)) #* factor_Nef
+    Nef = 6.060738 *2#/superconductor.from_Ry_to_Hartree
     #Nota en los datos de 'test' DOS = 6.060738 states/spin/Ry/Unit Cell
     print('Nef=',Nef,' ')
     #print('lambda_q reded from data:',superconductor.pars[np.where(superconductor.pars[:,0]==1),3])

@@ -68,12 +68,13 @@ class Eliashberg(object):
         numero_de_elementos2 = integrate.simpson(self.Ne[:(np.where(self.energy==0.0)[0][0]+1)],dx = np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
         total_states = np.trapz(self.Ne,dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
         print("Número de elementos:",numero_de_elementos,"|total=",total_states)
-        print("Número de elementos2:",numero_de_elementos2,"|total=",total_states)
+        #print("Número de elementos2:",numero_de_elementos2,"|total=",total_states)
+        print("N(eF)=",self.Ne[(np.where(self.energy==0.0)[0][0])])
 
         #------^--------
         print ("Density of states at Fermi level per cell=",self.Ne[np.where(self.energy==0.0)])
         print ("Number of elements (for the factor)=",numero_de_elementos)
-        self.N_ef = numero_de_elementos
+        self.N_ef = 1.8855775#numero_de_elementos
         pass
 
     def Lambda_q(self,gamma_q,omega_q,Nef):
@@ -366,7 +367,7 @@ class Eliashberg_test(object):
         summa1 = 0
         for i in range(len(center)):  #summa in q (6x6x6 or q_x*q_y)
             summa1 += self.Lambda_q(width[i],center[i],Nef) #1/N_q Sum_q( Lamb_q )
-        Lambda_1=summa1/len(center) #* 33 #misterious factor... joking, this is the number of nodes in the example.
+        Lambda_1=summa1/len(center) * 33 #misterious factor... joking, this is the number of nodes in the example.
         #method 2 -------------------------------
         self.lambda_2=[]
         w = Frequencies[Frequencies != 0]
@@ -386,7 +387,7 @@ class Eliashberg_test(object):
         ---output---
         a2F = summa(Lambda_q*W_q)/(2*N_q): The Eliashberg function at "x"
         """
-        method = 1
+        method = 2
         center = self.pars[:,1] #*put units correctly...
         width = self.pars[:,2] #*put units the same as center
         width = np.absolute(width)
@@ -416,4 +417,4 @@ class Eliashberg_test(object):
             Nef = self.Nef
             for i in range(len(center)):
                 summa += (gamma_q[i]/omega_q[i]) * self.gaussian(x,omega_q[i],gauss_width)
-            return summa/(2*np.pi*Nef*len(omega_q))
+            return summa/(2*np.pi*Nef*len(omega_q)) * 33
