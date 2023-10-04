@@ -75,7 +75,7 @@ def main(arg):
     b=np.repeat(a,50)
     c=np.tile(a,50)
     print('len=',len(b),'=',len(c))
-    np.savetxt('salida.txt',np.c_[c,b,np.full(len(superconductor.pars[:,1]), superconductor.N_ef),superconductor.pars[:,1],superconductor.pars[:,2],superconductor.lambda_q_lista],header='#---q_x---q_y---N_ef[eV-1]---Omega[eV]---Gamma[eV]---Lambda_q')
+    np.savetxt('salida.txt',np.c_[c,b,np.full(len(superconductor.pars[:,1]), superconductor.N_ef),superconductor.pars[:,1],superconductor.pars[:,2],superconductor.lambda_q_lista],header='#---q_x---q_y---N_ef[States/Spin/eV/Unit Cell]---Omega[eV]---Gamma[eV]---Lambda_q')
     pass
 
 if __name__ == '__main__':
