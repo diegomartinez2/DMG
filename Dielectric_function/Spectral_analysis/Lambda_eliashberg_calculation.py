@@ -73,7 +73,9 @@ def main(arg):
     #print(len(superconductor.pars[:,1]),len(superconductor.pars[:,2]),len(superconductor.lambda_q_lista))
     a=np.arange(0,0.43458,0.00869)
     b=np.repeat(a,50)
-    np.savetxt('salida.txt',np.c_[a[1:]*50,b,np.full(len(superconductor.pars[:,1]), superconductor.N_ef),superconductor.pars[:,1],superconductor.pars[:,2],superconductor.lambda_q_lista])
+    c=np.tile(a,50)
+    print('len=',len(b),'=',len(c))
+    np.savetxt('salida.txt',np.c_[c,b,np.full(len(superconductor.pars[:,1]), superconductor.N_ef),superconductor.pars[:,1],superconductor.pars[:,2],superconductor.lambda_q_lista],header='#---q_x---q_y---N_ef[eV-1]---Omega[eV]---Gamma[eV]---Lambda_q')
     pass
 
 if __name__ == '__main__':
