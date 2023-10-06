@@ -338,7 +338,16 @@ def main(args):
     'FIESTAS: Boda',
     'FIESTAS: Foso animal (sorteo, alcohol, drogas, boxeo, todas las cosas desagradables)',
     'FIESTAS: Convenio',
-    'EXTRAÑO: '
+    'EXTRAÑO: Envío de conejitos rosas de peluche'
+    'EXTRAÑO: Cajón lleno de extraños y horrorosos juguetes sexuales'
+    'EXTRAÑO: Caja llena de holodiscos piratas de conciertos de rock grabados ilegalmente'
+    'EXTRAÑO: Bola de cristal que es una cyberdeck estilizada'
+    'EXTRAÑO: Tubo enorme con un hibrido de humano y alíen en el interior'
+    'EXTRAÑO: Impresora de tarjetas de crédito falsas (recargada)'
+    'EXTRAÑO: Surtido de disfraces para Halloween'
+    'EXTRAÑO: Llantas de coche brilli-brilli'
+    'EXTRAÑO: Carne de unicornio en lata'
+    'EXTRAÑO: Documentación completa de propiedad megacorporativa ¡No has de poseer nada ni montar un negocio para ser una megacorporación!'
     ]
     En_posesion_de_list = [
     'DESCONOCIDO: ',
