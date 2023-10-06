@@ -225,7 +225,7 @@ class Eliashberg(object):
         #------^--------
         print ("Density of states at Fermi level per cell=",self.Ne[np.where(self.energy==0.0)])
         print ("Number of elements (for the factor)=",numero_de_elementos)
-        self.N_ef = self.Ne[(np.where(self.energy==0.0)[0][0])]) #1.8855775 
+        self.N_ef = self.Ne[(np.where(self.energy==0.0)[0][0])]) #1.8855775
         pass
 
     def Lambda_q(self,gamma_q,omega_q,Nef):
@@ -572,3 +572,64 @@ class Eliashberg_test(object):
             for i in range(len(center)):
                 summa += (gamma_q[i]/omega_q[i]) * self.gaussian(x,omega_q[i],gauss_width)
             return summa/(2*np.pi*Nef*len(omega_q)) * 33
+#-------------------------------------------------------------
+def main(arg):
+    #namefile = "xbv"
+    #print (len(sys.argv))
+    if (len( sys.argv ) > 1):
+        print ("nombre de fichero:",arg[1])
+        namefile = arg[1]
+        print ("Creando el objeto plasmon")
+        plasmon = Plasmon_analysis(arg,namefile)
+        print ("Leyendo datos")
+
+        if (len( sys.argv) == 3):
+            index = arg[2]
+            data, frequencies = plasmon.load_big_file(index, arg[1])
+            #data, frequencies = plasmon.load_big_file(index, arg[1],diagonal=False)
+            #data_d, frequencies_d = plasmon.load_big_file(index, arg[1], diagonal=True)
+        else:
+            data, frequencies, qx= plasmon.load_data()
+#--------------------------diagonal-----------------------------
+#        if (len(sys.argv[3]) == 4):
+#            for i in range(51):
+#                data[i,:] = plasmon.data[i,i,:]
+#---------------------------------end---diagonal----------------
+        print (np.shape(data),"=(51,5001)?")
+        print ("dibuja")
+        plasmon.plot_contour(data)
+        print("calcula ajuste lorentzian")
+        #none = plasmon.locate_1Lorenztian(frequencies,data[30])
+        #f=open('file_data_fittings.txt','a')
+        #f.write("-amplitude--(+/-)error--center--(+/-)error--width--(+/-)error-\n")
+        plasmon.fitting_Lorentz(frequencies,data)
+        #f.close()
+        if (len( sys.argv) == 3):
+            np.savetxt("data_fitting_amplitudes_{}.txt".format(namefile),np.c_[plasmon.pars[:,0], plasmon.perr_lorentz[:,0]],header='#-----amplitude--(+/-)error---', footer='-------------')
+            np.savetxt("data_fitting_center_{}.txt".format(namefile),np.c_[plasmon.pars[:,1], plasmon.perr_lorentz[:,1]],header='#-----center(e.V.)--(+/-)error---', footer='-------------')
+            np.savetxt("data_fitting_width_{}.txt".format(namefile),np.c_[plasmon.pars[:,2], plasmon.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---', footer='-------------')
+        else:
+            np.savetxt("data_fitting_amplitudes_{}.txt".format(namefile),np.c_[plasmon.pars[:,0], plasmon.perr_lorentz[:,0]],header='#-----amplitude--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+            np.savetxt("data_fitting_center_{}.txt".format(namefile),np.c_[plasmon.pars[:,1], plasmon.perr_lorentz[:,1]],header='#-----center(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+            np.savetxt("data_fitting_width_{}.txt".format(namefile),np.c_[plasmon.pars[:,2], plasmon.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+
+        print ("dibuja")
+        plasmon.plot_contour(plasmon.Fitted_data)
+        plasmon.plot_contour2(data,plasmon.Fitted_data)
+        # superconductor = Eliashberg(plasmon.pars)
+        # superconductor.read_Ne()
+        ## lambda_1, lambda_2 = superconductor.Lambda(frequencies)
+        # lambda_1 = superconductor.Lambda(frequencies)
+
+        # print('Lambda_1=',np.sum(lambda_1)/len(lambda_1))
+        # print('Lambda_2=',np.sum(superconductor.lambda_2))
+
+        # np.savetxt('Lambda.txt', (lambda_1))
+        # np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
+    else:
+        print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
+    pass
+
+if __name__ == '__main__':
+    import sys
+    sys.exit(main(sys.argv))

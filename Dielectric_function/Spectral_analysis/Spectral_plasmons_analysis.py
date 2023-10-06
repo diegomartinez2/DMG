@@ -350,7 +350,7 @@ class Eliashberg(object):
         self.lambda_2=[]
         Frequncies = Frequencies+1
         Frequencies = np.append(Frequencies,Frequncies, axis=0)
-        for w in Frequencies[0:int(2*len(Frequencies)/3)]:
+        #for w in Frequencies[0:int(2*len(Frequencies)/3)]:
         for w in Frequencies[0:int(2*len(Frequencies))]:
             print('Frequencie(',w,')              ', end="\r", flush=True)
             if (w == 0):
