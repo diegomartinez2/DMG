@@ -32,7 +32,7 @@ fi
 #gzip -9 "$output_file"
 #tar -c "$input_dir" | gzip --best -c > "$output_file"
 #tar cf - "$input_dir" -P | pv -s $(du -sb "$input_dir" | awk '{print $1}') | gzip --best > "$output_file"
-#tar cf - /folder-with-big-files -P | pv -s $(du -sb /folder-with-big-files | awk '{print $1}') | gzip > big-files.tar.gz
-(tar cf - "$input_dir" | pv -n -s 'du -sb "$input_dir" | awk '{print $1}'' | gzip -9 > "$output_file") 2>&1 | dialog --gauge 'Progress' 7 70
+tar cf - "$input_dir" -P | pv -s $(du -sb "$input_dir" | awk '{print $1}') | gzip > "$output_file"
+#(tar cf - "$input_dir" | pv -n -s 'du -sb "$input_dir" | awk '{print $1}'' | gzip -9 > "$output_file") 2>&1 | dialog --gauge 'Progress' 7 70
 #(tar cf - . | pv -n -s 'du -sb . | awk '{print $1}'' | gzip -9 > out.tgz) 2>&1 | dialog --gauge 'Progress' 7 70
 echo "Compression complete!"
