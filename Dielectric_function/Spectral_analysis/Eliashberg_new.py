@@ -585,9 +585,11 @@ def main(arg):
 
         if (len( sys.argv) == 3):
             index = arg[2]
-            data, frequencies = plasmon.load_big_file(index, arg[1])
-            #data, frequencies = plasmon.load_big_file(index, arg[1],diagonal=False)
-            #data_d, frequencies_d = plasmon.load_big_file(index, arg[1], diagonal=True)
+            #data, frequencies = plasmon.load_big_file(index, arg[1])
+            data, frequencies = plasmon.load_big_file(index, arg[1],diagonal=False)
+            data_d, frequencies_d = plasmon.load_big_file(index, arg[1], diagonal=True)
+            data.append(data_d)
+            frequencies.append(frequencies_d)
         else:
             data, frequencies, qx= plasmon.load_data()
 #--------------------------diagonal-----------------------------
