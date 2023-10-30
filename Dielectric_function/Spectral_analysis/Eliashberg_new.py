@@ -589,7 +589,8 @@ def main(arg):
             #data, frequencies = plasmon.load_big_file(index, arg[1])
             data, frequencies = plasmon.load_big_file(index, arg[1],diagonal=False)
             data_d, frequencies_d = plasmon.load_big_file(index, arg[1], diagonal=True)
-            data.append(data_d)
+            #data.append(data_d)
+            data = np.vstack((data, data_d))
             frequencies.append(frequencies_d)
         else:
             data, frequencies, qx= plasmon.load_data()
