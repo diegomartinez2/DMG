@@ -129,6 +129,7 @@ class Plasmon_analysis(object):
         cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = self.pars[:,1]*5000,c='k',marker='x',s=10)
         cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = (self.pars[:,1]+self.pars[:,2])*5000,c='k',marker='1',s=10)
         cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = (self.pars[:,1]-self.pars[:,2])*5000,c='k',marker='2',s=10)
+        cax3 = ax1[1].axvline(x = len(self.pars[:,1])/2, linestyle = "--", color = "red")
 
         cbar = fig.colorbar(cax)
         cbar2 = fig.colorbar(cax2)
