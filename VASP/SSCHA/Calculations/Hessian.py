@@ -75,7 +75,7 @@ dyn_hessian.save_qe(SAVE_PREFIX)
 print("Hessian done.")
 ############################### FC3 part #############################################
 
-tensor3 = CC.ForceTensor.Tensor3(dyn=sscha_dyn)          # initialize 3rd order tensor
+tensor3 = CC.ForceTensor.Tensor3(dyn=dyn_hessian)          # initialize 3rd order tensor
 tensor3.SetupFromTensor(d3)                              # assign values
 tensor3.Center()                                         # center it
 tensor3.Apply_ASR()                                      # apply ASR
