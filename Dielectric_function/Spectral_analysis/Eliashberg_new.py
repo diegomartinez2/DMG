@@ -226,7 +226,7 @@ class Eliashberg(object):
         #------^--------
         print ("Density of states at Fermi level per cell=",self.Ne[np.where(self.energy==0.0)])
         print ("Number of elements (for the factor)=",numero_de_elementos)
-        self.N_ef = self.Ne[(np.where(self.energy==0.0)[0][0])]) #1.8855775
+        self.N_ef = self.Ne[(np.where(self.energy==0.0)[0][0])] #1.8855775
         pass
 
     def Lambda_q(self,gamma_q,omega_q,Nef):
