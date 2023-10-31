@@ -33,6 +33,32 @@ from scipy import integrate
 import scipy as scipy
 from scipy.signal import find_peaks
 
+    #Python program to reverse an array
+def list_reverse(arr,size):
+
+    #if only one element present, then return the array
+    if(size==1):
+        return arr
+
+    #if only two elements present, then swap both the numbers.
+    elif(size==2):
+        arr[0],arr[1],=arr[1],arr[0]
+        return arr
+
+    #if more than two elements presents, then swap first and last numbers.
+    else:
+        i=0
+        while(i<size//2):
+
+    #swap present and preceding numbers at time and jump to second element after swap
+            arr[i],arr[size-i-1]=arr[size-i-1],arr[i]
+
+    #skip if present and preceding numbers indexes are same
+            if((i!=i+1 and size-i-1 != size-i-2) and (i!=size-i-2 and size-i-1!=i+1)):
+                arr[i+1],arr[size-i-2]=arr[size-i-2],arr[i+1]
+            i+=2
+        return arr
+
 class Plasmon_analysis(object):
     """Code for the analysis of Silkin's plasmon data."""
 
@@ -126,9 +152,9 @@ class Plasmon_analysis(object):
         	interpolation='gaussian', aspect='auto')
         #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
         print (self.pars[:,1])
-        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = self.pars[:,1].reverse()*5000,c='k',marker='x',s=10)
-        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = (self.pars[:,1]+self.pars[:,2]).reverse()*5000,c='k',marker='1',s=10)
-        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = (self.pars[:,1]-self.pars[:,2]).reverse()*5000,c='k',marker='2',s=10)
+        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = list_reverse(self.pars[:,1],len(self.pars[:,1]))*5000,c='k',marker='x',s=10)
+        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = list_reverse(self.pars[:,1]+self.pars[:,2],len(self.pars[:,1]))*5000,c='k',marker='1',s=10)
+        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = list_reverse(self.pars[:,1]-self.pars[:,2],len(self.pars[:,1]))*5000,c='k',marker='2',s=10)
         cax3 = ax1[1].axvline(x = len(self.pars[:,1]), linestyle = "--", color = "red")
 
         cbar = fig.colorbar(cax)
