@@ -67,7 +67,9 @@ class Plasmon_analysis(object):
         self.arg = arg
         self.namefile = namefile
         self.pars = np.zeros((51,3))
+        self.pars2 = np.zeros((51,3))
         self.perr_lorentz = np.zeros((51,3))
+        self.perr_lorentz2 = np.zeros((51,3))
 
     def load_data(self):
         with open(self.namefile) as file:
@@ -732,13 +734,13 @@ def main(arg):
         plasmon.fitting_Lorentz2(frequencies_d,data_d, 51) #size = 51*2 = 102
         #f.close()
         if (len( sys.argv) == 3):
-            np.savetxt("data_fitting_amplitudes_d_{}.txt".format(namefile),np.c_[plasmon.pars[:,0], plasmon.perr_lorentz[:,0]],header='#-----amplitude--(+/-)error---', footer='-------------')
-            np.savetxt("data_fitting_center_d_{}.txt".format(namefile),np.c_[plasmon.pars[:,1], plasmon.perr_lorentz[:,1]],header='#-----center(e.V.)--(+/-)error---', footer='-------------')
-            np.savetxt("data_fitting_width_d_{}.txt".format(namefile),np.c_[plasmon.pars[:,2], plasmon.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---', footer='-------------')
+            np.savetxt("data_fitting_amplitudes_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,0], plasmon.perr_lorentz2[:,0]],header='#-----amplitude--(+/-)error---', footer='-------------')
+            np.savetxt("data_fitting_center_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,1], plasmon.perr_lorentz2[:,1]],header='#-----center(e.V.)--(+/-)error---', footer='-------------')
+            np.savetxt("data_fitting_width_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,2], plasmon.perr_lorentz2[:,2]],header='#-----width(e.V.)--(+/-)error---', footer='-------------')
         else:
-            np.savetxt("data_fitting_amplitudes_d_{}.txt".format(namefile),np.c_[plasmon.pars[:,0], plasmon.perr_lorentz[:,0]],header='#-----amplitude--(+/-)error---for--qx={}'.format(qx), footer='-------------')
-            np.savetxt("data_fitting_center_d_{}.txt".format(namefile),np.c_[plasmon.pars[:,1], plasmon.perr_lorentz[:,1]],header='#-----center(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
-            np.savetxt("data_fitting_width_d_{}.txt".format(namefile),np.c_[plasmon.pars[:,2], plasmon.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+            np.savetxt("data_fitting_amplitudes_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,0], plasmon.perr_lorentz2[:,0]],header='#-----amplitude--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+            np.savetxt("data_fitting_center_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,1], plasmon.perr_lorentz2[:,1]],header='#-----center(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+            np.savetxt("data_fitting_width_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,2], plasmon.perr_lorentz2[:,2]],header='#-----width(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
 
         print ("dibuja")
         plasmon.plot_contour(plasmon.Fitted_data)
