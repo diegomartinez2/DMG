@@ -126,9 +126,9 @@ class Plasmon_analysis(object):
         	interpolation='gaussian', aspect='auto')
         #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
         print (self.pars[:,1])
-        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = self.pars[:,1]*5000,c='k',marker='x',s=10)
-        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = (self.pars[:,1]+self.pars[:,2])*5000,c='k',marker='1',s=10)
-        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = (self.pars[:,1]-self.pars[:,2])*5000,c='k',marker='2',s=10)
+        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = self.pars[:,1].reverse()*5000,c='k',marker='x',s=10)
+        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = (self.pars[:,1]+self.pars[:,2]).reverse()*5000,c='k',marker='1',s=10)
+        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = (self.pars[:,1]-self.pars[:,2]).reverse()*5000,c='k',marker='2',s=10)
         cax3 = ax1[1].axvline(x = len(self.pars[:,1]), linestyle = "--", color = "red")
 
         cbar = fig.colorbar(cax)
