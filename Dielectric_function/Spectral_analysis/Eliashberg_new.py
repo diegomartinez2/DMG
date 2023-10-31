@@ -168,7 +168,7 @@ class Plasmon_analysis(object):
 
     def plot_contour3(self,data,data2):
         plt.style.use('_mpl-gallery-nogrid')
-        fig, ax1 = plt.subplots(1,2)
+        fig, ax1 = plt.subplots(2,1)
         fig.set_size_inches(10, 5)
         fig.set_dpi(100)
         cax = ax1[0].imshow(data.T,
@@ -180,6 +180,7 @@ class Plasmon_analysis(object):
         cax2 = ax1[1].imshow(data2.T,
         #	vmin = 0.0 , vmax = 0.004,
         #	vmin = 0.0 , vmax = 0.3,
+            vmin = 0.0 , vmax = 0.12,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
         #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
