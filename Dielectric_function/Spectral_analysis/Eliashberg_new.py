@@ -169,7 +169,7 @@ class Plasmon_analysis(object):
         pass
 
     def plot_contour3(self,data,data2):
-        #plt.style.use('_mpl-gallery-nogrid')
+        plt.style.use('_mpl-gallery-nogrid')
         fig, ax1 = plt.subplots(2,1)
         fig.set_size_inches(10, 5)
         fig.set_dpi(100)
@@ -179,22 +179,24 @@ class Plasmon_analysis(object):
         	vmin = 0.0 , vmax = 0.12,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
+        cax.tick_params(direction='in', length=6, width=2, colors='k', right=True, labelright='on')
         cax2 = ax1[1].imshow(data2.T,
         #	vmin = 0.0 , vmax = 0.004,
         #	vmin = 0.0 , vmax = 0.3,
             vmin = 0.0 , vmax = 0.12,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
+        cax2.tick_params(direction='in', length=6, width=2, colors='k', right=True, labelright='on')
         #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
         #print (self.pars[:,1])
         x_max_range = len(self.pars[:,1])
         for xi in range(x_max_range):
             #cax3 = ax1[1].errorbar(x = xi, y = self.pars[xi,1]*5001, yerr=abs(self.pars2[xi,2]), c='k', barsabove=True)
-            cax3 = ax1[1].scatter(x = xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
+            cax3 = ax1[1].scatter(x = x_max_range-xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
             y_min =(self.pars[xi,1]-self.pars2[xi,2])*5001
             y_max =(self.pars[xi,1]+self.pars2[xi,2])*5001
-            cax3 = ax1[1].scatter(x = xi, y = y_min,c='k',marker='1',s=10)
-            cax3 = ax1[1].scatter(x = xi, y = y_max,c='k',marker='2',s=10)
+            cax3 = ax1[1].scatter(x = x_max_range-xi, y = y_min,c='k',marker='1',s=10)
+            cax3 = ax1[1].scatter(x = x_max_range-xi, y = y_max,c='k',marker='2',s=10)
 
             cax3 = ax1[1].scatter(x = x_max_range+xi, y = self.pars2[xi,1]*5001,c='k',marker='x',s=10)
             y_min =(self.pars2[xi,1]-self.pars2[xi,2])*5001
