@@ -179,14 +179,14 @@ class Plasmon_analysis(object):
         	vmin = 0.0 , vmax = 0.12,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
-        cax.tick_params(direction='in', length=6, width=2, colors='k', right=True, labelright='on')
+        #plt.tick_params(direction='in', length=6, width=2, colors='k', right=True, labelright='on')
         cax2 = ax1[1].imshow(data2.T,
         #	vmin = 0.0 , vmax = 0.004,
         #	vmin = 0.0 , vmax = 0.3,
             vmin = 0.0 , vmax = 0.12,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
-        cax2.tick_params(direction='in', length=6, width=2, colors='k', right=True, labelright='on')
+        #cax2.tick_params(direction='in', length=6, width=2, colors='k', right=True, labelright='on')
         #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
         #print (self.pars[:,1])
         x_max_range = len(self.pars[:,1])
