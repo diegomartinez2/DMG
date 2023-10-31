@@ -129,7 +129,7 @@ class Plasmon_analysis(object):
         cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = self.pars[:,1]*5000,c='k',marker='x',s=10)
         cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = (self.pars[:,1]+self.pars[:,2])*5000,c='k',marker='1',s=10)
         cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = (self.pars[:,1]-self.pars[:,2])*5000,c='k',marker='2',s=10)
-        cax3 = ax1[1].axvline(x = len(self.pars[:,1])/2, linestyle = "--", color = "red")
+        cax3 = ax1[1].axvline(x = len(self.pars[:,1]), linestyle = "--", color = "red")
 
         cbar = fig.colorbar(cax)
         cbar2 = fig.colorbar(cax2)
@@ -637,9 +637,9 @@ def main(arg):
             np.savetxt("data_fitting_width_d_{}.txt".format(namefile),np.c_[plasmon.pars[:,2], plasmon.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
 
         print ("dibuja")
-    #    plasmon.plot_contour(plasmon.Fitted_data)
-    #    plasmon.plot_contour2(data,plasmon.Fitted_data)
-        Fitted_data = np.vstack((np.flip(plasmon.Fitted_data, axis=1), plasmon.Fitted_data2))
+        plasmon.plot_contour(plasmon.Fitted_data)
+        plasmon.plot_contour2(data,plasmon.Fitted_data)
+        Fitted_data = np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2))
         plasmon.plot_contour(Fitted_data)
         plasmon.plot_contour2(data,Fitted_data)
         # superconductor = Eliashberg(plasmon.pars)
