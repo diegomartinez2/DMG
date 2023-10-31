@@ -99,7 +99,7 @@ class Plasmon_analysis(object):
         fig.set_dpi(100)
         cax = ax1.imshow(data.T,
         #	vmin = 0.0 , vmax = 0.004,
-        	vmin = 0.0 , vmax = 0.3,
+        	vmin = 0.0 , vmax = 0.2,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
         ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
@@ -588,11 +588,11 @@ def main(arg):
             index = arg[2]
             #data, frequencies = plasmon.load_big_file(index, arg[1])
             data, frequencies = plasmon.load_big_file(index, arg[1],diagonal=False)
-            data_d, frequencies_d = plasmon.load_big_file(index, arg[1], diagonal=True)
+        #    data_d, frequencies_d = plasmon.load_big_file(index, arg[1], diagonal=True)
             #data.append(data_d)
-            data = np.vstack((np.flip(data, axis=1), data_d))
+        #    data = np.vstack((np.flip(data, axis=1), data_d))
             #frequencies.append(frequencies_d)
-            frequencies = np.vstack((np.flip(frequencies), frequencies_d))
+        #    frequencies = np.vstack((np.flip(frequencies), frequencies_d))
         else:
             data, frequencies, qx= plasmon.load_data()
 #--------------------------diagonal-----------------------------
