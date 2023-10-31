@@ -185,7 +185,7 @@ class Plasmon_analysis(object):
         	interpolation='gaussian', aspect='auto')
         #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
         print (self.pars[:,1])
-        for xi in range(len(self.pars[:,1]):
+        for xi in range(len(self.pars[:,1])):
             cax3 = ax1[1].scatter(x = xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
             cax3 = ax1[1].axvline(x = xi, ymin = (self.pars[xi,1]-self.pars[xi,2])*5001, ymax = (self.pars[xi,1]+self.pars[xi,2])*5001, linewidth=0.3, color=(0, 0, 0, 0.75))
         cax3 = ax1[1].axvline(x = len(self.pars[:,1]), linestyle = "--", color = "red")
