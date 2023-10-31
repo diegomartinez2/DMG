@@ -592,7 +592,7 @@ def main(arg):
             #data.append(data_d)
             data = np.vstack((data, data_d))
             #frequencies.append(frequencies_d)
-            frequencies = np.vstack((dfrequencies, frequencies_d))
+            frequencies = np.vstack((frequencies, frequencies_d))
         else:
             data, frequencies, qx= plasmon.load_data()
 #--------------------------diagonal-----------------------------
