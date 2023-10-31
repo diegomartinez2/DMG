@@ -99,7 +99,7 @@ class Plasmon_analysis(object):
         fig.set_dpi(100)
         cax = ax1.imshow(data.T,
         #	vmin = 0.0 , vmax = 0.004,
-        #	vmin = 0.0 , vmax = 0.3,
+        	vmin = 0.0 , vmax = 0.3,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
         ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
