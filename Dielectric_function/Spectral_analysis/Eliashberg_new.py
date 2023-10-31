@@ -167,7 +167,7 @@ class Plasmon_analysis(object):
         pass
 
     def plot_contour3(self,data,data2):
-        plt.style.use('_mpl-gallery-nogrid')
+        #plt.style.use('_mpl-gallery-nogrid')
         fig, ax1 = plt.subplots(2,1)
         fig.set_size_inches(10, 5)
         fig.set_dpi(100)
@@ -184,11 +184,15 @@ class Plasmon_analysis(object):
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
         #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
-        print (self.pars[:,1])
-        for xi in range(len(self.pars[:,1])):
-            cax3 = ax1[1].scatter(x = xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
+        #print (self.pars[:,1])
+        x_max_range = len(self.pars[:,1])
+        for xi in range(x_max_range):
+            y_min =(self.pars[xi,1]-self.pars[xi,2])*5001
+            y_max =(self.pars[xi,1]+self.pars[xi,2])*5001
+            print ("y_min,y_max=",y_min,y_max)
+            cax3 = ax1[1].scatter(x = xi, y = self.pars[x_max_range-xi,1]*5001,c='k',marker='x',s=10)
             #cax3 = ax1[1].axvline(x = xi, ymin = (self.pars[xi,1]-self.pars[xi,2])*5001, ymax = (self.pars[xi,1]+self.pars[xi,2])*5001, linewidth=0.3, color=(0, 0, 0, 0.75))
-            cax3 = ax1[1].axvline(x = xi, ymin = (self.pars[xi,1]-self.pars[xi,2])*5001, ymax = (self.pars[xi,1]+self.pars[xi,2])*5001)
+            cax3 = ax1[1].axvline(x = xi, ymin = y_min, ymax = y_max, color = "red")
         cax3 = ax1[1].axvline(x = len(self.pars[:,1]), linestyle = "--", color = "red")
 
         cbar = fig.colorbar(cax)
