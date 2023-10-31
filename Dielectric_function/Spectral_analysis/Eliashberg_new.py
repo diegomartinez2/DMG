@@ -186,16 +186,17 @@ class Plasmon_analysis(object):
         #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
         print (self.pars[:,1])
         cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = list_reverse(self.pars[:,1],len(self.pars[:,1]))*5001,c='k',marker='x',s=10)
-        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = list_reverse(self.pars[:,1]+self.pars[:,2],len(self.pars[:,1]))*5001,c='k',marker='1',s=10)
-        cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = list_reverse(self.pars[:,1]-self.pars[:,2],len(self.pars[:,1]))*5001,c='k',marker='2',s=10)
+        #cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = list_reverse(self.pars[:,1]+self.pars[:,2],len(self.pars[:,1]))*5001,c='k',marker='1',s=10)
+        #cax3 = ax1[1].scatter(x = range(len(self.pars[:,1])), y = list_reverse(self.pars[:,1]-self.pars[:,2],len(self.pars[:,1]))*5001,c='k',marker='2',s=10)
+        cax3 = ax1[1].axvline(x = range(len(self.pars[:,1])), ymin = list_reverse(self.pars[:,1]-self.pars[:,2],len(self.pars[:,1]))*5001, ymax = list_reverse(self.pars[:,1]+self.pars[:,2],len(self.pars[:,1]))*5001)
         cax3 = ax1[1].axvline(x = len(self.pars[:,1]), linestyle = "--", color = "red")
 
         cbar = fig.colorbar(cax)
         cbar2 = fig.colorbar(cax2)
         if (len( sys.argv) == 3):
-            plt.savefig("Ajuste_{}".format("original_vs_fitted"))
+            plt.savefig("Ajuste_d_{}".format("original_vs_fitted"))
         else:
-            plt.savefig("Ajuste_{}_{}".format(self.namefile,"original_vs_fitted"))
+            plt.savefig("Ajuste_d_{}_{}".format(self.namefile,"original_vs_fitted"))
         plt.show()
         pass
 
@@ -698,9 +699,11 @@ def main(arg):
         print ("dibuja")
         plasmon.plot_contour(plasmon.Fitted_data)
         plasmon.plot_contour2(data,plasmon.Fitted_data)
+        print ("dibuja_doble")
         Fitted_data = np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2))
-        plasmon.plot_contour(Fitted_data)
-        plasmon.plot_contour2(data,Fitted_data)
+        #plasmon.plot_contour(Fitted_data)
+        #plasmon.plot_contour2(data,Fitted_data)
+        plasmon.plot_contour3(Fitted_data,Fitted_data)
         # superconductor = Eliashberg(plasmon.pars)
         # superconductor.read_Ne()
         ## lambda_1, lambda_2 = superconductor.Lambda(frequencies)
