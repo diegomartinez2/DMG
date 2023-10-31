@@ -190,9 +190,9 @@ class Plasmon_analysis(object):
             y_min =(self.pars[xi,1]-self.pars[xi,2])*5001
             y_max =(self.pars[xi,1]+self.pars[xi,2])*5001
             print ("y_min,y_max=",y_min,y_max)
-            cax3 = ax1[1].scatter(x = xi, y = self.pars[x_max_range-xi,1]*5001,c='k',marker='x',s=10)
-            cax3 = ax1[1].scatter(x = xi, y = y_min,c='1',marker='x',s=10)
-            cax3 = ax1[1].scatter(x = xi, y = y_max,c='2',marker='x',s=10)
+            cax3 = ax1[1].scatter(x = x_max_range-xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
+            cax3 = ax1[1].scatter(x = x_max_range-xi, y = y_min,c='k',marker='1',s=10)
+            cax3 = ax1[1].scatter(x = x_max_range-xi, y = y_max,c='k',marker='2',s=10)
             #cax3 = ax1[1].axvline(x = xi, ymin = (self.pars[xi,1]-self.pars[xi,2])*5001, ymax = (self.pars[xi,1]+self.pars[xi,2])*5001, linewidth=0.3, color=(0, 0, 0, 0.75))
             #cax3 = ax1[1].axvline(x = xi, ymin = y_min, ymax = y_max, color = "red")
         cax3 = ax1[1].axvline(x = len(self.pars[:,1]), linestyle = "--", color = "red")
