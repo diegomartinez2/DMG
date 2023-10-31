@@ -183,6 +183,12 @@ class Plasmon_analysis(object):
             self.Fitted_data[i] = self.locate_1Lorenztian(frequencies,data[i],i)
         pass
 
+    def fitting_Lorentz2(self,frequencies,data,size):
+        self.Fitted_data2 = np.zeros((size,5001))
+        for i in range(size):
+            self.Fitted_data2[i] = self.locate_1Lorenztian(frequencies,data[i],i)
+        pass
+
 class Eliashberg(object):
     """docstring for Eliashberg.
     This object calculates the Lambda from two methods:
@@ -590,9 +596,9 @@ def main(arg):
             data, frequencies = plasmon.load_big_file(index, arg[1],diagonal=False)
             data_d, frequencies_d = plasmon.load_big_file(index, arg[1], diagonal=True)
             #data.append(data_d)
-            data = np.vstack((np.flip(data, axis=1), data_d))
+        #    data = np.vstack((np.flip(data, axis=1), data_d))
             #frequencies.append(frequencies_d)
-            frequencies = np.vstack((np.flip(frequencies), frequencies_d))
+        #    frequencies = np.vstack((np.flip(frequencies), frequencies_d))
         else:
             data, frequencies, qx= plasmon.load_data()
 #--------------------------diagonal-----------------------------
@@ -601,13 +607,14 @@ def main(arg):
 #                data[i,:] = plasmon.data[i,i,:]
 #---------------------------------end---diagonal----------------
         print (np.shape(data),"=(51,5001)?")
+        print ("Frequencies length=",len(frequencies))
         print ("dibuja")
         plasmon.plot_contour(data)
         print("calcula ajuste lorentzian")
         #none = plasmon.locate_1Lorenztian(frequencies,data[30])
         #f=open('file_data_fittings.txt','a')
         #f.write("-amplitude--(+/-)error--center--(+/-)error--width--(+/-)error-\n")
-        plasmon.fitting_Lorentz(frequencies,data, 102) #size = 51*2 = 102
+        plasmon.fitting_Lorentz(frequencies,data, 51) #size = 51*2 = 102
         #f.close()
         if (len( sys.argv) == 3):
             np.savetxt("data_fitting_amplitudes_{}.txt".format(namefile),np.c_[plasmon.pars[:,0], plasmon.perr_lorentz[:,0]],header='#-----amplitude--(+/-)error---', footer='-------------')
@@ -618,9 +625,23 @@ def main(arg):
             np.savetxt("data_fitting_center_{}.txt".format(namefile),np.c_[plasmon.pars[:,1], plasmon.perr_lorentz[:,1]],header='#-----center(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
             np.savetxt("data_fitting_width_{}.txt".format(namefile),np.c_[plasmon.pars[:,2], plasmon.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
 
+        plasmon.fitting_Lorentz2(frequencies_d,data_d, 51) #size = 51*2 = 102
+        #f.close()
+        if (len( sys.argv) == 3):
+            np.savetxt("data_fitting_amplitudes_d_{}.txt".format(namefile),np.c_[plasmon.pars[:,0], plasmon.perr_lorentz[:,0]],header='#-----amplitude--(+/-)error---', footer='-------------')
+            np.savetxt("data_fitting_center_d_{}.txt".format(namefile),np.c_[plasmon.pars[:,1], plasmon.perr_lorentz[:,1]],header='#-----center(e.V.)--(+/-)error---', footer='-------------')
+            np.savetxt("data_fitting_width_d_{}.txt".format(namefile),np.c_[plasmon.pars[:,2], plasmon.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---', footer='-------------')
+        else:
+            np.savetxt("data_fitting_amplitudes_d_{}.txt".format(namefile),np.c_[plasmon.pars[:,0], plasmon.perr_lorentz[:,0]],header='#-----amplitude--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+            np.savetxt("data_fitting_center_d_{}.txt".format(namefile),np.c_[plasmon.pars[:,1], plasmon.perr_lorentz[:,1]],header='#-----center(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+            np.savetxt("data_fitting_width_d_{}.txt".format(namefile),np.c_[plasmon.pars[:,2], plasmon.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+
         print ("dibuja")
-        plasmon.plot_contour(plasmon.Fitted_data)
-        plasmon.plot_contour2(data,plasmon.Fitted_data)
+    #    plasmon.plot_contour(plasmon.Fitted_data)
+    #    plasmon.plot_contour2(data,plasmon.Fitted_data)
+        Fitted_data = np.vstack((np.flip(plasmon.Fitted_data, axis=1), plasmon.Fitted_data2))
+        plasmon.plot_contour(Fitted_data)
+        plasmon.plot_contour2(data,Fitted_data)
         # superconductor = Eliashberg(plasmon.pars)
         # superconductor.read_Ne()
         ## lambda_1, lambda_2 = superconductor.Lambda(frequencies)
