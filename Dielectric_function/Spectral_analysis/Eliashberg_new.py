@@ -177,9 +177,9 @@ class Plasmon_analysis(object):
         #f.write("\n")
         return lorentz_peak
 
-    def fitting_Lorentz(self,frequencies,data):
-        self.Fitted_data = np.zeros((51,5001))
-        for i in range(51):
+    def fitting_Lorentz(self,frequencies,data,size):
+        self.Fitted_data = np.zeros((size,5001))
+        for i in range(size):
             self.Fitted_data[i] = self.locate_1Lorenztian(frequencies,data[i],i)
         pass
 
@@ -588,11 +588,11 @@ def main(arg):
             index = arg[2]
             #data, frequencies = plasmon.load_big_file(index, arg[1])
             data, frequencies = plasmon.load_big_file(index, arg[1],diagonal=False)
-        #    data_d, frequencies_d = plasmon.load_big_file(index, arg[1], diagonal=True)
+            data_d, frequencies_d = plasmon.load_big_file(index, arg[1], diagonal=True)
             #data.append(data_d)
-        #    data = np.vstack((np.flip(data, axis=1), data_d))
+            data = np.vstack((np.flip(data, axis=1), data_d))
             #frequencies.append(frequencies_d)
-        #    frequencies = np.vstack((np.flip(frequencies), frequencies_d))
+            frequencies = np.vstack((np.flip(frequencies), frequencies_d))
         else:
             data, frequencies, qx= plasmon.load_data()
 #--------------------------diagonal-----------------------------
@@ -607,7 +607,7 @@ def main(arg):
         #none = plasmon.locate_1Lorenztian(frequencies,data[30])
         #f=open('file_data_fittings.txt','a')
         #f.write("-amplitude--(+/-)error--center--(+/-)error--width--(+/-)error-\n")
-        plasmon.fitting_Lorentz(frequencies,data)
+        plasmon.fitting_Lorentz(frequencies,data, 102) #size = 51*2 = 102
         #f.close()
         if (len( sys.argv) == 3):
             np.savetxt("data_fitting_amplitudes_{}.txt".format(namefile),np.c_[plasmon.pars[:,0], plasmon.perr_lorentz[:,0]],header='#-----amplitude--(+/-)error---', footer='-------------')
