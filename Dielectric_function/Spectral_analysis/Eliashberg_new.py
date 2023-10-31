@@ -189,11 +189,16 @@ class Plasmon_analysis(object):
         #print (self.pars[:,1])
         x_max_range = len(self.pars[:,1])
         for xi in range(x_max_range):
-            y_min =(self.pars[xi,1]-self.pars[xi,2])*5001
-            y_max =(self.pars[xi,1]+self.pars[xi,2])*5001
-            print ("y_min,y_max=",y_min,y_max)
-            cax3 = ax1[1].scatter(x = x_max_range+xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
-            cax3 = ax1[1].errorbar(x = xi, y = self.pars2[xi,1]*5001, yerr=abs(self.pars2[xi,2]), c='k')
+            #cax3 = ax1[1].errorbar(x = xi, y = self.pars[xi,1]*5001, yerr=abs(self.pars2[xi,2]), c='k', barsabove=True)
+            cax3 = ax1[1].scatter(x = xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
+            y_min =(self.pars[xi,1]-self.pars2[xi,2])*5001
+            y_max =(self.pars[xi,1]+self.pars2[xi,2])*5001
+            cax3 = ax1[1].scatter(x = xi, y = y_min,c='k',marker='1',s=10)
+            cax3 = ax1[1].scatter(x = xi, y = y_max,c='k',marker='2',s=10)
+
+            cax3 = ax1[1].scatter(x = x_max_range+xi, y = self.pars2[xi,1]*5001,c='k',marker='x',s=10)
+            y_min =(self.pars2[xi,1]-self.pars2[xi,2])*5001
+            y_max =(self.pars2[xi,1]+self.pars2[xi,2])*5001
             cax3 = ax1[1].scatter(x = x_max_range+xi, y = y_min,c='k',marker='1',s=10)
             cax3 = ax1[1].scatter(x = x_max_range+xi, y = y_max,c='k',marker='2',s=10)
             #cax3 = ax1[1].axvline(x = xi, ymin = (self.pars[xi,1]-self.pars[xi,2])*5001, ymax = (self.pars[xi,1]+self.pars[xi,2])*5001, linewidth=0.3, color=(0, 0, 0, 0.75))
@@ -749,7 +754,7 @@ def main(arg):
         Fitted_data = np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2))
         #plasmon.plot_contour(Fitted_data)
         #plasmon.plot_contour2(data,Fitted_data)
-        plasmon.plot_contour3(Fitted_data,Fitted_data)
+        plasmon.plot_contour3(np.vstack((np.flip(data, axis=0), data_d)),Fitted_data)
         # superconductor = Eliashberg(plasmon.pars)
         # superconductor.read_Ne()
         ## lambda_1, lambda_2 = superconductor.Lambda(frequencies)
