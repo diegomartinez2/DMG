@@ -190,10 +190,10 @@ class Plasmon_analysis(object):
             y_min =(self.pars[xi,1]-self.pars[xi,2])*5001
             y_max =(self.pars[xi,1]+self.pars[xi,2])*5001
             print ("y_min,y_max=",y_min,y_max)
-            cax3 = ax1[1].scatter(x = x_max_range-xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
-            cax3 = ax1[1].errorbar(x = x_max_range-xi, y = self.pars[xi,1]*5001, yerr=self.pars[xi,2], c='k',s=10)
-            cax3 = ax1[1].scatter(x = x_max_range-xi, y = y_min,c='k',marker='1',s=10)
-            cax3 = ax1[1].scatter(x = x_max_range-xi, y = y_max,c='k',marker='2',s=10)
+            cax3 = ax1[1].scatter(x = x_max_range+xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
+            cax3 = ax1[1].errorbar(x = xi, y = self.pars2[xi,1]*5001, yerr=abs(self.pars2[xi,2]), c='k')
+            cax3 = ax1[1].scatter(x = x_max_range+xi, y = y_min,c='k',marker='1',s=10)
+            cax3 = ax1[1].scatter(x = x_max_range+xi, y = y_max,c='k',marker='2',s=10)
             #cax3 = ax1[1].axvline(x = xi, ymin = (self.pars[xi,1]-self.pars[xi,2])*5001, ymax = (self.pars[xi,1]+self.pars[xi,2])*5001, linewidth=0.3, color=(0, 0, 0, 0.75))
             #cax3 = ax1[1].axvline(x = xi, ymin = y_min, ymax = y_max, color = "red")
         cax3 = ax1[1].axvline(x = len(self.pars[:,1]), linestyle = "--", color = "red")
@@ -253,8 +253,45 @@ class Plasmon_analysis(object):
     def fitting_Lorentz2(self,frequencies,data,size):
         self.Fitted_data2 = np.zeros((size,5001))
         for i in range(size):
-            self.Fitted_data2[i] = self.locate_1Lorenztian(frequencies,data[i],i)
+            self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies,data[i],i)
         pass
+
+    def locate_1Lorenztian2(self, Frequency, Spec, index):
+        def _1Lorentzian(x, amp1, cen1, wid1):
+            return amp1*wid1**2/((x-cen1)**2+wid1**2)
+        peaks, _ = find_peaks(Spec,width=5,rel_height=0.3)
+        print (peaks,Frequency[peaks])
+        print (peaks,_["widths"])
+        amp = 0.009
+        cen = 0.009
+        wid = 0.001
+        popt_lorentz, pcov_lorentz = scipy.optimize.curve_fit(_1Lorentzian, Frequency, Spec, p0=[amp, cen, wid])
+
+        perr_lorentz = np.sqrt(np.diag(pcov_lorentz))
+        pars = popt_lorentz[:]
+        lorentz_peak = _1Lorentzian(Frequency, *pars)
+        print ("-------------Peak ",index,"-------------")
+        print ("amplitude = %0.2f (+/-) %0.2f" % (pars[0], perr_lorentz[0]))
+        print ("center = %0.2f (+/-) %0.2f" % (pars[1], perr_lorentz[1]))
+        print ("width = %0.2f (+/-) %0.2f" % (pars[2], perr_lorentz[2]))
+        print ("area = %0.2f" % np.trapz(lorentz_peak))
+        print ("--------------------------------")
+
+        # plt.plot(Frequency, Spec, label="original")
+        # plt.plot(Frequency, lorentz_peak, "r",ls=':', label="ajuste")
+        # #plt.plot(Frequency[peaks], Spec[peaks], "xr", label="peaks")
+        # #plt.plot(Frequency[peaks], Spec[peaks], "1k", label="center")
+        # plt.legend()
+        # plt.xlim([0, Frequency.max()])
+        # plt.ylim([0, Spec.max()])
+        # plt.tight_layout()
+        # plt.savefig("Ajuste_{}_{}".format(self.namefile,index))
+        # plt.show()
+        self.pars2[index] = pars
+        self.perr_lorentz2[index] = perr_lorentz
+        #np.savetxt(f, (pars[0], perr_lorentz[0],pars[1], perr_lorentz[1],pars[2], perr_lorentz[2]) , fmt='%1.3f', newline=", ")
+        #f.write("\n")
+        return lorentz_peak
 
 class Eliashberg(object):
     """docstring for Eliashberg.
