@@ -803,6 +803,16 @@ def main(arg):
         #print (plasmon.pars2[:,0])
         print('Min(pars[0])=',np.amin(pars[:,0]))
         #print ('Min(pars2[0])=',np.amin(plasmon.pars2[:,0]))
+        file1 = './pars_data.txt'
+        file2 = './frequencies_data.txt'
+        np.savetxt(file1, pars) #no negative values
+        np.savetxt(file2, frequencies) #no negative values
+        superconductor = Eliashberg.Eliashberg(pars)
+        superconductor.read_Ne()
+        print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
+        lambda_1 = superconductor.Lambda_new(frequencies)
+        print('Lambda_1=',lambda_1,'[]?') # Lambda calculated from Lambda_q
+        print('Lambda_2=',superconductor.lambda_2,'[]?') #Lambda calculated fron Eliashberg function
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
