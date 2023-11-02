@@ -668,6 +668,7 @@ class Eliashberg_test(object):
         #a2F_x /= self.from_cm1_to_Hartree /29.9792458#*0.5#self.from_cm1_to_Hartree /29.9792458
         self.lambda_2_test2 = 2*integrate.simpson(a2F_x,w)
         self.plot_lambda(res)
+        self.plot_lambda(self.lambda_q_lista)
         return Lambda_1
     def a2F_new(self,x):
         """
@@ -811,7 +812,7 @@ def main(arg):
             np.savetxt(file2, frequencies) #no negative values
         else:
             pars = np.loadtxt(file1) #no negative values,
-            frequencies = np.loadtxt(file2) #no negative values    
+            frequencies = np.loadtxt(file2) #no negative values
         superconductor = Eliashberg(pars)
         superconductor.read_Ne()
         print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
