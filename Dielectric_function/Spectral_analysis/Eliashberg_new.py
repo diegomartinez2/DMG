@@ -799,7 +799,7 @@ def main(arg):
         #print ("shape(frequencies)=",np.shape(frequencies),"=(51,5001)?")
         #plasmon.fitting_Lorentz(frequencies,data, 51)
         #plasmon.fitting_Lorentz(np.tile(frequencies,51),data, 2601)
-        print (pars[:,0])
+        print ("shape(pars)=",np.shape(pars))
         #print (plasmon.pars2[:,0])
         print('Min(pars[0])=',np.amin(pars[:,0]))
         #print ('Min(pars2[0])=',np.amin(plasmon.pars2[:,0]))
