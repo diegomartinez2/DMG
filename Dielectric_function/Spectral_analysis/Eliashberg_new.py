@@ -785,28 +785,33 @@ def main(arg):
         # np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
         #data = []
         #frequencies = []
-        data, frequencies = plasmon.load_big_file(0, arg[1],diagonal=False)
-        plasmon.fitting_Lorentz(frequencies,data, 51)
-        pars = plasmon.pars
-        for index in range(1,51): #51 eller 50 -> 2601 eller 2550
-            data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
-            #data = np.vstack((data, data_t))
-            #frequencies = np.vstack((frequencies, frequencies_t))
-            plasmon.fitting_Lorentz(frequencies,data, 51)
-            pars = np.vstack((pars,plasmon.pars))
-        #print ("frequencies=",frequencies)
-        #print ("shape(data)=",np.shape(data),"=(51,5001)?")
-        #print ("shape(frequencies)=",np.shape(frequencies),"=(51,5001)?")
-        #plasmon.fitting_Lorentz(frequencies,data, 51)
-        #plasmon.fitting_Lorentz(np.tile(frequencies,51),data, 2601)
-        print ("shape(pars)=",np.shape(pars))
-        #print (plasmon.pars2[:,0])
-        print('Min(pars[0])=',np.amin(pars[:,0]))
-        #print ('Min(pars2[0])=',np.amin(plasmon.pars2[:,0]))
         file1 = './pars_data.txt'
         file2 = './frequencies_data.txt'
-        np.savetxt(file1, pars) #no negative values
-        np.savetxt(file2, frequencies) #no negative values
+        if not (os.path.isfile(file1) and os.path.isfile(file2)):
+            data, frequencies = plasmon.load_big_file(0, arg[1],diagonal=False)
+            plasmon.fitting_Lorentz(frequencies,data, 51)
+            pars = plasmon.pars
+            for index in range(1,51): #51 eller 50 -> 2601 eller 2550
+                data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
+                #data = np.vstack((data, data_t))
+                #frequencies = np.vstack((frequencies, frequencies_t))
+                plasmon.fitting_Lorentz(frequencies,data, 51)
+                pars = np.vstack((pars,plasmon.pars))
+            #print ("frequencies=",frequencies)
+            #print ("shape(data)=",np.shape(data),"=(51,5001)?")
+            #print ("shape(frequencies)=",np.shape(frequencies),"=(51,5001)?")
+            #plasmon.fitting_Lorentz(frequencies,data, 51)
+            #plasmon.fitting_Lorentz(np.tile(frequencies,51),data, 2601)
+            print ("shape(pars)=",np.shape(pars))
+            #print (plasmon.pars2[:,0])
+            print('Min(pars[0])=',np.amin(pars[:,0]))
+            #print ('Min(pars2[0])=',np.amin(plasmon.pars2[:,0]))
+
+            np.savetxt(file1, pars) #no negative values
+            np.savetxt(file2, frequencies) #no negative values
+        else:
+            pars = np.loadtxt(file1) #no negative values,
+            frequencies = np.loadtxt(file2) #no negative values    
         superconductor = Eliashberg(pars)
         superconductor.read_Ne()
         print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
