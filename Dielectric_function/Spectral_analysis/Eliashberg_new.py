@@ -787,8 +787,8 @@ def main(arg):
         frequencies = []
         for index in range(51):
             data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
-            data = np.vstack((np.flip(data, axis=1), data_t))
-            frequencies = np.vstack((np.flip(frequencies, axis=1), frequencies_t))
+            data = np.vstack((ndata, data_t))
+            frequencies = np.vstack((frequencies, frequencies_t))
         plasmon.fitting_Lorentz(frequencies,data, 51)
         print (plasmon.pars[:,0])
         #print (plasmon.pars2[:,0])
