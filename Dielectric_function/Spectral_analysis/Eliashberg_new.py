@@ -785,7 +785,7 @@ def main(arg):
         # np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
         data = []
         frequencies = []
-        for index in range(51):
+        for index in range(51): #51 eller 50 -> 2601 eller 2550
             data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
             data = np.vstack((data, data_t))
             frequencies = np.vstack((frequencies, frequencies_t))
