@@ -786,15 +786,19 @@ def main(arg):
         #data = []
         #frequencies = []
         data, frequencies = plasmon.load_big_file(0, arg[1],diagonal=False)
+        plasmon.fitting_Lorentz(frequencies,data, 51)
+        pars = plasmon.pars
         for index in range(1,51): #51 eller 50 -> 2601 eller 2550
             data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
-            data = np.vstack((data, data_t))
-            frequencies = np.vstack((frequencies, frequencies_t))
-        print ("frequencies=",frequencies)
-        print ("shape(data)=",np.shape(data),"=(51,5001)?")
-        print ("shape(frequencies)=",np.shape(frequencies),"=(51,5001)?")
+            #data = np.vstack((data, data_t))
+            #frequencies = np.vstack((frequencies, frequencies_t))
+            plasmon.fitting_Lorentz(frequencies,data, 51)
+            pars = np.vstack((pars,plasmon.pars)
+        #print ("frequencies=",frequencies)
+        #print ("shape(data)=",np.shape(data),"=(51,5001)?")
+        #print ("shape(frequencies)=",np.shape(frequencies),"=(51,5001)?")
         #plasmon.fitting_Lorentz(frequencies,data, 51)
-        plasmon.fitting_Lorentz(np.tile(frequencies,51),data, 2601)
+        #plasmon.fitting_Lorentz(np.tile(frequencies,51),data, 2601)
         print (plasmon.pars[:,0])
         #print (plasmon.pars2[:,0])
         print('Min(pars[0])=',np.amin(plasmon.pars[:,0]))
