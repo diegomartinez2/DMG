@@ -807,7 +807,7 @@ def main(arg):
         file2 = './frequencies_data.txt'
         np.savetxt(file1, pars) #no negative values
         np.savetxt(file2, frequencies) #no negative values
-        superconductor = Eliashberg.Eliashberg(pars)
+        superconductor = Eliashberg(pars)
         superconductor.read_Ne()
         print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
         lambda_1 = superconductor.Lambda_new(frequencies)
