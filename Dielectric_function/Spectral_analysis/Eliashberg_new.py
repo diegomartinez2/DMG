@@ -783,10 +783,17 @@ def main(arg):
 
         # np.savetxt('Lambda.txt', (lambda_1))
         # np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
+        data = []
+        frequencies = []
+        for index in range(51):
+            data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
+            data = np.vstack((np.flip(data, axis=1), data_t))
+            frequencies = np.vstack((np.flip(frequencies, axis=1), frequencies_t))
+        plasmon.fitting_Lorentz(frequencies,data, 51)
         print (plasmon.pars[:,0])
-        print (plasmon.pars2[:,0])
+        #print (plasmon.pars2[:,0])
         print('Min(pars[0])=',np.amin(plasmon.pars[:,0]))
-        print ('Min(pars2[0])=',np.amin(plasmon.pars2[:,0]))
+        #print ('Min(pars2[0])=',np.amin(plasmon.pars2[:,0]))
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
