@@ -170,7 +170,7 @@ class Plasmon_analysis(object):
 
     def plot_contour3(self,data,data2):
         plt.style.use('_mpl-gallery-nogrid')
-        fig, ax1 = plt.subplots(2,1)
+        fig, ax1 = plt.subplots(nrows=2, ncols=1, sharex=True, sharey=True)
         fig.set_size_inches(10, 5)
         fig.set_dpi(100)
         cax = ax1[0].imshow(data.T,
@@ -209,10 +209,24 @@ class Plasmon_analysis(object):
 
         cbar = fig.colorbar(cax)
         cbar2 = fig.colorbar(cax2)
+        #fig.suptitle('$-Im(\epsilon^{-1}(q,\omega))$')
+        ax1[0].set_title('Original data')
+        ax1[0].set_ylabel('$\omega$ (eV)')
+        ax1[1].set_ylabel('$\omega$ (eV)')
+        ax1[0].set_xlabel('$q_x$ (a.u.)')
+        ax1[1].set_xlabel('$q_x$ (a.u.)')
+        ax1[1].set_title('Lorentz fitting')
+        ax1[0].set_xticks([0,51,102])
+        ax1[0].set_yticks([0,5001])
+        ax1[0].set_xticklabels(["($\pi$,0)","(0,0)","($\pi$,$\pi$)"])
+        ax1[0].set_yticklabels(["0","1"])
+
+        plt.tight_layout()
         if (len( sys.argv) == 3):
             plt.savefig("Ajuste_d_{}".format("original_vs_fitted"))
         else:
             plt.savefig("Ajuste_d_{}_{}".format(self.namefile,"original_vs_fitted"))
+
         plt.show()
         pass
 
@@ -220,8 +234,8 @@ class Plasmon_analysis(object):
         def _1Lorentzian(x, amp1, cen1, wid1):
             return amp1*wid1**2/((x-cen1)**2+wid1**2)
         peaks, _ = find_peaks(Spec,width=5,rel_height=0.3)
-        print (peaks,Frequency[peaks])
-        print (peaks,_["widths"])
+        #print (peaks,Frequency[peaks])
+        #print (peaks,_["widths"])
         amp = 0.009
         cen = 0.009
         wid = 0.001
@@ -254,13 +268,15 @@ class Plasmon_analysis(object):
         return lorentz_peak
 
     def fitting_Lorentz(self,frequencies,data,size):
-        self.Fitted_data = np.zeros((size,5001))
+        #self.Fitted_data = np.zeros((size,5001))
+        self.Fitted_data = np.zeros((size,len(frequencies)))
         for i in range(size):
             self.Fitted_data[i] = self.locate_1Lorenztian(frequencies,data[i],i)
         pass
 
     def fitting_Lorentz2(self,frequencies,data,size):
-        self.Fitted_data2 = np.zeros((size,5001))
+        #self.Fitted_data2 = np.zeros((size,5001))
+        self.Fitted_data2 = np.zeros((size,len(frequencies)))
         for i in range(size):
             self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies,data[i],i)
         pass
@@ -269,8 +285,8 @@ class Plasmon_analysis(object):
         def _1Lorentzian(x, amp1, cen1, wid1):
             return amp1*wid1**2/((x-cen1)**2+wid1**2)
         peaks, _ = find_peaks(Spec,width=5,rel_height=0.3)
-        print (peaks,Frequency[peaks])
-        print (peaks,_["widths"])
+        #print (peaks,Frequency[peaks])
+        #print (peaks,_["widths"])
         amp = 0.009
         cen = 0.009
         wid = 0.001
