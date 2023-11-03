@@ -836,13 +836,13 @@ def main(arg):
         ax.set_title('$\lambda$ vs. $\omega$')
         ax.set_ylabel('$\lambda(\omega)$')
         ax.set_xlabel('$\omega$')
-        ax.set_xticks([0,51])
+        #ax.set_xticks([0,51])
         #ax.set_yticks([0,5001])
-        ax.set_xticklabels(["0","$\pi$"])
+        #ax.set_xticklabels(["0","$\pi$"])
         #ax.set_yticklabels(["0","1"])
         plt.tight_layout()
         plt.show()
-        fig_lambda_q.savefig("Ajuste_d_{}".format("lambda_q"))
+        fig_lambda_q.savefig("Ajuste_d_{}".format("lambda_w"))
         a2F_lista = []
         #print("frequencies=",frequencies)
         #for w in frequencies:
