@@ -821,6 +821,43 @@ def main(arg):
         lambda_1 = superconductor.Lambda_new(frequencies)
         print('Lambda_1=',lambda_1,'[]?') # Lambda calculated from Lambda_q
         print('Lambda_2=',superconductor.lambda_2,'[]?') #Lambda calculated fron Eliashberg function
+        #print("shape(lambda_q)=",np.shape(superconductor.lambda_q_lista))
+        print("lambda_q=",superconductor.lambda_q_lista[:50])
+
+        fig_lambda_q = plt.figure(figsize=(10,6))
+        ax = fig_lambda_q.add_subplot(1, 1, 1)
+        ax.plot(superconductor.lambda_q_lista[:50])
+        ax.set_title('$\lambda_q$ vs. q')
+        ax.set_ylabel('$\lambda_q$')
+        ax.set_xlabel('$q_x$ (a.u.)')
+        ax.set_xticks([0,51])
+        #ax.set_yticks([0,5001])
+        ax.set_xticklabels(["0","$\pi$"])
+        #ax.set_yticklabels(["0","1"])
+        plt.tight_layout()
+        plt.show()
+        plt.savefig("Ajuste_d_{}".format("lambda_q"))
+        a2F_lista = []
+        #print("frequencies=",frequencies)
+        #for w in frequencies:
+        #    a2F_lista.append(superconductor.a2F_new(w))
+        a2F_lista = superconductor.a2F_new(frequencies)
+
+        #print ("a2F(w)=",a2F_lista)
+        fig_a2F = plt.figure(figsize=(10,6))
+        ax = fig_a2F.add_subplot(1, 1, 1)
+        ax.plot(a2F_lista,frequencies)
+        ax.set_title('a2F vs. $\omega$')
+        ax.set_ylabel('$\omega$ (eV)')
+        ax.set_xlabel('a2F')
+        #ax.set_xticks([0,51])
+        #ax.set_yticks([0,5001])
+        #ax.set_xticklabels(["0","1"])
+        #ax.set_yticklabels(["0","1"])
+        plt.plot ()
+        plt.tight_layout()
+        plt.show()
+        plt.savefig("Ajuste_d_{}".format("a2F"))
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
