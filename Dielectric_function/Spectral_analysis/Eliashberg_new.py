@@ -826,10 +826,10 @@ def main(arg):
 
         fig_lambda_q = plt.figure(figsize=(10,6))
         ax = fig_lambda_q.add_subplot(1, 1, 1)
-        ax.plot(superconductor.lambda_q_lista[:50])
+        ax.plot(superconductor.lambda_q_lista[:50],'ko')
         ax.set_title('$\lambda_q$ vs. q')
         ax.set_ylabel('$\lambda_q$')
-        ax.set_xlabel('$q_x$ (a.u.)')
+        ax.set_xlabel('$q$')
         ax.set_xticks([0,51])
         #ax.set_yticks([0,5001])
         ax.set_xticklabels(["0","$\pi$"])
