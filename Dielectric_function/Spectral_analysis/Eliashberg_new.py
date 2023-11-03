@@ -504,6 +504,7 @@ class Eliashberg(object):
         else:
             Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
         w = Frequencies[Frequencies != 0]
+        self.w = w
         #w = np.linspace(0.0001,0.9999,20000) #test
         # with mp.Pool() as pool:
         #     res = pool.map(self.a2F_new,w)
@@ -535,7 +536,7 @@ class Eliashberg(object):
         width = self.pars[:,2] #*put units the same as center
         width = np.absolute(width)
         #nits = create_units('2014')
-        gauss_width = 100*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
+        gauss_width = 150*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         # summa = 0
         # factor1 = 1 / (2*np.pi*self.Nef*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
         # for i in range(len(center)):
@@ -839,6 +840,7 @@ def main(arg):
         #ax.set_xticks([0,51])
         #ax.set_yticks([0,5001])
         #ax.set_xticklabels(["0","$\pi$"])
+        ax.set_xticklabels(superconductor.w)
         #ax.set_yticklabels(["0","1"])
         plt.tight_layout()
         plt.show()
