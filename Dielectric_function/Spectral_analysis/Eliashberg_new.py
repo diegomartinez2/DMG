@@ -505,8 +505,9 @@ class Eliashberg(object):
             Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
         w = Frequencies[Frequencies != 0]
         #w = np.linspace(0.0001,0.9999,20000) #test
-        with mp.Pool() as pool:
-            res = pool.map(self.a2F_new,w)
+        # with mp.Pool() as pool:
+        #     res = pool.map(self.a2F_new,w)
+        res = self.a2F_new(w)
         a2F_x = np.divide(res, w)
         #self.lambda_2_test2 = 2*integrate.simpson(np.divide(res,w)*self.from_cm1_to_Hartree /29.9792458,w)
         self.lambda_2 = 2*integrate.simpson(a2F_x,w)
