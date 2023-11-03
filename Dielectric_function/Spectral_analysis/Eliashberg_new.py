@@ -514,10 +514,12 @@ class Eliashberg(object):
         print("plot a2F(w)")
         self.plot_lambda(res)
         print("plot Lambda(w)")
-        w_1 = Frequencies[Frequencies != 0]
-        self.lambda_w_lista = 2*integrate.simpson(a2F_x,w_1)
-        print("integral=",self.lambda_w_lista)
-        self.plot_lambda(self.lambda_w_lista)
+        lambda_w_lista = []
+        for i in range(len(w)): #Frequencies[Frequencies != 0]:
+            w_1 = w[:i]
+            lambda_w_lista.append(2*integrate.simpson(a2F_x,w_1))
+        print("integral=",lambda_w_lista)
+        self.plot_lambda(lambda_w_lista)
         return Lambda_1
 
     def a2F_new(self,x):
