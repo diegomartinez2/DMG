@@ -836,7 +836,7 @@ def main(arg):
         #ax.set_yticklabels(["0","1"])
         plt.tight_layout()
         plt.show()
-        plt.savefig("Ajuste_d_{}".format("lambda_q"))
+        fig_lambda_q.savefig("Ajuste_d_{}".format("lambda_q"))
         a2F_lista = []
         #print("frequencies=",frequencies)
         #for w in frequencies:
@@ -857,7 +857,7 @@ def main(arg):
         plt.plot ()
         plt.tight_layout()
         plt.show()
-        plt.savefig("Ajuste_d_{}".format("a2F"))
+        fig_a2F.savefig("Ajuste_d_{}".format("a2F"))
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
