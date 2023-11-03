@@ -513,8 +513,11 @@ class Eliashberg(object):
         self.lambda_2 = 2*integrate.simpson(a2F_x,w)
         print("plot a2F(w)")
         self.plot_lambda(res)
-        print("plot Lambda_q(w)")
-        self.plot_lambda(self.lambda_q_lista)
+        print("plot Lambda(w)")
+        w_1 = Frequencies[Frequencies != 0]
+        self.lambda_w_lista = 2*integrate.simpson(a2F_x,w_1)
+        print("integral=",self.lambda_w_lista)
+        self.plot_lambda(self.lambda_w_lista)
         return Lambda_1
 
     def a2F_new(self,x):
