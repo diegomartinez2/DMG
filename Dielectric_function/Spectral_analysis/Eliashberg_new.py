@@ -514,11 +514,11 @@ class Eliashberg(object):
         print("plot a2F(w)")
         self.plot_lambda(res)
         print("plot Lambda(w)")
-        lambda_w_lista = []
-        for i in range(len(w)): #Frequencies[Frequencies != 0]:
+        self.lambda_w_lista = []
+        for i in range(1,len(w)): #Frequencies[Frequencies != 0]:
             w_1 = w[:i]
-            lambda_w_lista.append(2*integrate.simpson(a2F_x,w_1))
-        print("integral=",lambda_w_lista)
+            self.lambda_w_lista.append(2*integrate.simpson(np.divide(self.a2F_new(w_1), w_1),w_1))
+        #print("integral=",lambda_w_lista)
         self.plot_lambda(lambda_w_lista)
         return Lambda_1
 
@@ -832,10 +832,10 @@ def main(arg):
 
         fig_lambda_q = plt.figure(figsize=(10,6))
         ax = fig_lambda_q.add_subplot(1, 1, 1)
-        ax.plot(superconductor.lambda_q_lista[:50],'ko')
-        ax.set_title('$\lambda_q$ vs. q')
-        ax.set_ylabel('$\lambda_q$')
-        ax.set_xlabel('$q$')
+        ax.plot(superconductor.lambda_w_lista)
+        ax.set_title('$\lambda$ vs. $\omega$')
+        ax.set_ylabel('$\lambda(\omega)$')
+        ax.set_xlabel('$\omega$')
         ax.set_xticks([0,51])
         #ax.set_yticks([0,5001])
         ax.set_xticklabels(["0","$\pi$"])
