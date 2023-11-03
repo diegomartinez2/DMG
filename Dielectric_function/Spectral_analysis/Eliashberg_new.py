@@ -519,7 +519,7 @@ class Eliashberg(object):
             w_1 = w[:i]
             self.lambda_w_lista.append(2*integrate.simpson(np.divide(self.a2F_new(w_1), w_1),w_1))
         #print("integral=",lambda_w_lista)
-        self.plot_lambda(lambda_w_lista)
+        self.plot_lambda(self.lambda_w_lista)
         return Lambda_1
 
     def a2F_new(self,x):
