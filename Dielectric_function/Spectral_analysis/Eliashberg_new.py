@@ -536,7 +536,7 @@ class Eliashberg(object):
         width = self.pars[:,2] #*put units the same as center
         width = np.absolute(width)
         #nits = create_units('2014')
-        gauss_width = 1*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
+        gauss_width = 0.5*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         # summa = 0
         # factor1 = 1 / (2*np.pi*self.Nef*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
         # for i in range(len(center)):
