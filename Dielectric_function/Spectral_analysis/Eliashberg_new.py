@@ -536,7 +536,7 @@ class Eliashberg(object):
         width = self.pars[:,2] #*put units the same as center
         width = np.absolute(width)
         #nits = create_units('2014')
-        gauss_width = 100*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
+        gauss_width = 200*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         # summa = 0
         # factor1 = 1 / (2*np.pi*self.Nef*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
         # for i in range(len(center)):
@@ -560,6 +560,17 @@ class Eliashberg(object):
             for i in range(len(center)):
                 summa += (gamma_q[i]/omega_q[i]) * self.gaussian(x,omega_q[i],gauss_width)
             return summa/(2*np.pi*Nef*len(omega_q))
+
+    def T_c(self,mu_):
+        """
+        Tc=W_log/1.2*exp(-1.04*(1+self.lambda_2)/(self.lambda_2-mu_*(1+0.62*self.lamba_2)))
+        """
+        out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_*(1+0.62*self.lamba_2))
+        out=w_log()/1.2 * exp(out2)
+    def w_log(self):
+        w = self.w
+        return exp(2/self.lamba_2*integrate.simpson(
+            (np.divide(self.a2F_new(self.w), self.w)*log(self.w)),self.w))    
 class Eliashberg_test(object):
     """docstring for Eliashberg.
     This object calculates the Lambda from two methods:
