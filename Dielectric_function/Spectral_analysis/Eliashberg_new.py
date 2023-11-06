@@ -783,18 +783,10 @@ def main(arg):
         #plasmon.plot_contour(Fitted_data)
         #plasmon.plot_contour2(data,Fitted_data)
         plasmon.plot_contour3(np.vstack((np.flip(data, axis=0), data_d)),Fitted_data)
-        # superconductor = Eliashberg(plasmon.pars)
-        # superconductor.read_Ne()
-        ## lambda_1, lambda_2 = superconductor.Lambda(frequencies)
-        # lambda_1 = superconductor.Lambda(frequencies)
-
-        # print('Lambda_1=',np.sum(lambda_1)/len(lambda_1))
-        # print('Lambda_2=',np.sum(superconductor.lambda_2))
 
         # np.savetxt('Lambda.txt', (lambda_1))
         # np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
-        #data = []
-        #frequencies = []
+
         file1 = './pars_data.txt'
         file2 = './frequencies_data.txt'
         if not (os.path.isfile(file1) and os.path.isfile(file2)):
