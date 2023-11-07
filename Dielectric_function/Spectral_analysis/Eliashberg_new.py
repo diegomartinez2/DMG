@@ -273,8 +273,8 @@ class Plasmon_analysis(object):
         for xi in range(x_max_range):
             #cax3 = ax1[1].errorbar(x = xi, y = self.pars[xi,1]*5001, yerr=abs(self.pars2[xi,2]), c='k', barsabove=True)
             cax3 = ax1[1].scatter(x = x_max_range-xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
-            y_min =(self.pars[xi,1]-self.pars2[xi,2])*5001
-            y_max =(self.pars[xi,1]+self.pars2[xi,2])*5001
+            y_min =(self.pars[xi,1]-self.pars[xi,2])*5001
+            y_max =(self.pars[xi,1]+self.pars[xi,2])*5001
             cax3 = ax1[1].scatter(x = x_max_range-xi, y = y_min,c='k',marker='1',s=10)
             cax3 = ax1[1].scatter(x = x_max_range-xi, y = y_max,c='k',marker='2',s=10)
 
@@ -841,7 +841,14 @@ def main(arg):
 #            for i in range(51):
 #                data[i,:] = plasmon.data[i,i,:]
 #---------------------------------end---diagonal----------------
-#-------------------------fix to remove
+#-------------------------fix to remove extra polaron data--------------
+        for i in range(5):
+            for j in range(2000,5001,1):
+                print("data[{}][{}]=".format(i,j),data[i][j])
+        # if i < 5:
+        #     if j > 2000:
+        #         data[i][j] = 0
+#------------------------end-removing data------------------------------
         print (np.shape(data),"=(51,5001)?")
         print ("Frequencies length=",len(frequencies))
         print ("dibuja")
