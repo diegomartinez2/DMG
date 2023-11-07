@@ -59,7 +59,7 @@ def list_reverse(arr,size):
                 arr[i+1],arr[size-i-2]=arr[size-i-2],arr[i+1]
             i+=2
         return arr
-def plot_all():
+def plot_all(data):
     # Placing the plots in the plane
     # plot1 = plt.subplot2grid((3, 2), (0, 0), rowspan=2, colspan=1)
     # plot2 = plt.subplot2grid((3, 2), (1, 0), rowspan=2, colspan=1)
@@ -126,6 +126,7 @@ def plot_all():
     #
     # plt.show()
 
+    data2 = np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2))
     fig = plt.figure()
     ax1 = plt.subplot2grid((2, 3), (0, 0), colspan=2)
     ax1.imshow(data.T,
@@ -1013,6 +1014,7 @@ def main(arg):
         plt.tight_layout()
         plt.show()
         fig_a2F.savefig("Ajuste_d_{}".format("a2F"))
+        plot_all(np.vstack((np.flip(data, axis=0), data_d)))
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
