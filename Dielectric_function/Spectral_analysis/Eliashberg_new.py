@@ -988,7 +988,7 @@ def main(arg):
             plasmon.pars, plasmon.pars2,
             superconductor.lambda_w_lista,superconductor.w,
             a2F_lista,frequencies)
-        superconductor.T_c(mu_par)
+        superconductor.T_c(mu_par=1)
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
