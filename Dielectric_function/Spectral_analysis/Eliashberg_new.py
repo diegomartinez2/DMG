@@ -120,12 +120,12 @@ def plot_all(data,data2,pars,pars2,lambda_w_lista,w,a2F_lista,frequencies):
     ax1.set_xticklabels(["($\pi$,0)","(0,0)","($\pi$,$\pi$)"])
     ax1.set_yticklabels(["0","1"])
     #
-    ax4 = plt.subplot2grid((2, 3), (0, 2),  sharey=ax1)
+    ax4 = plt.subplot2grid((2, 3), (0, 2))#,  sharey=ax1)
     ax4.plot(lambda_w_lista,w[1:])
     ax4.set_title('$\lambda$ vs. $\omega$')
     ax4.set_xlabel('$\lambda(\omega)$')
     ax4.set_ylabel('$\omega$')
-    ax5 = plt.subplot2grid((2, 3), (1, 2),  sharex=ax4, sharey=ax1)
+    ax5 = plt.subplot2grid((2, 3), (1, 2))#,  sharex=ax4, sharey=ax1)
     ax5.plot(a2F_lista,frequencies)
     ax5.set_title('a2F vs. $\omega$')
     ax5.set_ylabel('$\omega$ (eV)')
@@ -844,7 +844,8 @@ def main(arg):
 #-------------------------fix to remove extra polaron data--------------
         for i in range(5):
             for j in range(2000,5001,1):
-                print("data[{}][{}]=".format(i,j),data[i][j])
+                if (data[i][j]!=0.0):
+                    print("data[{}][{}]=".format(i,j),data[i][j])
         # if i < 5:
         #     if j > 2000:
         #         data[i][j] = 0
