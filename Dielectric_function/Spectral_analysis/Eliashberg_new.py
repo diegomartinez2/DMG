@@ -59,7 +59,7 @@ def list_reverse(arr,size):
                 arr[i+1],arr[size-i-2]=arr[size-i-2],arr[i+1]
             i+=2
         return arr
-def plot_all(data,data2,pars,pars2,lambda_w_lista,w):
+def plot_all(data,data2,pars,pars2,lambda_w_lista,w,a2F_lista,frequencies):
     """
     Plot all data
     """
@@ -126,7 +126,10 @@ def plot_all(data,data2,pars,pars2,lambda_w_lista,w):
     ax4.set_xlabel('$\lambda(\omega)$')
     ax4.set_ylabel('$\omega$')
     ax5 = plt.subplot2grid((2, 3), (1, 2),  sharex=ax4, sharey=ax1)
-
+    ax5.plot(a2F_lista,frequencies)
+    ax5.set_title('a2F vs. $\omega$')
+    ax5.set_ylabel('$\omega$ (eV)')
+    ax5.set_xlabel('a2F')
     #annotate_axes(fig)
     plt.tight_layout()
     plt.show()
@@ -838,6 +841,7 @@ def main(arg):
 #            for i in range(51):
 #                data[i,:] = plasmon.data[i,i,:]
 #---------------------------------end---diagonal----------------
+#-------------------------fix to remove
         print (np.shape(data),"=(51,5001)?")
         print ("Frequencies length=",len(frequencies))
         print ("dibuja")
@@ -951,9 +955,12 @@ def main(arg):
         plt.tight_layout()
         plt.show()
         fig_a2F.savefig("Ajuste_d_{}".format("a2F"))
+
         plot_all(np.vstack((np.flip(data, axis=0), data_d)),
             np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2)),
-            plasmon.pars,plasmon.pars2,superconductor.lambda_w_lista,superconductor.w)
+            plasmon.pars, plasmon.pars2,
+            superconductor.lambda_w_lista,superconductor.w,
+            a2F_lista,frequencies)
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
