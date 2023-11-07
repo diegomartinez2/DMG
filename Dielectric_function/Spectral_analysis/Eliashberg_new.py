@@ -59,7 +59,7 @@ def list_reverse(arr,size):
                 arr[i+1],arr[size-i-2]=arr[size-i-2],arr[i+1]
             i+=2
         return arr
-def plot_all(data,data2,pars):
+def plot_all(data,data2,pars,pars2):
     """
     Plot all data
     """
