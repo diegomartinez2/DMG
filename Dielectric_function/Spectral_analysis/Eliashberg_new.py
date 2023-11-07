@@ -61,7 +61,7 @@ def list_reverse(arr,size):
         return arr
 def plot_all(data):
     """
-    Plot all data 
+    Plot all data
     """
 
     data2 = np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2))
@@ -94,7 +94,7 @@ def plot_all(data):
     x_max_range = len(self.pars[:,1])
     for xi in range(x_max_range):
     #cax3 = ax1[1].errorbar(x = xi, y = self.pars[xi,1]*5001, yerr=abs(self.pars2[xi,2]), c='k', barsabove=True)
-    ax2.scatter(x = x_max_range-xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
+        ax2.scatter(x = x_max_range-xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
         y_min =(self.pars[xi,1]-self.pars2[xi,2])*5001
         y_max =(self.pars[xi,1]+self.pars2[xi,2])*5001
         ax2.scatter(x = x_max_range-xi, y = y_min,c='k',marker='1',s=10)
