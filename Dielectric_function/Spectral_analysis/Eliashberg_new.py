@@ -143,9 +143,47 @@ def plot_all():
     ax1.set_yticklabels(["0","1"])
     #
     ax2 = plt.subplot2grid((2, 3), (1, 0), colspan=2,  sharex=ax1, sharey=ax1)
+    ax2.imshow(data2.T,
+    #	vmin = 0.0 , vmax = 0.004,
+    #	vmin = 0.0 , vmax = 0.3,
+         vmin = 0.0 , vmax = 0.12,
+         cmap=plt.colormaps['jet'], origin='lower',
+         interpolation='gaussian', aspect='auto')
+     #cax2.tick_params(direction='in', length=6, width=2, colors='k', right=True, labelright='on')
+     #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
+     #print (self.pars[:,1])
+    x_max_range = len(self.pars[:,1])
+    for xi in range(x_max_range):
+    #cax3 = ax1[1].errorbar(x = xi, y = self.pars[xi,1]*5001, yerr=abs(self.pars2[xi,2]), c='k', barsabove=True)
+    ax2.scatter(x = x_max_range-xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
+        y_min =(self.pars[xi,1]-self.pars2[xi,2])*5001
+        y_max =(self.pars[xi,1]+self.pars2[xi,2])*5001
+        ax2.scatter(x = x_max_range-xi, y = y_min,c='k',marker='1',s=10)
+        ax2.scatter(x = x_max_range-xi, y = y_max,c='k',marker='2',s=10)
 
-    ax4 = plt.subplot2grid((2, 3), (0, 2),  sharex=ax1, sharey=ax1)
-    ax5 = plt.subplot2grid((2, 3), (1, 2),  sharex=ax1, sharey=ax1)
+        ax2.scatter(x = x_max_range+xi, y = self.pars2[xi,1]*5001,c='k',marker='x',s=10)
+        y_min =(self.pars2[xi,1]-self.pars2[xi,2])*5001
+        y_max =(self.pars2[xi,1]+self.pars2[xi,2])*5001
+        ax2.scatter(x = x_max_range+xi, y = y_min,c='k',marker='1',s=10)
+        ax2.scatter(x = x_max_range+xi, y = y_max,c='k',marker='2',s=10)
+    ax2.axvline(x = len(self.pars[:,1]), linestyle = "--", color = "red")
+
+    cbar = fig.colorbar(ax1)
+    cbar2 = fig.colorbar(ax2)
+    #fig.suptitle('$-Im(\epsilon^{-1}(q,\omega))$')
+    ax1.set_title('Original data')
+    ax1.set_ylabel('$\omega$ (eV)')
+    ax2.set_ylabel('$\omega$ (eV)')
+    ax1.set_xlabel('$q_x$ (a.u.)')
+    ax2.set_xlabel('$q_x$ (a.u.)')
+    ax2.set_title('Lorentz fitting')
+    ax1.set_xticks([0,51,102])
+    ax1.set_yticks([0,5001])
+    ax1.set_xticklabels(["($\pi$,0)","(0,0)","($\pi$,$\pi$)"])
+    ax1.set_yticklabels(["0","1"])
+    #
+    ax4 = plt.subplot2grid((2, 3), (0, 2),  sharey=ax1)
+    ax5 = plt.subplot2grid((2, 3), (1, 2),  sharex=ax4, sharey=ax1)
 
     annotate_axes(fig)
 
