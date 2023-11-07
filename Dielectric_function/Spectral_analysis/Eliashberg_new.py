@@ -60,71 +60,9 @@ def list_reverse(arr,size):
             i+=2
         return arr
 def plot_all(data):
-    # Placing the plots in the plane
-    # plot1 = plt.subplot2grid((3, 2), (0, 0), rowspan=2, colspan=1)
-    # plot2 = plt.subplot2grid((3, 2), (1, 0), rowspan=2, colspan=1)
-    # plot3 = plt.subplot2grid((3, 2), (0, 1), rowspan=1, colspan=1)
-    # plot4 = plt.subplot2grid((3, 2), (1, 1), rowspan=1, colspan=1)
-    # plt.style.use('_mpl-gallery-nogrid')
-    # fig, ax = plt.subplots(nrows=2, ncols=3, sharex=True, sharey=True)
-    # fig.set_size_inches(10, 5)
-    # fig.set_dpi(100)
-    #
-    # cax = ax1[0].imshow(data.T,
-    # #	vmin = 0.0 , vmax = 0.004,
-    # #	vmin = 0.0 , vmax = 0.175,
-    #     vmin = 0.0 , vmax = 0.12,
-    #     cmap=plt.colormaps['jet'], origin='lower',
-    #     interpolation='gaussian', aspect='auto')
-    # #plt.tick_params(direction='in', length=6, width=2, colors='k', right=True, labelright='on')
-    # cax2 = ax1[1].imshow(data2.T,
-    # #	vmin = 0.0 , vmax = 0.004,
-    # #	vmin = 0.0 , vmax = 0.3,
-    #     vmin = 0.0 , vmax = 0.12,
-    #     cmap=plt.colormaps['jet'], origin='lower',
-    #     interpolation='gaussian', aspect='auto')
-    # #cax2.tick_params(direction='in', length=6, width=2, colors='k', right=True, labelright='on')
-    # #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
-    # #print (self.pars[:,1])
-    # x_max_range = len(self.pars[:,1])
-    # for xi in range(x_max_range):
-    #     #cax3 = ax1[1].errorbar(x = xi, y = self.pars[xi,1]*5001, yerr=abs(self.pars2[xi,2]), c='k', barsabove=True)
-    #     cax3 = ax1[1].scatter(x = x_max_range-xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
-    #     y_min =(self.pars[xi,1]-self.pars2[xi,2])*5001
-    #     y_max =(self.pars[xi,1]+self.pars2[xi,2])*5001
-    #     cax3 = ax1[1].scatter(x = x_max_range-xi, y = y_min,c='k',marker='1',s=10)
-    #     cax3 = ax1[1].scatter(x = x_max_range-xi, y = y_max,c='k',marker='2',s=10)
-    #
-    #     cax3 = ax1[1].scatter(x = x_max_range+xi, y = self.pars2[xi,1]*5001,c='k',marker='x',s=10)
-    #     y_min =(self.pars2[xi,1]-self.pars2[xi,2])*5001
-    #     y_max =(self.pars2[xi,1]+self.pars2[xi,2])*5001
-    #     cax3 = ax1[1].scatter(x = x_max_range+xi, y = y_min,c='k',marker='1',s=10)
-    #     cax3 = ax1[1].scatter(x = x_max_range+xi, y = y_max,c='k',marker='2',s=10)
-    #     #cax3 = ax1[1].axvline(x = xi, ymin = (self.pars[xi,1]-self.pars[xi,2])*5001, ymax = (self.pars[xi,1]+self.pars[xi,2])*5001, linewidth=0.3, color=(0, 0, 0, 0.75))
-    #     #cax3 = ax1[1].axvline(x = xi, ymin = y_min, ymax = y_max, color = "red")
-    # cax3 = ax1[1].axvline(x = len(self.pars[:,1]), linestyle = "--", color = "red")
-    #
-    # cbar = fig.colorbar(cax)
-    # cbar2 = fig.colorbar(cax2)
-    # #fig.suptitle('$-Im(\epsilon^{-1}(q,\omega))$')
-    # ax1[0].set_title('Original data')
-    # ax1[0].set_ylabel('$\omega$ (eV)')
-    # ax1[1].set_ylabel('$\omega$ (eV)')
-    # ax1[0].set_xlabel('$q_x$ (a.u.)')
-    # ax1[1].set_xlabel('$q_x$ (a.u.)')
-    # ax1[1].set_title('Lorentz fitting')
-    # ax1[0].set_xticks([0,51,102])
-    # ax1[0].set_yticks([0,5001])
-    # ax1[0].set_xticklabels(["($\pi$,0)","(0,0)","($\pi$,$\pi$)"])
-    # ax1[0].set_yticklabels(["0","1"])
-    #
-    # plt.tight_layout()
-    # if (len( sys.argv) == 3):
-    #     plt.savefig("Ajuste_d_{}".format("original_vs_fitted"))
-    # else:
-    #     plt.savefig("Ajuste_d_{}_{}".format(self.namefile,"original_vs_fitted"))
-    #
-    # plt.show()
+    """
+    Plot all data 
+    """
 
     data2 = np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2))
     fig = plt.figure()
