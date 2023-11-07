@@ -63,10 +63,9 @@ def plot_all(data,data2,pars,pars2):
     """
     Plot all data
     """
-
-    fig = plt.figure()
+    fig = plt.figure(figsize=(10,6))
     ax1 = plt.subplot2grid((2, 3), (0, 0), colspan=2)
-    ax1.imshow(data.T,
+    im1 = ax1.imshow(data.T,
      #	vmin = 0.0 , vmax = 0.004,
      #	vmin = 0.0 , vmax = 0.175,
          vmin = 0.0 , vmax = 0.12,
@@ -81,7 +80,7 @@ def plot_all(data,data2,pars,pars2):
     ax1.set_yticklabels(["0","1"])
     #
     ax2 = plt.subplot2grid((2, 3), (1, 0), colspan=2,  sharex=ax1, sharey=ax1)
-    ax2.imshow(data2.T,
+    im2 = ax2.imshow(data2.T,
     #	vmin = 0.0 , vmax = 0.004,
     #	vmin = 0.0 , vmax = 0.3,
          vmin = 0.0 , vmax = 0.12,
@@ -105,7 +104,8 @@ def plot_all(data,data2,pars,pars2):
         ax2.scatter(x = x_max_range+xi, y = y_min,c='k',marker='1',s=10)
         ax2.scatter(x = x_max_range+xi, y = y_max,c='k',marker='2',s=10)
     ax2.axvline(x = len(pars[:,1]), linestyle = "--", color = "red")
-    fig.colorbar(ax1)
+    fig.colorbar(im1, ax=ax1)
+    fig.colorbar(im2, ax=ax2)
 #    cbar = fig.colorbar(ax1)
 #    cbar2 = fig.colorbar(ax2)
     #fig.suptitle('$-Im(\epsilon^{-1}(q,\omega))$')
@@ -123,9 +123,9 @@ def plot_all(data,data2,pars,pars2):
     ax4 = plt.subplot2grid((2, 3), (0, 2),  sharey=ax1)
     ax5 = plt.subplot2grid((2, 3), (1, 2),  sharex=ax4, sharey=ax1)
 
-    annotate_axes(fig)
-
-    pass
+    #annotate_axes(fig)
+    plt.tight_layout()
+    plt.show()
     plt.tight_layout()
     if (len( sys.argv) == 3):
         plt.savefig("Ajuste_total_{}".format("original_vs_fitted"))
