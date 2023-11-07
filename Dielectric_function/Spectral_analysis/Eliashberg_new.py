@@ -105,9 +105,9 @@ def plot_all(data,data2,pars,pars2):
         ax2.scatter(x = x_max_range+xi, y = y_min,c='k',marker='1',s=10)
         ax2.scatter(x = x_max_range+xi, y = y_max,c='k',marker='2',s=10)
     ax2.axvline(x = len(pars[:,1]), linestyle = "--", color = "red")
-
-    cbar = fig.colorbar(ax1)
-    cbar2 = fig.colorbar(ax2)
+    fig.colorbar(ax1)
+#    cbar = fig.colorbar(ax1)
+#    cbar2 = fig.colorbar(ax2)
     #fig.suptitle('$-Im(\epsilon^{-1}(q,\omega))$')
     ax1.set_title('Original data')
     ax1.set_ylabel('$\omega$ (eV)')
