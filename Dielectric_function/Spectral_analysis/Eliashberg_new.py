@@ -902,7 +902,7 @@ def main(arg):
                 data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
                 #data = np.vstack((data, data_t))
                 #frequencies = np.vstack((frequencies, frequencies_t))
-                plasmon.fitting_Lorentz(frequencies,data, 51)
+                plasmon.fitting_Lorentz(frequencies,data_t, 51)
                 pars = np.vstack((pars,plasmon.pars))
             #print ("frequencies=",frequencies)
             #print ("shape(data)=",np.shape(data),"=(51,5001)?")
