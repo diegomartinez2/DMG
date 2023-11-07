@@ -649,13 +649,13 @@ class Eliashberg(object):
                 summa += (gamma_q[i]/omega_q[i]) * self.gaussian(x,omega_q[i],gauss_width)
             return summa/(2*np.pi*Nef*len(omega_q))
 
-    def T_c(self,mu_):
+    def T_c(self,mu_par):
         """
         Allen-Dynes formula
         Tc=W_log/1.2*exp(-1.04*(1+self.lambda_2)/(self.lambda_2-mu_*(1+0.62*self.lamba_2)))
         """
-        out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_*(1+0.62*self.lamba_2))
-        out=w_log()/1.2 * exp(out2)
+        out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lamba_2))
+        out=self.w_log()/1.2 * exp(out2)
 
     def w_log(self):
         """
@@ -931,9 +931,9 @@ def main(arg):
             #print ("shape(frequencies)=",np.shape(frequencies),"=(51,5001)?")
             #plasmon.fitting_Lorentz(frequencies,data, 51)
             #plasmon.fitting_Lorentz(np.tile(frequencies,51),data, 2601)
-            print ("shape(pars)=",np.shape(pars))
+        #    print ("shape(pars)=",np.shape(pars))
             #print (plasmon.pars2[:,0])
-            print('Min(pars[0])=',np.amin(pars[:,0]))
+        #    print('Min(pars[0])=',np.amin(pars[:,0]))
             #print ('Min(pars2[0])=',np.amin(plasmon.pars2[:,0]))
 
             np.savetxt(file1, pars) #no negative values
@@ -943,12 +943,12 @@ def main(arg):
             frequencies = np.loadtxt(file2) #no negative values
         superconductor = Eliashberg(pars)
         superconductor.read_Ne()
-        print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
+    #    print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
         lambda_1 = superconductor.Lambda_new(frequencies)
         print('Lambda_1=',lambda_1,'[]?') # Lambda calculated from Lambda_q
         print('Lambda_2=',superconductor.lambda_2,'[]?') #Lambda calculated fron Eliashberg function
         #print("shape(lambda_q)=",np.shape(superconductor.lambda_q_lista))
-        print("lambda_q=",superconductor.lambda_q_lista[:50])
+    #    print("lambda_q=",superconductor.lambda_q_lista[:50])
 
         fig_lambda_q = plt.figure(figsize=(10,6))
         ax = fig_lambda_q.add_subplot(1, 1, 1)
@@ -977,10 +977,7 @@ def main(arg):
         ax.set_title('a2F vs. $\omega$')
         ax.set_ylabel('$\omega$ (eV)')
         ax.set_xlabel('a2F')
-        #ax.set_xticks([0,51])
-        #ax.set_yticks([0,5001])
-        #ax.set_xticklabels(["0","1"])
-        #ax.set_yticklabels(["0","1"])
+
         plt.plot ()
         plt.tight_layout()
         plt.show()
@@ -991,6 +988,7 @@ def main(arg):
             plasmon.pars, plasmon.pars2,
             superconductor.lambda_w_lista,superconductor.w,
             a2F_lista,frequencies)
+        superconductor.T_c(mu_par)
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
