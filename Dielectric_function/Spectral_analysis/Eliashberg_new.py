@@ -59,7 +59,7 @@ def list_reverse(arr,size):
                 arr[i+1],arr[size-i-2]=arr[size-i-2],arr[i+1]
             i+=2
         return arr
-def plot_all(data,data2,pars,pars2):
+def plot_all(data,data2,pars,pars2,lambda_w_lista,w):
     """
     Plot all data
     """
@@ -121,18 +121,18 @@ def plot_all(data,data2,pars,pars2):
     ax1.set_yticklabels(["0","1"])
     #
     ax4 = plt.subplot2grid((2, 3), (0, 2),  sharey=ax1)
+    ax4.plot(lambda_w_lista,w[1:])
+    ax4.set_title('$\lambda$ vs. $\omega$')
+    ax4.set_xlabel('$\lambda(\omega)$')
+    ax4.set_ylabel('$\omega$')
     ax5 = plt.subplot2grid((2, 3), (1, 2),  sharex=ax4, sharey=ax1)
 
     #annotate_axes(fig)
     plt.tight_layout()
     plt.show()
-    plt.tight_layout()
-    if (len( sys.argv) == 3):
-        plt.savefig("Ajuste_total_{}".format("original_vs_fitted"))
-    else:
-        plt.savefig("Ajuste_total_{}_{}".format(self.namefile,"original_vs_fitted"))
+    fig.savefig("Ajuste_total")
 
-    plt.show()
+    #plt.show()
     return 0
 
 
@@ -953,7 +953,7 @@ def main(arg):
         fig_a2F.savefig("Ajuste_d_{}".format("a2F"))
         plot_all(np.vstack((np.flip(data, axis=0), data_d)),
             np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2)),
-            plasmon.pars,plasmon.pars2)
+            plasmon.pars,plasmon.pars2,superconductor.lambda_w_lista,superconductor.w)
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
