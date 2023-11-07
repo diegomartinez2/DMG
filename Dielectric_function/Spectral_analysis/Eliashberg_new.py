@@ -672,7 +672,7 @@ class Eliashberg(object):
         Allen-Dynes formula
         Tc=W_log/1.2*exp(-1.04*(1+self.lambda_2)/(self.lambda_2-mu_*(1+0.62*self.lamba_2)))
         """
-        out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lamba_2))
+        out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lambda_2))
         out=self.w_log()/1.2 * exp(out2)
 
     def w_log(self):
@@ -1008,7 +1008,7 @@ def main(arg):
             plasmon.pars, plasmon.pars2,
             superconductor.lambda_w_lista,superconductor.w,
             a2F_lista,frequencies)
-        superconductor.T_c(mu_par=1)
+        superconductor.T_c(mu_par=0.1) #mu*=0.1 y mu*=0.15. Son los valores típicos.
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
