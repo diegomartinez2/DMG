@@ -125,37 +125,30 @@ def plot_all():
     #     plt.savefig("Ajuste_d_{}_{}".format(self.namefile,"original_vs_fitted"))
     #
     # plt.show()
-    plt.subplot(211)
-    plt.imshow(data.T,
-    # #	vmin = 0.0 , vmax = 0.004,
-    # #	vmin = 0.0 , vmax = 0.175,
-    #     vmin = 0.0 , vmax = 0.12,
-    #     cmap=plt.colormaps['jet'], origin='lower',
-    #     interpolation='gaussian', aspect='auto')
-    plt.title('Original data')
-    plt.xlabel('$q_x$ (a.u.)')
-    plt.ylabel('$\omega$ (eV)')
-    plt.set_xticks([0,51,102])
-    plt.set_yticks([0,5001])
-    plt.set_xticklabels(["($\pi$,0)","(0,0)","($\pi$,$\pi$)"])
-    plt.set_yticklabels(["0","1"])
-    #
-    def annotate_axes(fig):
-         for i, ax in enumerate(fig.axes):
-         ax.text(0.5, 0.5, "ax%d" % (i+1), va="center", ha="center")
-         ax.tick_params(labelbottom=False, labelleft=False)
-
 
     fig = plt.figure()
     ax1 = plt.subplot2grid((2, 3), (0, 0), colspan=2)
-    ax2 = plt.subplot2grid((2, 3), (1, 0), colspan=2)
+    ax1.imshow(data.T,
+     #	vmin = 0.0 , vmax = 0.004,
+     #	vmin = 0.0 , vmax = 0.175,
+         vmin = 0.0 , vmax = 0.12,
+         cmap=plt.colormaps['jet'], origin='lower',
+         interpolation='gaussian', aspect='auto')
+    ax1.set_title('Original data')
+    ax1.set_xlabel('$q_x$ (a.u.)')
+    ax1.set_ylabel('$\omega$ (eV)')
+    ax1.set_xticks([0,51,102])
+    ax1.set_yticks([0,5001])
+    ax1.set_xticklabels(["($\pi$,0)","(0,0)","($\pi$,$\pi$)"])
+    ax1.set_yticklabels(["0","1"])
+    #
+    ax2 = plt.subplot2grid((2, 3), (1, 0), colspan=2,  sharex=ax1, sharey=ax1)
 
-    ax4 = plt.subplot2grid((2, 3), (0, 2))
-    ax5 = plt.subplot2grid((2, 3), (1, 2))
+    ax4 = plt.subplot2grid((2, 3), (0, 2),  sharex=ax1, sharey=ax1)
+    ax5 = plt.subplot2grid((2, 3), (1, 2),  sharex=ax1, sharey=ax1)
 
     annotate_axes(fig)
 
-    plt.show()
     pass
     plt.tight_layout()
     if (len( sys.argv) == 3):
