@@ -356,18 +356,36 @@ class Plasmon_analysis(object):
         #f.write("\n")
         return lorentz_peak
 
-    def fitting_Lorentz(self,frequencies,data,size):
+    def fitting_Lorentz(self,frequencies,data,size,big=False):
         #self.Fitted_data = np.zeros((size,5001))
         self.Fitted_data = np.zeros((size,len(frequencies)))
         for i in range(size):
             self.Fitted_data[i] = self.locate_1Lorenztian(frequencies,data[i],i)
+        #---------------------------new-----------------------------------------
+        if big:
+            if (frequencies[0] != 0):
+                frequencies_big = np.append(frequencies,frequencies[:len(frequencies)//3]+frequencies[-1])
+            else:
+                frequencies_big = np.append(frequencies,frequencies[1:len(frequencies)//3]+frequencies[-1])
+            self.Fitted_data = np.zeros((size,len(frequencies_big)))
+            self.Fitted_data[i] = self.locate_1Lorenztian2(frequencies_big,data[i],i)
+        #-----------------------------------------------------------------------
         pass
 
-    def fitting_Lorentz2(self,frequencies,data,size):
+    def fitting_Lorentz2(self,frequencies,data,size,big=False):
         #self.Fitted_data2 = np.zeros((size,5001))
         self.Fitted_data2 = np.zeros((size,len(frequencies)))
         for i in range(size):
             self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies,data[i],i)
+        #---------------------------new-----------------------------------------
+        if big:
+            if (frequencies[0] != 0):
+                frequencies_big = np.append(frequencies,frequencies[:len(frequencies)//3]+frequencies[-1])
+            else:
+                frequencies_big = np.append(frequencies,frequencies[1:len(frequencies)//3]+frequencies[-1])
+            self.Fitted_data2 = np.zeros((size,len(frequencies_big)))
+            self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies_big,data[i],i)
+        #-----------------------------------------------------------------------
         pass
 
     def locate_1Lorenztian2(self, Frequency, Spec, index):
@@ -864,6 +882,8 @@ def main(arg):
         #     if j > 2000:
                     data_d[i][j] = 0
 #------------------------end-removing data------------------------------
+        print ("data[49][2110]=",data[49][2110])
+        print("***********************")
         print (np.shape(data),"=(51,5001)?")
         print ("Frequencies length=",len(frequencies))
         print ("dibuja")
@@ -910,7 +930,7 @@ def main(arg):
         file2 = './frequencies_data.txt'
         if not (os.path.isfile(file1) and os.path.isfile(file2)):
             data, frequencies = plasmon.load_big_file(0, arg[1],diagonal=False)
-            plasmon.fitting_Lorentz(frequencies,data, 51)
+            plasmon.fitting_Lorentz(frequencies,data, 51, big=False) #TEST
             pars = plasmon.pars
             for index in range(1,51): #51 eller 50 -> 2601 eller 2550
                 data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
@@ -924,7 +944,7 @@ def main(arg):
 #------------------------end-removing data------------------------------
                 #data = np.vstack((data, data_t))
                 #frequencies = np.vstack((frequencies, frequencies_t))
-                plasmon.fitting_Lorentz(frequencies,data_t, 51)
+                plasmon.fitting_Lorentz(frequencies,data_t, 51, big=False) #TEST
                 pars = np.vstack((pars,plasmon.pars))
             #print ("frequencies=",frequencies)
             #print ("shape(data)=",np.shape(data),"=(51,5001)?")
