@@ -848,7 +848,12 @@ def main(arg):
                     print("data[{}][{}]=".format(i,j),data[i][j])
         # if i < 5:
         #     if j > 2000:
-        #         data[i][j] = 0
+                    data[i][j] = 0
+                if (data_d[i][j]!=0.0):
+                    print("data_d[{}][{}]=".format(i,j),data_d[i][j])
+        # if i < 5:
+        #     if j > 2000:
+                    data_d[i][j] = 0
 #------------------------end-removing data------------------------------
         print (np.shape(data),"=(51,5001)?")
         print ("Frequencies length=",len(frequencies))
@@ -900,6 +905,14 @@ def main(arg):
             pars = plasmon.pars
             for index in range(1,51): #51 eller 50 -> 2601 eller 2550
                 data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
+#-------------------------fix to remove extra polaron data--------------
+                if (index<6):
+                    for i in range(5):
+                        for j in range(2000,5001,1):
+                            if (data[i][j]!=0.0):
+                                print("data[{}][{}]=".format(i,j),data[i][j])
+                                data[i][j] = 0
+#------------------------end-removing data------------------------------
                 #data = np.vstack((data, data_t))
                 #frequencies = np.vstack((frequencies, frequencies_t))
                 plasmon.fitting_Lorentz(frequencies,data_t, 51)
