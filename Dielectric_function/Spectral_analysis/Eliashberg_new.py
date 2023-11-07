@@ -59,12 +59,11 @@ def list_reverse(arr,size):
                 arr[i+1],arr[size-i-2]=arr[size-i-2],arr[i+1]
             i+=2
         return arr
-def plot_all(data):
+def plot_all(data,data2,pars):
     """
     Plot all data
     """
 
-    data2 = np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2))
     fig = plt.figure()
     ax1 = plt.subplot2grid((2, 3), (0, 0), colspan=2)
     ax1.imshow(data.T,
@@ -91,21 +90,21 @@ def plot_all(data):
      #cax2.tick_params(direction='in', length=6, width=2, colors='k', right=True, labelright='on')
      #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
      #print (self.pars[:,1])
-    x_max_range = len(self.pars[:,1])
+    x_max_range = len(pars[:,1])
     for xi in range(x_max_range):
     #cax3 = ax1[1].errorbar(x = xi, y = self.pars[xi,1]*5001, yerr=abs(self.pars2[xi,2]), c='k', barsabove=True)
-        ax2.scatter(x = x_max_range-xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
-        y_min =(self.pars[xi,1]-self.pars2[xi,2])*5001
-        y_max =(self.pars[xi,1]+self.pars2[xi,2])*5001
+        ax2.scatter(x = x_max_range-xi, y = pars[xi,1]*5001,c='k',marker='x',s=10)
+        y_min =(pars[xi,1]-pars2[xi,2])*5001
+        y_max =(pars[xi,1]+pars2[xi,2])*5001
         ax2.scatter(x = x_max_range-xi, y = y_min,c='k',marker='1',s=10)
         ax2.scatter(x = x_max_range-xi, y = y_max,c='k',marker='2',s=10)
 
-        ax2.scatter(x = x_max_range+xi, y = self.pars2[xi,1]*5001,c='k',marker='x',s=10)
-        y_min =(self.pars2[xi,1]-self.pars2[xi,2])*5001
-        y_max =(self.pars2[xi,1]+self.pars2[xi,2])*5001
+        ax2.scatter(x = x_max_range+xi, y = pars2[xi,1]*5001,c='k',marker='x',s=10)
+        y_min =(pars2[xi,1]-pars2[xi,2])*5001
+        y_max =(pars2[xi,1]+pars2[xi,2])*5001
         ax2.scatter(x = x_max_range+xi, y = y_min,c='k',marker='1',s=10)
         ax2.scatter(x = x_max_range+xi, y = y_max,c='k',marker='2',s=10)
-    ax2.axvline(x = len(self.pars[:,1]), linestyle = "--", color = "red")
+    ax2.axvline(x = len(pars[:,1]), linestyle = "--", color = "red")
 
     cbar = fig.colorbar(ax1)
     cbar2 = fig.colorbar(ax2)
@@ -952,7 +951,9 @@ def main(arg):
         plt.tight_layout()
         plt.show()
         fig_a2F.savefig("Ajuste_d_{}".format("a2F"))
-        plot_all(np.vstack((np.flip(data, axis=0), data_d)))
+        plot_all(np.vstack((np.flip(data, axis=0), data_d)),
+            np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2)),
+            superconductor.pars)
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
