@@ -953,7 +953,7 @@ def main(arg):
         fig_a2F.savefig("Ajuste_d_{}".format("a2F"))
         plot_all(np.vstack((np.flip(data, axis=0), data_d)),
             np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2)),
-            superconductor.pars,superconductor.pars2)
+            plasmon.pars,plasmon.pars2)
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
