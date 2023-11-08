@@ -931,7 +931,7 @@ def main(arg):
         file2 = './frequencies_data.txt'
         if not (os.path.isfile(file1) and os.path.isfile(file2)):
             data, frequencies = plasmon.load_big_file(0, arg[1],diagonal=False)
-            plasmon.fitting_Lorentz(frequencies,data, 51, big=False) #TEST
+            plasmon.fitting_Lorentz(frequencies,data, 51, big=True) #TEST
             pars = plasmon.pars
             for index in range(1,51): #51 eller 50 -> 2601 eller 2550
                 data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
@@ -945,7 +945,7 @@ def main(arg):
 #------------------------end-removing data------------------------------
                 #data = np.vstack((data, data_t))
                 #frequencies = np.vstack((frequencies, frequencies_t))
-                plasmon.fitting_Lorentz(frequencies,data_t, 51, big=False) #TEST
+                plasmon.fitting_Lorentz(frequencies,data_t, 51, big=True) #TEST
                 pars = np.vstack((pars,plasmon.pars))
             #print ("frequencies=",frequencies)
             #print ("shape(data)=",np.shape(data),"=(51,5001)?")
@@ -1011,6 +1011,7 @@ def main(arg):
             a2F_lista,frequencies)
         T_c = superconductor.T_c(mu_par=0.1) #mu*=0.1 y mu*=0.15. Son los valores típicos.
         print("T_c=",T_c)
+        np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_c')
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
