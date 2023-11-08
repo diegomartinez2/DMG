@@ -895,8 +895,8 @@ def main(arg):
         #     if j > 2000:
                     data_d[i][j] = 0
 #------------------------end-removing data------------------------------
-        print ("data[49][2110]=",data[49][2110])
-        print ("data[50][2110]=",data[50][2110])
+        print ("data[49][2110]=",data[49][2110]) # aqui hay datos
+        print ("data[50][2110]=",data[50][2110]) # aqui no hay datos???
         print("***********************")
         print (np.shape(data),"=(51,5001)?")
         print ("Frequencies length=",len(frequencies))
@@ -906,7 +906,7 @@ def main(arg):
         #none = plasmon.locate_1Lorenztian(frequencies,data[30])
         #f=open('file_data_fittings.txt','a')
         #f.write("-amplitude--(+/-)error--center--(+/-)error--width--(+/-)error-\n")
-        plasmon.fitting_Lorentz(frequencies,data, 51, big=False) #size = 51*2 = 102
+        plasmon.fitting_Lorentz(frequencies,data, 51, big=True) #size = 51*2 = 102
         #f.close()
         if (len( sys.argv) == 3):
             np.savetxt("data_fitting_amplitudes_{}.txt".format(namefile),np.c_[plasmon.pars[:,0], plasmon.perr_lorentz[:,0]],header='#-----amplitude--(+/-)error---', footer='-------------')
@@ -917,7 +917,7 @@ def main(arg):
             np.savetxt("data_fitting_center_{}.txt".format(namefile),np.c_[plasmon.pars[:,1], plasmon.perr_lorentz[:,1]],header='#-----center(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
             np.savetxt("data_fitting_width_{}.txt".format(namefile),np.c_[plasmon.pars[:,2], plasmon.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
 
-        plasmon.fitting_Lorentz2(frequencies_d,data_d, 51, big=False) #size = 51*2 = 102
+        plasmon.fitting_Lorentz2(frequencies_d,data_d, 51, big=True) #size = 51*2 = 102
         #f.close()
         if (len( sys.argv) == 3):
             np.savetxt("data_fitting_amplitudes_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,0], plasmon.perr_lorentz2[:,0]],header='#-----amplitude--(+/-)error---', footer='-------------')
