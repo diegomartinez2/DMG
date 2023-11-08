@@ -896,6 +896,7 @@ def main(arg):
                     data_d[i][j] = 0
 #------------------------end-removing data------------------------------
         print ("data[49][2110]=",data[49][2110])
+        print ("data[50][2110]=",data[50][2110])
         print("***********************")
         print (np.shape(data),"=(51,5001)?")
         print ("Frequencies length=",len(frequencies))
