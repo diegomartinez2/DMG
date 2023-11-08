@@ -367,8 +367,9 @@ class Plasmon_analysis(object):
             #     frequencies_big = np.append(frequencies,frequencies[:len(frequencies)//3]+frequencies[-1])
             # else:
             #     frequencies_big = np.append(frequencies,frequencies[1:len(frequencies)//3]+frequencies[-1])
-            self.Fitted_data = np.zeros((size,len(frequencies_big)))
-            self.Fitted_data[i] = self.locate_1Lorenztian2(frequencies,data[i],i,big=True)
+            self.Fitted_data = np.zeros((size,len(frequencies)))
+            for i in range(size):
+                self.Fitted_data[i] = self.locate_1Lorenztian2(frequencies,data[i],i,big=True)
         #-----------------------------------------------------------------------
         pass
 
@@ -379,8 +380,9 @@ class Plasmon_analysis(object):
             self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies,data[i],i)
         #---------------------------new-----------------------------------------
         if big:
-            self.Fitted_data2 = np.zeros((size,len(frequencies_big)))
-            self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies,data[i],i,big=True)
+            self.Fitted_data2 = np.zeros((size,len(frequencies)))
+            for i in range(size):
+                self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies,data[i],i,big=True)
         #-----------------------------------------------------------------------
         pass
 
