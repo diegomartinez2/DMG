@@ -332,7 +332,17 @@ class Plasmon_analysis(object):
 
         perr_lorentz = np.sqrt(np.diag(pcov_lorentz))
         pars = popt_lorentz[:]
-        lorentz_peak = _1Lorentzian(Frequency, *pars)
+    #---------------------BIG---------------------------------------------------
+        if big:
+            if (Frequency[0] != 0):
+                Frequency_big = np.append(Frequency,Frequency[:len(Frequency)//3]+Frequency[-1])
+            else:
+                Frequency_big = np.append(Frequency,Frequency[1:len(Frequency)//3]+Frequency[-1])
+            lorentz_peak = _1Lorentzian(Frequency_big, *pars)
+        else:
+            lorentz_peak = _1Lorentzian(Frequency, *pars)
+    #-------------------END_BIG-------------------------------------------------
+        #lorentz_peak = _1Lorentzian(Frequency, *pars)
         print ("-------------Peak ",index,"-------------")
         print ("amplitude = %0.2f (+/-) %0.2f" % (pars[0], perr_lorentz[0]))
         print ("center = %0.2f (+/-) %0.2f" % (pars[1], perr_lorentz[1]))
@@ -380,11 +390,11 @@ class Plasmon_analysis(object):
             self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies,data[i],i)
         #---------------------------new-----------------------------------------
         if big:
-            if (Frequency[0] != 0):
-                Frequency_big = np.append(Frequency,Frequency[:len(Frequency)//3]+Frequency[-1])
+            if (frequencies[0] != 0):
+                frequencies_big = np.append(frequencies,frequencies[:len(frequencies)//3]+frequencies[-1])
             else:
-                Frequency_big = np.append(Frequency,Frequency[1:len(Frequency)//3]+Frequency[-1])
-            self.Fitted_data2 = np.zeros((size,len(Frequency_big)))
+                frequencies_big = np.append(frequencies,frequencies[1:len(frequencies)//3]+frequencies[-1])
+            self.Fitted_data2 = np.zeros((size,len(frequencies_big)))
             for i in range(size):
                 self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies,data[i],i,big=True)
         #-----------------------------------------------------------------------
