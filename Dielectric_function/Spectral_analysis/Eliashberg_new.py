@@ -363,12 +363,12 @@ class Plasmon_analysis(object):
             self.Fitted_data[i] = self.locate_1Lorenztian(frequencies,data[i],i)
         #---------------------------new-----------------------------------------
         if big:
-            if (frequencies[0] != 0):
-                frequencies_big = np.append(frequencies,frequencies[:len(frequencies)//3]+frequencies[-1])
-            else:
-                frequencies_big = np.append(frequencies,frequencies[1:len(frequencies)//3]+frequencies[-1])
+            # if (frequencies[0] != 0):
+            #     frequencies_big = np.append(frequencies,frequencies[:len(frequencies)//3]+frequencies[-1])
+            # else:
+            #     frequencies_big = np.append(frequencies,frequencies[1:len(frequencies)//3]+frequencies[-1])
             self.Fitted_data = np.zeros((size,len(frequencies_big)))
-            self.Fitted_data[i] = self.locate_1Lorenztian2(frequencies_big,data[i],i)
+            self.Fitted_data[i] = self.locate_1Lorenztian2(frequencies,data[i],i,big=True)
         #-----------------------------------------------------------------------
         pass
 
@@ -379,16 +379,12 @@ class Plasmon_analysis(object):
             self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies,data[i],i)
         #---------------------------new-----------------------------------------
         if big:
-            if (frequencies[0] != 0):
-                frequencies_big = np.append(frequencies,frequencies[:len(frequencies)//3]+frequencies[-1])
-            else:
-                frequencies_big = np.append(frequencies,frequencies[1:len(frequencies)//3]+frequencies[-1])
             self.Fitted_data2 = np.zeros((size,len(frequencies_big)))
-            self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies_big,data[i],i)
+            self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies,data[i],i,big=True)
         #-----------------------------------------------------------------------
         pass
 
-    def locate_1Lorenztian2(self, Frequency, Spec, index):
+    def locate_1Lorenztian2(self, Frequency, Spec, index,big=False):
         def _1Lorentzian(x, amp1, cen1, wid1):
             return amp1*wid1**2/((x-cen1)**2+wid1**2)
         peaks, _ = find_peaks(Spec,width=5,rel_height=0.3)
@@ -401,7 +397,17 @@ class Plasmon_analysis(object):
 
         perr_lorentz = np.sqrt(np.diag(pcov_lorentz))
         pars = popt_lorentz[:]
-        lorentz_peak = _1Lorentzian(Frequency, *pars)
+    #---------------------BIG---------------------------------------------------
+        if big:
+            if (Frequency[0] != 0):
+                Frequency_big = np.append(Frequency,Frequency[:len(Frequency)//3]+Frequency[-1])
+            else:
+                Frequency_big = np.append(Frequency,Frequency[1:len(Frequency)//3]+Frequency[-1])
+            lorentz_peak = _1Lorentzian(Frequency_big, *pars)
+        else:
+            lorentz_peak = _1Lorentzian(Frequency, *pars)
+    #-------------------END_BIG-------------------------------------------------
+        #lorentz_peak = _1Lorentzian(Frequency, *pars)
         print ("-------------Peak ",index,"-------------")
         print ("amplitude = %0.2f (+/-) %0.2f" % (pars[0], perr_lorentz[0]))
         print ("center = %0.2f (+/-) %0.2f" % (pars[1], perr_lorentz[1]))
@@ -893,7 +899,7 @@ def main(arg):
         #none = plasmon.locate_1Lorenztian(frequencies,data[30])
         #f=open('file_data_fittings.txt','a')
         #f.write("-amplitude--(+/-)error--center--(+/-)error--width--(+/-)error-\n")
-        plasmon.fitting_Lorentz(frequencies,data, 51) #size = 51*2 = 102
+        plasmon.fitting_Lorentz(frequencies,data, 51, big=False) #size = 51*2 = 102
         #f.close()
         if (len( sys.argv) == 3):
             np.savetxt("data_fitting_amplitudes_{}.txt".format(namefile),np.c_[plasmon.pars[:,0], plasmon.perr_lorentz[:,0]],header='#-----amplitude--(+/-)error---', footer='-------------')
@@ -904,7 +910,7 @@ def main(arg):
             np.savetxt("data_fitting_center_{}.txt".format(namefile),np.c_[plasmon.pars[:,1], plasmon.perr_lorentz[:,1]],header='#-----center(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
             np.savetxt("data_fitting_width_{}.txt".format(namefile),np.c_[plasmon.pars[:,2], plasmon.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
 
-        plasmon.fitting_Lorentz2(frequencies_d,data_d, 51) #size = 51*2 = 102
+        plasmon.fitting_Lorentz2(frequencies_d,data_d, 51, big=False) #size = 51*2 = 102
         #f.close()
         if (len( sys.argv) == 3):
             np.savetxt("data_fitting_amplitudes_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,0], plasmon.perr_lorentz2[:,0]],header='#-----amplitude--(+/-)error---', footer='-------------')
@@ -931,7 +937,7 @@ def main(arg):
         file2 = './frequencies_data.txt'
         if not (os.path.isfile(file1) and os.path.isfile(file2)):
             data, frequencies = plasmon.load_big_file(0, arg[1],diagonal=False)
-            plasmon.fitting_Lorentz(frequencies,data, 51, big=True) #TEST
+            plasmon.fitting_Lorentz(frequencies,data, 51, big=False) #TEST
             pars = plasmon.pars
             for index in range(1,51): #51 eller 50 -> 2601 eller 2550
                 data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
@@ -945,7 +951,7 @@ def main(arg):
 #------------------------end-removing data------------------------------
                 #data = np.vstack((data, data_t))
                 #frequencies = np.vstack((frequencies, frequencies_t))
-                plasmon.fitting_Lorentz(frequencies,data_t, 51, big=True) #TEST
+                plasmon.fitting_Lorentz(frequencies,data_t, 51, big=False) #TEST
                 pars = np.vstack((pars,plasmon.pars))
             #print ("frequencies=",frequencies)
             #print ("shape(data)=",np.shape(data),"=(51,5001)?")
