@@ -673,14 +673,14 @@ class Eliashberg(object):
         Tc=W_log/1.2*exp(-1.04*(1+self.lambda_2)/(self.lambda_2-mu_*(1+0.62*self.lamba_2)))
         """
         out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lambda_2))
-        out=self.w_log()/1.2 * exp(out2)
+        out=self.w_log()/1.2 * np.exp(out2)
 
     def w_log(self):
         """
         w_log calculated from Eliashberg
         """
         w = self.w
-        return exp(2/self.lamba_2*integrate.simpson(
+        return np.exp(2/self.lamba_2*integrate.simpson(
             (np.divide(self.a2F_new(self.w), self.w)*log(self.w)),self.w))
 
 class Eliashberg_test(object):
