@@ -681,7 +681,7 @@ class Eliashberg(object):
         """
         w = self.w
         return np.exp(2/self.lambda_2*integrate.simpson(
-            (np.divide(self.a2F_new(self.w), self.w)*log(self.w)),self.w))
+            (np.divide(self.a2F_new(self.w), self.w)*np.log(self.w)),self.w))
 
 class Eliashberg_test(object):
     """docstring for Eliashberg.
