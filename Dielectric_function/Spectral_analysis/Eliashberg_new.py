@@ -674,6 +674,7 @@ class Eliashberg(object):
         """
         out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lambda_2))
         out=self.w_log()/1.2 * np.exp(out2)
+        return out
 
     def w_log(self):
         """
@@ -1008,7 +1009,8 @@ def main(arg):
             plasmon.pars, plasmon.pars2,
             superconductor.lambda_w_lista,superconductor.w,
             a2F_lista,frequencies)
-        superconductor.T_c(mu_par=0.1) #mu*=0.1 y mu*=0.15. Son los valores típicos.
+        T_c = superconductor.T_c(mu_par=0.1) #mu*=0.1 y mu*=0.15. Son los valores típicos.
+        print("T_c=",T_c)
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
