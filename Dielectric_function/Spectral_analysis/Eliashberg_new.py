@@ -319,7 +319,7 @@ class Plasmon_analysis(object):
         plt.show()
         pass
 
-    def locate_1Lorenztian(self, Frequency, Spec, index):
+    def locate_1Lorenztian(self, Frequency, Spec, index, big=False):
         def _1Lorentzian(x, amp1, cen1, wid1):
             return amp1*wid1**2/((x-cen1)**2+wid1**2)
         peaks, _ = find_peaks(Spec,width=5,rel_height=0.3)
@@ -363,13 +363,13 @@ class Plasmon_analysis(object):
             self.Fitted_data[i] = self.locate_1Lorenztian(frequencies,data[i],i)
         #---------------------------new-----------------------------------------
         if big:
-            # if (frequencies[0] != 0):
-            #     frequencies_big = np.append(frequencies,frequencies[:len(frequencies)//3]+frequencies[-1])
-            # else:
-            #     frequencies_big = np.append(frequencies,frequencies[1:len(frequencies)//3]+frequencies[-1])
-            self.Fitted_data = np.zeros((size,len(frequencies)))
+            if (frequencies[0] != 0):
+                frequencies_big = np.append(frequencies,frequencies[:len(frequencies)//3]+frequencies[-1])
+            else:
+                frequencies_big = np.append(frequencies,frequencies[1:len(frequencies)//3]+frequencies[-1])
+            self.Fitted_data = np.zeros((size,len(frequencies_big)))
             for i in range(size):
-                self.Fitted_data[i] = self.locate_1Lorenztian2(frequencies,data[i],i,big=True)
+                self.Fitted_data[i] = self.locate_1Lorenztian(frequencies,data[i],i,big=True)
         #-----------------------------------------------------------------------
         pass
 
@@ -380,13 +380,17 @@ class Plasmon_analysis(object):
             self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies,data[i],i)
         #---------------------------new-----------------------------------------
         if big:
-            self.Fitted_data2 = np.zeros((size,len(frequencies)))
+            if (Frequency[0] != 0):
+                Frequency_big = np.append(Frequency,Frequency[:len(Frequency)//3]+Frequency[-1])
+            else:
+                Frequency_big = np.append(Frequency,Frequency[1:len(Frequency)//3]+Frequency[-1])
+            self.Fitted_data2 = np.zeros((size,len(Frequency_big)))
             for i in range(size):
                 self.Fitted_data2[i] = self.locate_1Lorenztian2(frequencies,data[i],i,big=True)
         #-----------------------------------------------------------------------
         pass
 
-    def locate_1Lorenztian2(self, Frequency, Spec, index,big=False):
+    def locate_1Lorenztian2(self, Frequency, Spec, index, big=False):
         def _1Lorentzian(x, amp1, cen1, wid1):
             return amp1*wid1**2/((x-cen1)**2+wid1**2)
         peaks, _ = find_peaks(Spec,width=5,rel_height=0.3)
