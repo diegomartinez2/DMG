@@ -580,7 +580,7 @@ class Eliashberg(object):
         a2F_x = np.divide(res, w)
 #---test--^--multiprocessing*****
         #self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies)) <-- this makes lambda1 20 times bigger than lambda2 (???)
-        self.lambda_2 = 2*np.trapz(a2F_x) #test <-- this lamba2 is 250 times lambda1 (that corresponds to q_x*q_y ???)
+        self.lambda_2 = 2*np.trapz(a2F_x) #test <-- this lambda2 is 250 times lambda1 (that corresponds to q_x*q_y ???)
         self.plot_lambda(a2F_x)
         return Lambda_1
 
@@ -670,7 +670,7 @@ class Eliashberg(object):
     def T_c(self,mu_par):
         """
         Allen-Dynes formula
-        Tc=W_log/1.2*exp(-1.04*(1+self.lambda_2)/(self.lambda_2-mu_*(1+0.62*self.lamba_2)))
+        Tc=W_log/1.2*exp(-1.04*(1+self.lambda_2)/(self.lambda_2-mu_*(1+0.62*self.lambda_2)))
         """
         out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lambda_2))
         out=self.w_log()/1.2 * np.exp(out2)
@@ -680,7 +680,7 @@ class Eliashberg(object):
         w_log calculated from Eliashberg
         """
         w = self.w
-        return np.exp(2/self.lamba_2*integrate.simpson(
+        return np.exp(2/self.lambda_2*integrate.simpson(
             (np.divide(self.a2F_new(self.w), self.w)*log(self.w)),self.w))
 
 class Eliashberg_test(object):
