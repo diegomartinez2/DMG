@@ -664,7 +664,7 @@ class Eliashberg(object):
         width = self.pars[:,2] #*put units the same as center
         width = np.absolute(width)
         #nits = create_units('2014')
-        gauss_width = 200*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
+        gauss_width = 10*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         # summa = 0
         # factor1 = 1 / (2*np.pi*self.Nef*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
         # for i in range(len(center)):
@@ -1033,8 +1033,8 @@ def main(arg):
             superconductor.lambda_w_lista,superconductor.w,
             a2F_lista,frequencies)
         T_c = superconductor.T_c(mu_par=0.1) #mu*=0.1 y mu*=0.15. Son los valores típicos.
-        print("T_c=",T_c)
-        np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_c')
+        print("T_c=",T_c,"eV:: T_c=",T_c*11604,"K")
+        np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c*11604), header='Lambda, T_c (K)')
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
