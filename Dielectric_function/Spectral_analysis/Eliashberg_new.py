@@ -702,9 +702,11 @@ class Eliashberg(object):
         """
         w_log calculated from Eliashberg
         """
+        eV_to_K=11604
         w = self.w
         return np.exp(2/self.lambda_2*integrate.simpson(
-            (np.divide(self.a2F_new(self.w), self.w)*np.log(self.w)),self.w))
+            #(np.divide(self.a2F_new(self.w), self.w)*np.log(self.w)),self.w))
+            (np.divide(self.a2F_new(self.w*eV_to_K), self.w*eV_to_K)*np.log(self.w*eV_to_K)),self.w*eV_to_K))
 
 class Eliashberg_test(object):
     """docstring for Eliashberg.
@@ -1034,7 +1036,8 @@ def main(arg):
             a2F_lista,frequencies)
         T_c = superconductor.T_c(mu_par=0.1) #mu*=0.1 y mu*=0.15. Son los valores típicos.
         print("T_c=",T_c,"eV:: T_c=",T_c*11604,"K")
-        np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c*11604), header='Lambda, T_c (K)')
+        #np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_c (eV)')
+        np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_c (K)')
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
