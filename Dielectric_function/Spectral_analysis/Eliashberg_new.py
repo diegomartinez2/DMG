@@ -664,7 +664,7 @@ class Eliashberg(object):
         width = self.pars[:,2] #*put units the same as center
         width = np.absolute(width)
         #nits = create_units('2014')
-        gauss_width = 10*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
+        gauss_width = 50*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         # summa = 0
         # factor1 = 1 / (2*np.pi*self.Nef*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
         # for i in range(len(center)):
@@ -703,6 +703,7 @@ class Eliashberg(object):
         w_log calculated from Eliashberg
         """
         eV_to_K=11604
+        #eV_to_K = 11604.5250061657
         w = self.w
         return np.exp(2/self.lambda_2*integrate.simpson(
             #(np.divide(self.a2F_new(self.w), self.w)*np.log(self.w)),self.w))
