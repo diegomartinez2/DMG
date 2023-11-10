@@ -139,7 +139,7 @@ def plot_all(data,data2,pars,pars2,lambda_w_lista,w,a2F_lista,frequencies):
     ax5.set_title('a2F vs. $\omega$')
     ax5.set_xlabel('$\omega$ (eV)')
     #ax5.set_ylabel('a2F')
-    ax5.set_ylabel('$\alpha^2F$')
+    ax5.set_ylabel('$\\alpha^2F$')
     #annotate_axes(fig)
     plt.tight_layout()
     plt.show()
