@@ -659,7 +659,7 @@ class Eliashberg(object):
         ---output---
         a2F = factor1*summa: The Eliashberg function at "x"
         """
-        method = 1
+        method = 0
         center = self.pars[:,1] #*put units correctly...
         width = self.pars[:,2] #*put units the same as center
         width = np.absolute(width)
