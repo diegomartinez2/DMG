@@ -63,6 +63,7 @@ def plot_all(data,data2,pars,pars2,lambda_w_lista,w,a2F_lista,frequencies):
     """
     Plot all data
     """
+    plt.rcParams['text.usetex'] = True
     fig = plt.figure(figsize=(10,6))
     ax1 = plt.subplot2grid((2, 3), (0, 0), colspan=2)
     im1 = ax1.imshow(data.T,
@@ -136,7 +137,7 @@ def plot_all(data,data2,pars,pars2,lambda_w_lista,w,a2F_lista,frequencies):
     ax4.set_xlabel('$\omega$ (eV)')
     ax5 = plt.subplot2grid((2, 3), (1, 2),  sharex=ax4)#, sharey=ax1)
     ax5.plot(frequencies,a2F_lista)
-    ax5.set_title('a2F vs. $\omega$')
+    ax5.set_title('$\\alpha^2F$ vs. $\omega$')
     ax5.set_xlabel('$\omega$ (eV)')
     #ax5.set_ylabel('a2F')
     ax5.set_ylabel('$\\alpha^2F$')
