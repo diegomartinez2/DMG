@@ -698,6 +698,7 @@ class Eliashberg(object):
         """
         out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lambda_2))
         out=self.w_log()/1.2 * np.exp(out2)
+        #out_AD=f_1(mu_par)*f_2(mu_par)*self.w_log()/1.2 * np.exp(out2)
         return out
 
     def w_log(self):
@@ -721,7 +722,7 @@ class Eliashberg(object):
         LAMBDA_temp = 2.46*(1 + 3.8*mu_par )
         return np.power(1+np.power(self.lambda_2/LAMBDA_temp,3/2),1/3)
 
-    def f_2(self,mu_par,w_2):
+    def f_2(self,mu_par):
         LAMBDA_temp = 1.82*(1 + 6.3 * mu_par ) * ( w_2()/w_log() )
         return 1 + (( w_2()/w_log() − 1) * self.lambda_2**2)/((self.lambda_2**2) + (LAMBDA_temp**2)
 
