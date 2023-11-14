@@ -729,7 +729,8 @@ class Eliashberg(object):
 
     def f_2(self,mu_par):
         LAMBDA_temp = 1.82*(1 + 6.3 * mu_par ) * ( w_2()/w_log() )
-        return 1 + (( w_2()/w_log() - 1) * self.lambda_2**2)/((self.lambda_2**2) + (LAMBDA_temp**2)
+        return 1 + (( w_2()/w_log() - 1) * self.lambda_2**2)/(
+        (self.lambda_2**2) + (LAMBDA_temp**2))
 
 
 class Eliashberg_test(object):
