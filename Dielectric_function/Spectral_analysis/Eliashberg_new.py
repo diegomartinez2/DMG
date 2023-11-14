@@ -696,10 +696,11 @@ class Eliashberg(object):
         Allen-Dynes formula
         Tc=W_log/1.2*exp(-1.04*(1+self.lambda_2)/(self.lambda_2-mu_*(1+0.62*self.lambda_2)))
         """
-        AllenDynes = False
+        AllenDynes = True
         out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lambda_2))
         if (AllenDynes):
             #out_AD=f_1(mu_par)*f_2(mu_par)*self.w_log()/1.2 * np.exp(out2)
+            print ("f1,f2=",self.f_1(mu_par),self.f_2(mu_par))
             out=self.f_1(mu_par)*self.f_2(mu_par)*self.w_log()/1.2 * np.exp(out2)
         else:
             out=self.w_log()/1.2 * np.exp(out2)
