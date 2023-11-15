@@ -716,13 +716,15 @@ class Eliashberg(object):
         #w = self.w
         return np.exp(2/self.lambda_2*integrate.simpson(
             #(np.divide(self.a2F_new(self.w), self.w)*np.log(self.w)),self.w))
-            (np.divide(self.a2F_new(self.w*eV_to_K), self.w*eV_to_K)*np.log(self.w*eV_to_K)),self.w*eV_to_K))
+            (np.divide(self.a2F_new(self.w*eV_to_K), self.w*eV_to_K)*np.log(self.w*eV_to_K)),self.w*eV_to_K
+            ))
 
     def w_2(self):
         eV_to_K=11604
         #w = self.w
         return np.sqrt(2/self.lambda_2*integrate.simpson(
-            (self.a2F_new(self.w*eV_to_K)*self.w*eV_to_K),self.w*eV_to_K))
+            self.a2F_new(self.w*eV_to_K)*self.w*eV_to_K,self.w*eV_to_K)
+            )
 
     def f_1(self,mu_par):
         LAMBDA_temp = 2.46*(1+3.8*mu_par)
