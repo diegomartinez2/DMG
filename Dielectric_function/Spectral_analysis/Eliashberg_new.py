@@ -724,7 +724,7 @@ class Eliashberg(object):
         w = self.w*eV_to_K
         return np.sqrt(
             (2/self.lambda_2)*
-            integrate.simpson(self.a2F_new(w)*w,w)
+            1#integrate.simpson(self.a2F_new(w)*w,w)
             )
 
     def f_1(self,mu_par):
