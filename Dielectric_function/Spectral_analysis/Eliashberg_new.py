@@ -724,7 +724,7 @@ class Eliashberg(object):
         w = self.w*eV_to_K
         return np.sqrt(
             (2/self.lambda_2)*
-            1#integrate.simpson(self.a2F_new(w)*w,w)
+            integrate.simpson(self.a2F_new(w)*w,w)
             )
 
     def f_1(self,mu_par):
@@ -735,7 +735,8 @@ class Eliashberg(object):
         LAMBDA_temp =1.82*(1+6.3*mu_par)*(self.w_2()/self.w_log())
         print("mu_par=",mu_par)#OK
         print ("LAMBDA_temp=",LAMBDA_temp) #ERROR
-        print ("w_2()=",self.w_2())
+        print ("w_2()=",self.w_2()) #ERROR
+        print ("w_log()=",self.w_log())
         print ("return f2=",1 + (( self.w_2()/self.w_log() - 1) * self.lambda_2**2)/(
         (self.lambda_2**2) + (LAMBDA_temp**2)))
         return 1 + (( self.w_2()/self.w_log() - 1) * self.lambda_2**2)/(
