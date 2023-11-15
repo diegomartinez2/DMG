@@ -722,13 +722,13 @@ class Eliashberg(object):
     def w_2(self):
         eV_to_K=11604
         w = self.w#*eV_to_K
-        print ("**********************************************************")
-        print ("w=",w)
-        print ("a2F_new(w)=",np.nonzero(self.a2F_new(w)))
-        self.plot_lambda(self.a2F_new(w))
-        print ("self.a2F_new(w)*w=",self.a2F_new(w)*w)
-        self.plot_lambda(self.a2F_new(w)*w)
-        print ("**********************************************************")
+        # print ("**********************************************************")
+        # print ("w=",w)
+        # print ("a2F_new(w)=",np.nonzero(self.a2F_new(w)))
+        # self.plot_lambda(self.a2F_new(w))
+        # print ("self.a2F_new(w)*w=",self.a2F_new(w)*w)
+        # self.plot_lambda(self.a2F_new(w)*w)
+        # print ("**********************************************************")
 
         w_2 = np.sqrt(2.0/self.lambda_2*integrate.simpson(
             (self.a2F_new(w)*w),w))
