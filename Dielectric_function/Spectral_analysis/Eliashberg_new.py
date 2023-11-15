@@ -725,7 +725,9 @@ class Eliashberg(object):
         print ("**********************************************************")
         print ("w=",w)
         print ("a2F_new(w)=",self.a2F_new(w))
+        self.plot_lambda(self.a2F_new(w))
         print ("self.a2F_new(w)*w=",self.a2F_new(w)*w)
+        self.plot_lambda(self.a2F_new(w)*w)
         print ("**********************************************************")
 
         w_2 = np.sqrt(2.0/self.lambda_2*integrate.simpson(
