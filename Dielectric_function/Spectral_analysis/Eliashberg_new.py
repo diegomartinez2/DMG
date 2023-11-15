@@ -724,7 +724,7 @@ class Eliashberg(object):
         w = self.w#*eV_to_K
         print ("**********************************************************")
         print ("w=",w)
-        print ("a2F_new(w)=",np.nonzero(self.a2F_new(w))
+        print ("a2F_new(w)=",np.nonzero(self.a2F_new(w)))
         self.plot_lambda(self.a2F_new(w))
         print ("self.a2F_new(w)*w=",self.a2F_new(w)*w)
         self.plot_lambda(self.a2F_new(w)*w)
