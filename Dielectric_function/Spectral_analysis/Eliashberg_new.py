@@ -937,18 +937,19 @@ def main(arg):
 #                data[i,:] = plasmon.data[i,i,:]
 #---------------------------------end---diagonal----------------
 #-------------------------fix to remove extra polaron data--------------
-        for i in range(5):
-            for j in range(2000,5001,1):
-                if (data[i][j]!=0.0):
-                    print("data[{}][{}]=".format(i,j),data[i][j])
-        # if i < 5:
-        #     if j > 2000:
-                    data[i][j] = 0
-                if (data_d[i][j]!=0.0):
-                    print("data_d[{}][{}]=".format(i,j),data_d[i][j])
-        # if i < 5:
-        #     if j > 2000:
-                    data_d[i][j] = 0
+        if (len( sys.argv) == 3):
+            for i in range(5):
+                for j in range(2000,5001,1):
+                    if (data[i][j]!=0.0):
+                        print("data[{}][{}]=".format(i,j),data[i][j])
+            # if i < 5:
+            #     if j > 2000:
+                        data[i][j] = 0
+                    if (data_d[i][j]!=0.0):
+                        print("data_d[{}][{}]=".format(i,j),data_d[i][j])
+            # if i < 5:
+            #     if j > 2000:
+                        data_d[i][j] = 0
 #------------------------end-removing data------------------------------
         print ("data[49][2110]=",data[49][2110]) # aqui hay datos
         print ("data[50][2110]=",data[50][2110]) # aqui no hay datos???
@@ -972,115 +973,121 @@ def main(arg):
             np.savetxt("data_fitting_center_{}.txt".format(namefile),np.c_[plasmon.pars[:,1], plasmon.perr_lorentz[:,1]],header='#-----center(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
             np.savetxt("data_fitting_width_{}.txt".format(namefile),np.c_[plasmon.pars[:,2], plasmon.perr_lorentz[:,2]],header='#-----width(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
 
-        plasmon.fitting_Lorentz2(frequencies_d,data_d, 51, big=True) #size = 51*2 = 102
+
         #f.close()
         if (len( sys.argv) == 3):
+            plasmon.fitting_Lorentz2(frequencies_d,data_d, 51, big=True) #size = 51*2 = 102
             np.savetxt("data_fitting_amplitudes_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,0], plasmon.perr_lorentz2[:,0]],header='#-----amplitude--(+/-)error---', footer='-------------')
             np.savetxt("data_fitting_center_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,1], plasmon.perr_lorentz2[:,1]],header='#-----center(e.V.)--(+/-)error---', footer='-------------')
             np.savetxt("data_fitting_width_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,2], plasmon.perr_lorentz2[:,2]],header='#-----width(e.V.)--(+/-)error---', footer='-------------')
-        else:
-            np.savetxt("data_fitting_amplitudes_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,0], plasmon.perr_lorentz2[:,0]],header='#-----amplitude--(+/-)error---for--qx={}'.format(qx), footer='-------------')
-            np.savetxt("data_fitting_center_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,1], plasmon.perr_lorentz2[:,1]],header='#-----center(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
-            np.savetxt("data_fitting_width_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,2], plasmon.perr_lorentz2[:,2]],header='#-----width(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+        # else:
+        #     np.savetxt("data_fitting_amplitudes_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,0], plasmon.perr_lorentz2[:,0]],header='#-----amplitude--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+        #     np.savetxt("data_fitting_center_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,1], plasmon.perr_lorentz2[:,1]],header='#-----center(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
+        #     np.savetxt("data_fitting_width_d_{}.txt".format(namefile),np.c_[plasmon.pars2[:,2], plasmon.perr_lorentz2[:,2]],header='#-----width(e.V.)--(+/-)error---for--qx={}'.format(qx), footer='-------------')
 
         print ("dibuja")
         plasmon.plot_contour(plasmon.Fitted_data)
         plasmon.plot_contour2(data,plasmon.Fitted_data)
-        print ("dibuja_doble")
-        Fitted_data = np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2))
-        #plasmon.plot_contour(Fitted_data)
-        #plasmon.plot_contour2(data,Fitted_data)
-        plasmon.plot_contour3(np.vstack((np.flip(data, axis=0), data_d)),Fitted_data)
+        if (len( sys.argv) == 3):
+            print ("dibuja_doble")
+            Fitted_data = np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2))
+            #plasmon.plot_contour(Fitted_data)
+            #plasmon.plot_contour2(data,Fitted_data)
+            plasmon.plot_contour3(np.vstack((np.flip(data, axis=0), data_d)),Fitted_data)
 
-        # np.savetxt('Lambda.txt', (lambda_1))
-        # np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
+            # np.savetxt('Lambda.txt', (lambda_1))
+            # np.savetxt('Lambda_from_a2F.txt', np.array((frequencies[1:],superconductor.lambda_2)).T, header='frequencies,Lambda')
 
         file1 = './pars_data.txt'
         file2 = './frequencies_data.txt'
-        if not (os.path.isfile(file1) and os.path.isfile(file2)):
-            data, frequencies = plasmon.load_big_file(0, arg[1],diagonal=False)
-            plasmon.fitting_Lorentz(frequencies,data, 51, big=False) #TEST
-            pars = plasmon.pars
-            for index in range(0,51): #51 eller 50 -> 2601 eller 2550 : antes index in range(1,51)
-                data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
-#-------------------------fix to remove extra polaron data--------------
-                if (index<6):
-                    for i in range(5):
-                        for j in range(2000,5001,1):
-                            if (data[i][j]!=0.0):
-                                print("data[{}][{}]=".format(i,j),data[i][j])
-                                data[i][j] = 0
-#------------------------end-removing data------------------------------
-                #data = np.vstack((data, data_t))
-                #frequencies = np.vstack((frequencies, frequencies_t))
-                plasmon.fitting_Lorentz(frequencies,data_t, 51, big=False) #TEST
-                pars = np.vstack((pars,plasmon.pars))
-            #print ("frequencies=",frequencies)
-            #print ("shape(data)=",np.shape(data),"=(51,5001)?")
-            #print ("shape(frequencies)=",np.shape(frequencies),"=(51,5001)?")
-            #plasmon.fitting_Lorentz(frequencies,data, 51)
-            #plasmon.fitting_Lorentz(np.tile(frequencies,51),data, 2601)
-        #    print ("shape(pars)=",np.shape(pars))
-            #print (plasmon.pars2[:,0])
-        #    print('Min(pars[0])=',np.amin(pars[:,0]))
-            #print ('Min(pars2[0])=',np.amin(plasmon.pars2[:,0]))
+        if (len( sys.argv) == 3):
+            if not (os.path.isfile(file1) and os.path.isfile(file2)):
+                data, frequencies = plasmon.load_big_file(0, arg[1],diagonal=False)
+                plasmon.fitting_Lorentz(frequencies,data, 51, big=False) #TEST
+                pars = plasmon.pars
+                for index in range(0,51): #51 eller 50 -> 2601 eller 2550 : antes index in range(1,51)
+                    data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
+    #-------------------------fix to remove extra polaron data--------------
+                    if (index<6):
+                        for i in range(5):
+                            for j in range(2000,5001,1):
+                                if (data[i][j]!=0.0):
+                                    print("data[{}][{}]=".format(i,j),data[i][j])
+                                    data[i][j] = 0
+    #------------------------end-removing data------------------------------
+                    #data = np.vstack((data, data_t))
+                    #frequencies = np.vstack((frequencies, frequencies_t))
+                    plasmon.fitting_Lorentz(frequencies,data_t, 51, big=False) #TEST
+                    pars = np.vstack((pars,plasmon.pars))
+                #print ("frequencies=",frequencies)
+                #print ("shape(data)=",np.shape(data),"=(51,5001)?")
+                #print ("shape(frequencies)=",np.shape(frequencies),"=(51,5001)?")
+                #plasmon.fitting_Lorentz(frequencies,data, 51)
+                #plasmon.fitting_Lorentz(np.tile(frequencies,51),data, 2601)
+            #    print ("shape(pars)=",np.shape(pars))
+                #print (plasmon.pars2[:,0])
+            #    print('Min(pars[0])=',np.amin(pars[:,0]))
+                #print ('Min(pars2[0])=',np.amin(plasmon.pars2[:,0]))
 
-            np.savetxt(file1, pars) #no negative values
-            np.savetxt(file2, frequencies) #no negative values
+                np.savetxt(file1, pars) #no negative values
+                np.savetxt(file2, frequencies) #no negative values
+            else:
+                pars = np.loadtxt(file1) #no negative values,
+                frequencies = np.loadtxt(file2) #no negative values
+            superconductor = Eliashberg(pars)
+            superconductor.read_Ne()
+        #    print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
+            lambda_1 = superconductor.Lambda_new(frequencies)
+            print('Lambda_1=',lambda_1,'[]?') # Lambda calculated from Lambda_q
+            print('Lambda_2=',superconductor.lambda_2,'[]?') #Lambda calculated fron Eliashberg function
+            #print("shape(lambda_q)=",np.shape(superconductor.lambda_q_lista))
+        #    print("lambda_q=",superconductor.lambda_q_lista[:50])
+
+            fig_lambda_q = plt.figure(figsize=(10,6))
+            ax = fig_lambda_q.add_subplot(1, 1, 1)
+            ax.plot(superconductor.lambda_w_lista,superconductor.w[1:])
+            ax.set_title('$\lambda$ vs. $\omega$')
+            ax.set_xlabel('$\lambda(\omega)$')
+            ax.set_ylabel('$\omega$')
+            #ax.set_xticks([0,len(superconductor.w)])
+            #ax.set_yticks([0,5001])
+            #ax.set_xticklabels(["0","$\pi$"])
+            #ax.set_xticklabels([superconductor.w[0],superconductor.w[-1]])
+            #ax.set_yticklabels(["0","1"])
+            plt.tight_layout()
+            plt.show()
+            fig_lambda_q.savefig("Ajuste_d_{}".format("lambda_w"))
+            a2F_lista = []
+            #print("frequencies=",frequencies)
+            #for w in frequencies:
+            #    a2F_lista.append(superconductor.a2F_new(w))
+            a2F_lista = superconductor.a2F_new(frequencies)
+
+            #print ("a2F(w)=",a2F_lista)
+            fig_a2F = plt.figure(figsize=(10,6))
+            ax = fig_a2F.add_subplot(1, 1, 1)
+            ax.plot(a2F_lista,frequencies)
+            ax.set_title('a2F vs. $\omega$')
+            ax.set_ylabel('$\omega$ (eV)')
+            ax.set_xlabel('a2F')
+
+            plt.plot ()
+            plt.tight_layout()
+            plt.show()
+            fig_a2F.savefig("Ajuste_d_{}".format("a2F"))
+
+            plot_all(np.vstack((np.flip(data, axis=0), data_d)),
+                np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2)),
+                plasmon.pars, plasmon.pars2,
+                superconductor.lambda_w_lista,superconductor.w,
+                a2F_lista,frequencies)
+            T_c = superconductor.T_c(mu_par=0.1) #mu*=0.1 y mu*=0.15. Son los valores típicos.
+            print("T_c=",T_c,"eV:: T_c=",T_c*11604,"K")
+            #np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_c (eV)')
+            np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_c (K)')
         else:
-            pars = np.loadtxt(file1) #no negative values,
-            frequencies = np.loadtxt(file2) #no negative values
-        superconductor = Eliashberg(pars)
-        superconductor.read_Ne()
-    #    print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
-        lambda_1 = superconductor.Lambda_new(frequencies)
-        print('Lambda_1=',lambda_1,'[]?') # Lambda calculated from Lambda_q
-        print('Lambda_2=',superconductor.lambda_2,'[]?') #Lambda calculated fron Eliashberg function
-        #print("shape(lambda_q)=",np.shape(superconductor.lambda_q_lista))
-    #    print("lambda_q=",superconductor.lambda_q_lista[:50])
-
-        fig_lambda_q = plt.figure(figsize=(10,6))
-        ax = fig_lambda_q.add_subplot(1, 1, 1)
-        ax.plot(superconductor.lambda_w_lista,superconductor.w[1:])
-        ax.set_title('$\lambda$ vs. $\omega$')
-        ax.set_xlabel('$\lambda(\omega)$')
-        ax.set_ylabel('$\omega$')
-        #ax.set_xticks([0,len(superconductor.w)])
-        #ax.set_yticks([0,5001])
-        #ax.set_xticklabels(["0","$\pi$"])
-        #ax.set_xticklabels([superconductor.w[0],superconductor.w[-1]])
-        #ax.set_yticklabels(["0","1"])
-        plt.tight_layout()
-        plt.show()
-        fig_lambda_q.savefig("Ajuste_d_{}".format("lambda_w"))
-        a2F_lista = []
-        #print("frequencies=",frequencies)
-        #for w in frequencies:
-        #    a2F_lista.append(superconductor.a2F_new(w))
-        a2F_lista = superconductor.a2F_new(frequencies)
-
-        #print ("a2F(w)=",a2F_lista)
-        fig_a2F = plt.figure(figsize=(10,6))
-        ax = fig_a2F.add_subplot(1, 1, 1)
-        ax.plot(a2F_lista,frequencies)
-        ax.set_title('a2F vs. $\omega$')
-        ax.set_ylabel('$\omega$ (eV)')
-        ax.set_xlabel('a2F')
-
-        plt.plot ()
-        plt.tight_layout()
-        plt.show()
-        fig_a2F.savefig("Ajuste_d_{}".format("a2F"))
-
-        plot_all(np.vstack((np.flip(data, axis=0), data_d)),
-            np.vstack((np.flip(plasmon.Fitted_data, axis=0), plasmon.Fitted_data2)),
-            plasmon.pars, plasmon.pars2,
-            superconductor.lambda_w_lista,superconductor.w,
-            a2F_lista,frequencies)
-        T_c = superconductor.T_c(mu_par=0.1) #mu*=0.1 y mu*=0.15. Son los valores típicos.
-        print("T_c=",T_c,"eV:: T_c=",T_c*11604,"K")
-        #np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_c (eV)')
-        np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_c (K)')
+            np.savetxt(file1, pars)
+            np.savetxt(file2, frequencies)
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
