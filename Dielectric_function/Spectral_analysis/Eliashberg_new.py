@@ -1087,7 +1087,6 @@ def main(arg):
             np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_c (K)')
         else:
             np.savetxt(file1, plasmon.pars)
-            np.savetxt(file2, plasmon.frequencies)
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
