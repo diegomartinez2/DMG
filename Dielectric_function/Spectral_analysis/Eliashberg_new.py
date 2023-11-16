@@ -950,6 +950,14 @@ def main(arg):
             # if i < 5:
             #     if j > 2000:
                         data_d[i][j] = 0
+        else:
+            for i in range(5):
+                for j in range(2000,5001,1):
+                    if (data[i][j]!=0.0):
+                        print("data[{}][{}]=".format(i,j),data[i][j])
+            # if i < 5:
+            #     if j > 2000:
+                        data[i][j] = 0
 #------------------------end-removing data------------------------------
         print ("data[49][2110]=",data[49][2110]) # aqui hay datos
         print ("data[50][2110]=",data[50][2110]) # aqui no hay datos???
@@ -1086,7 +1094,7 @@ def main(arg):
             #np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_c (eV)')
             np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_c (K)')
         else:
-            np.savetxt(file1, plasmon.pars)
+            np.savetxt('./pars_data_{}.txt'.format(arg[1]), plasmon.pars)
     else:
         print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
