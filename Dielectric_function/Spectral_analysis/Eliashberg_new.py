@@ -1001,7 +1001,7 @@ def main(arg):
             data, frequencies = plasmon.load_big_file(0, arg[1],diagonal=False)
             plasmon.fitting_Lorentz(frequencies,data, 51, big=False) #TEST
             pars = plasmon.pars
-            for index in range(1,51): #51 eller 50 -> 2601 eller 2550
+            for index in range(0,51): #51 eller 50 -> 2601 eller 2550 : antes index in range(1,51)
                 data_t, frequencies_t = plasmon.load_big_file(index, arg[1],diagonal=False)
 #-------------------------fix to remove extra polaron data--------------
                 if (index<6):
