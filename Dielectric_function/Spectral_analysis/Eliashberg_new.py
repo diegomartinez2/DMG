@@ -1092,7 +1092,7 @@ def main(arg):
             T_c = superconductor.T_c(mu_par=0.1) #mu*=0.1 y mu*=0.15. Son los valores típicos.
             print("T_c=",T_c,"eV:: T_c=",T_c*11604,"K")
             #np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_c (eV)')
-            np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_c (K)')
+            np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c,T_c*11604), header='Lambda, T_C (eV), T_c (K)')
         else:
             np.savetxt('./pars_data_{}.txt'.format(arg[1]), plasmon.pars)
     else:
