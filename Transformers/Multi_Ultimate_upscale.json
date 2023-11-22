@@ -877,7 +877,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        155326445563991,
+        155326445563989,
         "randomize",
         20,
         7,
@@ -936,7 +936,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        965047028749755,
+        982901334887703,
         "randomize",
         20,
         8,
@@ -995,7 +995,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        900349376239580,
+        470295253662452,
         "randomize",
         20,
         8,
@@ -1054,7 +1054,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        730824172460490,
+        175290218012600,
         "randomize",
         20,
         8,
@@ -1918,7 +1918,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        483030730066427,
+        477923484511531,
         "randomize",
         20,
         8,
@@ -2138,7 +2138,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        274407056853195,
+        177981962706299,
         "randomize",
         20,
         8,
@@ -2197,7 +2197,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        477746832782982,
+        330517088358321,
         "randomize",
         20,
         8,
@@ -2691,7 +2691,7 @@
       ],
       "properties": {},
       "widgets_values": [
-        155326445563991,
+        155326445563989,
         "decrement"
       ]
     },
@@ -3380,7 +3380,7 @@
       "widgets_values": [
         256,
         "bbox",
-        213372263902068,
+        236761747795473,
         "randomize",
         20,
         8,
@@ -3558,7 +3558,7 @@
       "widgets_values": [
         256,
         "bbox",
-        125050926484547,
+        180187476941568,
         "randomize",
         20,
         8,
@@ -3702,7 +3702,7 @@
       "widgets_values": [
         256,
         "bbox",
-        188432321334062,
+        521357344053758,
         "randomize",
         20,
         8,
@@ -3808,7 +3808,7 @@
       "widgets_values": [
         256,
         "bbox",
-        64805170777111,
+        130793445954817,
         "randomize",
         20,
         8,
@@ -3912,7 +3912,7 @@
       "widgets_values": [
         256,
         "bbox",
-        644099137414530,
+        626561424374749,
         "randomize",
         20,
         8,
@@ -4018,7 +4018,7 @@
       "widgets_values": [
         256,
         "bbox",
-        659769941020448,
+        371939090404511,
         "randomize",
         20,
         8,
@@ -4125,7 +4125,7 @@
       "widgets_values": [
         256,
         "bbox",
-        622119853020518,
+        495431582506046,
         "randomize",
         20,
         8,
@@ -4348,10 +4348,10 @@
         1717.8550704866311,
         450.4559292663374
       ],
-      "size": {
-        "0": 315,
-        "1": 58
-      },
+      "size": [
+        315,
+        270.00000381469727
+      ],
       "flags": {},
       "order": 90,
       "mode": 0,
@@ -4365,88 +4365,6 @@
       "properties": {},
       "widgets_values": [
         "Fase1U"
-      ]
-    },
-    {
-      "id": 351,
-      "type": "UltimateSDUpscale",
-      "pos": [
-        1332,
-        433
-      ],
-      "size": {
-        "0": 315,
-        "1": 590
-      },
-      "flags": {},
-      "order": 84,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 812
-        },
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 813
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 814
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 815
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 816
-        },
-        {
-          "name": "upscale_model",
-          "type": "UPSCALE_MODEL",
-          "link": 856
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            817
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "UltimateSDUpscale"
-      },
-      "widgets_values": [
-        2,
-        947319091525558,
-        "randomize",
-        20,
-        8,
-        "euler",
-        "normal",
-        1,
-        "Linear",
-        512,
-        512,
-        8,
-        32,
-        "None",
-        1,
-        64,
-        8,
-        16,
-        "enable"
       ]
     },
     {
@@ -4491,88 +4409,6 @@
       "properties": {
         "Node name for S&R": "VAEDecode"
       }
-    },
-    {
-      "id": 357,
-      "type": "UltimateSDUpscale",
-      "pos": [
-        3752,
-        1218
-      ],
-      "size": {
-        "0": 315,
-        "1": 590
-      },
-      "flags": {},
-      "order": 103,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 822
-        },
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 818
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 819
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 820
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 821
-        },
-        {
-          "name": "upscale_model",
-          "type": "UPSCALE_MODEL",
-          "link": 855
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            823
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "UltimateSDUpscale"
-      },
-      "widgets_values": [
-        2,
-        732380511715993,
-        "randomize",
-        20,
-        8,
-        "euler",
-        "normal",
-        1,
-        "Linear",
-        512,
-        512,
-        8,
-        32,
-        "None",
-        1,
-        64,
-        8,
-        16,
-        "enable"
-      ]
     },
     {
       "id": 362,
@@ -4809,98 +4645,16 @@
       }
     },
     {
-      "id": 356,
-      "type": "UltimateSDUpscale",
-      "pos": [
-        3822,
-        -2496
-      ],
-      "size": {
-        "0": 315,
-        "1": 590
-      },
-      "flags": {},
-      "order": 100,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 824
-        },
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 825
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 827
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 828
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 829
-        },
-        {
-          "name": "upscale_model",
-          "type": "UPSCALE_MODEL",
-          "link": 857
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            830
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "UltimateSDUpscale"
-      },
-      "widgets_values": [
-        2,
-        621647340382211,
-        "randomize",
-        20,
-        8,
-        "euler",
-        "normal",
-        1,
-        "Linear",
-        512,
-        512,
-        8,
-        32,
-        "None",
-        1,
-        64,
-        8,
-        16,
-        "enable"
-      ]
-    },
-    {
       "id": 363,
       "type": "SaveImage",
       "pos": [
         4237.136570066898,
         -2477.453548757393
       ],
-      "size": {
-        "0": 315,
-        "1": 58
-      },
+      "size": [
+        315,
+        269.9999351501465
+      ],
       "flags": {},
       "order": 106,
       "mode": 0,
@@ -5167,88 +4921,6 @@
       }
     },
     {
-      "id": 361,
-      "type": "UltimateSDUpscale",
-      "pos": [
-        7741,
-        -1804
-      ],
-      "size": {
-        "0": 315,
-        "1": 590
-      },
-      "flags": {},
-      "order": 122,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 831
-        },
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 832
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 835
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 836
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 839
-        },
-        {
-          "name": "upscale_model",
-          "type": "UPSCALE_MODEL",
-          "link": 858
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            841
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "UltimateSDUpscale"
-      },
-      "widgets_values": [
-        2,
-        1123256196328610,
-        "randomize",
-        20,
-        8,
-        "euler",
-        "normal",
-        1,
-        "Linear",
-        512,
-        512,
-        8,
-        32,
-        "None",
-        1,
-        64,
-        8,
-        16,
-        "enable"
-      ]
-    },
-    {
       "id": 364,
       "type": "SaveImage",
       "pos": [
@@ -5272,88 +4944,6 @@
       "properties": {},
       "widgets_values": [
         "Fase3aU"
-      ]
-    },
-    {
-      "id": 360,
-      "type": "UltimateSDUpscale",
-      "pos": [
-        7545,
-        -923
-      ],
-      "size": {
-        "0": 315,
-        "1": 590
-      },
-      "flags": {},
-      "order": 125,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 833
-        },
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 834
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 837
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 838
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 840
-        },
-        {
-          "name": "upscale_model",
-          "type": "UPSCALE_MODEL",
-          "link": 859
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            842
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "UltimateSDUpscale"
-      },
-      "widgets_values": [
-        2,
-        930806276951840,
-        "randomize",
-        20,
-        8,
-        "euler",
-        "normal",
-        1,
-        "Linear",
-        512,
-        512,
-        8,
-        32,
-        "None",
-        1,
-        64,
-        8,
-        16,
-        "enable"
       ]
     },
     {
@@ -5696,88 +5286,6 @@
       ]
     },
     {
-      "id": 358,
-      "type": "UltimateSDUpscale",
-      "pos": [
-        7526,
-        798
-      ],
-      "size": {
-        "0": 315,
-        "1": 590
-      },
-      "flags": {},
-      "order": 128,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 844
-        },
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 846
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 848
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 850
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 852
-        },
-        {
-          "name": "upscale_model",
-          "type": "UPSCALE_MODEL",
-          "link": 861
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            854
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "UltimateSDUpscale"
-      },
-      "widgets_values": [
-        2,
-        949725132128861,
-        "randomize",
-        20,
-        8,
-        "euler",
-        "normal",
-        1,
-        "Linear",
-        512,
-        512,
-        8,
-        32,
-        "None",
-        1,
-        64,
-        8,
-        16,
-        "enable"
-      ]
-    },
-    {
       "id": 367,
       "type": "SaveImage",
       "pos": [
@@ -5801,89 +5309,6 @@
       "properties": {},
       "widgets_values": [
         "Fase3dU"
-      ]
-    },
-    {
-      "id": 359,
-      "type": "UltimateSDUpscale",
-      "pos": [
-        7797,
-        -46
-      ],
-      "size": {
-        "0": 315,
-        "1": 590
-      },
-      "flags": {},
-      "order": 131,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 843
-        },
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 845
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 847
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 849
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 851
-        },
-        {
-          "name": "upscale_model",
-          "type": "UPSCALE_MODEL",
-          "link": 860,
-          "slot_index": 5
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            853
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "UltimateSDUpscale"
-      },
-      "widgets_values": [
-        2,
-        372262868897097,
-        "randomize",
-        20,
-        8,
-        "euler",
-        "normal",
-        1,
-        "Linear",
-        512,
-        512,
-        8,
-        32,
-        "None",
-        1,
-        64,
-        8,
-        16,
-        "enable"
       ]
     },
     {
@@ -6065,6 +5490,581 @@
         "showOutputText": false,
         "horizontal": false
       }
+    },
+    {
+      "id": 356,
+      "type": "UltimateSDUpscale",
+      "pos": [
+        3822,
+        -2496
+      ],
+      "size": {
+        "0": 315,
+        "1": 590
+      },
+      "flags": {},
+      "order": 100,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 824
+        },
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 825
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 827
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 828
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 829
+        },
+        {
+          "name": "upscale_model",
+          "type": "UPSCALE_MODEL",
+          "link": 857
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            830
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UltimateSDUpscale"
+      },
+      "widgets_values": [
+        2,
+        307527008972587,
+        "randomize",
+        20,
+        8,
+        "euler",
+        "normal",
+        0.5,
+        "Linear",
+        512,
+        512,
+        8,
+        32,
+        "Half Tile",
+        0.5,
+        64,
+        8,
+        16,
+        "enable"
+      ]
+    },
+    {
+      "id": 357,
+      "type": "UltimateSDUpscale",
+      "pos": [
+        3752,
+        1218
+      ],
+      "size": {
+        "0": 315,
+        "1": 590
+      },
+      "flags": {},
+      "order": 103,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 822
+        },
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 818
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 819
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 820
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 821
+        },
+        {
+          "name": "upscale_model",
+          "type": "UPSCALE_MODEL",
+          "link": 855
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            823
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UltimateSDUpscale"
+      },
+      "widgets_values": [
+        2,
+        8499125701235,
+        "randomize",
+        20,
+        8,
+        "euler",
+        "normal",
+        0.5,
+        "Linear",
+        512,
+        512,
+        8,
+        32,
+        "Half Tile",
+        0.5,
+        64,
+        8,
+        16,
+        "enable"
+      ]
+    },
+    {
+      "id": 351,
+      "type": "UltimateSDUpscale",
+      "pos": [
+        1332,
+        433
+      ],
+      "size": {
+        "0": 315,
+        "1": 590
+      },
+      "flags": {},
+      "order": 84,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 812
+        },
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 813
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 814
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 815
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 816
+        },
+        {
+          "name": "upscale_model",
+          "type": "UPSCALE_MODEL",
+          "link": 856
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            817
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UltimateSDUpscale"
+      },
+      "widgets_values": [
+        2,
+        1121962212603161,
+        "randomize",
+        20,
+        8,
+        "euler",
+        "normal",
+        0.5,
+        "Linear",
+        512,
+        512,
+        8,
+        32,
+        "Half Tile",
+        0.5,
+        64,
+        8,
+        16,
+        "enable"
+      ]
+    },
+    {
+      "id": 361,
+      "type": "UltimateSDUpscale",
+      "pos": [
+        7741,
+        -1804
+      ],
+      "size": {
+        "0": 315,
+        "1": 590
+      },
+      "flags": {},
+      "order": 122,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 831
+        },
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 832
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 835
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 836
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 839
+        },
+        {
+          "name": "upscale_model",
+          "type": "UPSCALE_MODEL",
+          "link": 858
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            841
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UltimateSDUpscale"
+      },
+      "widgets_values": [
+        2,
+        646304175428739,
+        "randomize",
+        20,
+        8,
+        "euler",
+        "normal",
+        0.5,
+        "Linear",
+        512,
+        512,
+        8,
+        32,
+        "Half Tile",
+        0.5,
+        64,
+        8,
+        16,
+        "enable"
+      ]
+    },
+    {
+      "id": 360,
+      "type": "UltimateSDUpscale",
+      "pos": [
+        7545,
+        -923
+      ],
+      "size": {
+        "0": 315,
+        "1": 590
+      },
+      "flags": {},
+      "order": 125,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 833
+        },
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 834
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 837
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 838
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 840
+        },
+        {
+          "name": "upscale_model",
+          "type": "UPSCALE_MODEL",
+          "link": 859
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            842
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UltimateSDUpscale"
+      },
+      "widgets_values": [
+        2,
+        489558791840941,
+        "randomize",
+        20,
+        8,
+        "euler",
+        "normal",
+        0.5,
+        "Linear",
+        512,
+        512,
+        8,
+        32,
+        "Half Tile",
+        0.5,
+        64,
+        8,
+        16,
+        "enable"
+      ]
+    },
+    {
+      "id": 359,
+      "type": "UltimateSDUpscale",
+      "pos": [
+        7797,
+        -46
+      ],
+      "size": {
+        "0": 315,
+        "1": 590
+      },
+      "flags": {},
+      "order": 131,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 843
+        },
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 845
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 847
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 849
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 851
+        },
+        {
+          "name": "upscale_model",
+          "type": "UPSCALE_MODEL",
+          "link": 860,
+          "slot_index": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            853
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UltimateSDUpscale"
+      },
+      "widgets_values": [
+        2,
+        582050263201939,
+        "randomize",
+        20,
+        8,
+        "euler",
+        "normal",
+        0.5,
+        "Linear",
+        512,
+        512,
+        8,
+        32,
+        "Half Tile",
+        0.5,
+        64,
+        8,
+        16,
+        "enable"
+      ]
+    },
+    {
+      "id": 358,
+      "type": "UltimateSDUpscale",
+      "pos": [
+        7526,
+        798
+      ],
+      "size": {
+        "0": 315,
+        "1": 590
+      },
+      "flags": {},
+      "order": 128,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 844
+        },
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 846
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 848
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 850
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 852
+        },
+        {
+          "name": "upscale_model",
+          "type": "UPSCALE_MODEL",
+          "link": 861
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            854
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UltimateSDUpscale"
+      },
+      "widgets_values": [
+        2,
+        932578487858138,
+        "randomize",
+        20,
+        8,
+        "euler",
+        "normal",
+        0.5,
+        "Linear",
+        512,
+        512,
+        8,
+        32,
+        "Half Tile",
+        0.5,
+        64,
+        8,
+        16,
+        "enable"
+      ]
     }
   ],
   "links": [
