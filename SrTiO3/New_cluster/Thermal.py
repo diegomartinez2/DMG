@@ -91,9 +91,6 @@ def plot(harm_dos, anharm_dos):
     pass
 
 def main(args):
-    tc = CC.ThermalConductivity.load_thermal_conductivity()
-    # Harmonic DOS calculated
-    harm_dos = tc.get_dos()
 
     thermal_calculo(dyn_prefix = 'final_dyn',nqirr = 10)
     harm_dos, anharm_dos = processing()
