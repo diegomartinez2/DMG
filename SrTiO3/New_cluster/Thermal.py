@@ -91,7 +91,11 @@ def plot(harm_dos, anharm_dos):
     pass
 
 def main(args):
-    thermal_calculo(dyn_prefix = 'final_dyn',nqirr = 8)
+    tc = CC.ThermalConductivity.load_thermal_conductivity()
+    # Harmonic DOS calculated
+    harm_dos = tc.get_dos()
+
+    thermal_calculo(dyn_prefix = 'final_dyn',nqirr = 10)
     harm_dos, anharm_dos = processing()
     plot(harm_dos, anharm_dos)
     np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
