@@ -13,7 +13,7 @@ import time
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
-def thermal_calculo(dyn_prefix = 'final_dyn',nqirr = 8):
+def thermal_calculo(d3, dyn_prefix = 'final_dyn',nqirr = 8):
     """pass"""
     SSCHA_TO_MS = cellconstructor.ThermalConductivity.SSCHA_TO_MS
     RY_TO_THZ = cellconstructor.ThermalConductivity.SSCHA_TO_THZ
@@ -24,7 +24,7 @@ def thermal_calculo(dyn_prefix = 'final_dyn',nqirr = 8):
     fc3 = CC.ForceTensor.Tensor3(dyn.structure,
     dyn.structure.generate_supercell(supercell), supercell)
 
-    d3 = np.load("d3.npy")
+    #d3 = np.load("d3.npy")
     fc3.SetupFromTensor(d3)
     fc3 = CC.ThermalConductivity.centering_fc3(fc3)
 
@@ -170,7 +170,7 @@ def Hessian_calculus(DATA_DIR = 'pop3/data',N_RANDOM = 512,DYN_PREFIX =  'pop3/d
 def main(args):
     """
     """
-    Hessian_calculus(DATA_DIR = 'pop3/data',
+    d3 = Hessian_calculus(DATA_DIR = 'pop3/data',
                     N_RANDOM = 512,
                     DYN_PREFIX =  'pop3/dyn_start_population3_',
                     FINAL_DYN =   'pop3/dyn_end_population3_',
@@ -180,7 +180,7 @@ def main(args):
                     T =  300,
                     POPULATION = 3,
                     INCLUDE_V4 = False)
-    thermal_calculo(dyn_prefix = 'final_dyn',nqirr = 10)
+    thermal_calculo(d3,dyn_prefix = 'final_dyn',nqirr = 10)
     harm_dos, anharm_dos = processing()
     plot(harm_dos, anharm_dos)
     np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
