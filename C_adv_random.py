@@ -389,7 +389,16 @@ def main(args):
     'EL PROPIO DONANTE DE MISIÓN'
     ]
     Profesiones_list = [
-    'GUERRERO CALLEJERO: ',
+    'GUERRERO CALLEJERO: Samurái callejero con gabardina',
+    'GUERRERO CALLEJERO: Las sombras lo son todo',
+    'GUERRERO CALLEJERO: Punk rosa salvaje de neón',
+    'GUERRERO CALLEJERO: Más cromo que hombre',
+    'GUERRERO CALLEJERO: Músculos con armas grandes',
+    'GUERRERO CALLEJERO: Silencios, pequeño y discreto',
+    'GUERRERO CALLEJERO: Trajes caros',
+    'GUERRERO CALLEJERO: Papichulo con diseño leopardo y gorro ala ancha',
+    'GUERRERO CALLEJERO: Niño o niña',
+    'GUERRERO CALLEJERO: Ciudadano mayor',
     'ROCKSTAR: ',
     'GUANTE BLANCO: ',
     'MERCENARIO: ',
