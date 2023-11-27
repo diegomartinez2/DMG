@@ -175,12 +175,12 @@ def main(args):
                     DYN_PREFIX =  'pop3/dyn_start_population3_',
                     FINAL_DYN =   'pop3/dyn_end_population3_',
                     SAVE_PREFIX = 'dyn_hessian_',
-                    NQIRR = 4,
+                    NQIRR = 10,
                     Tg = 300,
                     T =  300,
                     POPULATION = 3,
                     INCLUDE_V4 = False)
-    thermal_calculo(d3,dyn_prefix = 'final_dyn',nqirr = 10)
+    thermal_calculo(d3,dyn_prefix = 'pop3/dyn_end_population3_',nqirr = 10)
     harm_dos, anharm_dos = processing()
     plot(harm_dos, anharm_dos)
     np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
