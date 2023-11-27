@@ -170,23 +170,26 @@ def Hessian_calculus(DATA_DIR = 'pop3/data',N_RANDOM = 512,DYN_PREFIX =  'pop3/d
 def main(args):
     """
     """
-    DATA_DIR = 'pop3/data'
-    N_RANDOM = 512
-    DYN_PREFIX =  'pop3/dyn_start_population3_'
-    FINAL_DYN =   'pop3/dyn_end_population3_'
-    SAVE_PREFIX = 'dyn_hessian_'
-    NQIRR = 10
-    Tg = 300
-    T =  300
-    POPULATION = 3
-    INCLUDE_V4 = False
-    d3 = Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
-                    NQIRR,Tg,T,POPULATION,INCLUDE_V4)
-    thermal_calculo(d3,FINAL_DYN,NQIRR)
-    harm_dos, anharm_dos = processing()
-    plot(harm_dos, anharm_dos)
-    np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
-    np.savetxt("dos_anharmonic.dat",anharm_dos,header='Temperature dependent Anharmonic DOS from lineshapes: 2 lines of raw data 2 lines of gaussian smoothed data')
+    if (len( sys.argv ) > 1):
+        DATA_DIR = 'pop3/data'
+        N_RANDOM = 512
+        DYN_PREFIX =  'pop3/dyn_start_population3_'
+        FINAL_DYN =   'pop3/dyn_end_population3_'
+        SAVE_PREFIX = 'dyn_hessian_'
+        NQIRR = 10
+        Tg = 300
+        T =  300
+        POPULATION = 3
+        INCLUDE_V4 = False
+        d3 = Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
+                        NQIRR,Tg,T,POPULATION,INCLUDE_V4)
+        thermal_calculo(d3,FINAL_DYN,NQIRR)
+        harm_dos, anharm_dos = processing()
+        plot(harm_dos, anharm_dos)
+        np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
+        np.savetxt("dos_anharmonic.dat",anharm_dos,header='Temperature dependent Anharmonic DOS from lineshapes: 2 lines of raw data 2 lines of gaussian smoothed data')
+    else:
+        print ("Arguments are population, nquirr, Tg, T ,nrandom, and ...")
     pass
 
 if __name__ == '__main__':
