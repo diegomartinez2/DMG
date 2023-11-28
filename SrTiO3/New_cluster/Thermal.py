@@ -173,14 +173,15 @@ def main(args):
     if (len( sys.argv ) > 1):
 
         N_RANDOM = arg[5]
-        DYN_PREFIX =  'pop3/dyn_start_population3_'
-        FINAL_DYN =   'pop3/dyn_end_population3_'
+
         SAVE_PREFIX = 'dyn_hessian_'
         NQIRR = arg[2]
         Tg = arg[3]
         T =  arg[4]
         POPULATION = arg[1]
         DATA_DIR = "pop{}/data".format(POPULATION)
+        DYN_PREFIX =  "pop{}/dyn_start_population3_".format(POPULATION)
+        FINAL_DYN =   "pop{}/dyn_end_population3_".format(POPULATION)
         INCLUDE_V4 = False
         print ("Population:",POPULATION)
         print ("Number elements in the ensamble",N_RANDOM)
