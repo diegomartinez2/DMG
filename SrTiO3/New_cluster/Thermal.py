@@ -188,7 +188,10 @@ def main(args):
         print ("The number or irredubcible q points (nqirr):",NQIRR)
         print ("The temperature used to generate the configurations:",Tg)
         print ("The temperature for the calculation:",T)
-        print ("Path to the directory ens_pop#lastpop where the last population is stored:",DYN_PREFIX)
+        print ("Path to the directory ens_pop#lastpop where the last population is stored:",DATA_DIR)
+        print ("dyn mat that generated the last population:",DYN_PREFIX)
+        print ("SSCHA dyn mat obtained with the last minimization",FINAL_DYN)
+        print ("Free energy Hessian dynamical matrices output:",SAVE_PREFIX)
         d3 = Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
                         NQIRR,Tg,T,POPULATION,INCLUDE_V4)
         thermal_calculo(d3,FINAL_DYN,NQIRR)
