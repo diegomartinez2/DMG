@@ -619,26 +619,35 @@ def NombredeFuncion(arg):
     pass
 
 def main(args):
-    Fichero_dyn = "dyn_start_population25_"
-    nqirr = 10
-    T0 = 50
-    Espectro =  Funcion_espectral(Fichero_dyn,nqirr)
-    Espectro.prepara_tensor()
-    starttime = timeit.default_timer()
-    print("The start time is :",starttime)
-    Espectro.calcula_espectro_basico_SrTiO3(T0)
-    Espectro.calcula_espectro_basico_SrTiO3_multiprocessing(T0,4)
-    Espectro.calcula_full_correction_en_punto_G(T0)
-    Espectro.calcula_full_correction_en_punto_R(T0)
-    Espectro.calcula_oneshot_correction_en_punto_Gamma(T0)
-    Espectro.calcula_oneshot_correction_en_punto_R(T0)
-    Espectro.calcula_oneshot_correction_along_PATH(T0)
-    Espectro.calcula_espectro_correction_SrTiO3(T0)
-    Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T0,8)
-    print("The time difference is :", timeit.default_timer() - starttime)
-    with open('Time_output.txt', 'w') as f:
-        f.write("The time difference is :", timeit.default_timer() - starttime)
-    Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
+    if (len( sys.argv ) > 1):
+        #Fichero_dyn = "dyn_start_population25_"
+        Fichero_dyn = arg[1]
+        print ("Dyn_filename:",Fichero_dyn)
+        #nqirr = 10
+        nqirr = arg[2]
+        print ("nqirr:",nqirr)
+        #T0 = 50
+        T0 = arg[3]
+        print ("T0:",T0)
+        Espectro =  Funcion_espectral(Fichero_dyn,nqirr)
+        Espectro.prepara_tensor()
+        starttime = timeit.default_timer()
+        print("The start time is :",starttime)
+        Espectro.calcula_espectro_basico_SrTiO3(T0)
+        Espectro.calcula_espectro_basico_SrTiO3_multiprocessing(T0,4)
+        Espectro.calcula_full_correction_en_punto_G(T0)
+        Espectro.calcula_full_correction_en_punto_R(T0)
+        Espectro.calcula_oneshot_correction_en_punto_Gamma(T0)
+        Espectro.calcula_oneshot_correction_en_punto_R(T0)
+        Espectro.calcula_oneshot_correction_along_PATH(T0)
+        Espectro.calcula_espectro_correction_SrTiO3(T0)
+        Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T0,8)
+        print("The time difference is :", timeit.default_timer() - starttime)
+        with open('Time_output.txt', 'w') as f:
+            f.write("The time difference is :", timeit.default_timer() - starttime)
+        Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
+    else:
+        print ("Arguments are dyn_filename, nqirr, T. In that order, separated by simple spaces")
 
     return 0
 
