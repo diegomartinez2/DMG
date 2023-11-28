@@ -200,7 +200,7 @@ def main(args):
         np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
         np.savetxt("dos_anharmonic.dat",anharm_dos,header='Temperature dependent Anharmonic DOS from lineshapes: 2 lines of raw data 2 lines of gaussian smoothed data')
     else:
-        print ("Arguments are population, nquirr, Tg, T ,nrandom, and ...")
+        print ("Arguments are population, nqirr, Tg, T ,nrandom.")
     pass
 
 if __name__ == '__main__':
