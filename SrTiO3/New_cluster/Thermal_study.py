@@ -47,6 +47,45 @@ def main(args):
     """
     """
     if (len( sys.argv ) > 1):
+        N_RANDOM = arg[5]
+
+        SAVE_PREFIX = 'dyn_hessian_'
+        NQIRR = arg[2]
+        Tg = arg[3]
+        T =  arg[4]
+        POPULATION = arg[1]
+        DATA_DIR = "pop{}/data".format(POPULATION)
+        DYN_PREFIX =  "pop{}/dyn_start_population3_".format(POPULATION)
+        FINAL_DYN =   "pop{}/dyn_end_population3_".format(POPULATION)
+        INCLUDE_V4 = False
+        print ("Population:",POPULATION)
+        print ("Number elements in the ensamble",N_RANDOM)
+        print ("The number or irredubcible q points (nqirr):",NQIRR)
+        print ("The temperature used to generate the configurations:",Tg)
+        print ("The temperature for the calculation:",T)
+        print ("Path to the directory ens_pop#lastpop where the last population is stored:",DATA_DIR)
+        print ("The dynamical matrix that generated the last population:",DYN_PREFIX)
+        print ("The SSCHA dynamical matrix obtained with the last minimization",FINAL_DYN)
+        print ("Free energy Hessian dynamical matrices output:",SAVE_PREFIX)
+        d3 = Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
+                        NQIRR,Tg,T,POPULATION,INCLUDE_V4)
+        #-----
+        Espectro =  Funcion_espectral(FINAL_DYN,NQIRR)
+        Espectro.prepara_tensor()
+        Espectro.calcula_espectro_basico_SrTiO3_multiprocessing(T0,4)
+        Espectro.calcula_full_correction_en_punto_G(T0)
+        Espectro.calcula_full_correction_en_punto_R(T0)
+        Espectro.calcula_oneshot_correction_en_punto_Gamma(T0)
+        Espectro.calcula_oneshot_correction_en_punto_R(T0)
+        Espectro.calcula_oneshot_correction_along_PATH(T0)
+        Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T0,8)
+        Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
+        #-----
+        thermal_calculo(d3,FINAL_DYN,NQIRR)
+        harm_dos, anharm_dos = processing()
+        plot(harm_dos, anharm_dos)
+        np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
+        np.savetxt("dos_anharmonic.dat",anharm_dos,header='Temperature dependent Anharmonic DOS from lineshapes: 2 lines of raw data 2 lines of gaussian smoothed data')
 
     else:
         print ("Arguments are [...]. In that order, separated by simple spaces")
