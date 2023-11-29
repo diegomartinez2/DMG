@@ -629,6 +629,7 @@ def main(args):
         #T0 = 50
         T0 = arg[3]
         print ("T0:",T0)
+        #Espectro =  Funcion_espectral(Fichero_dyn,nqirr,PATH = "GXMGRX")
         Espectro =  Funcion_espectral(Fichero_dyn,nqirr)
         Espectro.prepara_tensor()
         starttime = timeit.default_timer()
