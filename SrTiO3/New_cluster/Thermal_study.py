@@ -88,7 +88,7 @@ def main(args):
         np.savetxt("dos_anharmonic.dat",anharm_dos,header='Temperature dependent Anharmonic DOS from lineshapes: 2 lines of raw data 2 lines of gaussian smoothed data')
 
     else:
-        print ("Arguments are [...]. In that order, separated by simple spaces")
+        print ("Arguments are Population, The number or irredubcible q points (nqirr), The temperature used to generate the configurations, The temperature for the calculation, and Number elements in the ensamble. In that order, separated by simple spaces")
     pass
 
 if __name__ == '__main__':
