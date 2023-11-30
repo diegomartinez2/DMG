@@ -28,10 +28,10 @@ cd /lscratch/$USER/$SLURM_JOB_ID
 export NPROCS=$SLURM_NTASKS
 rm slurm*.out
 ############################################################################
-source ~/SSCHA/sscha-foss-2022a-Python-3.10/bin/activate
+source ~/SSCHA/sscha-foss-new-2023-11-29/bin/activate
 module load ASE/3.22.1-foss-2022a
-export PYTHONPATH=~/.local/software/sscha-2023/lib/python3.10/site-packages:$PYTHONPATH
-export PATH=~/.local/software/sscha-2023/bin:$PATH
+export PYTHONPATH=~/.local/software/sscha-2023-11-29/lib/python3.10/site-packages:$PYTHONPATH
+export PATH=~/.local/software/sscha-2023-11-29/bin:$PATH
 echo "============================"
 echo "Run mpirun Hessian.py"
 ###mpirun python Hessian.py
