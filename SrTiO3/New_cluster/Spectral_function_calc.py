@@ -547,7 +547,7 @@ class Funcion_espectral(object):
         # integration grid
         k_grid=[20,20,20]
 
-        CC.Spectral.get_full_dynamic_correction_along_path_multiprocessing(dyn=dyn,
+        CC.Spectral.get_full_dynamic_correction_along_path_multiprocessing(dyn=self.dyn,
                                            tensor3=FC3,
                                            k_grid=k_grid,
                                            e1=100, de=0.1, e0=0,     # energy grid
@@ -561,7 +561,7 @@ class Funcion_espectral(object):
         # integration grid
         k_grid=[20,20,20]
 
-        CC.Spectral.get_full_dynamic_correction_along_path_multiprocessing(dyn=dyn,
+        CC.Spectral.get_full_dynamic_correction_along_path_multiprocessing(dyn=self.dyn,
                                            tensor3=FC3,
                                            k_grid=k_grid,
                                            e1=100, de=0.1, e0=0,     # energy grid
@@ -578,7 +578,7 @@ class Funcion_espectral(object):
         # integration grid
         k_grid=[20,20,20]
 
-        CC.Spectral.get_os_perturb_dynamic_correction_along_path(dyn,
+        CC.Spectral.get_os_perturb_dynamic_correction_along_path(self.dyn,
                                            tensor3=FC3,
                                            k_grid=k_grid,
                                            sm1=1.0, sm0=1.0,
@@ -591,7 +591,7 @@ class Funcion_espectral(object):
         # integration grid
         k_grid=[20,20,20]
 
-        CC.Spectral.get_os_perturb_dynamic_correction_along_path(dyn,
+        CC.Spectral.get_os_perturb_dynamic_correction_along_path(self.dyn,
                                            tensor3=FC3,
                                            k_grid=k_grid,
                                            sm1=1.0, sm0=1.0,
@@ -605,7 +605,7 @@ class Funcion_espectral(object):
         # integration grid
         k_grid=[20,20,20]
 
-        CC.Spectral.get_os_perturb_dynamic_correction_along_path(dyn,
+        CC.Spectral.get_os_perturb_dynamic_correction_along_path(self.dyn,
                                            tensor3=FC3,
                                            k_grid=k_grid,
                                            sm1=1.0, sm0=1.0,
