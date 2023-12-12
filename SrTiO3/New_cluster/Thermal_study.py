@@ -59,13 +59,13 @@ def main(args):
         FINAL_DYN =   "pop{}/dyn_end_population3_".format(POPULATION)
         INCLUDE_V4 = False
         print ("Population:",POPULATION)
-        print ("Number elements in the ensamble",N_RANDOM)
+        print ("Number elements in the ensamble:",N_RANDOM)
         print ("The number or irredubcible q points (nqirr):",NQIRR)
         print ("The temperature used to generate the configurations:",Tg)
         print ("The temperature for the calculation:",T)
         print ("Path to the directory ens_pop#lastpop where the last population is stored:",DATA_DIR)
         print ("The dynamical matrix that generated the last population:",DYN_PREFIX)
-        print ("The SSCHA dynamical matrix obtained with the last minimization",FINAL_DYN)
+        print ("The SSCHA dynamical matrix obtained with the last minimization:",FINAL_DYN)
         print ("Free energy Hessian dynamical matrices output:",SAVE_PREFIX)
         d3 = Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
                         NQIRR,Tg,T,POPULATION,INCLUDE_V4)
@@ -89,6 +89,41 @@ def main(args):
 
     else:
         print ("Arguments are Population, The number or irredubcible q points (nqirr), The temperature used to generate the configurations, The temperature for the calculation, and Number elements in the ensamble. In that order, separated by simple spaces")
+        print ("**********************************")
+        POPULATION = int(input("Population:"))
+        N_RANDOM = int(input("Number elements in the ensamble:"))
+        NQIRR = int(input("The number or irredubcible q points (nqirr):"))
+        Tg = int(input("The temperature used to generate the configurations:"))
+        T = int(input("The temperature for the calculation:"))
+        DATA_DIR = "pop{}/data".format(POPULATION)
+        print ("Path to the directory ens_pop#lastpop where the last population is stored:",DATA_DIR)
+        DYN_PREFIX =  "pop{}/dyn_start_population3_".format(POPULATION)
+        print ("The dynamical matrix that generated the last population:",DYN_PREFIX)
+        FINAL_DYN =   "pop{}/dyn_end_population3_".format(POPULATION)
+        print ("The SSCHA dynamical matrix obtained with the last minimization:",FINAL_DYN)
+        INCLUDE_V4 = False
+        print ("Including 4th. order=",INCLUDE_V4)
+        SAVE_PREFIX = 'dyn_hessian_'
+        print ("Free energy Hessian dynamical matrices output:",SAVE_PREFIX)
+        d3 = Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
+                        NQIRR,Tg,T,POPULATION,INCLUDE_V4)
+        #-----
+        Espectro =  Funcion_espectral(FINAL_DYN,NQIRR)
+        Espectro.prepara_tensor()
+        Espectro.calcula_espectro_basico_SrTiO3_multiprocessing(T,8)
+        Espectro.calcula_full_correction_en_punto_G(T)
+        Espectro.calcula_full_correction_en_punto_R(T)
+        Espectro.calcula_oneshot_correction_en_punto_Gamma(T)
+        Espectro.calcula_oneshot_correction_en_punto_R(T)
+        Espectro.calcula_oneshot_correction_along_PATH(T)
+        Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T,8)
+        Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
+        #-----
+        thermal_calculo(d3,FINAL_DYN,NQIRR)
+        harm_dos, anharm_dos = processing()
+        plot(harm_dos, anharm_dos)
+        np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
+        np.savetxt("dos_anharmonic.dat",anharm_dos,header='Temperature dependent Anharmonic DOS from lineshapes: 2 lines of raw data 2 lines of gaussian smoothed data')
     pass
 
 if __name__ == '__main__':
