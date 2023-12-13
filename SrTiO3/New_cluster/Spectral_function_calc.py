@@ -541,7 +541,7 @@ class Funcion_espectral(object):
                                                    e1=145, de=0.1, e0=0,
                                                    sm1=1.0, nsm=1, sm0=1.0,
                                                    sm1_id=1.0, sm0_id=1.0,   # Minimum and maximum value of the smearing (cm-1) for the term of the Green function proportional to the identity
-                                                   filename_sp = 'nomm_spectral_func2', processes = processes)
+                                                   filename_sp = 'nomm_spectral_func2_multiprocessing_SrTiO3', processes = processes)
 
     def calcula_full_correction_en_punto_G(self,T0, processes = None):
         # integration grid
