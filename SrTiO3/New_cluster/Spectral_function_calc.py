@@ -555,7 +555,7 @@ class Funcion_espectral(object):
                                            T=300,
                                            q_path=[0.0,0.0,0.0],
                                            static_limit = True,
-                                           filename_sp='full_spectral_func_X', processes = processes)
+                                           filename_sp='full_spectral_func_G', processes = processes)
 
     def calcula_full_correction_en_punto_R(self,T0, processes = None):
         # integration grid
@@ -569,7 +569,7 @@ class Funcion_espectral(object):
                                            T=300,
                                            q_path=[0.5,0.5,0.5],
                                            static_limit = True,
-                                           filename_sp='full_spectral_func_X', processes = processes)
+                                           filename_sp='full_spectral_func_R', processes = processes)
 
 
     def calcula_oneshot_correction_en_punto_Gamma(self,T0):
