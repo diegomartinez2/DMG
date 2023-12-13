@@ -647,6 +647,7 @@ def main(args):
         with open('Time_output.txt', 'w') as f:
             f.write("The time difference is :", timeit.default_timer() - starttime)
         Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
+        Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static_multiprocessing.dat", PATH = "GXMGRX")
     else:
         print ("Arguments are dyn_filename, nqirr, T. In that order, separated by simple spaces")
 
