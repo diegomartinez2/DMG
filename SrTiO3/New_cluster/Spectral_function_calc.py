@@ -684,6 +684,13 @@ def main(args):
         Espectro.dibuja4(filename_sp='full_spectral_Gamma')
     else:
         print ("Arguments are dyn_filename, nqirr, T. In that order, separated by simple spaces")
+        Fichero_dyn = "dyn_start_population25_"
+        nqirr = 10
+        T0 = 50
+        Espectro =  Funcion_espectral(Fichero_dyn,nqirr,PATH = "GXMGRX")
+        Espectro.prepara_tensor()
+        #Espectro.calcula_espectro_basico_SrTiO3_multiprocessing(T0,10)
+        Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T0,10)
 
     return 0
 
