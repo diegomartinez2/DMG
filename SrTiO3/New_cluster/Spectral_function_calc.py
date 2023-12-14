@@ -632,6 +632,18 @@ class Funcion_espectral(object):
         plt.savefig('nomm_spectral_func2_multiprocessing_imshow_1.00.png')
         plt.show()
         return 0
+    def dibuja4(self,filename):
+        plot_data = np.loadtxt(filename)
+
+        plt.figure(dpi = 120)
+        plt.plot(plot_data[:,1], plot_data[:,2])
+#        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('full_spectral_func_1.00_1.0.png')
+        #plt.show()
 # ----------
 # Funciones
 # ----------
@@ -669,6 +681,7 @@ def main(args):
         Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
         Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static_multiprocessing.dat", PATH = "GXMGRX")
         Espectro.dibuja_multiprocessing(filename = "SrTiO3_static_multiprocessing.dat", PATH = "GXMGRX")
+        Espectro.dibuja4(filename_sp='full_spectral_Gamma')
     else:
         print ("Arguments are dyn_filename, nqirr, T. In that order, separated by simple spaces")
 
