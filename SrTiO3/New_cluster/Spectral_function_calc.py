@@ -612,6 +612,26 @@ class Funcion_espectral(object):
                                            nsm=1,
                                            q_path=self.qpath,
                                            T=T0)
+
+    def dibuja_multiprocessing(self,filename = "SrTiO3_static_multiprocessing.dat", PATH = "GXMGRX"):
+        # Prepare plot of phonon spectra
+        fig, ax1 = plt.subplots(1,1)
+        data = np.loadtxt(filename)
+        X = data[:,0]
+        Y = data[:,1]
+        Z = data[:,2]
+        z = [Z[i] for i in np.lexsort((Y,X))]
+        data1 = np.resize(z,(int(len(X)/1450),1450))
+        cax = ax1.imshow(data1.transpose(), cmap=cm.coolwarm, origin='lower')
+        ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
+        xaxis, xticks, xlabels = self.data # Info to plot correclty the x axis
+        plt.xticks(ticks=[0,332,498,664,830,999], labels=['G','X','M','G','R','X'])
+        plt.yticks(ticks=[0,200,400,600,800,1000], labels=['0','20','40','60','80','100'])
+        cbar = fig.colorbar(cax)
+        plt.savefig('spectral_path2_imshow.pdf', bbox_inches='tight')
+        plt.savefig('nomm_spectral_func2_multiprocessing_imshow_1.00.png')
+        plt.show()
+        return 0
 # ----------
 # Funciones
 # ----------
@@ -648,6 +668,7 @@ def main(args):
             f.write("The time difference is :", timeit.default_timer() - starttime)
         Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
         Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static_multiprocessing.dat", PATH = "GXMGRX")
+        Espectro.dibuja_multiprocessing(filename = "SrTiO3_static_multiprocessing.dat", PATH = "GXMGRX")
     else:
         print ("Arguments are dyn_filename, nqirr, T. In that order, separated by simple spaces")
 
