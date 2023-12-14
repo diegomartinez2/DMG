@@ -642,7 +642,7 @@ class Funcion_espectral(object):
         plt.ylabel("Spectral Function [cm-1]")
         plt.legend()
         plt.tight_layout()
-        plt.savefig('full_spectral_func_1.00_1.0.png')
+        plt.savefig('{}.png'.format(filename))
         #plt.show()
 # ----------
 # Funciones
