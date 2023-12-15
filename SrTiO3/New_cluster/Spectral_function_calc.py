@@ -735,7 +735,8 @@ def main(args):
         Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
         Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static_multiprocessing.dat", PATH = "GXMGRX")
         Espectro.dibuja_multiprocessing(filename = "SrTiO3_static_multiprocessing.dat", PATH = "GXMGRX")
-        Espectro.dibuja4(filename_sp='full_spectral_Gamma')
+        Espectro.dibuja4(filename_sp='full_spectral_func_G')
+        Espectro.dibuja4(filename_sp='full_spectral_func_R')
     else:
         print ("Arguments are dyn_filename, nqirr, T. In that order, separated by simple spaces")
         Fichero_dyn = "dyn_start_population25_"
