@@ -644,6 +644,60 @@ class Funcion_espectral(object):
         plt.tight_layout()
         plt.savefig('{}.png'.format(filename))
         #plt.show()
+    def dibuja5(self,filename="nomm_spectral_func"):
+        plot_data = np.loadtxt("{}_1.00.dat".format(filename))
+
+        plt.figure(dpi = 120)
+        plt.plot(plot_data[:,1], plot_data[:,2])
+        plt.plot(plot_data[:,1], plot_data[:,3])
+        plt.plot(plot_data[:,1], plot_data[:,4])
+        plt.plot(plot_data[:,1], plot_data[:,5])
+        plt.plot(plot_data[:,1], plot_data[:,6])
+        plt.plot(plot_data[:,1], plot_data[:,7])
+        plt.plot(plot_data[:,1], plot_data[:,8])
+#        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [1/cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('{}_1.00.png'.format(filename))
+        #plt.show()
+
+        plot_data = np.loadtxt("nomm_spectral_func_lorentz_one_shot_1.00.dat")
+
+        plt.figure(dpi = 120)
+        plt.plot(plot_data[:,1], plot_data[:,2])
+        plt.plot(plot_data[:,1], plot_data[:,3])
+        plt.plot(plot_data[:,1], plot_data[:,4])
+        plt.plot(plot_data[:,1], plot_data[:,5])
+        plt.plot(plot_data[:,1], plot_data[:,6])
+        plt.plot(plot_data[:,1], plot_data[:,7])
+        plt.plot(plot_data[:,1], plot_data[:,8])
+#        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [1/cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('nomm_spectral_func_lorentz_one_shot_1.00.png')
+        #plt.show()
+
+        plot_data = np.loadtxt("nomm_spectral_func_lorentz_perturb_1.00.dat")
+
+        plt.figure(dpi = 120)
+        plt.plot(plot_data[:,1], plot_data[:,2])
+        plt.plot(plot_data[:,1], plot_data[:,3])
+        plt.plot(plot_data[:,1], plot_data[:,4])
+        plt.plot(plot_data[:,1], plot_data[:,5])
+        plt.plot(plot_data[:,1], plot_data[:,6])
+        plt.plot(plot_data[:,1], plot_data[:,7])
+        plt.plot(plot_data[:,1], plot_data[:,8])
+#        plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
+        plt.xlabel("Energy [cm-1]")
+        plt.ylabel("Spectral Function [1/cm-1]")
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('nomm_spectral_func_lorentz_perturb_1.00.png')
+        #plt.show()
 # ----------
 # Funciones
 # ----------
