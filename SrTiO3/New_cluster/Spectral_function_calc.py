@@ -663,7 +663,7 @@ class Funcion_espectral(object):
         plt.savefig('{}_1.00.png'.format(filename))
         #plt.show()
 
-        plot_data = np.loadtxt("nomm_spectral_func_lorentz_one_shot_1.00.dat")
+        plot_data = np.loadtxt("{}_lorentz_one_shot_1.00.dat".format(filename))
 
         plt.figure(dpi = 120)
         plt.plot(plot_data[:,1], plot_data[:,2])
@@ -678,10 +678,10 @@ class Funcion_espectral(object):
         plt.ylabel("Spectral Function [1/cm-1]")
         plt.legend()
         plt.tight_layout()
-        plt.savefig('nomm_spectral_func_lorentz_one_shot_1.00.png')
+        plt.savefig('{}_lorentz_one_shot_1.00.png'.format(filename))
         #plt.show()
 
-        plot_data = np.loadtxt("nomm_spectral_func_lorentz_perturb_1.00.dat")
+        plot_data = np.loadtxt("{}_lorentz_perturb_1.00.dat".format(filename))
 
         plt.figure(dpi = 120)
         plt.plot(plot_data[:,1], plot_data[:,2])
@@ -696,7 +696,7 @@ class Funcion_espectral(object):
         plt.ylabel("Spectral Function [1/cm-1]")
         plt.legend()
         plt.tight_layout()
-        plt.savefig('nomm_spectral_func_lorentz_perturb_1.00.png')
+        plt.savefig('{}_lorentz_perturb_1.00.png'.format(filename))
         #plt.show()
 # ----------
 # Funciones
