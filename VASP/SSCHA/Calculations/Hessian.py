@@ -54,7 +54,7 @@ print("Loading the current dynamical matrix...")
 final_dyn = CC.Phonons.Phonons(FINAL_DYN, NQIRR)
 
 print("Loading the ensemble...")
-ens = sscha.Ensemble.Ensemble(dyn, Tg, dyn.GetSupercell())
+ens = sscha.Ensemble.Ensemble(dyn, Tg, dyn.GetSupercell()) #See if we can use final_dyn here
 ens.load(DATA_DIR, POPULATION, N_RANDOM)
 # If the ensemble was saved in binary format, load it with
 # ens.load_bin(DATA_DIR, POPULATION)
