@@ -3,7 +3,7 @@
 #
 #  untitled.py
 #
-#  Copyright 2023 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
+#  Copyright 2024 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
