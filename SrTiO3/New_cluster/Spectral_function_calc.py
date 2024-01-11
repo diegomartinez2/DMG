@@ -82,14 +82,14 @@ class Funcion_espectral(object):
          #! Print the tensor if you want, uncommenting the next line
          #self.tensor3.WriteOnFile(fname="FC3",file_format='D3Q')
 
-    def calcula_tensor(self,T):
+    def calcula_tensor(self,T, INCLUDE_V4=False):
         #create the ensemble
         ens = sscha.Ensemble.Ensemble(self.dyn, T, self.dyn.GetSupercell())
         dyn_hessian, d3  = ens.get_free_energy_hessian(include_v4 = INCLUDE_V4,
                                           get_full_hessian = True,
                                           verbose = True,
                                               return_d3 = True)
-        return 0
+        return d3
 
     def calcula_espectro1(self,T0):
         # integration grid
@@ -726,6 +726,7 @@ def main(args):
         print ("T0:",T0)
         #Espectro =  Funcion_espectral(Fichero_dyn,nqirr,PATH = "GXMGRX")
         Espectro =  Funcion_espectral(Fichero_dyn,nqirr)
+        Espectro.calcula_tensor(T0, INCLUDE_V4=False)
         Espectro.prepara_tensor()
         starttime = timeit.default_timer()
         print("The start time is :",starttime)
