@@ -82,6 +82,15 @@ class Funcion_espectral(object):
          #! Print the tensor if you want, uncommenting the next line
          #self.tensor3.WriteOnFile(fname="FC3",file_format='D3Q')
 
+    def calcula_tensor(self,T):
+        #create the ensemble
+        ens = sscha.Ensemble.Ensemble(self.dyn, T, self.dyn.GetSupercell())
+        dyn_hessian, d3  = ens.get_free_energy_hessian(include_v4 = INCLUDE_V4,
+                                          get_full_hessian = True,
+                                          verbose = True,
+                                              return_d3 = True)
+        return 0
+
     def calcula_espectro1(self,T0):
         # integration grid
         k_grid=[4,4,4]
