@@ -48,7 +48,7 @@ def sscha_run(POPULATION=1, N_RANDOM=100, SUPERCELL= (2,2,2), T=50, NQIRR=10):
     # SUPERCELL = (2,2,2)           # The size of the supercell (or the q point grid)
     # N_RANDOM = 100                # The number of configurations that will be created
     # POPULATION = 1                # The population to generate
-
+    print ("****Temperature= ",T,"K****")
     # Load the dynamical matrices that generated the ensemble
 
     namefile='pop'+str(POPULATION)+'/dyn/dynq'
