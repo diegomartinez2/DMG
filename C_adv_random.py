@@ -462,7 +462,16 @@ def main(args):
     'OPERARIOS: Lleva una camiseta repulsiva',
     'OPERARIOS: El séptimo miembro secreto de los Village People, o eso es lo que parece.',
     'OPERARIOS: Un fuerte funky que resulta familia, o casi',
-    'BAJOS FONDOS: ',
+    'BAJOS FONDOS: Contrabandista',
+    'BAJOS FONDOS: Traficante de droga',
+    'BAJOS FONDOS: Prostituta',
+    'BAJOS FONDOS: Ladrón',
+    'BAJOS FONDOS: Miembro de una banda (lanza en tabla d-3)',
+    'BAJOS FONDOS: Artista callejero (anarquista)',
+    'BAJOS FONDOS: Paparazzi',
+    'BAJOS FONDOS: Probador de drogas e implantes',
+    'BAJOS FONDOS: Cobrador de deudas',
+    'BAJOS FONDOS: Tipo que no hace nada pero lo sabe todo, por un precio',
     'PERSONAL MEGACORPORATIVO: ',
     'RAROS: '
     ]
