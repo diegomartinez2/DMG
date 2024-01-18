@@ -472,7 +472,16 @@ def main(args):
     'BAJOS FONDOS: Probador de drogas e implantes',
     'BAJOS FONDOS: Cobrador de deudas',
     'BAJOS FONDOS: Tipo que no hace nada pero lo sabe todo, por un precio',
-    'PERSONAL MEGACORPORATIVO: ',
+    'PERSONAL MEGACORPORATIVO: Director ejecutivo',
+    'PERSONAL MEGACORPORATIVO: Seguridad',
+    'PERSONAL MEGACORPORATIVO: Relaciones Públicas',
+    'PERSONAL MEGACORPORATIVO: Técnico Informático',
+    'PERSONAL MEGACORPORATIVO: Capitán mercenario',
+    'PERSONAL MEGACORPORATIVO: Contable',
+    'PERSONAL MEGACORPORATIVO: Conserje',
+    'PERSONAL MEGACORPORATIVO: Desarrolador de producto',
+    'PERSONAL MEGACORPORATIVO: Científico',
+    'PERSONAL MEGACORPORATIVO: Espía',
     'RAROS: '
     ]
     Localizacion_list = [
