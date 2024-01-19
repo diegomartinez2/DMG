@@ -62,8 +62,9 @@ def plot_regression_line(x, y, b):
 	plt.axhline(y=0.0, color='r', linestyle='--')
 
 	# putting labels
-	plt.xlabel('x')
-	plt.ylabel('y')
+	plt.xlabel('T(K)')
+	plt.ylabel('\Omega^2 (cm-1)')
+	plt.title(r'W1 disk and central $\pm2^\circ$ subtracted', fontsize='small')
 
 	# function to show plot
 	plt.show()
