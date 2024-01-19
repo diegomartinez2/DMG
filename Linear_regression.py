@@ -58,6 +58,9 @@ def plot_regression_line(x, y, b):
 	# plotting the regression line
 	plt.plot(x, y_pred, color = "g")
 
+	# plot line at y=0
+	plt.axhline(y=0.0, color='r', linestyle='--')
+
 	# putting labels
 	plt.xlabel('x')
 	plt.ylabel('y')
