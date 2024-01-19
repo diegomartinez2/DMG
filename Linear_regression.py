@@ -66,7 +66,8 @@ def plot_regression_line(x, y, b):
 	plt.ylabel('$\Omega^2$ (cm-1)')
 	plt.title(r'Squared Frequencies versus Temperatures', fontsize='small')
 	plt.tight_layout()
-	plt.savefig("Ajuste_{}".format("lineal"))
+	plt.savefig("Linear_regression.png")
+	#plt.savefig("Ajuste_{}".format("lineal"))
 	# function to show plot
 	plt.show()
 
