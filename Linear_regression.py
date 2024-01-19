@@ -63,8 +63,8 @@ def plot_regression_line(x, y, b):
 
 	# putting labels
 	plt.xlabel('T(K)')
-	plt.ylabel('\Omega^2 (cm-1)')
-	plt.title(r'W1 disk and central $\pm2^\circ$ subtracted', fontsize='small')
+	plt.ylabel('$\Omega^2$ (cm-1)')
+	plt.title(r'squared Frequencies versus Temperatures', fontsize='small')
 
 	# function to show plot
 	plt.show()
