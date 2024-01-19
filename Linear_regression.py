@@ -64,7 +64,7 @@ def plot_regression_line(x, y, b):
 	# putting labels
 	plt.xlabel('T(K)')
 	plt.ylabel('$\Omega^2$ (cm-1)')
-	plt.title(r'squared Frequencies versus Temperatures', fontsize='small')
+	plt.title(r'Squared Frequencies versus Temperatures', fontsize='small')
 
 	# function to show plot
 	plt.show()
