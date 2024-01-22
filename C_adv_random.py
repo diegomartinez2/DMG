@@ -482,7 +482,16 @@ def main(args):
     'PERSONAL MEGACORPORATIVO: Desarrolador de producto',
     'PERSONAL MEGACORPORATIVO: Científico',
     'PERSONAL MEGACORPORATIVO: Espía',
-    'RAROS: '
+    'RAROS: Ella tiene ciberimplantes en lugares equivocados, mano potenciada en la pierna, ojo con zoom en la oreja...'
+    'RAROS: Demasiadas drogas han convertido a esta persona en un monstruo físico y metálico'
+    'RAROS: Mutante. Imagina al Vengador Tóxico'
+    'RAROS: Todo del revés: su habla, ropa, incluso el corte de pelo.'
+    'RAROS: Más tatuajes y piercings que piel desnuda'
+    'RAROS: Le gusta ir completamente desnudo'
+    'RAROS: Está en una misión para convertirse en una maquina completa. Es todo cromo y cibernética. Ahora intenta averiguar qué hacer con su libre albedrío y sus pensamientos individuales.'
+    'RAROS: Dice que es un alíen de más allá de las estrellas'
+    'RAROS: Se viste y actúa como un personaje de las películas de Chaplin.'
+    'RAROS: Cada minuto dispara a algo. No puede evitarlo.'
     ]
     Localizacion_list = [
     'CALLES: ',
