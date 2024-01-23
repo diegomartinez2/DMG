@@ -10,9 +10,9 @@ import sscha, sscha.Ensemble
 
 
 # Here the input information
-DATA_DIR = 'pop3/data'               # path to the directory ens_pop#lastpop where the last population is stored
+DATA_DIR = 'pop3/data'                          # path to the directory ens_pop#lastpop where the last population is stored
 N_RANDOM = 512                                  # number elements in the ensamble
-DYN_PREFIX =  'pop3/dyn/dynq'     # dyn mat that generated the last population
+DYN_PREFIX =  'pop3/dyn/dynq'                   # dyn mat that generated the last population
 FINAL_DYN =   'pop4/dyn/dynq'                   # SSCHA dyn mat obtained with the last SSCHA_minimization
 SAVE_PREFIX = 'dyn_hessian_'                    # Free energy Hessian dynamical matrices output
 NQIRR = 4                                       # The number or irredubcible q points
