@@ -494,7 +494,16 @@ def main(args):
     'RAROS: Cada minuto dispara a algo. No puede evitarlo.'
     ]
     Localizacion_list = [
-    'CALLES: ',
+    'CALLES: Vecindairo residencial',
+    'CALLES: Tienda de barrio',
+    'CALLES: Parque',
+    'CALLES: Sede de megacorporación',
+    'CALLES: Campo de batalla en ruinas',
+    'CALLES: Gueto',
+    'CALLES: Todo, literalmente todo, es de neón',
+    'CALLES: Edificios altos de cristal',
+    'CALLES: Bloqueo silencioso',
+    'CALLES: Satélite caido ahora recuperado.',
     'SEDE DE MEGACORPORACIÓN: ',
     'BAJO TIERRA/MAZMORRAS: ',
     'CLUB: ',
