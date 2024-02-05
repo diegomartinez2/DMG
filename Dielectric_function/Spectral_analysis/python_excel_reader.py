@@ -2,6 +2,9 @@
 import xlrd
 
 # Open the Workbook
+#1DP_QX=0000.xlsx, 1DP_QX=0050.xlsx, ...,1DP_QX=0900.xlsx
+#HPI_QX=0000.xlsx, HPI_QX=0050.xlsx, HPI_QX=0100.xlsx, HPI_QX=0150.xlsx
+#HPII_QX=0050.xlsx, HPII_QX=0100.xlsx, ..., HPII_QX=0900.xlsx
 workbook = xlrd.open_workbook('1DP_QX=0000.xlsx')
 
 # Open the worksheet
