@@ -12,7 +12,7 @@ for i in range(0, 5):
     for j in range(0, 3):
 # Print the cell values with tab space
         print(worksheet.cell_value(i, j), end='\t')
-        print('')
+    print('')
 
 #------------with pandas---------------
 # Import pandas
