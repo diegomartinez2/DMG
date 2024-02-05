@@ -10,7 +10,9 @@ worksheet = workbook.sheet_by_index(0)
 # Iterate the rows and columns
 for i in range(0, 18):
     for j in range(0, 5):
-# Print the cell values with tab space
+# Print the cell values with tab space j values are:
+# j= 1      2       3              4                5
+#    QX     QY      w_pl(meV)      anchura(meV)     ratio D_pl/w_pl
         print(worksheet.cell_value(i, j), end='\t')
     print('')
 
