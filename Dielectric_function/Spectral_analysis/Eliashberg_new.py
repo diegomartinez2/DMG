@@ -57,8 +57,8 @@ def excel_read(file_directory=".",header="1DP"):
 
         # Open the worksheet (assuming the first sheet is the one to be processed)
         worksheet = workbook.sheet_by_index(0)
-        qx=[]
-        qy=[]
+        #qx=[]
+        #qy=[]
         out=[]
         # Iterate the rows and columns
         for i in range(worksheet.nrows):
