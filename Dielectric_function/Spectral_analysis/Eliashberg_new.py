@@ -65,16 +65,17 @@ def excel_read(file_directory=".",header="1DP"):
             row_values = []
             for j in range(worksheet.ncols):
                 # Check if the cell is empty and fill with zero if true
-                if (j>2):
-                    cell_value = worksheet.cell_value(i, j) if worksheet.cell_type(i, j) != xlrd.XL_CELL_EMPTY else  0
-                    # Add the cell value to the row_values list
-                    row_values.append(cell_value)
+                #if (j>2):
+                cell_value = worksheet.cell_value(i, j) if worksheet.cell_type(i, j) != xlrd.XL_CELL_EMPTY else  0
+                # Add the cell value to the row_values list
+                row_values.append(cell_value)
             # Print the row values with tab space
             #print('\t'.join(map(str, row_values)))
             out.append(row_values)
-            qx.append(worksheet.cell_value(i, 1))
-            qy.append(worksheet.cell_value(i, 2))
-    return qx,qy,out
+            #qx.append(worksheet.cell_value(i, 1))
+            #qy.append(worksheet.cell_value(i, 2))
+    #return qx,qy,out
+    return out
 
 
     #Python program to reverse an array
