@@ -41,6 +41,7 @@ import xlrd
 def excel_read(file_directory=".",header="1DP"):
     """
     Function that reads the data from the excel files in a directory.
+    Header options are "1DP", "HPI", "HPII"
     """
     if (file_directory=="."):
         current_directory = os.getcwd()
