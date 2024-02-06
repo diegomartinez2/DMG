@@ -38,7 +38,7 @@ import os
 import glob
 import xlrd
 
-def excel_read(file_directory="."):
+def excel_read(file_directory=".",header="1DP"):
     """
     Function that reads the data from the excel files in a directory.
     """
@@ -47,7 +47,7 @@ def excel_read(file_directory="."):
     else:
         current_directory = file_directory
     # Find all .xlsx files in the current directory
-    excel_files = glob.glob(os.path.join(current_directory, "*.xlsx"))
+    excel_files = glob.glob(os.path.join(current_directory, header+"*.xlsx"))
 
     # Iterate over each Excel file
     for file_name in excel_files:
