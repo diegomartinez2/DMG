@@ -73,6 +73,7 @@ def excel_read(file_directory="."):
             out.append(row_values)
             qx.append(worksheet.cell_value(i, 1))
             qy.append(worksheet.cell_value(i, 2))
+    return qx,qy,out
 
 
     #Python program to reverse an array
