@@ -45,7 +45,7 @@ def excel_read(file_directory="."):
     if (file_directory=="."):
         current_directory = os.getcwd()
     else:
-        current_directory = file_directory  
+        current_directory = file_directory
     # Find all .xlsx files in the current directory
     excel_files = glob.glob(os.path.join(current_directory, "*.xlsx"))
 
@@ -56,17 +56,24 @@ def excel_read(file_directory="."):
 
         # Open the worksheet (assuming the first sheet is the one to be processed)
         worksheet = workbook.sheet_by_index(0)
-
+        qx=[]
+        qy=[]
+        out=[]
         # Iterate the rows and columns
         for i in range(worksheet.nrows):
             row_values = []
             for j in range(worksheet.ncols):
                 # Check if the cell is empty and fill with zero if true
-                cell_value = worksheet.cell_value(i, j) if worksheet.cell_type(i, j) != xlrd.XL_CELL_EMPTY else  0
-                # Add the cell value to the row_values list
-                row_values.append(cell_value)
+                if (j>2):
+                    cell_value = worksheet.cell_value(i, j) if worksheet.cell_type(i, j) != xlrd.XL_CELL_EMPTY else  0
+                    # Add the cell value to the row_values list
+                    row_values.append(cell_value)
             # Print the row values with tab space
-            print('\t'.join(map(str, row_values)))
+            #print('\t'.join(map(str, row_values)))
+            out.append(row_values)
+            qx.append(worksheet.cell_value(i, 1))
+            qy.append(worksheet.cell_value(i, 2))
+
 
     #Python program to reverse an array
 def list_reverse(arr,size):
