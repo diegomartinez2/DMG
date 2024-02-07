@@ -59,7 +59,8 @@ def excel_read(file_directory=".",header="1DP"):
         worksheet = workbook.sheet_by_index(0)
         #qx=[]
         #qy=[]
-        out=[]
+        #out=[]
+        out=np.zeros(worksheet.nrows,worksheet.ncols)
         # Iterate the rows and columns
         for i in range(worksheet.nrows):
             row_values = []
@@ -68,14 +69,15 @@ def excel_read(file_directory=".",header="1DP"):
                 #if (j>2):
                 cell_value = worksheet.cell_value(i, j) if worksheet.cell_type(i, j) != xlrd.XL_CELL_EMPTY else  0
                 # Add the cell value to the row_values list
-                row_values.append(cell_value)
+                #row_values.append(cell_value)
+                out(i,j) = cell_value
             # Print the row values with tab space
             #print('\t'.join(map(str, row_values)))
-            out.append(row_values)
             #qx.append(worksheet.cell_value(i, 1))
             #qy.append(worksheet.cell_value(i, 2))
+        data.append(out)
     #return qx,qy,out
-    return out
+    return data
 
 
     #Python program to reverse an array
