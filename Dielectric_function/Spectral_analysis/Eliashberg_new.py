@@ -49,7 +49,7 @@ def excel_read(file_directory=".",header="1DP"):
         current_directory = file_directory
     # Find all .xlsx files in the current directory
     excel_files = glob.glob(os.path.join(current_directory, header+"*.xlsx"))
-
+    data=[]
     # Iterate over each Excel file
     for file_name in excel_files:
         # Open the workbook
@@ -60,7 +60,7 @@ def excel_read(file_directory=".",header="1DP"):
         #qx=[]
         #qy=[]
         #out=[]
-        out=np.zeros(worksheet.nrows,worksheet.ncols)
+        out=np.zeros((worksheet.nrows,worksheet.ncols))
         # Iterate the rows and columns
         for i in range(worksheet.nrows):
             row_values = []
