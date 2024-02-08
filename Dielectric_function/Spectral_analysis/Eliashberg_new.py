@@ -85,6 +85,7 @@ def Excel_data_parser(data):
     Gamma=[]
     Ratio=[]
     for item in data:
+        qx.append(data[0][0])
         pass
     pass
 
