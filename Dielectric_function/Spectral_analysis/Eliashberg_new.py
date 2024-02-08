@@ -78,7 +78,15 @@ def excel_read(file_directory=".",header="1DP"):
         data.append(out)
     #return qx,qy,out
     return data
-
+def Excel_data_parser(data):
+    qx=[]
+    qy=[]
+    Omega=[]
+    Gamma=[]
+    Ratio=[]
+    for item in data:
+        pass
+    pass
 
     #Python program to reverse an array
 def list_reverse(arr,size):
