@@ -74,15 +74,16 @@ def excel_read(file_directory=".",header="1DP"):
 def read_1_excel_file(file_directory=".",filename="1DP"):
     """
     This function only reads one excel file in qx,qy,w,e,r... format and outputs the data inside
+    out=[[qx,qy,w,e,r,w2,e2,r2,w3,e3,r3],...]
     """
     if (file_directory=="."):
         current_directory = os.getcwd()
     else:
         current_directory = file_directory
-    excel_file = glob.glob(os.path.join(current_directory, filename+".xlsx"))
+    #excel_file = glob.glob(os.path.join(current_directory, filename+".xlsx"))
     # Open the workbook
-    workbook = xlrd.open_workbook(excel_file)
-
+    #workbook = xlrd.open_workbook(excel_file)
+    workbook = xlrd.open_workbook(os.path.join(current_directory, filename+".xlsx"))
     # Open the worksheet (assuming the first sheet is the one to be processed)
     worksheet = workbook.sheet_by_index(0)
 
