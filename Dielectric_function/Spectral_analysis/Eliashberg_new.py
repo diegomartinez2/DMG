@@ -70,7 +70,7 @@ def excel_read(file_directory=".",header="1DP"):
                 cell_value = worksheet.cell_value(i, j) if worksheet.cell_type(i, j) != xlrd.XL_CELL_EMPTY else  0
                 # Add the cell value to the row_values list
                 #row_values.append(cell_value)
-                out(i,j) = cell_value
+                out[i][j] = cell_value
             # Print the row values with tab space
             #print('\t'.join(map(str, row_values)))
             #qx.append(worksheet.cell_value(i, 1))
@@ -84,13 +84,14 @@ def Excel_data_parser(data):
     Omega=[]
     Gamma=[]
     Ratio=[]
-    for item in data:
-        qx.append(item[0][0])
-        qy.append(item[0][1])
-        Omega.append(item[0][2])
-        Gamma.append(item[0][3])
-        Ratio.append(item[0][4])
-        pass
+    for i in (1,2,3,4,5):
+        for item in data:
+            qx.append(item[i][0])
+            qy.append(item[i][1])
+            Omega.append(item[i][2])
+            Gamma.append(item[i][3])
+            Ratio.append(item[i][4])
+
     pass
 
     #Python program to reverse an array
