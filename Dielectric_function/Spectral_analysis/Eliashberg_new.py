@@ -71,6 +71,32 @@ def excel_read(file_directory=".",header="1DP"):
         data.append(out)
     #return qx,qy,out
     return data
+def read_1_excel_file(file_directory=".",filename="1DP"):
+    """
+    This function only reads one excel file in qx,qy,w,e,r... format and outputs the data inside
+    """
+    if (file_directory=="."):
+        current_directory = os.getcwd()
+    else:
+        current_directory = file_directory
+    excel_file = glob.glob(os.path.join(current_directory, filename+".xlsx"))
+    # Open the workbook
+    workbook = xlrd.open_workbook(excel_file)
+
+    # Open the worksheet (assuming the first sheet is the one to be processed)
+    worksheet = workbook.sheet_by_index(0)
+
+    out=np.zeros((worksheet.nrows,worksheet.ncols))
+    # Iterate the rows and columns
+    for i in range(worksheet.nrows):
+        row_values = []
+        for j in range(worksheet.ncols):
+            # Check if the cell is empty and fill with zero if true
+            cell_value = worksheet.cell_value(i, j) if worksheet.cell_type(i, j) != xlrd.XL_CELL_EMPTY else  0
+            # Add the cell value to the output array
+            out[i][j] = cell_value
+    return out
+    pass
 def Excel_data_parser(data):
     qx=[]
     qy=[]
