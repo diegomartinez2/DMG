@@ -57,24 +57,17 @@ def excel_read(file_directory=".",header="1DP"):
 
         # Open the worksheet (assuming the first sheet is the one to be processed)
         worksheet = workbook.sheet_by_index(0)
-        #qx=[]
-        #qy=[]
-        #out=[]
+
         out=np.zeros((worksheet.nrows,worksheet.ncols))
         # Iterate the rows and columns
         for i in range(worksheet.nrows):
             row_values = []
             for j in range(worksheet.ncols):
                 # Check if the cell is empty and fill with zero if true
-                #if (j>2):
                 cell_value = worksheet.cell_value(i, j) if worksheet.cell_type(i, j) != xlrd.XL_CELL_EMPTY else  0
-                # Add the cell value to the row_values list
-                #row_values.append(cell_value)
+                # Add the cell value to the output array
                 out[i][j] = cell_value
-            # Print the row values with tab space
-            #print('\t'.join(map(str, row_values)))
-            #qx.append(worksheet.cell_value(i, 1))
-            #qy.append(worksheet.cell_value(i, 2))
+
         data.append(out)
     #return qx,qy,out
     return data
