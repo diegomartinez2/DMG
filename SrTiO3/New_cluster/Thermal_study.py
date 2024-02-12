@@ -70,7 +70,7 @@ def main(args):
         print ("The dynamical matrix that generated the last population:",DYN_PREFIX)
         print ("The SSCHA dynamical matrix obtained with the last minimization:",FINAL_DYN)
         print ("Free energy Hessian dynamical matrices output:",SAVE_PREFIX)
-        d3 = Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
+        d3 = Thermal.Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
                         NQIRR,Tg,T,POPULATION,INCLUDE_V4)
         #-----
         if calculate_spectra:
@@ -86,8 +86,8 @@ def main(args):
             Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
         #-----
         Thermal.thermal_calculo(d3,FINAL_DYN,NQIRR)
-        harm_dos, anharm_dos = processing()
-        plot(harm_dos, anharm_dos)
+        harm_dos, anharm_dos = Thermal.processing()
+        Thermal.plot(harm_dos, anharm_dos)
         np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
         np.savetxt("dos_anharmonic.dat",anharm_dos,header='Temperature dependent Anharmonic DOS from lineshapes: 2 lines of raw data 2 lines of gaussian smoothed data')
 
@@ -109,7 +109,7 @@ def main(args):
         print ("Including 4th. order=",INCLUDE_V4)
         SAVE_PREFIX = 'dyn_hessian_'
         print ("Free energy Hessian dynamical matrices output:",SAVE_PREFIX)
-        d3 = Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
+        d3 = Thermal.Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
                         NQIRR,Tg,T,POPULATION,INCLUDE_V4)
         #-----
         if calculate_spectra:
@@ -124,9 +124,9 @@ def main(args):
             Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T,8)
             Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
         #-----
-        thermal_calculo(d3,FINAL_DYN,NQIRR)
+        Thermal.thermal_calculo(d3,FINAL_DYN,NQIRR)
         harm_dos, anharm_dos = processing()
-        plot(harm_dos, anharm_dos)
+        Thermal.plot(harm_dos, anharm_dos)
         np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
         np.savetxt("dos_anharmonic.dat",anharm_dos,header='Temperature dependent Anharmonic DOS from lineshapes: 2 lines of raw data 2 lines of gaussian smoothed data')
     pass
