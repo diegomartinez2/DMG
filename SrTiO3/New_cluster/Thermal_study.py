@@ -45,7 +45,10 @@ import matplotlib.gridspec as gridspec
 
 def main(args):
     """
+    This code calculates the thermal ...
+    if calculate_spectra = True then also calculates the spectral function.
     """
+    calculate_spectra = False
     if (len( sys.argv ) > 1):
         N_RANDOM = arg[5]
 
@@ -70,18 +73,19 @@ def main(args):
         d3 = Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
                         NQIRR,Tg,T,POPULATION,INCLUDE_V4)
         #-----
-        Espectro =  Funcion_espectral(FINAL_DYN,NQIRR)
-        Espectro.prepara_tensor()
-        Espectro.calcula_espectro_basico_SrTiO3_multiprocessing(T,8)
-        Espectro.calcula_full_correction_en_punto_G(T)
-        Espectro.calcula_full_correction_en_punto_R(T)
-        Espectro.calcula_oneshot_correction_en_punto_Gamma(T)
-        Espectro.calcula_oneshot_correction_en_punto_R(T)
-        Espectro.calcula_oneshot_correction_along_PATH(T)
-        Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T,8)
-        Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
+        if calculate_spectra:
+            Espectro =  Funcion_espectral(FINAL_DYN,NQIRR)
+            Espectro.prepara_tensor()
+            Espectro.calcula_espectro_basico_SrTiO3_multiprocessing(T,8)
+            Espectro.calcula_full_correction_en_punto_G(T)
+            Espectro.calcula_full_correction_en_punto_R(T)
+            Espectro.calcula_oneshot_correction_en_punto_Gamma(T)
+            Espectro.calcula_oneshot_correction_en_punto_R(T)
+            Espectro.calcula_oneshot_correction_along_PATH(T)
+            Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T,8)
+            Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
         #-----
-        thermal_calculo(d3,FINAL_DYN,NQIRR)
+        Thermal.thermal_calculo(d3,FINAL_DYN,NQIRR)
         harm_dos, anharm_dos = processing()
         plot(harm_dos, anharm_dos)
         np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
@@ -108,16 +112,17 @@ def main(args):
         d3 = Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
                         NQIRR,Tg,T,POPULATION,INCLUDE_V4)
         #-----
-        Espectro =  Funcion_espectral(FINAL_DYN,NQIRR)
-        Espectro.prepara_tensor()
-        Espectro.calcula_espectro_basico_SrTiO3_multiprocessing(T,8)
-        Espectro.calcula_full_correction_en_punto_G(T)
-        Espectro.calcula_full_correction_en_punto_R(T)
-        Espectro.calcula_oneshot_correction_en_punto_Gamma(T)
-        Espectro.calcula_oneshot_correction_en_punto_R(T)
-        Espectro.calcula_oneshot_correction_along_PATH(T)
-        Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T,8)
-        Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
+        if calculate_spectra:
+            Espectro =  Funcion_espectral(FINAL_DYN,NQIRR)
+            Espectro.prepara_tensor()
+            Espectro.calcula_espectro_basico_SrTiO3_multiprocessing(T,8)
+            Espectro.calcula_full_correction_en_punto_G(T)
+            Espectro.calcula_full_correction_en_punto_R(T)
+            Espectro.calcula_oneshot_correction_en_punto_Gamma(T)
+            Espectro.calcula_oneshot_correction_en_punto_R(T)
+            Espectro.calcula_oneshot_correction_along_PATH(T)
+            Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T,8)
+            Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
         #-----
         thermal_calculo(d3,FINAL_DYN,NQIRR)
         harm_dos, anharm_dos = processing()
