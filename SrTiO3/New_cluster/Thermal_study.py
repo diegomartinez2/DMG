@@ -49,8 +49,8 @@ def main(args):
     if calculate_spectra = True then also calculates the spectral function.
     """
     calculate_spectra = False
-    T_init = 250
-    T_end = 350
+    T_init = 200
+    T_end = 400
     T_steps =3
     if (len( sys.argv ) > 1):
         N_RANDOM = arg[5]
