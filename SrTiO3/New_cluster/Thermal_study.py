@@ -49,6 +49,9 @@ def main(args):
     if calculate_spectra = True then also calculates the spectral function.
     """
     calculate_spectra = False
+    T_init = 250
+    T_end = 350
+    T_steps =3
     if (len( sys.argv ) > 1):
         N_RANDOM = arg[5]
 
@@ -72,6 +75,7 @@ def main(args):
         print ("Free energy Hessian dynamical matrices output:",SAVE_PREFIX)
         d3 = Thermal.Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
                         NQIRR,Tg,T,POPULATION,INCLUDE_V4)
+        #d3 = np.load("d3_realspace_sym.npy")
         #-----
         if calculate_spectra:
             Espectro =  Funcion_espectral(FINAL_DYN,NQIRR)
@@ -85,7 +89,7 @@ def main(args):
             Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T,8)
             Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
         #-----
-        Thermal.thermal_calculo(d3,FINAL_DYN,NQIRR)
+        Thermal.thermal_calculo(d3,FINAL_DYN,NQIRR,T_init,T_end,T_steps)
         harm_dos, anharm_dos = Thermal.processing()
         Thermal.plot(harm_dos, anharm_dos)
         np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
@@ -111,6 +115,7 @@ def main(args):
         print ("Free energy Hessian dynamical matrices output:",SAVE_PREFIX)
         d3 = Thermal.Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
                         NQIRR,Tg,T,POPULATION,INCLUDE_V4)
+        #d3 = np.load("d3_realspace_sym.npy")
         #-----
         if calculate_spectra:
             Espectro =  Funcion_espectral(FINAL_DYN,NQIRR)
@@ -124,7 +129,7 @@ def main(args):
             Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T,8)
             Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
         #-----
-        Thermal.thermal_calculo(d3,FINAL_DYN,NQIRR)
+        Thermal.thermal_calculo(d3,FINAL_DYN,NQIRR,T_init,T_end,T_steps)
         harm_dos, anharm_dos = processing()
         Thermal.plot(harm_dos, anharm_dos)
         np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
