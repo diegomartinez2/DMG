@@ -44,8 +44,9 @@ def main(arg):
         frequencies = np.loadtxt(file2) #no negative values
     #print(pars[:,0])
     #print('Min(pars[0])=',np.amin(pars[:,0]))
-    
-    superconductor = Eliashberg.Eliashberg(pars)
+    out = Eliashberg.read_1_excel_file(filename="1DP")
+    qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
+    superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
     print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
 
