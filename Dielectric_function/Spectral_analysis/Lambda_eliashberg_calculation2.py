@@ -21,28 +21,30 @@ def main(arg):
         #'xaz','xba','xbb','xbc','xbd','xbe','xbf','xbg','xbh','xbi','xbj','xbk','xbl',
         #'xbm','xbn','xbo','xbp','xbq','xbr','xbs','xbt','xbu','xbv','xbw','xbx')
         for namefile in filelist:
-            plasmon = Eliashberg.Plasmon_analysis(arg,namefile)
+            #plasmon = Eliashberg.Plasmon_analysis(arg,namefile)
             data_all=Eliashberg.read_1_excel_file(file_directory=".",filename=namefile)
-            data, frequencies, qx= plasmon.load_data()
-            print (np.shape(data),"=(51,5001)?")
-            plasmon.fitting_Lorentz(frequencies,data)
-            if (namefile == filelist[0]):
-                pars = plasmon.pars
+            #data, frequencies, qx= plasmon.load_data()
+            #print (np.shape(data),"=(51,5001)?")
+            print (np.shape(data_all))
+            #plasmon.fitting_Lorentz(frequencies,data)
+            #if (namefile == filelist[0]):
+                #pars = plasmon.pars
                 #print('pars_1=',pars)
-            else:
-                pars = np.concatenate((pars,plasmon.pars), axis=0)
+            #else:
+                #pars = np.concatenate((pars,plasmon.pars), axis=0)
                 #print('pars_n=',pars)
-        print (np.shape(pars),"=(2550,3)?")
+        #print (np.shape(pars),"=(2550,3)?")
         #np.savetxt('pars_txt.dat', pars) #no negative values
-        np.savetxt(file1, pars) #no negative values
-        np.savetxt(file2, frequencies) #no negative values
+        #np.savetxt(file1, pars) #no negative values
+        #np.savetxt(file2, frequencies) #no negative values
     else:
         #np.loadtxt('pars_txt.dat', pars) #no negative values
         #pars = [] #np.zeros((2550,3))
         pars = np.loadtxt(file1) #no negative values,
         frequencies = np.loadtxt(file2) #no negative values
-    print(pars[:,0])
-    print('Min(pars[0])=',np.amin(pars[:,0]))
+    #print(pars[:,0])
+    #print('Min(pars[0])=',np.amin(pars[:,0]))
+    
     superconductor = Eliashberg.Eliashberg(pars)
     superconductor.read_Ne()
     print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
