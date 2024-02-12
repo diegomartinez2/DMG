@@ -71,7 +71,7 @@ def excel_read(file_directory=".",header="1DP"):
         data.append(out)
     #return qx,qy,out
     return data
-def read_1_excel_file(file_directory=".",filename="1DP"):
+def read_1_excel_file(file_directory=".",filename="1DP"):#filenames=('1DP','HPI','HPII')
     """
     This function only reads one excel file in qx,qy,w,e,r... format and outputs the data inside
     out=[[qx,qy,w,e,r,w2,e2,r2,w3,e3,r3],...]
@@ -99,19 +99,19 @@ def read_1_excel_file(file_directory=".",filename="1DP"):
     return out
     pass
 def Excel_data_parser(data):
-    qx=[]
-    qy=[]
-    Omega=[]
-    Gamma=[]
-    Ratio=[]
-    for i in (1,2,3,4,5):
+    qx=np.zeros(len(data))
+    qy=np.zeros(len(data))
+    Omega=np.zeros(len(data))
+    Gamma=np.zeros(len(data))
+    Ratio=np.zeros(len(data))
+    for i in range(len(out)-1):
         for item in data:
-            qx.append(item[i][0])
-            qy.append(item[i][1])
-            Omega.append(item[i][2])
-            Gamma.append(item[i][3])
-            Ratio.append(item[i][4])
-
+            qx[i]=item[i][0]
+            qy[i]=item[i][1]
+            Omega[i]=item[i][2]
+            Gamma[i]=item[i][3]
+            Ratio[i]=item[i][4]
+    return qx,qy,Omega,Gamma,Ratio
     pass
 
     #Python program to reverse an array
