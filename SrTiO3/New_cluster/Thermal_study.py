@@ -61,8 +61,8 @@ def main(args):
         T =  arg[4]
         POPULATION = arg[1]
         DATA_DIR = "pop{}/data".format(POPULATION)
-        DYN_PREFIX =  "pop{}/dyn_start_population3_".format(POPULATION)
-        FINAL_DYN =   "pop{}/dyn_end_population3_".format(POPULATION)
+        DYN_PREFIX =  "pop{}/dyn_start_population{}_".format(POPULATION)
+        FINAL_DYN =   "pop{}/dyn_end_population{}_".format(POPULATION)
         INCLUDE_V4 = False
         print ("Population:",POPULATION)
         print ("Number elements in the ensamble:",N_RANDOM)
@@ -105,9 +105,9 @@ def main(args):
         T = int(input("The temperature for the calculation:"))
         DATA_DIR = "pop{}/data".format(POPULATION)
         print ("Path to the directory ens_pop#lastpop where the last population is stored:",DATA_DIR)
-        DYN_PREFIX =  "pop{}/dyn_start_population3_".format(POPULATION)
+        DYN_PREFIX =  "pop{}/dyn_start_population{}_".format(POPULATION)
         print ("The dynamical matrix that generated the last population:",DYN_PREFIX)
-        FINAL_DYN =   "pop{}/dyn_end_population3_".format(POPULATION)
+        FINAL_DYN =   "pop{}/dyn_end_population{}_".format(POPULATION)
         print ("The SSCHA dynamical matrix obtained with the last minimization:",FINAL_DYN)
         INCLUDE_V4 = False
         print ("Including 4th. order=",INCLUDE_V4)
