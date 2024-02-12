@@ -27,8 +27,8 @@
 import Thermal
 import Spectral_function_calc
 
-from __future__ import print_function
-from __future__ import division
+#from __future__ import print_function
+#from __future__ import division
 # Import the modules to read the dynamical matrix
 import cellconstructor as CC
 import cellconstructor.Phonons
