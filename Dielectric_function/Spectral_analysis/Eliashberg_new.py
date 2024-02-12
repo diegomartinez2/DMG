@@ -1063,8 +1063,8 @@ class Eliashberg2(object):
         a2F = factor1*summa: The Eliashberg function at "x"
         """
 
-        center = self.pars[:,1]
-        width = self.pars[:,2]
+        center = self.Omega
+        width = self.Gamma
         width = np.absolute(width)
         gauss_width = 0.004 #from 0.01 [0.1,0.05,0.01,0.005,0.001,0.0005,0.0001] 0.004 is the best option for the test
         summa = 0
@@ -1116,8 +1116,8 @@ class Eliashberg2(object):
         Calculates the Lambda by two methods, notice that it must calculate the integral
         in a range that takes the Lorenztian obtained by the Plasmon_analysis object.
         """
-        center = self.pars[:,1]
-        width = self.pars[:,2]
+        center = self.Omega
+        width = self.Gamma
         print('len(Center)=',len(center))
         #Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
         Nef = self.N_ef
@@ -1159,8 +1159,8 @@ class Eliashberg2(object):
         Calculates the Lambda by two methods, notice that it must calculate the integral
         in a range that takes the Lorenztian obtained by the Plasmon_analysis object.
         """
-        center = self.pars[:,1]
-        width = self.pars[:,2]
+        center = self.Omega
+        width = self.Gamma
         print('len(Center)=',len(center),'(=50*50=2500? or =50*51=2550?)')
         #method 1 ----------------------------
         #Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #comment for test and uncomment line under
@@ -1175,12 +1175,12 @@ class Eliashberg2(object):
         Lambda_1=summa1/len(center)
         #method 2 -------------------------------
         self.lambda_2=[]
-        if (Frequencies[0] != 0):
-            Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
-        else:
-            Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
-        w = Frequencies[Frequencies != 0]
-        self.w = w
+        # if (Frequencies[0] != 0):
+        #     Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
+        # else:
+        #     Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
+        # w = Frequencies[Frequencies != 0]
+        # self.w = w
         #w = np.linspace(0.0001,0.9999,20000) #test
         # with mp.Pool() as pool:
         #     res = pool.map(self.a2F_new,w)
