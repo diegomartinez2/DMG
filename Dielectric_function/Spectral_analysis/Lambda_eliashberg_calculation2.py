@@ -8,24 +8,24 @@ from scipy import integrate
 
 def main(arg):
     #pars_create=True
-    file1 = './pars_data.txt'
-    file2 = './frequencies_data.txt'
+    #file1 = './pars_data.txt'
+    #file2 = './frequencies_data.txt'
     #if pars_create:
-    if not (os.path.isfile(file1) and os.path.isfile(file2)):
-        print('------------------------')
-        print('Creating parameters file')
-        print('------------------------')
-        filelist=('1DP','HPI','HPII')
+    #if not (os.path.isfile(file1) and os.path.isfile(file2)):
+        #print('------------------------')
+        #print('Creating parameters file')
+        #print('------------------------')
+        #filelist=('1DP','HPI','HPII')
         #'xaa','xab','xac','xad','xae','xaf','xag','xah','xai','xaj','xak','xal',
         #'xam','xan','xao','xap','xaq','xar','xas','xat','xau','xav','xaw','xax','xay',
         #'xaz','xba','xbb','xbc','xbd','xbe','xbf','xbg','xbh','xbi','xbj','xbk','xbl',
         #'xbm','xbn','xbo','xbp','xbq','xbr','xbs','xbt','xbu','xbv','xbw','xbx')
-        for namefile in filelist:
+        #for namefile in filelist:
             #plasmon = Eliashberg.Plasmon_analysis(arg,namefile)
-            data_all=Eliashberg.read_1_excel_file(file_directory=".",filename=namefile)
+            #data_all=Eliashberg.read_1_excel_file(file_directory=".",filename=namefile)
             #data, frequencies, qx= plasmon.load_data()
             #print (np.shape(data),"=(51,5001)?")
-            print (np.shape(data_all))
+            #print (np.shape(data_all))
             #plasmon.fitting_Lorentz(frequencies,data)
             #if (namefile == filelist[0]):
                 #pars = plasmon.pars
@@ -37,18 +37,18 @@ def main(arg):
         #np.savetxt('pars_txt.dat', pars) #no negative values
         #np.savetxt(file1, pars) #no negative values
         #np.savetxt(file2, frequencies) #no negative values
-    else:
+    #else:
         #np.loadtxt('pars_txt.dat', pars) #no negative values
         #pars = [] #np.zeros((2550,3))
-        pars = np.loadtxt(file1) #no negative values,
-        frequencies = np.loadtxt(file2) #no negative values
+        #pars = np.loadtxt(file1) #no negative values,
+        #frequencies = np.loadtxt(file2) #no negative values
     #print(pars[:,0])
     #print('Min(pars[0])=',np.amin(pars[:,0]))
     out = Eliashberg.read_1_excel_file(filename="1DP")
     qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
-    print("Omega range:",np.min(superconductor.pars[:,1]-np.abs(np.max(superconductor.pars[:,2]))),'::',np.max(superconductor.pars[:,1])+np.abs(np.max(superconductor.pars[:,2])))
+    print("Omega range:",np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),'::',np.max(superconductor.Omega)+np.abs(np.max(superconductor.Gamma)))
 
     #lambda_1, lambda_2 = superconductor.Lambda(frequencies)
 #    lambda_1 = superconductor.Lambda(frequencies)
