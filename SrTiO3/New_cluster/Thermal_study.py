@@ -49,6 +49,7 @@ def main(args):
     if calculate_spectra = True then also calculates the spectral function.
     """
     calculate_spectra = False
+    calculate_hessian = False
     T_init = 200
     T_end = 400
     T_steps =3
@@ -61,8 +62,8 @@ def main(args):
         T =  arg[4]
         POPULATION = arg[1]
         DATA_DIR = "pop{}/data".format(POPULATION)
-        DYN_PREFIX =  "pop{}/dyn_start_population{}_".format(POPULATION)
-        FINAL_DYN =   "pop{}/dyn_end_population{}_".format(POPULATION)
+        DYN_PREFIX =  "pop{0}/dyn_start_population{0}_".format(POPULATION)
+        FINAL_DYN =   "pop{0}/dyn_end_population{0}_".format(POPULATION)
         INCLUDE_V4 = False
         print ("Population:",POPULATION)
         print ("Number elements in the ensamble:",N_RANDOM)
@@ -73,9 +74,11 @@ def main(args):
         print ("The dynamical matrix that generated the last population:",DYN_PREFIX)
         print ("The SSCHA dynamical matrix obtained with the last minimization:",FINAL_DYN)
         print ("Free energy Hessian dynamical matrices output:",SAVE_PREFIX)
-        d3 = Thermal.Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
+        if calculate_hessian:
+            d3 = Thermal.Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
                         NQIRR,Tg,T,POPULATION,INCLUDE_V4)
-        #d3 = np.load("d3_realspace_sym.npy")
+        else:
+            d3 = np.load("d3_realspace_sym.npy")
         #-----
         if calculate_spectra:
             Espectro =  Funcion_espectral(FINAL_DYN,NQIRR)
@@ -105,17 +108,19 @@ def main(args):
         T = int(input("The temperature for the calculation:"))
         DATA_DIR = "pop{}/data".format(POPULATION)
         print ("Path to the directory ens_pop#lastpop where the last population is stored:",DATA_DIR)
-        DYN_PREFIX =  "pop{}/dyn_start_population{}_".format(POPULATION)
+        DYN_PREFIX =  "pop{0}/dyn_start_population{0}_".format(POPULATION)
         print ("The dynamical matrix that generated the last population:",DYN_PREFIX)
-        FINAL_DYN =   "pop{}/dyn_end_population{}_".format(POPULATION)
+        FINAL_DYN =   "pop{0}/dyn_end_population{0}_".format(POPULATION)
         print ("The SSCHA dynamical matrix obtained with the last minimization:",FINAL_DYN)
         INCLUDE_V4 = False
         print ("Including 4th. order=",INCLUDE_V4)
         SAVE_PREFIX = 'dyn_hessian_'
         print ("Free energy Hessian dynamical matrices output:",SAVE_PREFIX)
-        d3 = Thermal.Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
+        if calculate_hessian:
+            d3 = Thermal.Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
                         NQIRR,Tg,T,POPULATION,INCLUDE_V4)
-        #d3 = np.load("d3_realspace_sym.npy")
+        else:
+            d3 = np.load("d3_realspace_sym.npy")
         #-----
         if calculate_spectra:
             Espectro =  Funcion_espectral(FINAL_DYN,NQIRR)
@@ -130,7 +135,7 @@ def main(args):
             Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
         #-----
         Thermal.thermal_calculo(d3,FINAL_DYN,NQIRR,T_init,T_end,T_steps)
-        harm_dos, anharm_dos = processing()
+        harm_dos, anharm_dos = Thermal.processing()
         Thermal.plot(harm_dos, anharm_dos)
         np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
         np.savetxt("dos_anharmonic.dat",anharm_dos,header='Temperature dependent Anharmonic DOS from lineshapes: 2 lines of raw data 2 lines of gaussian smoothed data')
