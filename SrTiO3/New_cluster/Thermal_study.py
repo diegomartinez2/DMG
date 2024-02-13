@@ -54,13 +54,13 @@ def main(args):
     T_end = 400
     T_steps =3
     if (len( sys.argv ) > 1):
-        N_RANDOM = arg[5]
+        N_RANDOM = args[5]
 
         SAVE_PREFIX = 'dyn_hessian_'
-        NQIRR = arg[2]
-        Tg = arg[3]
-        T =  arg[4]
-        POPULATION = arg[1]
+        NQIRR = args[2]
+        Tg = args[3]
+        T =  args[4]
+        POPULATION = args[1]
         DATA_DIR = "pop{}/data".format(POPULATION)
         DYN_PREFIX =  "pop{0}/dyn_start_population{0}_".format(POPULATION)
         FINAL_DYN =   "pop{0}/dyn_end_population{0}_".format(POPULATION)
