@@ -47,7 +47,7 @@ def thermal_calculo(d3, dyn_prefix = 'final_dyn',nqirr = 8,T_init=250,T_end=350,
     print('Calculated SSCHA kappa in: ', time.time() - start_time)
 
     tc.calculate_kappa(mode = 'GK', write_lineshapes=False,
-    ne = 1000, temperatures = temperatures,
+    ne = 1000, temperatures = temperatures,     #ne=1000 ->ne=10000
     kappa_filename = 'Thermal_conductivity_GK')
 
     print('Calculated SSCHA kappa in: ', time.time() - start_time)
