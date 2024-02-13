@@ -54,13 +54,13 @@ def main(args):
     T_end = 400
     T_steps =3
     if (len( sys.argv ) > 1):
-        N_RANDOM = args[5]
+        N_RANDOM = int(args[5])
 
         SAVE_PREFIX = 'dyn_hessian_'
-        NQIRR = args[2]
-        Tg = args[3]
-        T =  args[4]
-        POPULATION = args[1]
+        NQIRR = int(args[2])
+        Tg = float(args[3])
+        T =  float(args[4])
+        POPULATION = int(args[1])
         DATA_DIR = "pop{}/data".format(POPULATION)
         DYN_PREFIX =  "pop{0}/dyn_start_population{0}_".format(POPULATION)
         FINAL_DYN =   "pop{0}/dyn_end_population{0}_".format(POPULATION)
@@ -104,8 +104,8 @@ def main(args):
         POPULATION = int(input("Population:"))
         N_RANDOM = int(input("Number elements in the ensamble:"))
         NQIRR = int(input("The number or irredubcible q points (nqirr):"))
-        Tg = int(input("The temperature used to generate the configurations:"))
-        T = int(input("The temperature for the calculation:"))
+        Tg = float(input("The temperature used to generate the configurations:"))
+        T = float(input("The temperature for the calculation:"))
         DATA_DIR = "pop{}/data".format(POPULATION)
         print ("Path to the directory ens_pop#lastpop where the last population is stored:",DATA_DIR)
         DYN_PREFIX =  "pop{0}/dyn_start_population{0}_".format(POPULATION)
