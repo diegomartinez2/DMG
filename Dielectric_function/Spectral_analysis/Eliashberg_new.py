@@ -1185,7 +1185,7 @@ class Eliashberg2(object):
         #     Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
         # else:
         #     Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
-        # w = Frequencies[Frequencies != 0]
+        w = Frequencies[Frequencies != 0]
         # self.w = w
         #w = np.linspace(0.0001,0.9999,20000) #test
         # with mp.Pool() as pool:
