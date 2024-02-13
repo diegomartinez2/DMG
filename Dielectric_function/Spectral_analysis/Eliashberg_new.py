@@ -1007,7 +1007,7 @@ class Eliashberg2(object):
         Set parameters into object and transformation units.
         """
         units = create_units('2014')   #new way of defining units
-        self.pars = pars
+        #self.pars = pars
         self.from_cm1_to_Hartree = units.invcm/units.Hartree #0.0000045563352812122295
         self.from_GHz_to_Hartree = self.from_cm1_to_Hartree /29.9792458 # from GHz to Hartree
         self.from_Ry_to_Hartree = units.Ry/units.Hartree #0.5 # from Ry to Hartree
