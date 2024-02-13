@@ -72,9 +72,9 @@ def processing():
     # second two is gaussian smoothed results \
     #for the distance between energy points de
     anharm_dos = tc.get_dos_from_lineshapes(float(key[-1]), de = 0.1)
-    return harm_dos,anharm_dos
+    return harm_dos,anharm_dos,key
 
-def plot(harm_dos, anharm_dos):
+def plot(harm_dos, anharm_dos,key):
     """# Plot results"""
     fig = plt.figure(figsize=(6.4, 4.8))
     gs1 = gridspec.GridSpec(1, 1)
@@ -195,8 +195,8 @@ def main(args):
         d3 = Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
                         NQIRR,Tg,T,POPULATION,INCLUDE_V4)
         thermal_calculo(d3,FINAL_DYN,NQIRR)
-        harm_dos, anharm_dos = processing()
-        plot(harm_dos, anharm_dos)
+        harm_dos, anharm_dos ,key = processing()
+        plot(harm_dos, anharm_dos, key)
         np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
         np.savetxt("dos_anharmonic.dat",anharm_dos,header='Temperature dependent Anharmonic DOS from lineshapes: 2 lines of raw data 2 lines of gaussian smoothed data')
     else:
