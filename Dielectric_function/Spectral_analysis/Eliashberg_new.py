@@ -1214,9 +1214,9 @@ class Eliashberg2(object):
         a2F = factor1*summa: The Eliashberg function at "x"
         """
         method = 0
-        #center = self.Omega[:] #*put units correctly...
-        #width = self.Gamma[:] #*put units the same as center
-        #width = np.absolute(width)
+        center = self.Omega[:] #*put units correctly...
+        width = self.Gamma[:] #*put units the same as center
+        width = np.absolute(width)
         #nits = create_units('2014')
         gauss_width = 50*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         # summa = 0
@@ -1241,7 +1241,7 @@ class Eliashberg2(object):
             Nef = self.Nef
             for i in range(len(center)):
                 summa += (self.Ratio[i]) * self.gaussian(x,self.Omega[i],gauss_width)
-            return summa/(2*np.pi*Nef*len(omega_q))
+            return summa/(2*np.pi*Nef*len(self.Omega))
 
     def T_c(self,mu_par):
         """
