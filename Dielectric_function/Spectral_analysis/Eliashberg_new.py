@@ -1070,7 +1070,12 @@ class Eliashberg2(object):
         ---output---
         Lamb_q: Lambda(q)
         """
-        Lamb_q=(1/(np.pi*Nef)) * (self.Ratio[i]**2)/(self.Gamma[i]) #fix from omega to omega²
+        if (self.Gamma[i]!=0):
+            print("self.Gamma[",i,"]=",self.Gamma[i])
+            Lamb_q=(1/(np.pi*Nef)) * (self.Ratio[i]**2)/(self.Gamma[i]) #fix from omega to omega²
+        else:
+            print("self.Gamma[",i,"]=",self.Gamma[i])
+            Lamb_q=0
         return Lamb_q
 
     def a2F(self,x):
