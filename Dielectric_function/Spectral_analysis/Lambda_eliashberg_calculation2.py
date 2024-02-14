@@ -70,7 +70,7 @@ def main(arg):
     plt.plot(gauss)
     plt.show()
     print(np.trapz(gauss))
-    w = np.linspace(-100,100,20000)
+    w = np.linspace(-1000,1000,20000)
     #superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1]))
     #suma = integrate.simpson(superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1])), w)
     suma = integrate.simpson(superconductor.test_gaussian(w,superconductor.Omega,len(superconductor.Omega)), w)
