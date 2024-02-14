@@ -1071,10 +1071,10 @@ class Eliashberg2(object):
         Lamb_q: Lambda(q)
         """
         if (self.Gamma[i]!=0):
-            print("self.Gamma[",i,"]=",self.Gamma[i])
+            #print("self.Gamma[",i,"]=",self.Gamma[i])
             Lamb_q=(1/(np.pi*Nef)) * (self.Ratio[i]**2)/(self.Gamma[i]) #fix from omega to omega²
         else:
-            print("self.Gamma[",i,"]=",self.Gamma[i])
+            #print("self.Gamma[",i,"]=",self.Gamma[i])
             Lamb_q=0
         return Lamb_q
 
