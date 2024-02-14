@@ -1060,7 +1060,7 @@ class Eliashberg2(object):
         Lamb_q=(1/(np.pi*Nef)) * (gamma_q/omega_q**2) #fix from omega to omega²
         return Lamb_q
 
-    def Lambda_q_new(i,Nef):
+    def Lambda_q_new(self,i,Nef):
         """
         Calculates the Lambda(q) functions
         ---input---
