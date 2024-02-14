@@ -44,7 +44,7 @@ def main(arg):
         #frequencies = np.loadtxt(file2) #no negative values
     #print(pars[:,0])
     #print('Min(pars[0])=',np.amin(pars[:,0]))
-    out = Eliashberg.read_1_excel_file(filename="1DP")
+    out = Eliashberg.read_1_excel_file(filename="HPII")
     qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
@@ -77,10 +77,10 @@ def main(arg):
     print(suma,'::',suma/len(superconductor.Omega))
     #np.savetxt('salida.txt',(q_x,q_y,superconductor.N_ef,superconductor.pars[:,1],superconductor.pars[:,2],superconductor.lambda_q_lista))
     #print(len(superconductor.pars[:,1]),len(superconductor.pars[:,2]),len(superconductor.lambda_q_lista))
-    a=np.arange(0,0.43458,0.00869)
-    b=np.repeat(a,50)
-    c=np.tile(a,50)
-    print('len=',len(b),'=',len(c))
+    #a=np.arange(0,0.43458,0.00869)
+    #b=np.repeat(a,50)
+    #c=np.tile(a,50)
+    #print('len=',len(b),'=',len(c))
     np.savetxt('salida.txt',np.c_[superconductor.qx,superconductor.qy,np.full(len(superconductor.Omega), superconductor.N_ef),superconductor.Omega,superconductor.Gamma,superconductor.lambda_q_lista],header='#---q_x---q_y---N_ef[States/Spin/eV/Unit Cell]---Omega[eV]---Gamma[eV]---Lambda_q')
     pass
 
