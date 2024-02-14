@@ -1064,9 +1064,7 @@ class Eliashberg2(object):
         """
         Calculates the Lambda(q) functions
         ---input---
-        gamma_q: widths of the lorentzian fitting of the plasmon
-        omega_q: Frequencies of the plasmon, fitted to lorentzian
-        Nef: Density of states at Fermi level per cell
+        i: index of the frequencies and widths of the lorentzian fitting of the plasmon
         ---output---
         Lamb_q: Lambda(q)
         """
@@ -1118,6 +1116,12 @@ class Eliashberg2(object):
     def test_gaussian(self,w,w_q,N_q):
         """
         Test for the gaussian, the result must be the DOS.
+        ---input---
+        w: frequencies to test
+        w_q: frequencies of the plasmon grid
+        N_q: number of terms in w_q
+        ---output---
+        test_dos:
         """
         width = 5#*self.from_cm1_to_eV #self.from_cm1_to_Hartree*2 #1,5,10 cm-1
         test_dos = 1/N_q # is this equal to len(W_q)?
