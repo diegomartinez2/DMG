@@ -1060,7 +1060,7 @@ class Eliashberg2(object):
         Lamb_q=(1/(np.pi*Nef)) * (gamma_q/omega_q**2) #fix from omega to omega²
         return Lamb_q
 
-    def Lambda_q_new(self,i,Nef):
+    def Lambda_q_new(self,i):
         """
         Calculates the Lambda(q) functions
         ---input---
@@ -1072,7 +1072,7 @@ class Eliashberg2(object):
         """
         if (self.Gamma[i]!=0):
             #print("OK_self.Gamma[",i,"]=",self.Gamma[i])
-            Lamb_q=(1/(np.pi*Nef)) * (self.Ratio[i]**2)/(self.Gamma[i]) #fix from omega to omega²
+            Lamb_q=(1/(np.pi*self.N_ef)) * (self.Ratio[i]**2)/(self.Gamma[i]) #fix from omega to omega²
         else:
             #print("self.Gamma[",i,"]=",self.Gamma[i])
             Lamb_q=0
@@ -1149,8 +1149,7 @@ class Eliashberg2(object):
         width = np.absolute(width)
         summa1 = 0
         for i in range(len(center)):
-            #summa1 += self.Lambda_q(width[i],center[i],Nef)
-            summa1 += self.Lambda_q_new(i,Nef)
+            summa1 += self.Lambda_q(width[i],center[i],Nef)
         Lambda_1=summa1/len(center) #* 33 #misterious factor... joking, this is the number of nodes in the example.
         self.lambda_2=[]
 #        Frequncies = Frequencies+1
@@ -1186,19 +1185,19 @@ class Eliashberg2(object):
         """
         center = self.Omega
         width = self.Gamma
-        print('len(Center)=',len(center),'(=50*50=2500? or =50*51=2550?)')
+        #print('len(Center)=',len(center),'(=50*50=2500? or =50*51=2550?)')
         #method 1 ----------------------------
         #Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #comment for test and uncomment line under
-        self.Nef = self.N_ef
+        #self.Nef = self.N_ef
         #center = np.absolute(center) #test to force the abs
         #width = np.absolute(width)
         summa1 = 0
         self.lambda_q_lista = np.array([])
         for i in range(len(center)):  #summa in q (6x6x6 or q_x*q_y)
             #summa1 += self.Lambda_q(width[i],center[i],self.Nef) #1/N_q Sum_q( Lamb_q )
-            summa1 += self.Lambda_q_new(i,self.Nef)
+            summa1 += self.Lambda_q_new(i)
             #self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q(width[i],center[i],self.Nef))
-            self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q_new(i,self.Nef))
+            self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q_new(i))
         Lambda_1=summa1/len(center)
         #method 2 -------------------------------
         self.lambda_2=[]
@@ -1251,20 +1250,20 @@ class Eliashberg2(object):
             summa = 0
             #gamma_q = width
             #omega_q = center
-            Nef = self.Nef
+            #Nef = self.Nef
             for i in range(len(center)):
                 #summa += self.Lambda_q(self.Gamma[i],self.Omega[i],Nef)*self.Omega[i] * self.gaussian(x,self.Omega[i],gauss_width)
-                summa += self.Lambda_q_new(i,Nef)*self.Omega[i] * self.gaussian(x,self.Omega[i],gauss_width)
+                summa += self.Lambda_q_new(i)*self.Omega[i] * self.gaussian(x,self.Omega[i],gauss_width)
             return summa/(2*len(self.Omega))
         else:
             #---------method2------vvvv-
             summa = 0
             #gamma_q = width
             #omega_q = center
-            Nef = self.Nef
+            #Nef = self.Nef
             for i in range(len(center)):
                 summa += (self.Ratio[i]) * self.gaussian(x,self.Omega[i],gauss_width)
-            return summa/(2*np.pi*Nef*len(self.Omega))
+            return summa/(2*np.pi*self.N_ef*len(self.Omega))
 
     def T_c(self,mu_par):
         """
