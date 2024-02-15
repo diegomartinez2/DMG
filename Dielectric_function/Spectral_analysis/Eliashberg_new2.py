@@ -680,10 +680,7 @@ class Eliashberg2(object):
         center = self.Omega
         width = self.Gamma
         #method 1 ----------------------------
-        #Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #comment for test and uncomment line under
-        #self.Nef = self.N_ef
-        #center = np.absolute(center) #test to force the abs
-        #width = np.absolute(width)
+
         summa1 = 0
         self.lambda_q_lista = np.array([])
         for i in range(len(center)):  #summa in q (6x6x6 or q_x*q_y)
@@ -698,15 +695,10 @@ class Eliashberg2(object):
                 simmetry_factor =  4
 
             summa1 += self.Lambda_q_new(i)*simmetry_factor
-            #self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q(width[i],center[i],self.Nef))
             self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q_new(i))
         Lambda_1=summa1/len(center)
         #method 2 -------------------------------
         self.lambda_2=[]
-        # if (Frequencies[0] != 0):
-        #     Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
-        # else:
-        #     Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
         w = Frequencies[Frequencies != 0]
         #w = np.linspace(0.0001,0.9999,20000) #test
         # with mp.Pool() as pool:
@@ -725,15 +717,16 @@ class Eliashberg2(object):
         self.plot_lambda(self.lambda_w_lista)
         return Lambda_1
 
-    def a2F_new(self,x):
+    def a2F_new(self,x,method = 0):
         """
         Calculates the Eliashberg spectral functions
         ---input---
         x: coordiate to calculate the Eliashberg function.
+        method: Method to use in the calculation.
         ---output---
         a2F = factor1*summa: The Eliashberg function at "x"
         """
-        method = 0
+
         center = self.Omega[:] #*put units correctly...
         width = self.Gamma[:] #*put units the same as center
         width = np.absolute(width)
