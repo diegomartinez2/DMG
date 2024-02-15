@@ -44,13 +44,13 @@ def main(arg):
         #frequencies = np.loadtxt(file2) #no negative values
     #print(pars[:,0])
     #print('Min(pars[0])=',np.amin(pars[:,0]))
-    out = Eliashberg.read_1_excel_file(filename="HPII")
+    out = Eliashberg.read_1_excel_file(filename="HPII_c")
     qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
     print("Omega range:",np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),'::',np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))))
     #frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
-    frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),200000) #test
+    frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
     #lambda_1, lambda_2 = superconductor.Lambda(frequencies)
 #    lambda_1 = superconductor.Lambda(frequencies)
 
@@ -71,7 +71,7 @@ def main(arg):
     plt.plot(gauss)
     plt.show()
     print(np.trapz(gauss))
-    w = np.linspace(-2000,2000,200000)
+    w = np.linspace(-1500,1500,20000)
     #superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1]))
     #suma = integrate.simpson(superconductor.test_gaussian(w,superconductor.pars[:,1],len(superconductor.pars[:,1])), w)
     suma = integrate.simpson(superconductor.test_gaussian(w,superconductor.Omega,len(superconductor.Omega)), w)
