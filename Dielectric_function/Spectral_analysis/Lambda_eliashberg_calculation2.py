@@ -8,8 +8,11 @@ from scipy import integrate
 
 def main(arg):
 
-    out = Eliashberg.read_1_excel_file(filename="HPII_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
+    out = Eliashberg.read_1_excel_file(filename="1DP_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
+    print(out) #test to see the format of out
+    pass #remove later
     qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
+    #qx,qy,Omega,Gamma,Ratio,Omega2,Gamma2,Ratio2,Omega3,Gamma3,Ratio3 = Eliashberg.Excel_data_parser(out)
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
     print("Omega range:",np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),'::',np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))))
