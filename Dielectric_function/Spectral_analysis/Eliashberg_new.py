@@ -1199,7 +1199,17 @@ class Eliashberg2(object):
         self.lambda_q_lista = np.array([])
         for i in range(len(center)):  #summa in q (6x6x6 or q_x*q_y)
             #summa1 += self.Lambda_q(width[i],center[i],self.Nef) #1/N_q Sum_q( Lamb_q )
-            summa1 += self.Lambda_q_new(i)
+            simmetry_factor =  8
+            if self.qx[i] ==  0:
+                simmetry_factor =  4
+                if self.qy[i] ==  0:
+                    simmetry_factor =  1
+            elif self.qy[i] ==  0:
+                simmetry_factor =  4
+            elif self.qx[i] == self.qy[i]:
+                simmetry_factor =  4
+
+            summa1 += self.Lambda_q_new(i)*simmetry_factor
             #self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q(width[i],center[i],self.Nef))
             self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q_new(i))
         Lambda_1=summa1/len(center)
@@ -1266,16 +1276,6 @@ class Eliashberg2(object):
             #omega_q = center
             #Nef = self.Nef
             for i in range(len(center)):
-                # if (self.qx==0):
-                #     simmetry_factor=4
-                #     if (self.qy==0):
-                #         simmetry_factor=1
-                # elif self.qy==0:
-                #     simmetry_factor=4
-                # elif self.qx==self.qy:
-                #     simmetry_factor=4
-                # else:
-                #     simmetry_factor=8
                 simmetry_factor =  8
                 if self.qx[i] ==  0:
                     simmetry_factor =  4
@@ -1285,7 +1285,7 @@ class Eliashberg2(object):
                     simmetry_factor =  4
                 elif self.qx[i] == self.qy[i]:
                     simmetry_factor =  4
-                #print("simmerty[",self.qx[i],"][",self.qy[i],"]=",simmetry_factor)
+
                 summa += (self.Ratio[i]) * self.gaussian(x,self.Omega[i],gauss_width) * simmetry_factor
             return summa/(2*np.pi*self.N_ef*len(self.Omega))
 
