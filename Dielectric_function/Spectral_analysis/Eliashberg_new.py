@@ -1189,7 +1189,6 @@ class Eliashberg2(object):
         """
         center = self.Omega
         width = self.Gamma
-        #print('len(Center)=',len(center),'(=50*50=2500? or =50*51=2550?)')
         #method 1 ----------------------------
         #Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #comment for test and uncomment line under
         #self.Nef = self.N_ef
@@ -1198,7 +1197,6 @@ class Eliashberg2(object):
         summa1 = 0
         self.lambda_q_lista = np.array([])
         for i in range(len(center)):  #summa in q (6x6x6 or q_x*q_y)
-            #summa1 += self.Lambda_q(width[i],center[i],self.Nef) #1/N_q Sum_q( Lamb_q )
             simmetry_factor =  8
             if self.qx[i] ==  0:
                 simmetry_factor =  4
@@ -1220,7 +1218,6 @@ class Eliashberg2(object):
         # else:
         #     Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
         w = Frequencies[Frequencies != 0]
-        # self.w = w
         #w = np.linspace(0.0001,0.9999,20000) #test
         # with mp.Pool() as pool:
         #     res = pool.map(self.a2F_new,w)
@@ -1235,7 +1232,6 @@ class Eliashberg2(object):
         for i in range(1,len(w)): #Frequencies[Frequencies != 0]:
             w_1 = w[:i]
             self.lambda_w_lista.append(2*integrate.simpson(np.divide(self.a2F_new(w_1), w_1),w_1))
-        #print("integral=",lambda_w_lista)
         self.plot_lambda(self.lambda_w_lista)
         return Lambda_1
 
@@ -1251,30 +1247,18 @@ class Eliashberg2(object):
         center = self.Omega[:] #*put units correctly...
         width = self.Gamma[:] #*put units the same as center
         width = np.absolute(width)
-        #nits = create_units('2014')
-        #gauss_width = 50*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         gauss_width = 50000*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
-        # summa = 0
-        # factor1 = 1 / (2*np.pi*self.Nef*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
-        # for i in range(len(center)):
-        #     summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width) #check the units of the gaussian...
-        # return factor1*summa
         if (method == 1):
             #---------method1-------vvvv---
             summa = 0
-            #gamma_q = width
-            #omega_q = center
-            #Nef = self.Nef
             for i in range(len(center)):
-                #summa += self.Lambda_q(self.Gamma[i],self.Omega[i],Nef)*self.Omega[i] * self.gaussian(x,self.Omega[i],gauss_width)
+
                 summa += self.Lambda_q_new(i)*self.Omega[i] * self.gaussian(x,self.Omega[i],gauss_width)
             return summa/(2*len(self.Omega))
         else:
             #---------method2------vvvv-
             summa = 0
-            #gamma_q = width
-            #omega_q = center
-            #Nef = self.Nef
+
             for i in range(len(center)):
                 simmetry_factor =  8
                 if self.qx[i] ==  0:
