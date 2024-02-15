@@ -8,7 +8,7 @@ from scipy import integrate
 
 def main(arg):
 
-    out = Eliashberg.read_1_excel_file(filename="HPI_c")
+    out = Eliashberg.read_1_excel_file(filename="HPII_c")
     qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
@@ -20,7 +20,7 @@ def main(arg):
 
     #np.savetxt('Lambda.txt', (lambda_1))
     print('Lambda_1=',lambda_1,'[Lambda calculated from Lambda_q]?') # Lambda calculated from Lambda_q
-    print('Lambda_1=',lambda_1*2*superconductor.Ne[np.where(superconductor.energy==0.0)[0][0]]) # Lambda calculated from Lambda_q#self.Ne[np.where(self.energy==0.0)[0][0]]
+    #print('Lambda_1=',lambda_1*2*superconductor.Ne[np.where(superconductor.energy==0.0)[0][0]]) # Lambda calculated from Lambda_q#self.Ne[np.where(self.energy==0.0)[0][0]]
     print('Lambda_2=',superconductor.lambda_2,'[Lambda calculated fron Eliashberg function]?') #Lambda calculated fron Eliashberg function
 
     print('Test Gaussian->')
