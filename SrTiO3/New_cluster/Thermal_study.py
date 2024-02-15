@@ -77,6 +77,7 @@ def main(args):
         if calculate_hessian:
             d3 = Thermal.Hessian_calculus(DATA_DIR,N_RANDOM,DYN_PREFIX,FINAL_DYN,SAVE_PREFIX,
                         NQIRR,Tg,T,POPULATION,INCLUDE_V4)
+            np.save("d3_realspace_sym.npy",d3)
         else:
             d3 = np.load("d3_realspace_sym.npy")
         #-----
