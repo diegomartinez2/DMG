@@ -44,7 +44,7 @@ def main(arg):
         #frequencies = np.loadtxt(file2) #no negative values
     #print(pars[:,0])
     #print('Min(pars[0])=',np.amin(pars[:,0]))
-    out = Eliashberg.read_1_excel_file(filename="HPII_c")
+    out = Eliashberg.read_1_excel_file(filename="HPI_c")
     qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
