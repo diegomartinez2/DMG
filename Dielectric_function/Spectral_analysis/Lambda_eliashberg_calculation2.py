@@ -8,16 +8,24 @@ from scipy import integrate
 
 def main(arg):
 
-    out = Eliashberg.read_1_excel_file(filename="1DP_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
-    print(out) #test to see the format of out
-    pass #remove later
+    out = Eliashberg.read_1_excel_file(filename="HPII_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
     #qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     qx=out[:,0]
     qy=out[:,1]
     Omega=out[:,2]
     Gamma=out[:,3]
     Ratio=out[:,4]
-    #qx,qy,Omega,Gamma,Ratio,Omega2,Gamma2,Ratio2,Omega3,Gamma3,Ratio3 = Eliashberg.Excel_data_parser(out)
+    if filename="1DP_c":
+        qx=np.append(qx,out[:,0])
+        qy=np.append(qy,out[:,1])
+        Omega=np.append(Omega,out[:,5])
+        Gamma=np.append(Gamma,out[:,6])
+        Ratio=np.append(Ratio,out[:,7])
+        qx=np.append(qx,out[:,0])
+        qy=np.append(qy,out[:,1])
+        Omaga=np.append(Omega,out[:,8])
+        Gamma=np.append(Gamma,out[:,9])
+        Ratio=np.append(Ratio,out[:,10])
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
     print("Omega range:",np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),'::',np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))))
