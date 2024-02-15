@@ -8,7 +8,7 @@ from scipy import integrate
 
 def main(arg):
 
-    out = Eliashberg.read_1_excel_file(filename="HPII_c")
+    out = Eliashberg.read_1_excel_file(filename="HPII_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
     qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
