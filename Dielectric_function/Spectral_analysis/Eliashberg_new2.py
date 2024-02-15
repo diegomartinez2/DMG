@@ -178,7 +178,6 @@ def plot_all(data,data2,pars,pars2,lambda_w_lista,w,a2F_lista,frequencies):
      #print (self.pars[:,1])
     x_max_range = len(pars[:,1])
     for xi in range(x_max_range):
-    #cax3 = ax1[1].errorbar(x = xi, y = self.pars[xi,1]*5001, yerr=abs(self.pars2[xi,2]), c='k', barsabove=True)
         ax2.scatter(x = x_max_range-xi, y = pars[xi,1]*5001,c='k',marker='x',s=10)
         y_min =(pars[xi,1]-pars[xi,2])*5001
         y_max =(pars[xi,1]+pars[xi,2])*5001
@@ -208,15 +207,6 @@ def plot_all(data,data2,pars,pars2,lambda_w_lista,w,a2F_lista,frequencies):
     #ax1.set_yticklabels(["0","1"])
     #
     ax4 = plt.subplot2grid((2, 3), (0, 2))#,  sharey=ax1)
-    # ax4.plot(lambda_w_lista,w[1:])
-    # ax4.set_title('$\lambda$ vs. $\omega$')
-    # ax4.set_xlabel('$\lambda(\omega)$')
-    # ax4.set_ylabel('$\omega$')
-    # ax5 = plt.subplot2grid((2, 3), (1, 2),  sharex=ax4)#, sharey=ax1)
-    # ax5.plot(a2F_lista,frequencies)
-    # ax5.set_title('a2F vs. $\omega$')
-    # ax5.set_ylabel('$\omega$ (eV)')
-    # ax5.set_xlabel('a2F')
     ax4.plot(w[1:],lambda_w_lista)
     ax4.set_title('$\lambda$ vs. $\omega$')
     ax4.set_ylabel('$\lambda$')
@@ -225,7 +215,6 @@ def plot_all(data,data2,pars,pars2,lambda_w_lista,w,a2F_lista,frequencies):
     ax5.plot(frequencies,a2F_lista)
     ax5.set_title('$\\alpha^2F$ vs. $\omega$')
     ax5.set_xlabel('$\omega$ (eV)')
-    #ax5.set_ylabel('a2F')
     ax5.set_ylabel('$\\alpha^2F$')
     #annotate_axes(fig)
     plt.tight_layout()
@@ -267,11 +256,9 @@ class Plasmon_analysis(object):
         print (len(np. unique(q_x))) #np. unique(my_array, return_counts=True)
         print (len(np. unique(q_y)))
         print (len(np. unique(w)))
-        #self.data = np.resize(epsilon,(51,51,5001))
         self.data = np.resize(epsilon,(len(np. unique(q_x)),
                                         len(np. unique(q_y)),
                                         len(np. unique(w))))
-        #plot.contour(data[i])
         """
         direccion q_y -> data[i]
         direccion q_x=q_y=i -> data = data[i][i] for i in {0..51}
@@ -287,8 +274,6 @@ class Plasmon_analysis(object):
 
         print ("*************")
         print (data.shape)
-        # print (np.diagonal(self.data,axis1=0, axis2=1).T)
-        # print (np.diagonal(self.data,axis1=0, axis2=1).shape)
         print ("--------------")
 
         print (np.shape(self.data[int(index)]),"=(51,5001)?")
@@ -363,12 +348,8 @@ class Plasmon_analysis(object):
             vmin = 0.0 , vmax = 0.12,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
-        #cax2.tick_params(direction='in', length=6, width=2, colors='k', right=True, labelright='on')
-        #ax1[1].set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
-        #print (self.pars[:,1])
         x_max_range = len(self.pars[:,1])
         for xi in range(x_max_range):
-            #cax3 = ax1[1].errorbar(x = xi, y = self.pars[xi,1]*5001, yerr=abs(self.pars2[xi,2]), c='k', barsabove=True)
             cax3 = ax1[1].scatter(x = x_max_range-xi, y = self.pars[xi,1]*5001,c='k',marker='x',s=10)
             y_min =(self.pars[xi,1]-self.pars[xi,2])*5001
             y_max =(self.pars[xi,1]+self.pars[xi,2])*5001
@@ -380,13 +361,10 @@ class Plasmon_analysis(object):
             y_max =(self.pars2[xi,1]+self.pars2[xi,2])*5001
             cax3 = ax1[1].scatter(x = x_max_range+xi, y = y_min,c='k',marker='1',s=10)
             cax3 = ax1[1].scatter(x = x_max_range+xi, y = y_max,c='k',marker='2',s=10)
-            #cax3 = ax1[1].axvline(x = xi, ymin = (self.pars[xi,1]-self.pars[xi,2])*5001, ymax = (self.pars[xi,1]+self.pars[xi,2])*5001, linewidth=0.3, color=(0, 0, 0, 0.75))
-            #cax3 = ax1[1].axvline(x = xi, ymin = y_min, ymax = y_max, color = "red")
         cax3 = ax1[1].axvline(x = len(self.pars[:,1]), linestyle = "--", color = "red")
 
         cbar = fig.colorbar(cax)
         cbar2 = fig.colorbar(cax2)
-        #fig.suptitle('$-Im(\epsilon^{-1}(q,\omega))$')
         ax1[0].set_title('Original data')
         ax1[0].set_ylabel('$\omega$ (eV)')
         ax1[1].set_ylabel('$\omega$ (eV)')
@@ -411,8 +389,6 @@ class Plasmon_analysis(object):
         def _1Lorentzian(x, amp1, cen1, wid1):
             return amp1*wid1**2/((x-cen1)**2+wid1**2)
         peaks, _ = find_peaks(Spec,width=5,rel_height=0.3)
-        #print (peaks,Frequency[peaks])
-        #print (peaks,_["widths"])
         amp = 0.009
         cen = 0.009
         wid = 0.001
@@ -430,7 +406,6 @@ class Plasmon_analysis(object):
         else:
             lorentz_peak = _1Lorentzian(Frequency, *pars)
     #-------------------END_BIG-------------------------------------------------
-        #lorentz_peak = _1Lorentzian(Frequency, *pars)
         print ("-------------Peak ",index,"-------------")
         print ("amplitude = %0.2f (+/-) %0.2f" % (pars[0], perr_lorentz[0]))
         print ("center = %0.2f (+/-) %0.2f" % (pars[1], perr_lorentz[1]))
@@ -438,20 +413,8 @@ class Plasmon_analysis(object):
         print ("area = %0.2f" % np.trapz(lorentz_peak))
         print ("--------------------------------")
 
-        # plt.plot(Frequency, Spec, label="original")
-        # plt.plot(Frequency, lorentz_peak, "r",ls=':', label="ajuste")
-        # #plt.plot(Frequency[peaks], Spec[peaks], "xr", label="peaks")
-        # #plt.plot(Frequency[peaks], Spec[peaks], "1k", label="center")
-        # plt.legend()
-        # plt.xlim([0, Frequency.max()])
-        # plt.ylim([0, Spec.max()])
-        # plt.tight_layout()
-        # plt.savefig("Ajuste_{}_{}".format(self.namefile,index))
-        # plt.show()
         self.pars[index] = pars
         self.perr_lorentz[index] = perr_lorentz
-        #np.savetxt(f, (pars[0], perr_lorentz[0],pars[1], perr_lorentz[1],pars[2], perr_lorentz[2]) , fmt='%1.3f', newline=", ")
-        #f.write("\n")
         return lorentz_peak
 
     def fitting_Lorentz(self,frequencies,data,size,big=False):
@@ -492,8 +455,6 @@ class Plasmon_analysis(object):
         def _1Lorentzian(x, amp1, cen1, wid1):
             return amp1*wid1**2/((x-cen1)**2+wid1**2)
         peaks, _ = find_peaks(Spec,width=5,rel_height=0.3)
-        #print (peaks,Frequency[peaks])
-        #print (peaks,_["widths"])
         amp = 0.009
         cen = 0.009
         wid = 0.001
@@ -511,7 +472,6 @@ class Plasmon_analysis(object):
         else:
             lorentz_peak = _1Lorentzian(Frequency, *pars)
     #-------------------END_BIG-------------------------------------------------
-        #lorentz_peak = _1Lorentzian(Frequency, *pars)
         print ("-------------Peak ",index,"-------------")
         print ("amplitude = %0.2f (+/-) %0.2f" % (pars[0], perr_lorentz[0]))
         print ("center = %0.2f (+/-) %0.2f" % (pars[1], perr_lorentz[1]))
@@ -519,20 +479,9 @@ class Plasmon_analysis(object):
         print ("area = %0.2f" % np.trapz(lorentz_peak))
         print ("--------------------------------")
 
-        # plt.plot(Frequency, Spec, label="original")
-        # plt.plot(Frequency, lorentz_peak, "r",ls=':', label="ajuste")
-        # #plt.plot(Frequency[peaks], Spec[peaks], "xr", label="peaks")
-        # #plt.plot(Frequency[peaks], Spec[peaks], "1k", label="center")
-        # plt.legend()
-        # plt.xlim([0, Frequency.max()])
-        # plt.ylim([0, Spec.max()])
-        # plt.tight_layout()
-        # plt.savefig("Ajuste_{}_{}".format(self.namefile,index))
-        # plt.show()
         self.pars2[index] = pars
         self.perr_lorentz2[index] = perr_lorentz
-        #np.savetxt(f, (pars[0], perr_lorentz[0],pars[1], perr_lorentz[1],pars[2], perr_lorentz[2]) , fmt='%1.3f', newline=", ")
-        #f.write("\n")
+
         return lorentz_peak
 
 
