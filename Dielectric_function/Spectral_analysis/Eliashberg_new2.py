@@ -104,31 +104,12 @@ def Excel_data_parser(data):
     Omega=np.zeros(len(data))
     Gamma=np.zeros(len(data))
     Ratio=np.zeros(len(data))
-    # for i in range(len(data)-1):
-        #for item in data:
-            # qx[i]=item[i][0]
-            # qy[i]=item[i][1]
-            # Omega[i]=item[i][2]
-            # Gamma[i]=item[i][3]
-            # Ratio[i]=item[i][4]
     for i in range(len(data)):
             qx[i]=data[i][0]
             qy[i]=data[i][1]
             Omega[i]=data[i][2]
             Gamma[i]=data[i][3]
             Ratio[i]=data[i][4]
-            # if filename=="1DP_c":
-            #     try:
-            #         Omega2[i]=data[i][5]
-            #         Gamma2[i]=data[i][6]
-            #         Ratio2[i]=data[i][7]
-            #     try:
-            #         Omega3[i]=data[i][8]
-            #         Gamma3[i]=data[i][9]
-            #         Ratio3[i]=data[i][10]
-    # if filename=="1DP_c":
-    #     return qx,qy,Omega,Gamma,Ratio,Omega2,Gamma2,Ratio2,Omega3,Gamma3,Ratio3
-    # else:
     return qx,qy,Omega,Gamma,Ratio
     pass
 
