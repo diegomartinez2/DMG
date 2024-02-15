@@ -1266,7 +1266,27 @@ class Eliashberg2(object):
             #omega_q = center
             #Nef = self.Nef
             for i in range(len(center)):
-                summa += (self.Ratio[i]) * self.gaussian(x,self.Omega[i],gauss_width)
+                # if (self.qx==0):
+                #     simmetry_factor=4
+                #     if (self.qy==0):
+                #         simmetry_factor=1
+                # elif self.qy==0:
+                #     simmetry_factor=4
+                # elif self.qx==self.qy:
+                #     simmetry_factor=4
+                # else:
+                #     simmetry_factor=8
+                simmetry_factor =  8
+                if self.qx[i] ==  0:
+                    simmetry_factor =  4
+                    if self.qy[i] ==  0:
+                        simmetry_factor =  1
+                elif self.qy[i] ==  0:
+                    simmetry_factor =  4
+                elif self.qx[i] == self.qy[i]:
+                    simmetry_factor =  4
+                #print("simmerty[",self.qx[i],"][",self.qy[i],"]=",simmetry_factor)
+                summa += (self.Ratio[i]) * self.gaussian(x,self.Omega[i],gauss_width) * simmetry_factor
             return summa/(2*np.pi*self.N_ef*len(self.Omega))
 
     def T_c(self,mu_par):
