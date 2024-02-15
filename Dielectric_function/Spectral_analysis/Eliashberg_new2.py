@@ -117,7 +117,19 @@ def Excel_data_parser(data):
             Omega[i]=data[i][2]
             Gamma[i]=data[i][3]
             Ratio[i]=data[i][4]
-    return qx,qy,Omega,Gamma,Ratio
+            if filename=="1DP_c":
+                try:
+                    Omega2[i]=data[i][5]
+                    Gamma2[i]=data[i][6]
+                    Ratio2[i]=data[i][7]
+                try:
+                    Omega3[i]=data[i][8]
+                    Gamma3[i]=data[i][9]
+                    Ratio3[i]=data[i][10]
+    if filename=="1DP_c":
+        return qx,qy,Omega,Gamma,Ratio,Omega2,Gamma2,Ratio2,Omega3,Gamma3,Ratio3
+    else:
+        return qx,qy,Omega,Gamma,Ratio
     pass
 
     #Python program to reverse an array
