@@ -779,13 +779,15 @@ class Eliashberg2(object):
             # mask = func_w <=0
             # if len(func_w[mask])>0:
             #     print("func_w error")
-            if len(func_w)!=len(w_1):
-                print("error:",len(func_w),"::",len(w_1))
+            # if len(func_w)!=len(w_1):
+            #     print("error:",len(func_w),"::",len(w_1))
             partial_value=2*integrate.simpson(func_w,w_1)
             #print("Lambda[",i,"]=",partial_value)
             #self.lambda_w_lista.append(partial_value) #test to see the evolution of Lambda
             self.lambda_w_lista[i] = partial_value #test to see the evolution of Lambda
         #self.plot_lambda(self.lambda_w_lista,self.w_0[1:])
+        diff_lambda_w = np.diff(self.lambda_w_lista)
+        print("always growing?=",np.all(diff_lambda_w > 0)) # this test fails!!!
         self.plot_lambda(self.lambda_w_lista,self.w_0)
         #---------end of removing negatives test-----
         # for i in range(1,len(w)): #Frequencies[Frequencies != 0]:
