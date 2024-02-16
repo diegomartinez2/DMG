@@ -586,6 +586,45 @@ class Eliashberg2(object):
                 summa += (width/center) * self.gaussian(x,center[i],gauss_width)
             return factor2*summa
 
+    def a2F_new(self,x,method = 0):
+        """
+        Calculates the Eliashberg spectral functions
+        ---input---
+        x: coordiate to calculate the Eliashberg function.
+        method: Method to use in the calculation.
+        ---output---
+        a2F = factor1*summa: The Eliashberg function at "x"
+        """
+
+        center = self.Omega[:] #*put units correctly...
+        width = self.Gamma[:] #*put units the same as center
+        width = np.absolute(width)
+        gauss_width = 100000*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
+        if (method == 1):
+            #---------method1-------vvvv---
+            summa = 0
+            for i in range(len(self.qx)):
+
+                summa += self.Lambda_q_new(i)*self.Omega[i] * self.gaussian(x,self.Omega[i],gauss_width)
+            return summa/(2*len(self.Omega))
+        else:
+            #---------method2------vvvv-
+            summa = 0
+
+            for i in range(len(self.qx)):
+                simmetry_factor =  8
+                if self.qx[i] ==  0:
+                    simmetry_factor =  4
+                    if self.qy[i] ==  0:
+                        simmetry_factor =  1
+                elif self.qy[i] ==  0:
+                    simmetry_factor =  4
+                elif self.qx[i] == self.qy[i]:
+                    simmetry_factor =  4
+
+                summa += (self.Ratio[i]) * self.gaussian(x,self.Omega[i],gauss_width) * simmetry_factor
+            return summa/(2*np.pi*self.N_ef*len(self.Omega))
+
     def gaussian(self,x, center,gauss_width):
         """
         Gaussian distribution
@@ -718,44 +757,6 @@ class Eliashberg2(object):
         self.plot_lambda(self.lambda_w_lista)
         return Lambda_1
 
-    def a2F_new(self,x,method = 0):
-        """
-        Calculates the Eliashberg spectral functions
-        ---input---
-        x: coordiate to calculate the Eliashberg function.
-        method: Method to use in the calculation.
-        ---output---
-        a2F = factor1*summa: The Eliashberg function at "x"
-        """
-
-        center = self.Omega[:] #*put units correctly...
-        width = self.Gamma[:] #*put units the same as center
-        width = np.absolute(width)
-        gauss_width = 100000*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
-        if (method == 1):
-            #---------method1-------vvvv---
-            summa = 0
-            for i in range(len(center)):
-
-                summa += self.Lambda_q_new(i)*self.Omega[i] * self.gaussian(x,self.Omega[i],gauss_width)
-            return summa/(2*len(self.Omega))
-        else:
-            #---------method2------vvvv-
-            summa = 0
-
-            for i in range(len(center)):
-                simmetry_factor =  8
-                if self.qx[i] ==  0:
-                    simmetry_factor =  4
-                    if self.qy[i] ==  0:
-                        simmetry_factor =  1
-                elif self.qy[i] ==  0:
-                    simmetry_factor =  4
-                elif self.qx[i] == self.qy[i]:
-                    simmetry_factor =  4
-
-                summa += (self.Ratio[i]) * self.gaussian(x,self.Omega[i],gauss_width) * simmetry_factor
-            return summa/(2*np.pi*self.N_ef*len(self.Omega))
 
     def T_c(self,mu_par):
         """
