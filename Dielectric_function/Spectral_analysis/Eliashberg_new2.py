@@ -671,11 +671,11 @@ class Eliashberg2(object):
         return test_dos
 
 
-    def plot_lambda(self,x):
+    def plot_lambda(self,x,w):
         plt.figure(figsize=(10,6))
         #plt.figure().set_figwidth(15)
         #plt.figure().set_figheight(2)
-        plt.plot(x)
+        plt.plot(x,w)
         plt.show()
         pass
 
@@ -719,7 +719,7 @@ class Eliashberg2(object):
 #---test--^--multiprocessing*****
         #self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies)) <-- this makes lambda1 20 times bigger than lambda2 (???)
         self.lambda_2 = 2*np.trapz(a2F_x) #test <-- this lambda2 is 250 times lambda1 (that corresponds to q_x*q_y ???)
-        self.plot_lambda(a2F_x)
+        self.plot_lambda(a2F_x,w)
         return Lambda_1
 
     def Lambda_new(self,Frequencies):
@@ -758,13 +758,13 @@ class Eliashberg2(object):
         #self.lambda_2_test2 = 2*integrate.simpson(np.divide(res,w)*self.from_cm1_to_Hartree /29.9792458,w)
         self.lambda_2 = 2*integrate.simpson(a2F_x,w)
         print("plot a2F(w)")
-        self.plot_lambda(res)
+        self.plot_lambda(res,w)
         print("plot Lambda(w)")
         self.lambda_w_lista = []
         for i in range(1,len(w)): #Frequencies[Frequencies != 0]:
             w_1 = w[:i]
             self.lambda_w_lista.append(2*integrate.simpson(np.divide(self.a2F_new(w_1), w_1),w_1))
-        self.plot_lambda(self.lambda_w_lista)
+        self.plot_lambda(self.lambda_w_lista,w[1:])
         return Lambda_1
 
 

@@ -59,6 +59,40 @@ def main(arg):
     #c=np.tile(a,50)
     #print('len=',len(b),'=',len(c))
     np.savetxt('salida.txt',np.c_[superconductor.qx,superconductor.qy,np.full(len(superconductor.Omega), superconductor.N_ef),superconductor.Omega,superconductor.Gamma,superconductor.lambda_q_lista],header='#---q_x---q_y---N_ef[States/Spin/eV/Unit Cell]---Omega[eV]---Gamma[eV]---Lambda_q')
+#-----plot-start
+    fig_lambda_q = plt.figure(figsize=(10,6))
+    ax = fig_lambda_q.add_subplot(1, 1, 1)
+    ax.plot(superconductor.lambda_w_lista,frequencies[1:])
+    ax.set_title('$\lambda$ vs. $\omega$')
+    ax.set_xlabel('$\lambda(\omega)$')
+    ax.set_ylabel('$\omega$')
+    #ax.set_xticks([0,len(superconductor.w)])
+    #ax.set_yticks([0,5001])
+    #ax.set_xticklabels(["0","$\pi$"])
+    #ax.set_xticklabels([superconductor.w[0],superconductor.w[-1]])
+    #ax.set_yticklabels(["0","1"])
+    plt.tight_layout()
+    plt.show()
+    fig_lambda_q.savefig("Ajuste_d_{}".format("lambda_w"))
+    a2F_lista = []
+    #print("frequencies=",frequencies)
+    #for w in frequencies:
+    #    a2F_lista.append(superconductor.a2F_new(w))
+    a2F_lista = superconductor.a2F_new(frequencies)
+
+    #print ("a2F(w)=",a2F_lista)
+    fig_a2F = plt.figure(figsize=(10,6))
+    ax = fig_a2F.add_subplot(1, 1, 1)
+    ax.plot(a2F_lista,frequencies)
+    ax.set_title('a2F vs. $\omega$')
+    ax.set_ylabel('$\omega$ (eV)')
+    ax.set_xlabel('a2F')
+
+    plt.plot ()
+    plt.tight_layout()
+    plt.show()
+    fig_a2F.savefig("Ajuste_d_{}".format("a2F"))
+#---plot-end
     pass
 
 if __name__ == '__main__':
