@@ -15,7 +15,7 @@ def main(arg):
     Omega=out[:,2]
     Gamma=out[:,3]
     Ratio=out[:,4]
-    if filename="1DP_c":
+    if False: #make true for "1DP" or "1DP_c"
         qx=np.append(qx,out[:,0])
         qy=np.append(qy,out[:,1])
         Omega=np.append(Omega,out[:,5])
