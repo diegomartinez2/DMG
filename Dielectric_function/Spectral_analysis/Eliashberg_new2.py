@@ -555,7 +555,7 @@ class Eliashberg2(object):
             #print("OK_self.Gamma[",i,"]=",self.Gamma[i])
             Lamb_q=(1/(np.pi*self.N_ef)) * (self.Ratio[i]**2)/(self.Gamma[i]) #fix from omega to omega²
         else:
-            #print("self.Gamma[",i,"]=",self.Gamma[i])
+            print("self.Gamma[",i,"]=",self.Gamma[i])
             Lamb_q=0
         return Lamb_q
 
@@ -567,16 +567,24 @@ class Eliashberg2(object):
         ---output---
         a2F = factor1*summa: The Eliashberg function at "x"
         """
-
+        method=1
         center = self.Omega
         width = self.Gamma
         width = np.absolute(width)
         gauss_width = 0.004 #from 0.01 [0.1,0.05,0.01,0.005,0.001,0.0005,0.0001] 0.004 is the best option for the test
         summa = 0
-        factor1 = 1 / (2*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
-        for i in range(len(center)):
-            summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width)
-        return factor1*summa
+        #---------method1---------------
+        if method=1:
+            factor1 = 1 / (2*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
+            for i in range(len(center)):
+                summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width)
+            return factor1*summa
+        #--------method2------------------
+        if method=2:
+            factor2 = 1 / (2*np.pi*self.N_ef*len(center)) #a2F(w)=1/2piN(EF)N Sum{(Gamma/Omega)*delta(w-Omega)}
+            for i in range(len(center)):
+                summa += (width/center) * self.gaussian(x,center[i],gauss_width)
+            return factor2*summa
 
     def gaussian(self,x, center,gauss_width):
         """
@@ -687,7 +695,7 @@ class Eliashberg2(object):
             elif self.qx[i] == self.qy[i]:
                 simmetry_factor =  4
 
-            summa1 += self.Lambda_q_new(i)*simmetry_factor
+            summa1 += self.Lambda_q_new(i)*simmetry_factor/len(self.qx) #test adding 1/N
             self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q_new(i))
         Lambda_1=summa1/len(center)
         #method 2 -------------------------------
