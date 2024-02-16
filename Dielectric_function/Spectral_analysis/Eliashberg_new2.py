@@ -551,11 +551,13 @@ class Eliashberg2(object):
         ---output---
         Lamb_q: Lambda(q)
         """
-        if (self.Gamma[i]!=0):
+        if (self.Omega[i]!=0):
             #print("OK_self.Gamma[",i,"]=",self.Gamma[i])
-            Lamb_q=(1/(np.pi*self.N_ef)) * (self.Ratio[i]**2)/(self.Gamma[i]) #fix from omega to omega²
+            Lamb_q=(1/(np.pi*self.N_ef)) * (self.Ratio[i])/(self.Omega[i]) #fix from omega to omega²
         else:
-            print("self.Gamma[",i,"]=",self.Gamma[i])
+            print(self.Omega)
+            print("self.Gamma[",i,"]=",self.Omega[i])
+            exit()
             Lamb_q=0
         return Lamb_q
 
