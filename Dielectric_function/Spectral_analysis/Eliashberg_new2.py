@@ -744,7 +744,7 @@ class Eliashberg2(object):
             elif self.qx[i] == self.qy[i]:
                 simmetry_factor =  4
 
-            summa1 += self.Lambda_q_new(i)*simmetry_factor/len(self.qx) #test adding 1/N
+            summa1 += self.Lambda_q_new(i)*simmetry_factor
             self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q_new(i))
         Lambda_1=summa1/len(center)
         #method 2 -------------------------------
