@@ -768,11 +768,16 @@ class Eliashberg2(object):
         self.w_0 = w[mask]
         self.lambda_w_lista = np.zeros(len(self.w_0))
         #print("a2F(",i,")/w=",np.divide(self.a2F_new(self.w_0), self.w_0)) #test
+        partial_value=0
         for i in range(1,len(self.w_0)): #Frequencies[Frequencies != 0]:
             #print("a2F(",i,")=",self.a2F_new(w[i])) #test = all this is > 0
             #print("a2F(",i,")/w=",np.divide(self.a2F_new(self.w_0[i]), self.w_0[i])) #test = all this is > 0
             w_1 = self.w_0[:i]
+            partial_value_old=partial_value
             partial_value=2*integrate.simpson(np.divide(self.a2F_new(w_1), w_1),w_1)
+            if partial_value<partial_value_old: #test
+                print("integral reduces at[",i,"]")
+                continue
             #print("Lambda[",i,"]=",partial_value)
             #self.lambda_w_lista.append(partial_value) #test to see the evolution of Lambda
             self.lambda_w_lista[i] = partial_value #test to see the evolution of Lambda
