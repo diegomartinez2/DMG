@@ -62,7 +62,8 @@ def main(arg):
 #-----plot-start
     fig_lambda_q = plt.figure(figsize=(10,6))
     ax = fig_lambda_q.add_subplot(1, 1, 1)
-    ax.plot(superconductor.lambda_w_lista,frequencies[1:])
+    #ax.plot(superconductor.lambda_w_lista,frequencies[1:])
+    ax.plot(superconductor.lambda_w_lista,superconductor.w_0[1:])
     ax.set_title('$\lambda$ vs. $\omega$')
     ax.set_xlabel('$\lambda(\omega)$')
     ax.set_ylabel('$\omega$')

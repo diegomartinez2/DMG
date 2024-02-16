@@ -763,10 +763,28 @@ class Eliashberg2(object):
         self.plot_lambda(res,w)
         print("plot Lambda(w)")
         self.lambda_w_lista = []
-        for i in range(1,len(w)): #Frequencies[Frequencies != 0]:
-            w_1 = w[:i]
-            self.lambda_w_lista.append(2*integrate.simpson(np.divide(self.a2F_new(w_1), w_1),w_1))
-        self.plot_lambda(self.lambda_w_lista,w[1:])
+        #-------removin negatives w's---
+        mask = w >=  0
+        self.w_0 = w[mask]
+        for i in range(1,len(self.w_0)): #Frequencies[Frequencies != 0]:
+            #print("a2F(",i,")=",self.a2F_new(w[i])) #test = all this is > 0
+            if self.w_0[i]<0:
+                print("a2F(",i,")/w=",np.divide(self.a2F_new(w_0[i]), w_0[i])) #test
+            w_1 = self.w_0[:i]
+            partial_value=2*integrate.simpson(np.divide(self.a2F_new(w_1), w_1),w_1)
+            #print("Lambda[",i,"]=",partial_value)
+            self.lambda_w_lista.append(partial_value) #test to see the evolution of Lambda
+        self.plot_lambda(self.lambda_w_lista,self.w_0[1:])
+        #---------end of removing negatives test-----
+        # for i in range(1,len(w)): #Frequencies[Frequencies != 0]:
+        #     #print("a2F(",i,")=",self.a2F_new(w[i])) #test = all this is > 0
+        #     if w[i]>0:
+        #         print("a2F(",i,")/w=",np.divide(self.a2F_new(w[i]), w[i])) #test
+        #     w_1 = w[:i]
+        #     partial_value=2*integrate.simpson(np.divide(self.a2F_new(w_1), w_1),w_1)
+        #     #print("Lambda[",i,"]=",partial_value)
+        #     self.lambda_w_lista.append(partial_value) #test to see the evolution of Lambda
+        # self.plot_lambda(self.lambda_w_lista,w[1:])
         return Lambda_1
 
 
