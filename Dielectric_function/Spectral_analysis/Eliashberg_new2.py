@@ -554,6 +554,8 @@ class Eliashberg2(object):
         if (self.Omega[i]!=0):
             #print("OK_self.Gamma[",i,"]=",self.Gamma[i])
             Lamb_q=(1/(np.pi*self.N_ef)) * (self.Ratio[i])/(self.Omega[i]) #fix from omega to omega²
+            # if Lamb_q<0:
+            #     print("Lambda_q negativo??;",Lamb_q)
         else:
             print(self.Omega)
             print("self.Gamma[",i,"]=",self.Omega[i])
@@ -601,7 +603,7 @@ class Eliashberg2(object):
         center = self.Omega[:] #*put units correctly...
         width = self.Gamma[:] #*put units the same as center
         width = np.absolute(width)
-        gauss_width = 100000*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
+        gauss_width = 50000*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         if (method == 1):
             #---------method1-------vvvv---
             summa = 0
@@ -738,7 +740,7 @@ class Eliashberg2(object):
             if self.qx[i] ==  0:
                 simmetry_factor =  4
                 if self.qy[i] ==  0:
-                    simmetry_factor =  1
+                    simmetry_factor =  0 #1 #test taking out the qx=qy=0
             elif self.qy[i] ==  0:
                 simmetry_factor =  4
             elif self.qx[i] == self.qy[i]:

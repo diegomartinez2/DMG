@@ -85,7 +85,7 @@ def main(arg):
     ax = fig_a2F.add_subplot(1, 1, 1)
     ax.plot(a2F_lista,frequencies)
     ax.set_title('a2F vs. $\omega$')
-    ax.set_ylabel('$\omega$ (eV)')
+    ax.set_ylabel('$\omega$ (meV)')
     ax.set_xlabel('a2F')
 
     plt.plot ()
