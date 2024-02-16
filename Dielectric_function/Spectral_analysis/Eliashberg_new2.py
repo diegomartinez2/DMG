@@ -604,7 +604,15 @@ class Eliashberg2(object):
             #---------method1-------vvvv---
             summa = 0
             for i in range(len(self.qx)):
-
+                simmetry_factor =  8
+                if self.qx[i] ==  0:
+                    simmetry_factor =  4
+                    if self.qy[i] ==  0:
+                        simmetry_factor =  1
+                elif self.qy[i] ==  0:
+                    simmetry_factor =  4
+                elif self.qx[i] == self.qy[i]:
+                    simmetry_factor =  4
                 summa += self.Lambda_q_new(i)*self.Omega[i] * self.gaussian(x,self.Omega[i],gauss_width)
             return summa/(2*len(self.Omega))
         else:
