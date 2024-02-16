@@ -8,7 +8,7 @@ from scipy import integrate
 
 def main(arg):
 
-    out = Eliashberg.read_1_excel_file(filename="HPII_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
+    out = Eliashberg.read_1_excel_file(filename="HPI_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
     #qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     qx=out[:,0]
     qy=out[:,1]
@@ -63,7 +63,8 @@ def main(arg):
     fig_lambda_q = plt.figure(figsize=(10,6))
     ax = fig_lambda_q.add_subplot(1, 1, 1)
     #ax.plot(superconductor.lambda_w_lista,frequencies[1:])
-    ax.plot(superconductor.lambda_w_lista,superconductor.w_0[1:])
+    #ax.plot(superconductor.lambda_w_lista,superconductor.w_0[1:])
+    ax.plot(superconductor.lambda_w_lista,superconductor.w_0)
     ax.set_title('$\lambda$ vs. $\omega$')
     ax.set_xlabel('$\lambda(\omega)$')
     ax.set_ylabel('$\omega$')
