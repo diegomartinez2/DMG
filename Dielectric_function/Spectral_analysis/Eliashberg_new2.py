@@ -770,13 +770,13 @@ class Eliashberg2(object):
         self.lambda_w_lista = np.zeros(len(self.w_0))
         #print("a2F(",i,")/w=",np.divide(self.a2F_new(self.w_0), self.w_0)) #test
         diff_w_0 = np.diff(self.w_0)
-        print("w_0 always growing?=",np.all(diff_w_0 > 0)) # this test
+        print("w_0 always growing?=",np.all(diff_w_0 > 0)) # this test is OK
         for i in range(1,len(self.w_0)): #Frequencies[Frequencies != 0]:
             #print("a2F(",i,")=",self.a2F_new(w[i])) #test = all this is > 0
             #print("a2F(",i,")/w=",np.divide(self.a2F_new(self.w_0[i]), self.w_0[i])) #test = all this is > 0
             w_1 = self.w_0[:i]
             #func_w = np.divide(self.a2F_new(w_1), w_1)
-            func_w = self.a2F_new(w_1)/w_1
+            func_w = np.absolute(self.a2F_new(w_1)/w_1)
             # mask = w_1 <= 0
             # if len(w_1[mask])>0:
             #     print("w_1 error")
