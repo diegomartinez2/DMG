@@ -564,6 +564,7 @@ class Eliashberg2(object):
             #exit()
             Lamb_q=0
             self.indice_zeros += 1
+            print("Indice_zeros=",self.indice_zeros)
         return Lamb_q
 
     def a2F(self,x):
