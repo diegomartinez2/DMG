@@ -521,7 +521,7 @@ class Eliashberg2(object):
         numero_de_elementos2 = integrate.simpson(self.Ne[:(np.where(self.energy==0.0)[0][0])],dx = np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
         total_states = np.trapz(self.Ne,dx=np.absolute(self.energy[0]-self.energy[-1])/len(self.energy))
         print("Número de elementos:",numero_de_elementos,"|total=",total_states)
-        #print("Número de elementos2:",numero_de_elementos2,"|total=",total_states)
+        print("Número de elementos2:",numero_de_elementos2,"|total=",total_states)
         print("N(eF)=",self.Ne[(np.where(self.energy==0.0)[0][0])]) #states/spin/eV/unit cell
 
         #------^--------
@@ -758,7 +758,8 @@ class Eliashberg2(object):
         res = self.a2F_new(w)
         a2F_x = np.divide(res, w)
         #self.lambda_2_test2 = 2*integrate.simpson(np.divide(res,w)*self.from_cm1_to_Hartree /29.9792458,w)
-        self.lambda_2 = 2*integrate.simpson(a2F_x,w)
+        #self.lambda_2 = 2*integrate.simpson(a2F_x,w)
+        self.lambda_2 = 2*np.trapz(a2F_x, w)
         print("plot a2F(w)")
         self.plot_lambda(res,w)
         print("plot Lambda(w)")
@@ -781,13 +782,14 @@ class Eliashberg2(object):
             #     print("func_w error")
             # if len(func_w)!=len(w_1):
             #     print("error:",len(func_w),"::",len(w_1))
-            partial_value=2*integrate.simpson(func_w,w_1)
+            #partial_value=2*integrate.simpson(func_w,w_1)
+            partial_value = 2* np.trapz(func_w,w_1)
             #print("Lambda[",i,"]=",partial_value)
             #self.lambda_w_lista.append(partial_value) #test to see the evolution of Lambda
             self.lambda_w_lista[i] = partial_value #test to see the evolution of Lambda
         #self.plot_lambda(self.lambda_w_lista,self.w_0[1:])
         diff_lambda_w = np.diff(self.lambda_w_lista)
-        print("always growing?=",np.all(diff_lambda_w > 0)) # this test fails!!!
+        print("lambda(w) always growing?=",np.all(diff_lambda_w > 0)) # this test fails!!!
         self.plot_lambda(self.lambda_w_lista,self.w_0)
         #---------end of removing negatives test-----
         # for i in range(1,len(w)): #Frequencies[Frequencies != 0]:
@@ -825,8 +827,10 @@ class Eliashberg2(object):
         eV_to_K=11604
         #eV_to_K = 11604.5250061657
         w = self.w#*eV_to_K
-        w_log = np.exp(2.0/self.lambda_2*integrate.simpson(
+        w_log = np.exp(2.0/self.lambda_2*
+            #integrate.simpson(
             #(np.divide(self.a2F_new(self.w), self.w)*np.log(self.w)),self.w))
+            np.trapz(
             (np.divide(self.a2F_new(w), w)*np.log(w)),w))
         return w_log
 
@@ -841,7 +845,9 @@ class Eliashberg2(object):
         # self.plot_lambda(self.a2F_new(w)*w)
         # print ("**********************************************************")
 
-        w_2 = np.sqrt(2.0/self.lambda_2*integrate.simpson(
+        w_2 = np.sqrt(2.0/self.lambda_2*
+            #integrate.simpson(
+            np.trapz(
             (self.a2F_new(w)*w),w))
             #np.prod([self.a2F_new(w),w]),w))
         return w_2
