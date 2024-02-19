@@ -582,13 +582,13 @@ class Eliashberg2(object):
         summa = 0
         #---------method1---------------
         if (method==1):
-            factor1 = 1 / (2*len(center)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
+            factor1 = 1 / (2*(len(center)-self.indice_zeros)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
             for i in range(len(center)):
                 summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width)
             return factor1*summa
         #--------method2------------------
         else:
-            factor2 = 1 / (2*np.pi*self.N_ef*len(center)) #a2F(w)=1/2piN(EF)N Sum{(Gamma/Omega)*delta(w-Omega)}
+            factor2 = 1 / (2*np.pi*self.N_ef*(len(center-self.indice_zeros))) #a2F(w)=1/2piN(EF)N Sum{(Gamma/Omega)*delta(w-Omega)}
             for i in range(len(center)):
                 summa += (width/center) * self.gaussian(x,center[i],gauss_width)
             return factor2*summa
@@ -621,7 +621,7 @@ class Eliashberg2(object):
                 elif self.qx[i] == self.qy[i]:
                     simmetry_factor =  4
                 summa += self.Lambda_q_new(i)*self.Omega[i] * self.gaussian(x,self.Omega[i],gauss_width)
-            return summa/(2*len(self.Omega))
+            return summa/(2*(len(self.Omega)-self.indice_zeros))
         else:
             #---------method2------vvvv-
             summa = 0
@@ -638,7 +638,7 @@ class Eliashberg2(object):
                     simmetry_factor =  4
 
                 summa += (self.Ratio[i]) * self.gaussian(x,self.Omega[i],gauss_width) * simmetry_factor
-            return summa/(2*np.pi*self.N_ef*len(self.Omega))
+            return summa/(2*np.pi*self.N_ef*(len(self.Omega)-self.indice_zeros))
 
     def gaussian(self,x, center,gauss_width):
         """
@@ -691,7 +691,7 @@ class Eliashberg2(object):
         """
         center = self.Omega
         width = self.Gamma
-        print('len(Center)=',len(center))
+        print('len(Center)-indice_zeros=',len(center)-self.indice_zeros)
         #Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
         Nef = self.N_ef
         center = np.absolute(center) #test to force the abs
@@ -699,7 +699,7 @@ class Eliashberg2(object):
         summa1 = 0
         for i in range(len(center)):
             summa1 += self.Lambda_q(width[i],center[i],Nef)
-        Lambda_1=summa1/len(center) #* 33 #misterious factor... joking, this is the number of nodes in the example.
+        Lambda_1=summa1/(len(center)-self.indice_zeros) #* 33 #misterious factor... joking, this is the number of nodes in the example.
         self.lambda_2=[]
 #        Frequncies = Frequencies+1
 #        Frequencies = np.append(Frequencies,Frequncies, axis=0)
@@ -751,7 +751,7 @@ class Eliashberg2(object):
 
             summa1 += self.Lambda_q_new(i)*simmetry_factor
             self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q_new(i))
-        Lambda_1=summa1/len(center)
+        Lambda_1=summa1/(len(center)-self.indice_zeros)
         #method 2 -------------------------------
         self.lambda_2=[]
         w = Frequencies[Frequencies != 0]
