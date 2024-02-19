@@ -511,6 +511,8 @@ class Eliashberg2(object):
         self.Gamma =  Gamma
         self.Ratio = Ratio
 
+        self.indice_zeros = 0
+
     def read_Ne(self,filename="out_DOS.dat"):
         """
         Read the number of particles under the Fermi level (???)
@@ -559,8 +561,9 @@ class Eliashberg2(object):
         else:
             print(self.Omega)
             print("self.Gamma[",i,"]=",self.Omega[i])
-            exit()
+            #exit()
             Lamb_q=0
+            self.indice_zeros += 1
         return Lamb_q
 
     def a2F(self,x):
