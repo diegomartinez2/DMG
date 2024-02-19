@@ -607,7 +607,7 @@ class Eliashberg2(object):
         center = self.Omega[:] #*put units correctly...
         width = self.Gamma[:] #*put units the same as center
         width = np.absolute(width)
-        gauss_width = 50000*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
+        gauss_width = 100000*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         if (method == 1):
             #---------method1-------vvvv---
             summa = 0
@@ -735,6 +735,7 @@ class Eliashberg2(object):
         """
         center = self.Omega
         width = self.Gamma
+        print('len(Center)-indice_zeros=',len(center)-self.indice_zeros)
         #method 1 ----------------------------
 
         summa1 = 0
@@ -876,7 +877,62 @@ class Eliashberg2(object):
 
 #-------------------------------------------------------------------------------
 def main(arg):
+    #namefile = "xbv"
+    #print (len(sys.argv))
+    if (len( sys.argv ) > 1):
+        print ("nombre de fichero:",arg[1])
+        namefile = arg[1]
+        print ("Creando el objeto plasmon")
+        plasmon = Plasmon_analysis(arg,namefile)
+        print ("Leyendo datos")
 
+        if (len( sys.argv) == 3):
+            index = arg[2]
+            #data, frequencies = plasmon.load_big_file(index, arg[1])
+            data, frequencies = plasmon.load_big_file(index, arg[1],diagonal=False)
+            data_d, frequencies_d = plasmon.load_big_file(index, arg[1], diagonal=True)
+            #data.append(data_d)
+        #    data = np.vstack((np.flip(data, axis=1), data_d))
+            #frequencies.append(frequencies_d)
+        #    frequencies = np.vstack((np.flip(frequencies), frequencies_d))
+        else:
+            data, frequencies, qx= plasmon.load_data()
+#--------------------------diagonal-----------------------------
+#        if (len(sys.argv[3]) == 4):
+#            for i in range(51):
+#                data[i,:] = plasmon.data[i,i,:]
+#---------------------------------end---diagonal----------------
+#-------------------------fix to remove extra polaron data--------------
+        if (len( sys.argv) == 3):
+            for i in range(5):
+                for j in range(2000,5001,1):
+                    if (data[i][j]!=0.0):
+                        print("data[{}][{}]=".format(i,j),data[i][j])
+            # if i < 5:
+            #     if j > 2000:
+                        data[i][j] = 0
+                    if (data_d[i][j]!=0.0):
+                        print("data_d[{}][{}]=".format(i,j),data_d[i][j])
+            # if i < 5:
+            #     if j > 2000:
+                        data_d[i][j] = 0
+        else:
+            for i in range(5):
+                for j in range(2000,5001,1):
+                    if (data[i][j]!=0.0):
+                        print("data[{}][{}]=".format(i,j),data[i][j])
+            # if i < 5:
+            #     if j > 2000:
+                        data[i][j] = 0
+#------------------------end-removing data------------------------------
+        print ("data[49][2110]=",data[49][2110]) # aqui hay datos
+        print ("data[50][2110]=",data[50][2110]) # aqui no hay datos???
+        print("***********************")
+        print (np.shape(data),"=(51,5001)?")
+        print ("Frequencies length=",len(frequencies))
+        print ("dibuja")
+        plasmon.plot_contour(data)
+        #plasmon.plot_contour2(data,plasmon.Fitted_data)
     pass
 
 if __name__ == '__main__':
