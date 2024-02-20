@@ -933,6 +933,8 @@ def main(arg):
         print ("dibuja")
         plasmon.plot_contour(data)
         #plasmon.plot_contour2(data,plasmon.Fitted_data)
+    else:
+        print ("Arguments are namefile and the index of q_x as second argument if you want the BIG FILE")
     pass
 
 if __name__ == '__main__':
