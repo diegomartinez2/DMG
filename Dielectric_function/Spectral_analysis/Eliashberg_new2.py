@@ -901,11 +901,11 @@ class Eliashberg2(object):
         fig, ax1 = plt.subplots(1,1)
         fig.set_size_inches(10, 5)
         fig.set_dpi(100)
-        # cax = ax1.imshow(data.T,
-        # #	vmin = 0.0 , vmax = 0.004,
-        # 	vmin = 0.0 , vmax = 0.2,
-        # 	cmap=plt.colormaps['jet'], origin='lower',
-        # 	interpolation='gaussian', aspect='auto')
+        cax = ax1.imshow(data.T,
+        #	vmin = 0.0 , vmax = 0.004,
+        	vmin = 0.0 , vmax = 0.2,
+        	cmap=plt.colormaps['jet'], origin='lower',
+        	interpolation='gaussian', aspect='auto')
         ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
 
 
