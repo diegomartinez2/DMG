@@ -887,7 +887,16 @@ class Eliashberg2(object):
         return 1 + (( self.w_2()/self.w_log() - 1) * self.lambda_2**2)/(
         (self.lambda_2**2) + (LAMBDA_temp**2))
 
-    def plot_contour_d(self,data,mask_value=50):
+    def plot_contour_d(self,data,mask_value=50, diagonal = True):
+        print ("Leyendo datos")
+        plasmon = Plasmon_analysis()
+        if diagonal:
+            mask = self.qx == self.qy
+            data, frequencies = plasmon.load_big_file(mask, diagonal=True)
+        else:
+            mask = self.qx == mask_value
+            data, frequencies = plasmon.load_big_file(mask, diagonal=False)
+
         plt.style.use('_mpl-gallery-nogrid')
         fig, ax1 = plt.subplots(1,1)
         fig.set_size_inches(10, 5)
@@ -898,8 +907,8 @@ class Eliashberg2(object):
         # 	cmap=plt.colormaps['jet'], origin='lower',
         # 	interpolation='gaussian', aspect='auto')
         ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
-        mask = self.qx == mask_value
-        mask = self.qx == self.qy
+
+
         print (mask)
         cax2 = ax1.scatter(x = self.qy[mask], y = self.Omega[mask],c='k',marker='x',s=10)
         cax2 = ax1.scatter(x = self.qy[mask], y = (self.Omega[mask]+self.Gamma[mask]),c='k',marker='1',s=10)
