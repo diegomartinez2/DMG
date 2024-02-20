@@ -877,8 +877,7 @@ class Eliashberg2(object):
 
 #-------------------------------------------------------------------------------
 def main(arg):
-    #namefile = "xbv"
-    #print (len(sys.argv))
+
     if (len( sys.argv ) > 1):
         print ("nombre de fichero:",arg[1])
         namefile = arg[1]
@@ -888,7 +887,7 @@ def main(arg):
 
         if (len( sys.argv) == 3):
             index = arg[2]
-            #data, frequencies = plasmon.load_big_file(index, arg[1])
+
             data, frequencies = plasmon.load_big_file(index, arg[1],diagonal=False)
             data_d, frequencies_d = plasmon.load_big_file(index, arg[1], diagonal=True)
             #data.append(data_d)

@@ -54,6 +54,50 @@ def thermal_calculo(d3, dyn_prefix = 'final_dyn',nqirr = 8,T_init=250,T_end=350,
     # Save ThermalConductivity object for postprocessing.
     tc.save_pickle()
 
+#----------loop for figure Tau vs. smear----------------------
+def thermal_calculo_bis(d3, dyn_prefix = 'final_dyn',nqirr = 8,T=300,Mesh_range=[10,30,10],smear_range=[0.01,0.1,0.01]):
+    """pass"""
+    SSCHA_TO_MS = cellconstructor.ThermalConductivity.SSCHA_TO_MS
+    RY_TO_THZ = cellconstructor.ThermalConductivity.SSCHA_TO_THZ
+    dyn = CC.Phonons.Phonons(dyn_prefix, nqirr)
+
+    supercell = dyn.GetSupercell()
+
+    fc3 = CC.ForceTensor.Tensor3(dyn.structure,
+    dyn.structure.generate_supercell(supercell), supercell)
+
+    #d3 = np.load("d3.npy")
+    fc3.SetupFromTensor(d3)
+    fc3 = CC.ThermalConductivity.centering_fc3(fc3)
+
+    for index_mesh in range(Mesh_range[1],Mesh_range[2],Mesh_range[3]):
+        mesh = [index_mesh,index_mesh,index_mesh]
+        for index_smear in range(smear_range[1],smear_range[2],smear_range[3])
+            smear = index_smear/RY_TO_THZ
+
+            tc = CC.ThermalConductivity.ThermalConductivity(dyn, fc3,
+            kpoint_grid = mesh, scattering_grid = mesh, smearing_scale = None,
+            smearing_type = 'constant', cp_mode = 'quantum', off_diag = False)
+
+            #temperatures = np.linspace(T_init,T_end,T_steps,dtype=float)
+            start_time = time.time()
+            tc.setup_harmonic_properties(smear)
+            tc.write_harmonic_properties_to_file()
+
+            tc.calculate_kappa(mode = 'SRTA', temperatures = temperatures,
+            write_lifetimes = True, gauss_smearing = True, offdiag_mode = 'wigner',
+            kappa_filename = 'Thermal_conductivity_SRTA_Mesh{1}_smear{2}'.format(index_mesh,index_smear),
+             lf_method = 'fortran-LA')
+
+            print('Calculated SSCHA kappa in: ', time.time() - start_time)
+
+            tc.calculate_kappa(mode = 'GK', write_lineshapes=False,
+            ne = 1000, temperatures = temperatures,     #ne=1000 ->ne=10000
+            kappa_filename = 'Thermal_conductivity_GK_Mesh{1}_smear{2}'.format(index_mesh,index_smear))
+
+            print('Calculated SSCHA kappa in: ', time.time() - start_time)
+    # Save ThermalConductivity object for postprocessing.
+    tc.save_pickle()
 #----------------------------------------------------------------
 
 def processing():
