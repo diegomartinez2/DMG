@@ -512,7 +512,9 @@ class Eliashberg2(object):
         self.Ratio = Ratio
 
         self.indice_zeros = 0
-        slef.N_qs = ((np.max(qx)*np.max(qy))+np.max([np.max(qx),np.max(qy)]))/2
+        self.N_qs = ((np.max(qx)*np.max(qy))+np.max([np.max(qx),np.max(qy)]))/2
+        self.N = 50*50
+        print("factor N_qs=",self.N_qs,"::",self.N)
 
     def read_Ne(self,filename="out_DOS.dat"):
         """
