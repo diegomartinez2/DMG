@@ -50,6 +50,7 @@ def main(args):
     """
     calculate_spectra = False
     calculate_hessian = False
+    Tau_vs_smear = False
     T_init = 200
     T_end = 400
     T_steps =3
@@ -93,7 +94,7 @@ def main(args):
             Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T,8)
             Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
         #-----
-        if False:
+        if (Tau_vs_smear==False):
             Thermal.thermal_calculo(d3,FINAL_DYN,NQIRR,T_init,T_end,T_steps)
         else:
             Thermal.thermal_calculo_bis(d3,FINAL_DYN,NQIRR,T=300,Mesh_range=[10,30,10],smear_range=[0.01,0.1,0.01])
