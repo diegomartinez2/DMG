@@ -887,6 +887,29 @@ class Eliashberg2(object):
         return 1 + (( self.w_2()/self.w_log() - 1) * self.lambda_2**2)/(
         (self.lambda_2**2) + (LAMBDA_temp**2))
 
+    def plot_contour_d(self,data,mask_value=50):
+        plt.style.use('_mpl-gallery-nogrid')
+        fig, ax1 = plt.subplots(1,1)
+        fig.set_size_inches(10, 5)
+        fig.set_dpi(100)
+        # cax = ax1.imshow(data.T,
+        # #	vmin = 0.0 , vmax = 0.004,
+        # 	vmin = 0.0 , vmax = 0.2,
+        # 	cmap=plt.colormaps['jet'], origin='lower',
+        # 	interpolation='gaussian', aspect='auto')
+        ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
+        mask = self.qx == mask_value
+        mask = self.qx == self.qy
+        print (mask)
+        cax2 = ax1.scatter(x = self.qy[mask], y = self.Omega[mask],c='k',marker='x',s=10)
+        cax2 = ax1.scatter(x = self.qy[mask], y = (self.Omega[mask]+self.Gamma[mask]),c='k',marker='1',s=10)
+        cax2 = ax1.scatter(x = self.qy[mask], y = (self.Omega[mask]-self.Gamma[mask]),c='k',marker='2',s=10)
+        cax3 = ax1.errorbar(x = self.qy[mask], y = self.Omega[mask], yerr = self.Gamma[mask], fmt = 'o')
+        #cbar = fig.colorbar(cax)
+        print("qx=",self.qx[1:10])
+        plt.show()
+
+        pass
 #-------------------------------------------------------------------------------
 def main(arg):
 
