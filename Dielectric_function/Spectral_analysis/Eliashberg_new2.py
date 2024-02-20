@@ -512,6 +512,7 @@ class Eliashberg2(object):
         self.Ratio = Ratio
 
         self.indice_zeros = 0
+        slef.N_qs = ((np.max(qx)*np.max(qy))+np.max([np.max(qx),np.max(qy)]))/2
 
     def read_Ne(self,filename="out_DOS.dat"):
         """
@@ -745,7 +746,7 @@ class Eliashberg2(object):
             if self.qx[i] ==  0:
                 simmetry_factor =  4
                 if self.qy[i] ==  0:
-                    simmetry_factor =  0 #1 #test taking out the qx=qy=0
+                    simmetry_factor =  1 #test taking out the qx=qy=0
             elif self.qy[i] ==  0:
                 simmetry_factor =  4
             elif self.qx[i] == self.qy[i]:
