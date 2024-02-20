@@ -514,7 +514,7 @@ class Eliashberg2(object):
         self.indice_zeros = 0
         self.N_qs = ((np.max(qx)*np.max(qy))+np.max([np.max(qx),np.max(qy)]))/(2*50)
         self.N = 50*50
-        print("factor N_qs=",self.N_qs,"::",self.N)
+        print("factor N_qs=",self.N_qs,"::",self.N,"::",len(Omega))
 
     def read_Ne(self,filename="out_DOS.dat"):
         """
@@ -646,6 +646,8 @@ class Eliashberg2(object):
 
                 summa += (self.Ratio[i]) * self.gaussian(x,self.Omega[i],gauss_width) * simmetry_factor
             #return summa/(2*np.pi*self.N_ef*(len(self.Omega)-self.indice_zeros))
+            #return summa/(2*np.pi*self.N_ef*len(self.Omega))
+            #return summa/(2*np.pi*self.N_ef*self.N_qs)
             return summa/(2*np.pi*self.N_ef*self.N)
 
     def gaussian(self,x, center,gauss_width):
@@ -763,6 +765,7 @@ class Eliashberg2(object):
             self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q_new(i))
         #Lambda_1=summa1/(len(center)-self.indice_zeros)
         Lambda_1=summa1/self.N
+        print("Test Lambda with lambda_q=",summa1/(len(center)),":test lambda_q[N]=",summa1/self.N,":lambda_q[N_qs]=",summa1/self.N_qs)
         #method 2 -------------------------------
         self.lambda_2=[]
         w = Frequencies[Frequencies != 0]
