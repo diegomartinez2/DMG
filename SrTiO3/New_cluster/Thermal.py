@@ -92,7 +92,7 @@ def thermal_calculo_bis(d3, dyn_prefix = 'final_dyn',nqirr = 8,T=[300],Mesh_rang
             print('Calculated SSCHA kappa in: ', time.time() - start_time)
 
             tc.calculate_kappa(mode = 'GK', write_lineshapes=False,
-            ne = 1000, temperatures = T,     #ne=1000 ->ne=10000
+            ne = 1000, temperatures = T,     #ne=1000 ->ne=10000 Less anharmonic materials and lower temperatures will need more points (Number of frequency points to calculate phonon lineshapes in Gree-kubo).
             kappa_filename = 'Thermal_conductivity_GK_Mesh{0}_smear{1}'.format(index_mesh,index_smear))
 
             print('Calculated SSCHA kappa in: ', time.time() - start_time)
