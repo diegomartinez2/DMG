@@ -913,7 +913,7 @@ class Eliashberg2(object):
         cax2 = ax1.scatter(x = self.qy[mask], y = self.Omega[mask],c='k',marker='x',s=10)
         cax2 = ax1.scatter(x = self.qy[mask], y = (self.Omega[mask]+self.Gamma[mask]),c='k',marker='1',s=10)
         cax2 = ax1.scatter(x = self.qy[mask], y = (self.Omega[mask]-self.Gamma[mask]),c='k',marker='2',s=10)
-        cax3 = ax1.errorbar(x = self.qy[mask], y = self.Omega[mask], yerr = self.Gamma[mask], fmt = 'o')
+        cax3 = ax1.errorbar(x = self.qy[mask], y = self.Omega[mask], yerr = self.Gamma[mask], fmt = 'o') #¿y*5001?
         #cbar = fig.colorbar(cax)
         print("qx=",self.qx[1:10])
         plt.show()
