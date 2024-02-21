@@ -55,7 +55,7 @@ def thermal_calculo(d3, dyn_prefix = 'final_dyn',nqirr = 8,T_init=250,T_end=350,
     tc.save_pickle()
 
 #----------loop for figure Tau vs. smear----------------------
-def thermal_calculo_bis(d3, dyn_prefix = 'final_dyn',nqirr = 8,T=[300],Mesh_range=[10,30,10],smear_range=[0.01,0.1,0.01]):
+def thermal_calculo_bis(d3, dyn_prefix = 'final_dyn',nqirr = 8,T=[300],Mesh_range=[10,30,10],smear_range=[0.01,0.1,10]):
     """pass"""
     SSCHA_TO_MS = cellconstructor.ThermalConductivity.SSCHA_TO_MS
     RY_TO_THZ = cellconstructor.ThermalConductivity.SSCHA_TO_THZ
@@ -72,7 +72,7 @@ def thermal_calculo_bis(d3, dyn_prefix = 'final_dyn',nqirr = 8,T=[300],Mesh_rang
 
     for index_mesh in range(Mesh_range[0],Mesh_range[1],Mesh_range[2]):
         mesh = [index_mesh,index_mesh,index_mesh]
-        for index_smear in range(smear_range[0],smear_range[1],smear_range[2]):
+        for index_smear in np.linspace(smear_range[0],smear_range[1],smear_range[2]):
             smear = index_smear/RY_TO_THZ
 
             tc = CC.ThermalConductivity.ThermalConductivity(dyn, fc3,
@@ -86,14 +86,14 @@ def thermal_calculo_bis(d3, dyn_prefix = 'final_dyn',nqirr = 8,T=[300],Mesh_rang
 
             tc.calculate_kappa(mode = 'SRTA', temperatures = T,
             write_lifetimes = True, gauss_smearing = True, offdiag_mode = 'wigner',
-            kappa_filename = 'Thermal_conductivity_SRTA_Mesh{1}_smear{2}'.format(index_mesh,index_smear),
+            kappa_filename = 'Thermal_conductivity_SRTA_Mesh{0}_smear{1}'.format(index_mesh,index_smear),
              lf_method = 'fortran-LA')
 
             print('Calculated SSCHA kappa in: ', time.time() - start_time)
 
             tc.calculate_kappa(mode = 'GK', write_lineshapes=False,
             ne = 1000, temperatures = T,     #ne=1000 ->ne=10000
-            kappa_filename = 'Thermal_conductivity_GK_Mesh{1}_smear{2}'.format(index_mesh,index_smear))
+            kappa_filename = 'Thermal_conductivity_GK_Mesh{0}_smear{1}'.format(index_mesh,index_smear))
 
             print('Calculated SSCHA kappa in: ', time.time() - start_time)
     # Save ThermalConductivity object for postprocessing.
