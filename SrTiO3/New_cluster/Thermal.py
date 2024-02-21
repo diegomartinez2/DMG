@@ -72,7 +72,7 @@ def thermal_calculo_bis(d3, dyn_prefix = 'final_dyn',nqirr = 8,T=[300],Mesh_rang
 
     for index_mesh in range(Mesh_range[1],Mesh_range[2],Mesh_range[3]):
         mesh = [index_mesh,index_mesh,index_mesh]
-        for index_smear in range(smear_range[1],smear_range[2],smear_range[3])
+        for index_smear in range(smear_range[1],smear_range[2],smear_range[3]):
             smear = index_smear/RY_TO_THZ
 
             tc = CC.ThermalConductivity.ThermalConductivity(dyn, fc3,
