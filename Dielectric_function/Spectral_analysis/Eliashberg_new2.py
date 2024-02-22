@@ -911,8 +911,8 @@ class Eliashberg2(object):
 
         print (mask)
         cax2 = ax1.scatter(x = self.qy[mask]/50, y = self.Omega[mask]*5,c='k',marker='x',s=10)
-        cax2 = ax1.scatter(x = self.qy[mask]/50, y = (self.Omega[mask]+self.Gamma[mask])*5,c='k',marker='1',s=10)
-        cax2 = ax1.scatter(x = self.qy[mask]/50, y = (self.Omega[mask]-self.Gamma[mask])*5,c='k',marker='2',s=10)
+        cax2 = ax1.scatter(x = self.qy[mask]/50, y = (self.Omega[mask]+self.Gamma[mask]/2)*5,c='k',marker='1',s=10)
+        cax2 = ax1.scatter(x = self.qy[mask]/50, y = (self.Omega[mask]-self.Gamma[mask]/2)*5,c='k',marker='2',s=10)
         cax3 = ax1.errorbar(x = self.qy[mask]/50, y = self.Omega[mask]*5, yerr = self.Gamma[mask]*5/2, fmt = 'o') #¿y*5001? para la escala
         #cbar = fig.colorbar(cax)
         print("qx=",self.qx[1:10])

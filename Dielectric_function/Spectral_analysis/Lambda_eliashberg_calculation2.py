@@ -8,7 +8,7 @@ from scipy import integrate
 
 def main(arg):
 
-    out = Eliashberg.read_1_excel_file(filename="HPII_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
+    out = Eliashberg.read_1_excel_file(filename="HPI_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
     #qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     qx=out[:,0]
     qy=out[:,1]
@@ -31,7 +31,7 @@ def main(arg):
     print("Omega range:",np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),'::',np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))))
     #frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
     frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
-    superconductor.plot_contour_d(data=[],mask_value=50, diagonal = True)
+    superconductor.plot_contour_d(data=[],mask_value=0, diagonal = False)
     lambda_1 = superconductor.Lambda_new(frequencies)
 
     #np.savetxt('Lambda.txt', (lambda_1))
