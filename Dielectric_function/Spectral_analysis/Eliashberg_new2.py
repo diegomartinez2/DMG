@@ -889,7 +889,7 @@ class Eliashberg2(object):
 
     def plot_contour_d(self,data,mask_value=50, diagonal = True):
         print ("Leyendo datos")
-        plasmon = Plasmon_analysis(1,"A7_EPS.dat")
+        plasmon = Plasmon_analysis(0,"A7_EPS.dat")
         if diagonal:
             mask = self.qx == self.qy
             data, frequencies = plasmon.load_big_file(0, diagonal=True)
