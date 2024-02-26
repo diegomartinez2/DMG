@@ -617,15 +617,15 @@ class Eliashberg2(object):
             #---------method1-------vvvv---
             summa = 0
             for i in range(len(self.qx)):
-                simmetry_factor =  8
+                simmetry_factor =  2 #8
                 if self.qx[i] ==  0:
-                    simmetry_factor =  4
+                    simmetry_factor =  1 #4
                     if self.qy[i] ==  0:
-                        simmetry_factor =  1
+                        simmetry_factor =  0 #1
                 elif self.qy[i] ==  0:
-                    simmetry_factor =  4
+                    simmetry_factor =  1 #4
                 elif self.qx[i] == self.qy[i]:
-                    simmetry_factor =  4
+                    simmetry_factor =  1 #4
                 summa += self.Lambda_q_new(i)*self.Omega[i] * self.gaussian(x,self.Omega[i],gauss_width)
             #return summa/(2*(len(self.Omega)-self.indice_zeros))
             return summa/(2*self.N)
@@ -634,15 +634,15 @@ class Eliashberg2(object):
             summa = 0
 
             for i in range(len(self.qx)):
-                simmetry_factor =  8
+                simmetry_factor =  2 #8
                 if self.qx[i] ==  0:
-                    simmetry_factor =  4
+                    simmetry_factor =  1 #4
                     if self.qy[i] ==  0:
-                        simmetry_factor =  1
+                        simmetry_factor = 0 #1
                 elif self.qy[i] ==  0:
-                    simmetry_factor =  4
+                    simmetry_factor =  1 #4
                 elif self.qx[i] == self.qy[i]:
-                    simmetry_factor =  4
+                    simmetry_factor =  1 #4
 
                 summa += (self.Ratio[i]) * self.gaussian(x,self.Omega[i],gauss_width) * simmetry_factor
             #return summa/(2*np.pi*self.N_ef*(len(self.Omega)-self.indice_zeros))
@@ -751,15 +751,15 @@ class Eliashberg2(object):
         summa1 = 0
         self.lambda_q_lista = np.array([])
         for i in range(len(center)):  #summa in q (6x6x6 or q_x*q_y)
-            simmetry_factor =  8
+            simmetry_factor =  2 #8
             if self.qx[i] ==  0:
-                simmetry_factor =  4
+                simmetry_factor =  1 #4
                 if self.qy[i] ==  0:
-                    simmetry_factor =  1 #test taking out the qx=qy=0
+                    simmetry_factor =  0 #1 #test taking out the qx=qy=0
             elif self.qy[i] ==  0:
-                simmetry_factor =  4
+                simmetry_factor =  1 #4
             elif self.qx[i] == self.qy[i]:
-                simmetry_factor =  4
+                simmetry_factor =  1 #4
 
             summa1 += self.Lambda_q_new(i)*simmetry_factor
             self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q_new(i))
