@@ -45,8 +45,10 @@ import matplotlib.gridspec as gridspec
 
 def main(args):
     """
-    This code calculates the thermal ...
+    This code calculates the lattice thermal conductivity:
     if calculate_spectra = True then also calculates the spectral function.
+    if calculate_hessian =  True then also calculates the Hessian
+    if Tau_vs_smear = True then calculates the thermal conductivity for diferent values of smear
     """
     calculate_spectra = False
     calculate_hessian = False
