@@ -49,20 +49,22 @@ def main(arg):
     #     Ratio=np.append(Ratio,out[:,10])
     qx,qy,Omega,Gamma,Ratio = Excel_data(filename="HPI_c")
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
-    #qx,qy,Omega,Gamma,Ratio = Excel_data(filename="HPII_c")
-    #superconductor2 = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
+    qx,qy,Omega,Gamma,Ratio = Excel_data(filename="HPII_c")
+    superconductor2 = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
     print("Omega range:",np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),'::',np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))))
     #frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
     frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
     superconductor.plot_contour_d(data=[],mask_value=200, diagonal = False)
     lambda_1 = superconductor.Lambda_new(frequencies)
-
+    lambda_1_2 = superconductor2.Lambda_new(frequencies)
     #np.savetxt('Lambda.txt', (lambda_1))
-    print('Lambda_1=',lambda_1,'[Lambda calculated from Lambda_q]?') # Lambda calculated from Lambda_q
+    print('Lambda_1[HPI]=',lambda_1,'[Lambda calculated from Lambda_q for HPI]?') # Lambda calculated from Lambda_q
     #print('Lambda_1=',lambda_1*2*superconductor.Ne[np.where(superconductor.energy==0.0)[0][0]]) # Lambda calculated from Lambda_q#self.Ne[np.where(self.energy==0.0)[0][0]]
-    print('Lambda_2=',superconductor.lambda_2,'[Lambda calculated fron Eliashberg function]?') #Lambda calculated fron Eliashberg function
+    print('Lambda_2[HPI]=',superconductor.lambda_2,'[Lambda calculated fron Eliashberg function for HPI]?') #Lambda calculated fron Eliashberg function
 
+    print('Lambda_1[HPII]=',lambda_1_2,'[Lambda calculated from Lambda_q for HPII]?')
+    print('Lambda_2[HPII]=',superconductor2.lambda_2,'[Lambda calculated fron Eliashberg function for HPII]?')
     print('Test Gaussian->')
     gauss = np.zeros(100)
     for w in range(100): #Make this from -100 to 100??
