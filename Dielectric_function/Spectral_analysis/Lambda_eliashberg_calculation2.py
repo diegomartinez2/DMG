@@ -56,7 +56,7 @@ def main(arg):
     print("Omega range:",np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),'::',np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))))
     #frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
     frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
-    superconductor.plot_contour_d(data=[],mask_value=200, diagonal = False)
+    superconductor.plot_contour_d(data=[],mask_value=0, diagonal = False)
     lambda_1 = superconductor.Lambda_new(frequencies)
     lambda_1_2 = superconductor2.Lambda_new(frequencies)
     #np.savetxt('Lambda.txt', (lambda_1))
