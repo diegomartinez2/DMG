@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from scipy import integrate
 
 def Excel_data(filename="HPI_c"):
-    out = Eliashberg.read_1_excel_file(filename="HPI_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
+    out = Eliashberg.read_1_excel_file(filename) #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
     #qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     qx=out[:,0]
     qy=out[:,1]
