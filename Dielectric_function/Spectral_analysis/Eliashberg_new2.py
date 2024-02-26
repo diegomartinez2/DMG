@@ -836,7 +836,7 @@ class Eliashberg2(object):
         if (AllenDynes):
             #out_AD=f_1(mu_par)*f_2(mu_par)*self.w_log()/1.2 * np.exp(out2)
             print ("f1,f2=",self.f_1(mu_par,lambda_t),self.f_2(mu_par,lambda_t))
-            out=self.f_1(mu_par,lambda_t)*self.f_2(mu_par)*self.w_log(lambda_t)/1.2 * np.exp(out2)
+            out=self.f_1(mu_par,lambda_t)*self.f_2(mu_par,lambda_t)*self.w_log(lambda_t)/1.2 * np.exp(out2)
         else:
             out=self.w_log(lambda_t)/1.2 * np.exp(out2)
 
