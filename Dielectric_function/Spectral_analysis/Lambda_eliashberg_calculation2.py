@@ -6,8 +6,8 @@ import os.path
 import matplotlib.pyplot as plt
 from scipy import integrate
 
-def Excel_data(filename="1DP_c"):
-    out = Eliashberg.read_1_excel_file(filename) #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
+def Excel_data(filename):
+    out = Eliashberg.read_1_excel_file(filename=filename) #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
     #qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     qx=out[:,0]
     qy=out[:,1]
