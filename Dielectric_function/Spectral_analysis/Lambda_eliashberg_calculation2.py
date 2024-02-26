@@ -50,22 +50,22 @@ def main(arg):
     qx,qy,Omega,Gamma,Ratio = Excel_data(filename="HPI_c")
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
-    qx,qy,Omega,Gamma,Ratio = Excel_data(filename="HPII_c")
-    superconductor2 = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
-    superconductor2.read_Ne()
+    #qx,qy,Omega,Gamma,Ratio = Excel_data(filename="HPII_c")
+    #superconductor2 = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
+    #superconductor2.read_Ne()
     print("Omega range:",np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),'::',np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))))
     #frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
     frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
     superconductor.plot_contour_d(data=[],mask_value=0, diagonal = False)
     lambda_1 = superconductor.Lambda_new(frequencies)
-    lambda_1_2 = superconductor2.Lambda_new(frequencies)
+    #lambda_1_2 = superconductor2.Lambda_new(frequencies)
     #np.savetxt('Lambda.txt', (lambda_1))
     print('Lambda_1[HPI]=',lambda_1,'[Lambda calculated from Lambda_q for HPI]?') # Lambda calculated from Lambda_q
     #print('Lambda_1=',lambda_1*2*superconductor.Ne[np.where(superconductor.energy==0.0)[0][0]]) # Lambda calculated from Lambda_q#self.Ne[np.where(self.energy==0.0)[0][0]]
     print('Lambda_2[HPI]=',superconductor.lambda_2,'[Lambda calculated fron Eliashberg function for HPI]?') #Lambda calculated fron Eliashberg function
 
-    print('Lambda_1[HPII]=',lambda_1_2,'[Lambda calculated from Lambda_q for HPII]?')
-    print('Lambda_2[HPII]=',superconductor2.lambda_2,'[Lambda calculated fron Eliashberg function for HPII]?')
+    #print('Lambda_1[HPII]=',lambda_1_2,'[Lambda calculated from Lambda_q for HPII]?')
+    #print('Lambda_2[HPII]=',superconductor2.lambda_2,'[Lambda calculated fron Eliashberg function for HPII]?')
     print('Test Gaussian->')
     gauss = np.zeros(100)
     for w in range(100): #Make this from -100 to 100??
@@ -122,7 +122,8 @@ def main(arg):
     plt.show()
     fig_a2F.savefig("Ajuste_d_{}".format("a2F"))
 #---plot-end
-    superconductor.lambda_2 += superconductor2.lambda_2
+    #superconductor.lambda_2 += float(superconductor2.lambda_2)
+
     T_c = superconductor.T_c(mu_par=0.1) #mu*=0.1 y mu*=0.15. Son los valores típicos.
     print("T_c=",T_c,"eV:: T_c=",T_c*11604,"K")
     np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c,T_c*11604), header='Lambda, T_C (eV), T_c (K)')

@@ -769,6 +769,7 @@ class Eliashberg2(object):
         #method 2 -------------------------------
         self.lambda_2=[]
         w = Frequencies[Frequencies != 0]
+        self.w = w
         #w = np.linspace(0.0001,0.9999,20000) #test
         # with mp.Pool() as pool:
         #     res = pool.map(self.a2F_new,w)
@@ -846,7 +847,9 @@ class Eliashberg2(object):
         """
         eV_to_K=11604
         #eV_to_K = 11604.5250061657
-        w = self.w#*eV_to_K
+        print("w=",self.w)
+        mask = self.w >=  0
+        w = self.w[mask]#*eV_to_K
         w_log = np.exp(2.0/self.lambda_2*
             #integrate.simpson(
             #(np.divide(self.a2F_new(self.w), self.w)*np.log(self.w)),self.w))
