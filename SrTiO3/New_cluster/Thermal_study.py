@@ -139,10 +139,12 @@ def main(args):
             Espectro.calcula_espectro_correction_multiprocessing_SrTiO3(T,8)
             Espectro.dibuja_espectro_basico_SrTiO3(filename = "SrTiO3_static.dat", PATH = "GXMGRX")
         #-----
-        Thermal.thermal_calculo(d3,FINAL_DYN,NQIRR,T_init,T_end,T_steps)
-        if False:   #For the calculation of the Tau vs. smear put True here
+        if (Tau_vs_smear==False):
+            Thermal.thermal_calculo(d3,FINAL_DYN,NQIRR,T_init,T_end,T_steps)
+        else:   #For the calculation of the Tau vs. smear put True here
             Thermal.thermal_calculo_bis(d3, FINAL_DYN,NQIRR,T=[300],Mesh_range=[10,30,10],smear_range=[0.01,0.1,10])
         harm_dos, anharm_dos = Thermal.processing()
+
         Thermal.plot(harm_dos, anharm_dos)
         np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
         np.savetxt("dos_anharmonic.dat",anharm_dos,header='Temperature dependent Anharmonic DOS from lineshapes: 2 lines of raw data 2 lines of gaussian smoothed data')
