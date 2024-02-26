@@ -6,9 +6,8 @@ import os.path
 import matplotlib.pyplot as plt
 from scipy import integrate
 
-def main(arg):
-
-    out = Eliashberg.read_1_excel_file(filename="1DP_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
+def Excel_data(filename="HPI_c"):
+    out = Eliashberg.read_1_excel_file(filename="HPI_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
     #qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     qx=out[:,0]
     qy=out[:,1]
@@ -26,7 +25,32 @@ def main(arg):
         Omaga=np.append(Omega,out[:,8])
         Gamma=np.append(Gamma,out[:,9])
         Ratio=np.append(Ratio,out[:,10])
+    return qx,qy,Omega,Gamma,Ratio
+
+def main(arg):
+
+    # out = Eliashberg.read_1_excel_file(filename="HPI_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
+    # #qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
+    # qx=out[:,0]
+    # qy=out[:,1]
+    # Omega=out[:,2]
+    # Gamma=out[:,3]
+    # Ratio=out[:,4]
+    # if False: #make true for "1DP" or "1DP_c"
+    #     qx=np.append(qx,out[:,0])
+    #     qy=np.append(qy,out[:,1])
+    #     Omega=np.append(Omega,out[:,5])
+    #     Gamma=np.append(Gamma,out[:,6])
+    #     Ratio=np.append(Ratio,out[:,7])
+    #     qx=np.append(qx,out[:,0])
+    #     qy=np.append(qy,out[:,1])
+    #     Omaga=np.append(Omega,out[:,8])
+    #     Gamma=np.append(Gamma,out[:,9])
+    #     Ratio=np.append(Ratio,out[:,10])
+    qx,qy,Omega,Gamma,Ratio = Excel_data(filename="HPI_c")
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
+    #qx,qy,Omega,Gamma,Ratio = Excel_data(filename="HPII_c")
+    #superconductor2 = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
     print("Omega range:",np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),'::',np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))))
     #frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
