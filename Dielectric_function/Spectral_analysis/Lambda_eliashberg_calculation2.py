@@ -49,9 +49,10 @@ def main(arg):
     #     Ratio=np.append(Ratio,out[:,10])
     qx,qy,Omega,Gamma,Ratio = Excel_data(filename="HPI_c")
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
+    superconductor.read_Ne()
     qx,qy,Omega,Gamma,Ratio = Excel_data(filename="HPII_c")
     superconductor2 = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
-    superconductor.read_Ne()
+    superconductor2.read_Ne()
     print("Omega range:",np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),'::',np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))))
     #frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
     frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
