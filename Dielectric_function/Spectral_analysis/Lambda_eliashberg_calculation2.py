@@ -122,6 +122,10 @@ def main(arg):
     plt.show()
     fig_a2F.savefig("Ajuste_d_{}".format("a2F"))
 #---plot-end
+    superconductor.lambda_2 += superconductor2.lambda_2
+    T_c = superconductor.T_c(mu_par=0.1) #mu*=0.1 y mu*=0.15. Son los valores típicos.
+    print("T_c=",T_c,"eV:: T_c=",T_c*11604,"K")
+    np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c,T_c*11604), header='Lambda, T_C (eV), T_c (K)')
     pass
 
 if __name__ == '__main__':
