@@ -611,8 +611,8 @@ class Eliashberg2(object):
 
         center = self.Omega[:] #*put units correctly...
         width = self.Gamma[:] #*put units the same as center
-        width = np.absolute(width)
-        gauss_width = 100000*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
+        #width = np.absolute(width)
+        gauss_width = 50000*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         if (method == 1):
             #---------method1-------vvvv---
             summa = 0
@@ -825,23 +825,24 @@ class Eliashberg2(object):
         return Lambda_1
 
 
-    def T_c(self,mu_par):
+    def T_c(self,mu_par,lambda_t):
         """
         Allen-Dynes formula
         Tc=W_log/1.2*exp(-1.04*(1+self.lambda_2)/(self.lambda_2-mu_*(1+0.62*self.lambda_2)))
         """
         AllenDynes = True
-        out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lambda_2))
+        # out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lambda_2))
+        out2=-1.04*(1+lambda_t)/(lambda_t-mu_par*(1+0.62*lambda_t))
         if (AllenDynes):
             #out_AD=f_1(mu_par)*f_2(mu_par)*self.w_log()/1.2 * np.exp(out2)
-            print ("f1,f2=",self.f_1(mu_par),self.f_2(mu_par))
-            out=self.f_1(mu_par)*self.f_2(mu_par)*self.w_log()/1.2 * np.exp(out2)
+            print ("f1,f2=",self.f_1(mu_par,lambda_t),self.f_2(mu_par))
+            out=self.f_1(mu_par,lambda_t)*self.f_2(mu_par)*self.w_log(lambda_t)/1.2 * np.exp(out2)
         else:
-            out=self.w_log()/1.2 * np.exp(out2)
+            out=self.w_log(lambda_t)/1.2 * np.exp(out2)
 
         return out
 
-    def w_log(self):
+    def w_log(self,lambda_t):
         """
         w_log calculated from Eliashberg
         """
@@ -850,14 +851,15 @@ class Eliashberg2(object):
         print("w=",self.w)
         mask = self.w >=  0
         w = self.w[mask]#*eV_to_K
-        w_log = np.exp(2.0/self.lambda_2*
+        # w_log = np.exp(2.0/self.lambda_2*
+        w_log = np.exp(2.0/lambda_t*
             #integrate.simpson(
             #(np.divide(self.a2F_new(self.w), self.w)*np.log(self.w)),self.w))
             np.trapz(
             (np.divide(self.a2F_new(w), w)*np.log(w)),w))
         return w_log
 
-    def w_2(self):
+    def w_2(self,lambda_t):
         eV_to_K=11604
         w = self.w#*eV_to_K
         # print ("**********************************************************")
@@ -868,27 +870,33 @@ class Eliashberg2(object):
         # self.plot_lambda(self.a2F_new(w)*w)
         # print ("**********************************************************")
 
-        w_2 = np.sqrt(2.0/self.lambda_2*
+        # w_2 = np.sqrt(2.0/self.lambda_2*
+        w_2 = np.sqrt(2.0/lambda_t*
             #integrate.simpson(
             np.trapz(
             (self.a2F_new(w)*w),w))
             #np.prod([self.a2F_new(w),w]),w))
         return w_2
 
-    def f_1(self,mu_par):
+    def f_1(self,mu_par,lambda_t):
         LAMBDA_temp = 2.46*(1+3.8*mu_par)
-        return np.power(1+np.power(self.lambda_2/LAMBDA_temp,3/2),1/3)
+        # return np.power(1+np.power(self.lambda_2/LAMBDA_temp,3/2),1/3)
+        return np.power(1+np.power(lambda_t/LAMBDA_temp,3/2),1/3)
 
-    def f_2(self,mu_par):
-        LAMBDA_temp =1.82*(1+6.3*mu_par)*(self.w_2()/self.w_log())
+    def f_2(self,mu_par,lambda_t):
+        LAMBDA_temp =1.82*(1+6.3*mu_par)*(self.w_2(lambda_t)/self.w_log(lambda_t))
         print("mu_par=",mu_par)#OK
         print ("LAMBDA_temp=",LAMBDA_temp) #ERROR
-        print ("w_2()=",self.w_2()) #ERROR
-        print ("w_log()=",self.w_log())
-        print ("return f2=",1 + (( self.w_2()/self.w_log() - 1) * self.lambda_2**2)/(
-        (self.lambda_2**2) + (LAMBDA_temp**2)))
-        return 1 + (( self.w_2()/self.w_log() - 1) * self.lambda_2**2)/(
-        (self.lambda_2**2) + (LAMBDA_temp**2))
+        print ("w_2(lambda)=",self.w_2(lambda_t)) #ERROR
+        print ("w_log(lambda)=",self.w_log(lambda_t))
+        # print ("return f2=",1 + (( self.w_2()/self.w_log() - 1) * self.lambda_2**2)/(
+        # (self.lambda_2**2) + (LAMBDA_temp**2)))
+        # return 1 + (( self.w_2()/self.w_log() - 1) * self.lambda_2**2)/(
+        # (self.lambda_2**2) + (LAMBDA_temp**2))
+        print ("return f2=",1 + (( self.w_2(lambda_t)/self.w_log(lambda_t) - 1) * lambda_t**2)/(
+        (lambda_t**2) + (LAMBDA_temp**2)))
+        return 1 + (( self.w_2(lambda_t)/self.w_log(lambda_t) - 1) * lambda_t**2)/(
+        (lambda_t**2) + (LAMBDA_temp**2))
 
     def plot_contour_d(self,data,mask_value=50, diagonal = True):
         print ("Leyendo datos")
