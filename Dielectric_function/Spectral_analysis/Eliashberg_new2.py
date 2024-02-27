@@ -513,7 +513,7 @@ class Eliashberg2(object):
 
         self.indice_zeros = 0
         self.N_qs = ((np.max(qx)*np.max(qy))+np.max([np.max(qx),np.max(qy)]))/(2*50)
-        self.N = 50*50
+        self.N = 50*50 #test for 3 and 5 
         print("factor N_qs=",self.N_qs,"::",self.N,"::",len(Omega))
 
     def read_Ne(self,filename="out_DOS.dat"):

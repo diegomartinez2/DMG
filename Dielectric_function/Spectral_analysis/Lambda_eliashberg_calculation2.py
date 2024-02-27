@@ -57,6 +57,14 @@ def main(arg):
         Omega = np.append(Omega,Omega_temp)
         Gamma = np.append(Gamma,Gamma_temp)
         Ratio = np.append(Ratio,Ratio_temp)
+        if False:
+            file_HP = "1DP"
+            qx_temp,qy_temp,Omega_temp,Gamma_temp,Ratio_temp = Excel_data(filename="{}_c".format(file_HP))
+            qx = np.append(qx,qx_temp)
+            qy = np.append(qy,qy_temp)
+            Omega = np.append(Omega,Omega_temp)
+            Gamma = np.append(Gamma,Gamma_temp)
+            Ratio = np.append(Ratio,Ratio_temp)
     else:
         file_HP = "HPII"
         qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c".format(file_HP))
@@ -67,7 +75,8 @@ def main(arg):
     # superconductor2.read_Ne()
     print("Omega range:",np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),'::',np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))))
     #frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
-    frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
+    frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),50000) #test
+    #frequencies = np.linspace(0,np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
     #superconductor2.plot_contour_d(data=[],mask_value=0, diagonal = True)
     lambda_1 = superconductor.Lambda_new(frequencies)
     # lambda_1_2 = superconductor2.Lambda_new(frequencies)
