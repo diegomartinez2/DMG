@@ -612,7 +612,7 @@ class Eliashberg2(object):
         center = self.Omega[:] #*put units correctly...
         width = self.Gamma[:] #*put units the same as center
         #width = np.absolute(width)
-        gauss_width = 50000*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
+        gauss_width = 100000*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         if (method == 1):
             #---------method1-------vvvv---
             summa = 0
@@ -848,9 +848,10 @@ class Eliashberg2(object):
         """
         eV_to_K=11604
         #eV_to_K = 11604.5250061657
-        print("w=",self.w)
+
         mask = self.w >=  0
         w = self.w[mask]#*eV_to_K
+        #print("w=",w)
         # w_log = np.exp(2.0/self.lambda_2*
         w_log = np.exp(2.0/lambda_t*
             #integrate.simpson(

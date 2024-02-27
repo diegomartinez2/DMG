@@ -47,7 +47,8 @@ def main(arg):
     #     Omaga=np.append(Omega,out[:,8])
     #     Gamma=np.append(Gamma,out[:,9])
     #     Ratio=np.append(Ratio,out[:,10])
-    qx,qy,Omega,Gamma,Ratio = Excel_data(filename="HPI_c")
+    file_HP = "HPII"
+    qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c".format(file_HP))
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
     # qx,qy,Omega,Gamma,Ratio = Excel_data(filename="HPII_c")
@@ -60,9 +61,9 @@ def main(arg):
     lambda_1 = superconductor.Lambda_new(frequencies)
     # lambda_1_2 = superconductor2.Lambda_new(frequencies)
     #np.savetxt('Lambda.txt', (lambda_1))
-    print('Lambda_1[HPI]=',lambda_1,'[Lambda calculated from Lambda_q for HPI]?') # Lambda calculated from Lambda_q
+    print('Lambda_1[{}]='.format(file_HP),lambda_1,'[Lambda calculated from Lambda_q for {}]?'.format(file_HP)) # Lambda calculated from Lambda_q
     #print('Lambda_1=',lambda_1*2*superconductor.Ne[np.where(superconductor.energy==0.0)[0][0]]) # Lambda calculated from Lambda_q#self.Ne[np.where(self.energy==0.0)[0][0]]
-    print('Lambda_2[HPI]=',superconductor.lambda_2,'[Lambda calculated fron Eliashberg function for HPI]?') #Lambda calculated fron Eliashberg function
+    print('Lambda_2[{}]='.format(file_HP),superconductor.lambda_2,'[Lambda calculated fron Eliashberg function for {}]?'.format(file_HP)) #Lambda calculated fron Eliashberg function
 
     # print('Lambda_1[HPII]=',lambda_1_2,'[Lambda calculated from Lambda_q for HPII]?')
     # print('Lambda_2[HPII]=',superconductor2.lambda_2,'[Lambda calculated fron Eliashberg function for HPII]?')
@@ -123,8 +124,11 @@ def main(arg):
     fig_a2F.savefig("Ajuste_d_{}".format("a2F"))
 #---plot-end
     # superconductor.lambda_2 += float(superconductor2.lambda_2)
+    np.savetxt("Lambda_{}".format(file_HP),[superconductor.lambda_2])
+    lambda_HPI = np.loadtxt("Lambda_HPI_c")
+    lambda_HPII = np.loadtxt("Lambda_HPII_c")
 
-    T_c = superconductor.T_c(mu_par=0.1,lambda_t=superconductor.lambda_2) #mu*=0.1 y mu*=0.15. Son los valores típicos.
+    T_c = superconductor.T_c(mu_par=0.1,lambda_t=(lambda_HPI+lambda_HPII)) #mu*=0.1 y mu*=0.15. Son los valores típicos.
     print("T_c=",T_c,"eV:: T_c=",T_c*11604,"K")
     np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c,T_c*11604), header='Lambda, T_C (eV), T_c (K)')
     pass
