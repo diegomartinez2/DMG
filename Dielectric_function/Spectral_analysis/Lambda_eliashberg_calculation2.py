@@ -155,7 +155,7 @@ def main(arg):
     # plt.tight_layout()
     # plt.show()
 
-    T_c = superconductor.T_c(mu_par=0.1,lambda_t=(lambda_HPI+lambda_HPII)) #mu*=0.1 y mu*=0.15. Son los valores típicos.
+    T_c = superconductor.T_c(mu_par=0.1,lambda_t=superconductor.lambda_2) #(lambda_HPI+lambda_HPII)) #mu*=0.1 y mu*=0.15. Son los valores típicos.
     print("T_c=",T_c,"eV:: T_c=",T_c*11604,"K")
     np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c,T_c*11604), header='Lambda, T_C (eV), T_c (K)')
     pass

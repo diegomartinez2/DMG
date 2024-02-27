@@ -765,7 +765,7 @@ class Eliashberg2(object):
             self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q_new(i))
         #Lambda_1=summa1/(len(center)-self.indice_zeros)
         Lambda_1=summa1/self.N
-        print("Test Lambda with lambda_q=",summa1/(len(center)),":test lambda_q[N]=",summa1/self.N,":lambda_q[N_qs]=",summa1/self.N_qs)
+        #print("Test Lambda with lambda_q=",summa1/(len(center)),":test lambda_q[N]=",summa1/self.N,":lambda_q[N_qs]=",summa1/self.N_qs)
         #method 2 -------------------------------
         self.lambda_2=[]
         w = Frequencies[Frequencies != 0]
