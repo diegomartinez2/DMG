@@ -851,7 +851,8 @@ class Eliashberg2(object):
 
         mask = self.w >=  0
         w = self.w[mask]#*eV_to_K
-        w = np.linspace(0.001,max(w),10000)
+        print("max(w)=",max(w))
+        #w = np.linspace(0.001,max(w),1000000)
         #print("w=",w)
         # w_log = np.exp(2.0/self.lambda_2*
         w_log = np.exp(2.0/lambda_t*
