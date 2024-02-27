@@ -842,7 +842,7 @@ class Eliashberg2(object):
         else:
             out=self.w_log(lambda_t)/1.2 * np.exp(out2)
 
-        return out/8.617e-5 #Boltzman constant in eV/K
+        return out/8.617333262e-5 #Boltzman constant in eV/K
 
     def w_log(self,lambda_t):
         """
