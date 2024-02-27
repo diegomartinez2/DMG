@@ -830,6 +830,7 @@ class Eliashberg2(object):
         Allen-Dynes formula (Advanced McMillan's equation and its application for the analysis of highly-compressed superconductors)
         Tc=W_log/1.2*exp(-1.04*(1+self.lambda_2)/(self.lambda_2-mu_*(1+0.62*self.lambda_2)))
         Note this is an approximation formula and is not accurate for some superconductors
+        formula from DOI 10.1007/s10948-017-4295-y
         """
         AllenDynes = True
         # out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lambda_2))
@@ -841,7 +842,7 @@ class Eliashberg2(object):
         else:
             out=self.w_log(lambda_t)/1.2 * np.exp(out2)
 
-        return out
+        return out/8.617e-5 #Boltzman constant in eV/K
 
     def w_log(self,lambda_t):
         """
