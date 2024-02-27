@@ -848,7 +848,7 @@ class Eliashberg2(object):
         """
         w_log calculated from Eliashberg
         """
-        eV_to_K=11604
+        #eV_to_K=11604
         #eV_to_K = 11604.5250061657
 
         mask = self.w >=  0
@@ -865,7 +865,7 @@ class Eliashberg2(object):
         return w_log
 
     def w_2(self,lambda_t):
-        eV_to_K=11604
+        #eV_to_K=11604
         w = self.w#*eV_to_K
         # print ("**********************************************************")
         # print ("w=",w)
