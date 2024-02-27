@@ -47,8 +47,19 @@ def main(arg):
     #     Omaga=np.append(Omega,out[:,8])
     #     Gamma=np.append(Gamma,out[:,9])
     #     Ratio=np.append(Ratio,out[:,10])
-    file_HP = "HPII"
-    qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c".format(file_HP))
+    if True:
+        file_HP = "HPI"
+        qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c".format(file_HP))
+        file_HP = "HPII"
+        qx_temp,qy_temp,Omega_temp,Gamma_temp,Ratio_temp = Excel_data(filename="{}_c".format(file_HP))
+        qx = np.append(qx,qx_temp)
+        qy = np.append(qy,qy_temp)
+        Omega = np.append(Omega,Omega_temp)
+        Gamma = np.append(Gamma,Gamma_temp)
+        Ratio = np.append(Ratio,Ratio_temp)
+    else:
+        file_HP = "HPII"
+        qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c".format(file_HP))
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
     # qx,qy,Omega,Gamma,Ratio = Excel_data(filename="HPII_c")
@@ -123,26 +134,26 @@ def main(arg):
     plt.show()
     fig_a2F.savefig("Ajuste_d_{}".format("a2F"))
 #---plot-end
-    # superconductor.lambda_2 += float(superconductor2.lambda_2)
-    np.savetxt("Lambda_{}".format(file_HP),[superconductor.lambda_2])
-    np.savetxt("a2F_{}".format(file_HP),np.vstack((frequencies, a2F_lista))) #.T)
-    lambda_HPI = np.loadtxt("Lambda_HPI_c")
-    lambda_HPII = np.loadtxt("Lambda_HPII_c")
-    frequencies_HPI,a2F_HPI = np.loadtxt("a2F_HPI")
-    frequencies_HPII,a2F_HPII = np.loadtxt("a2F_HPII")
-    # mask = a2F_HPII[:,  0] == a2F_HPI[:,  0]
-    # print("mask=",mask)
-    # np.add.at(a2F_HPII, (mask,  1), a2F_HPI[mask,  1])
-    fig_a2Ftot = plt.figure(figsize=(10,6))
-    ax = fig_a2Ftot.add_subplot(1, 1, 1)
-    ax.plot(a2F_HPI,frequencies_HPI)
-    ax.plot(a2F_HPII,frequencies_HPII)
-    ax.set_title('a2F total vs. $\omega$')
-    ax.set_ylabel('$\omega$ (meV)')
-    ax.set_xlabel('a2F HPI+HPII')
-    plt.plot ()
-    plt.tight_layout()
-    plt.show()
+    # # superconductor.lambda_2 += float(superconductor2.lambda_2)
+    # np.savetxt("Lambda_{}".format(file_HP),[superconductor.lambda_2])
+    # np.savetxt("a2F_{}".format(file_HP),np.vstack((frequencies, a2F_lista))) #.T)
+    # lambda_HPI = np.loadtxt("Lambda_HPI_c")
+    # lambda_HPII = np.loadtxt("Lambda_HPII_c")
+    # frequencies_HPI,a2F_HPI = np.loadtxt("a2F_HPI")
+    # frequencies_HPII,a2F_HPII = np.loadtxt("a2F_HPII")
+    # # mask = a2F_HPII[:,  0] == a2F_HPI[:,  0]
+    # # print("mask=",mask)
+    # # np.add.at(a2F_HPII, (mask,  1), a2F_HPI[mask,  1])
+    # fig_a2Ftot = plt.figure(figsize=(10,6))
+    # ax = fig_a2Ftot.add_subplot(1, 1, 1)
+    # ax.plot(a2F_HPI,frequencies_HPI)
+    # ax.plot(a2F_HPII,frequencies_HPII)
+    # ax.set_title('a2F total vs. $\omega$')
+    # ax.set_ylabel('$\omega$ (meV)')
+    # ax.set_xlabel('a2F HPI+HPII')
+    # plt.plot ()
+    # plt.tight_layout()
+    # plt.show()
 
     T_c = superconductor.T_c(mu_par=0.1,lambda_t=(lambda_HPI+lambda_HPII)) #mu*=0.1 y mu*=0.15. Son los valores típicos.
     print("T_c=",T_c,"eV:: T_c=",T_c*11604,"K")
