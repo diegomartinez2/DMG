@@ -513,7 +513,7 @@ class Eliashberg2(object):
 
         self.indice_zeros = 0
         self.N_qs = ((np.max(qx)*np.max(qy))+np.max([np.max(qx),np.max(qy)]))/(2*50)
-        self.N = 50*50 #test for 3 and 5 
+        self.N = 50*50 #test for 3 and 5
         print("factor N_qs=",self.N_qs,"::",self.N,"::",len(Omega))
 
     def read_Ne(self,filename="out_DOS.dat"):
@@ -832,7 +832,7 @@ class Eliashberg2(object):
         Note this is an approximation formula and is not accurate for some superconductors
         formula from DOI 10.1007/s10948-017-4295-y
         """
-        AllenDynes = True
+        AllenDynes = False
         # out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lambda_2))
         out2=-1.04*(1+lambda_t)/(lambda_t-mu_par*(1+0.62*lambda_t))
         if (AllenDynes):

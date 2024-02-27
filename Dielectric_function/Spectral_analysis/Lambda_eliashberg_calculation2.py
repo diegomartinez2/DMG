@@ -47,7 +47,7 @@ def main(arg):
     #     Omaga=np.append(Omega,out[:,8])
     #     Gamma=np.append(Gamma,out[:,9])
     #     Ratio=np.append(Ratio,out[:,10])
-    if True:
+    if False:
         file_HP = "HPI"
         qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c".format(file_HP))
         file_HP = "HPII"
