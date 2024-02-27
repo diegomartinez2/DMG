@@ -47,7 +47,7 @@ def main(arg):
     #     Omaga=np.append(Omega,out[:,8])
     #     Gamma=np.append(Gamma,out[:,9])
     #     Ratio=np.append(Ratio,out[:,10])
-    file_HP = "HPII"
+    file_HP = "HPI"
     qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c".format(file_HP))
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
@@ -125,16 +125,18 @@ def main(arg):
 #---plot-end
     # superconductor.lambda_2 += float(superconductor2.lambda_2)
     np.savetxt("Lambda_{}".format(file_HP),[superconductor.lambda_2])
-    np.savetxt("a2F_{}".format(file_HP),(frequencies,a2F_lista))
+    np.savetxt("a2F_{}".format(file_HP),np.vstack((frequencies, a2F_lista)).T)
     lambda_HPI = np.loadtxt("Lambda_HPI_c")
     lambda_HPII = np.loadtxt("Lambda_HPII_c")
-    a2F_HPI = np.loadtxt("a2F_HPI")
-    a2F_HPII = np.loadtxt("a2F_HPII")
-    mask = a2F_HPI[:,  0] == a2F_HPII[:,  0]
-    np.add.at(a2F_HPI, (mask,  1), a2F_HPII[mask,  1])
+    frequencies_HPI,a2F_HPI = np.loadtxt("a2F_HPI")
+    frequencies_HPII,a2F_HPII = np.loadtxt("a2F_HPII")
+    # mask = a2F_HPII[:,  0] == a2F_HPI[:,  0]
+    # print("mask=",mask)
+    # np.add.at(a2F_HPII, (mask,  1), a2F_HPI[mask,  1])
     fig_a2Ftot = plt.figure(figsize=(10,6))
     ax = fig_a2Ftot.add_subplot(1, 1, 1)
-    ax.plot(a2F_HPI,frequencies)
+    ax.plot(a2F_HPI,frequencies_HPI)
+    ax.plot(a2F_HPII,frequencies_HPII)
     ax.set_title('a2F total vs. $\omega$')
     ax.set_ylabel('$\omega$ (meV)')
     ax.set_xlabel('a2F HPI+HPII')
