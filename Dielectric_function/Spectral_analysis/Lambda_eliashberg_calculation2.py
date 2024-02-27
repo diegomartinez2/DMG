@@ -125,7 +125,7 @@ def main(arg):
 #---plot-end
     # superconductor.lambda_2 += float(superconductor2.lambda_2)
     np.savetxt("Lambda_{}".format(file_HP),[superconductor.lambda_2])
-    np.savetxt("a2F_{}".format(file_HP),np.vstack((frequencies, a2F_lista)).T)
+    np.savetxt("a2F_{}".format(file_HP),np.vstack((frequencies, a2F_lista))) #.T)
     lambda_HPI = np.loadtxt("Lambda_HPI_c")
     lambda_HPII = np.loadtxt("Lambda_HPII_c")
     frequencies_HPI,a2F_HPI = np.loadtxt("a2F_HPI")
