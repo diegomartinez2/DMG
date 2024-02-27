@@ -827,8 +827,9 @@ class Eliashberg2(object):
 
     def T_c(self,mu_par,lambda_t):
         """
-        Allen-Dynes formula
+        Allen-Dynes formula (Advanced McMillan's equation and its application for the analysis of highly-compressed superconductors)
         Tc=W_log/1.2*exp(-1.04*(1+self.lambda_2)/(self.lambda_2-mu_*(1+0.62*self.lambda_2)))
+        Note this is an approximation formula and is not accurate for some superconductors
         """
         AllenDynes = True
         # out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lambda_2))
