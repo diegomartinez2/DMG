@@ -158,7 +158,9 @@ def main(arg):
     T_c = superconductor.T_c(mu_par=0.1,lambda_t=superconductor.lambda_2) #(lambda_HPI+lambda_HPII)) #mu*=0.1 y mu*=0.15. Son los valores típicos.
     #print("T_c=",T_c,"eV:: T_c=",T_c*11604,"K")
     print("T_c=",T_c,"K")
-    np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c,T_c*11604), header='Lambda, T_C (eV), T_c (K)')
+    #np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c,T_c*11604), header='Lambda, T_C (eV), T_c (K)')
+    np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_C (K)')
+    #print("Test Tc: Tc(lambda=1)=",superconductor.T_c(mu_par=0.1,lambda_t=1),"K")
     pass
 
 if __name__ == '__main__':
