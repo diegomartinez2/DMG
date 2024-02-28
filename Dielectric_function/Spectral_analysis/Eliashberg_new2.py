@@ -832,7 +832,7 @@ class Eliashberg2(object):
         Note this is an approximation formula and is not accurate for some superconductors
         formula from DOI 10.1007/s10948-017-4295-y
         """
-        AllenDynes = False
+        AllenDynes = True
         # out2=-1.04*(1+self.lambda_2)/(self.lambda_2-mu_par*(1+0.62*self.lambda_2))
         out2=-1.04*(1+lambda_t)/(lambda_t-mu_par*(1+0.62*lambda_t))
         if (AllenDynes):
