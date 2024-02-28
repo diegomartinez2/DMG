@@ -288,6 +288,7 @@ class Plasmon_analysis(object):
         ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
 
         cbar = fig.colorbar(cax)
+        plt.tight_layout()
         plt.show()
         pass
 
@@ -320,6 +321,7 @@ class Plasmon_analysis(object):
             plt.savefig("Ajuste_{}".format("original_vs_fitted"))
         else:
             plt.savefig("Ajuste_{}_{}".format(self.namefile,"original_vs_fitted"))
+        plt.tight_layout()
         plt.show()
         pass
 
@@ -374,7 +376,7 @@ class Plasmon_analysis(object):
             plt.savefig("Ajuste_d_{}".format("original_vs_fitted"))
         else:
             plt.savefig("Ajuste_d_{}_{}".format(self.namefile,"original_vs_fitted"))
-
+        plt.tight_layout()
         plt.show()
         pass
 
@@ -691,6 +693,7 @@ class Eliashberg2(object):
         #plt.figure().set_figwidth(15)
         #plt.figure().set_figheight(2)
         plt.plot(x,w)
+        plt.tight_layout()
         plt.show()
         pass
 
@@ -851,7 +854,8 @@ class Eliashberg2(object):
         #eV_to_K=11604
         #eV_to_K = 11604.5250061657
 
-        mask = self.w >=  0
+        #mask = self.w >=  0
+        mask = self.w >  0
         w = self.w[mask]#*eV_to_K
         print("max(w)=",max(w))
         #w = np.linspace(0.001,max(w),1000000)
@@ -922,16 +926,17 @@ class Eliashberg2(object):
         	vmin = 0.0 , vmax = 0.2,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
-        ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
+        ax1.set_ylabel(r'Frequency (eV*5001)', fontsize=12)
 
 
         print (mask)
-        cax2 = ax1.scatter(x = self.qy[mask]/50, y = self.Omega[mask]*5,c='k',marker='x',s=10)
-        cax2 = ax1.scatter(x = self.qy[mask]/50, y = (self.Omega[mask]+self.Gamma[mask]/2)*5,c='k',marker='1',s=10)
-        cax2 = ax1.scatter(x = self.qy[mask]/50, y = (self.Omega[mask]-self.Gamma[mask]/2)*5,c='k',marker='2',s=10)
-        cax3 = ax1.errorbar(x = self.qy[mask]/50, y = self.Omega[mask]*5, yerr = self.Gamma[mask]*5/2, fmt = 'o') #¿y*5001? para la escala
+        cax2 = ax1.scatter(x = self.qy[mask]/50, y = self.Omega[mask]*5001,c='k',marker='x',s=10)
+        cax2 = ax1.scatter(x = self.qy[mask]/50, y = (self.Omega[mask]+self.Gamma[mask]/2)*5001,c='k',marker='1',s=10)
+        cax2 = ax1.scatter(x = self.qy[mask]/50, y = (self.Omega[mask]-self.Gamma[mask]/2)*5001,c='k',marker='2',s=10)
+        cax3 = ax1.errorbar(x = self.qy[mask]/50, y = self.Omega[mask]*5001, yerr = self.Gamma[mask]*5001/2, fmt = 'o') #¿y*5001? para la escala
         #cbar = fig.colorbar(cax)
         print("qx=",self.qx[1:10])
+        plt.tight_layout()
         plt.show()
 
         pass

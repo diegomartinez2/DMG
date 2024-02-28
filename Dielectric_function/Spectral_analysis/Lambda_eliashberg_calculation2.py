@@ -25,10 +25,10 @@ def Excel_data(filename):
         Omaga=np.append(Omega,out[:,8])
         Gamma=np.append(Gamma,out[:,9])
         Ratio=np.append(Ratio,out[:,10])
-    return qx,qy,Omega,Gamma,Ratio
+    return qx,qy,Omega/1000,Gamma/1000,Ratio
 
 def main(arg):
-    calculate_all_hyperplasmons = True
+    calculate_all_hyperplasmons = False
     calculate_all_hyperplasmons_and_1DP = False
     # out = Eliashberg.read_1_excel_file(filename="HPI_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
     # #qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
@@ -67,7 +67,7 @@ def main(arg):
             Gamma = np.append(Gamma,Gamma_temp)
             Ratio = np.append(Ratio,Ratio_temp)
     else:
-        file_HP = "HPI"
+        file_HP = "HPII"
         qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c".format(file_HP))
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
@@ -78,7 +78,7 @@ def main(arg):
     #frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
     frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),50000) #test
     #frequencies = np.linspace(0,np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
-    #superconductor2.plot_contour_d(data=[],mask_value=0, diagonal = True)
+    superconductor.plot_contour_d(data=[],mask_value=0, diagonal = True)
     lambda_1 = superconductor.Lambda_new(frequencies)
     # lambda_1_2 = superconductor2.Lambda_new(frequencies)
     #np.savetxt('Lambda.txt', (lambda_1))
@@ -94,6 +94,7 @@ def main(arg):
         gauss[w] = superconductor.gaussian(w, 50.0,10.0)
     plt.figure(figsize=(10,6))
     plt.plot(gauss)
+    plt.tight_layout()
     plt.show()
     print(np.trapz(gauss))
     w = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000)
