@@ -1,6 +1,6 @@
 #import Spectral_plasmons_analysis
 #import Eliashberg
-import Eliashberg_new2 as Eliashberg
+import Eliashberg_new_clean as Eliashberg
 import numpy as np
 import os.path
 import matplotlib.pyplot as plt
