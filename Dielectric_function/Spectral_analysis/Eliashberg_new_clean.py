@@ -629,8 +629,6 @@ class Eliashberg2(object):
         if (self.Omega[i]!=0):
             Lamb_q=(1/(np.pi*self.N_ef)) * (self.Ratio[i])/(self.Omega[i]) #fix from omega to omega²
         else:
-            print(self.Omega)
-            print("self.Gamma[",i,"]=",self.Omega[i])
             Lamb_q=0
             self.indice_zeros += 1
             print("Indice_zeros=",self.indice_zeros)
@@ -763,8 +761,8 @@ class Eliashberg2(object):
         w = Frequencies[Frequencies != 0]
         mask = w >  0
         self.w = w[mask]
-        res = self.a2F_new(w)
-        a2F_x = np.divide(res, w)
+        res = np.absolute(self.a2F_new(w))
+        a2F_x = np.absolute(np.divide(res, w))
         #res = np.absolute(self.a2F_new(w))
         #a2F_x = np.absolute(np.divide(res, w))
         #self.lambda_2 = 2*integrate.simpson(a2F_x,w)

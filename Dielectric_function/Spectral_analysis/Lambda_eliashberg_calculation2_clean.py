@@ -6,7 +6,11 @@ import os.path
 import matplotlib.pyplot as plt
 from scipy import integrate
 
-def Excel_data(filename):
+def Excel_data(filename,flag_1DP = False):
+    """
+    Read the data for the plasmons in cuprate from the excel files.
+    If the file is for the 1DP...
+    """
     out = Eliashberg.read_1_excel_file(filename=filename) #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
     #qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     qx=out[:,0]
@@ -14,7 +18,7 @@ def Excel_data(filename):
     Omega=out[:,2]
     Gamma=out[:,3]
     Ratio=out[:,4]
-    if False: #make true for "1DP" or "1DP_c"
+    if flag_1DP: #make true for "1DP" or "1DP_c"
         qx=np.append(qx,out[:,0])
         qy=np.append(qy,out[:,1])
         Omega=np.append(Omega,out[:,5])
@@ -28,7 +32,7 @@ def Excel_data(filename):
     return qx,qy,Omega/1000,Gamma/1000,Ratio
 
 def main(arg):
-    calculate_all_hyperplasmons = True
+    calculate_all_hyperplasmons = False
     calculate_all_hyperplasmons_and_1DP = False
     plot_contour_flag = False
 
@@ -44,14 +48,14 @@ def main(arg):
         Ratio = np.append(Ratio,Ratio_temp)
         if calculate_all_hyperplasmons_and_1DP:
             file_HP = "1DP"
-            qx_temp,qy_temp,Omega_temp,Gamma_temp,Ratio_temp = Excel_data(filename="{}_c".format(file_HP))
+            qx_temp,qy_temp,Omega_temp,Gamma_temp,Ratio_temp = Excel_data(filename="{}_c".format(file_HP),flag_1DP=True)
             qx = np.append(qx,qx_temp)
             qy = np.append(qy,qy_temp)
             Omega = np.append(Omega,Omega_temp)
             Gamma = np.append(Gamma,Gamma_temp)
             Ratio = np.append(Ratio,Ratio_temp)
     else:
-        file_HP = "HPII"
+        file_HP = "1DP"
         qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c".format(file_HP))
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
@@ -129,9 +133,11 @@ def main(arg):
     # plt.plot ()
     # plt.tight_layout()
     # plt.show()
-
-    T_c = superconductor.T_c(mu_par=0.1,lambda_t=superconductor.lambda_2) #(lambda_HPI+lambda_HPII)) #mu*=0.1 y mu*=0.15. Son los valores típicos.
+    print(superconductor.lambda_w_lista[-1])
+    #T_c = superconductor.T_c(mu_par=0.1,lambda_t=superconductor.lambda_2) #(lambda_HPI+lambda_HPII)) #mu*=0.1 y mu*=0.15. Son los valores típicos.
+    T_c = superconductor.T_c(mu_par=0.1,lambda_t=superconductor.lambda_w_lista[-1]) #(lambda_HPI+lambda_HPII)) #mu*=0.1 y mu*=0.15. Son los valores típicos.
     print("T_c=",T_c,"K")
+    print("test T_C*K_b²=",T_c*8.617333262e-5*8.617333262e-5)
     np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_C (K)')
     pass
 
