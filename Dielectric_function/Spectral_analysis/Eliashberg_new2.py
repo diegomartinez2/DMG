@@ -513,7 +513,7 @@ class Eliashberg2(object):
 
         self.indice_zeros = 0
         self.N_qs = ((np.max(qx)*np.max(qy))+np.max([np.max(qx),np.max(qy)]))/(2*50)
-        self.N = 50*50 #test for 3 and 5
+        self.N = 50*50 #test for 3 and 5 (maybe *4 for the 4 cuadrants and *2 for the HPII AND HPI :: and  the 1DP has 3 plasmons)
         print("factor N_qs=",self.N_qs,"::",self.N,"::",len(Omega))
 
     def read_Ne(self,filename="out_DOS.dat"):
@@ -626,7 +626,7 @@ class Eliashberg2(object):
                     simmetry_factor =  1 #4
                 elif self.qx[i] == self.qy[i]:
                     simmetry_factor =  1 #4
-                summa += self.Lambda_q_new(i)*self.Omega[i] * self.gaussian(x,self.Omega[i],gauss_width)
+                summa += self.Lambda_q_new(i)*self.Omega[i] * self.gaussian(x,self.Omega[i],gauss_width) * simmetry_factor
             #return summa/(2*(len(self.Omega)-self.indice_zeros))
             return summa/(2*self.N)
         else:
