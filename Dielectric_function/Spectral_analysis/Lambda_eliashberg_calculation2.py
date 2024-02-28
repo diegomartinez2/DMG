@@ -30,6 +30,7 @@ def Excel_data(filename):
 def main(arg):
     calculate_all_hyperplasmons = False
     calculate_all_hyperplasmons_and_1DP = False
+    plot_contour_flag = False
     # out = Eliashberg.read_1_excel_file(filename="HPI_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
     # #qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     # qx=out[:,0]
@@ -76,9 +77,10 @@ def main(arg):
     # superconductor2.read_Ne()
     print("Omega range:",np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),'::',np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))))
     #frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
-    frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),50000) #test
+    frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),1000) #test
     #frequencies = np.linspace(0,np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),20000) #test
-    superconductor.plot_contour_d(data=[],mask_value=0, diagonal = True)
+    if plot_contour_flag:
+        superconductor.plot_contour_d(data=[],mask_value=0, diagonal = True)
     lambda_1 = superconductor.Lambda_new(frequencies)
     # lambda_1_2 = superconductor2.Lambda_new(frequencies)
     #np.savetxt('Lambda.txt', (lambda_1))
@@ -137,7 +139,7 @@ def main(arg):
     ax = fig_a2F.add_subplot(1, 1, 1)
     ax.plot(a2F_lista,frequencies)
     ax.set_title('a2F vs. $\omega$')
-    ax.set_ylabel('$\omega$ (meV)')
+    ax.set_ylabel('$\omega$ (eV)')
     ax.set_xlabel('a2F')
 
     plt.plot ()
@@ -166,7 +168,7 @@ def main(arg):
     # plt.tight_layout()
     # plt.show()
 
-    T_c = superconductor.T_c(mu_par=0.368,lambda_t=superconductor.lambda_2) #(lambda_HPI+lambda_HPII)) #mu*=0.1 y mu*=0.15. Son los valores típicos.
+    T_c = superconductor.T_c(mu_par=0.1,lambda_t=superconductor.lambda_2) #(lambda_HPI+lambda_HPII)) #mu*=0.1 y mu*=0.15. Son los valores típicos.
     #print("T_c=",T_c,"eV:: T_c=",T_c*11604,"K")
     print("T_c=",T_c,"K")
     #np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c,T_c*11604), header='Lambda, T_C (eV), T_c (K)')
