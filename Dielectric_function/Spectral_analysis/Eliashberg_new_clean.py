@@ -629,9 +629,11 @@ class Eliashberg2(object):
         if (self.Omega[i]!=0):
             Lamb_q=(1/(np.pi*self.N_ef)) * (self.Ratio[i])/(self.Omega[i]) #fix from omega to omega²
         else:
-            Lamb_q=0
-            self.indice_zeros += 1
-            print("Indice_zeros=",self.indice_zeros)
+            print("error, Omega<0")
+            exit()
+        #     Lamb_q=0
+        #     self.indice_zeros += 1
+        #     print("Indice_zeros=",self.indice_zeros)
         return Lamb_q
 
     def a2F_new(self,x,method = 0):
@@ -741,34 +743,37 @@ class Eliashberg2(object):
         summa1 = 0
         self.lambda_q_lista = np.array([])
         for i in range(len(center)):  #summa in q (6x6x6 or q_x*q_y)
-            simmetry_factor =  2 #8
+            symmetry_factor =  2 #8
             if self.qx[i] ==  0:
-                simmetry_factor =  1 #4
+                symmetry_factor =  1 #4
                 if self.qy[i] ==  0:
-                    simmetry_factor =  0 #1 #test taking out the qx=qy=0
+                    symmetry_factor =  0 #1 #test taking out the qx=qy=0
             elif self.qy[i] ==  0:
-                simmetry_factor =  1 #4
+                symmetry_factor =  1 #4
             elif self.qx[i] == self.qy[i]:
-                simmetry_factor =  1 #4
+                symmetry_factor =  1 #4
 
-            summa1 += self.Lambda_q_new(i)*simmetry_factor
-            self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q_new(i))
+            summa1 += self.Lambda_q_new(i)*symmetry_factor
+            self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q_new(i)*symmetry_factor)
+            
         #Lambda_1=summa1/(len(center)-self.indice_zeros)
         Lambda_1=summa1/self.N
         #print("Test Lambda with lambda_q=",summa1/(len(center)),":test lambda_q[N]=",summa1/self.N,":lambda_q[N_qs]=",summa1/self.N_qs)
         #method 2 -------------------------------
         self.lambda_2=[]
-        w = Frequencies[Frequencies != 0]
-        mask = w >  0
-        self.w = w[mask]
-        res = np.absolute(self.a2F_new(w))
-        a2F_x = np.absolute(np.divide(res, w))
+        mask = Frequencies >  0
+        self.w = Frequencies[mask]
+        # w = Frequencies[Frequencies != 0]
+        # mask = w >  0
+        # self.w = w[mask]
+        res = np.absolute(self.a2F_new(self.w))
+        a2F_x = np.absolute(np.divide(res, self.w))
         #res = np.absolute(self.a2F_new(w))
         #a2F_x = np.absolute(np.divide(res, w))
         #self.lambda_2 = 2*integrate.simpson(a2F_x,w)
-        self.lambda_2 = 2*np.trapz(a2F_x, w)
+        self.lambda_2 = 2*np.trapz(a2F_x, self.w)
         print("plot a2F(w)")
-        self.plot_lambda(res,w)
+        self.plot_lambda(res,self.w)
         print("plot Lambda(w)")
         #self.lambda_w_lista = []
         #-------removin negatives w's---
