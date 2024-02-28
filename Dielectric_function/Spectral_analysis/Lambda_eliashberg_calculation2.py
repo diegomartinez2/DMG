@@ -28,7 +28,8 @@ def Excel_data(filename):
     return qx,qy,Omega,Gamma,Ratio
 
 def main(arg):
-
+    calculate_all_hyperplasmons = True
+    calculate_all_hyperplasmons_and_1DP = False
     # out = Eliashberg.read_1_excel_file(filename="HPI_c") #filenames=('1DP','HPI','HPII');filenames=('1DP_c','HPI_c','HPII'_c)
     # #qx,qy,Omega,Gamma,Ratio = Eliashberg.Excel_data_parser(out)
     # qx=out[:,0]
@@ -47,7 +48,7 @@ def main(arg):
     #     Omaga=np.append(Omega,out[:,8])
     #     Gamma=np.append(Gamma,out[:,9])
     #     Ratio=np.append(Ratio,out[:,10])
-    if True:
+    if calculate_all_hyperplasmons:
         file_HP = "HPI"
         qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c".format(file_HP))
         file_HP = "HPII"
@@ -57,7 +58,7 @@ def main(arg):
         Omega = np.append(Omega,Omega_temp)
         Gamma = np.append(Gamma,Gamma_temp)
         Ratio = np.append(Ratio,Ratio_temp)
-        if False:
+        if calculate_all_hyperplasmons_and_1DP:
             file_HP = "1DP"
             qx_temp,qy_temp,Omega_temp,Gamma_temp,Ratio_temp = Excel_data(filename="{}_c".format(file_HP))
             qx = np.append(qx,qx_temp)
@@ -66,7 +67,7 @@ def main(arg):
             Gamma = np.append(Gamma,Gamma_temp)
             Ratio = np.append(Ratio,Ratio_temp)
     else:
-        file_HP = "HPII"
+        file_HP = "HPI"
         qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c".format(file_HP))
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
