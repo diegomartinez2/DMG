@@ -648,7 +648,7 @@ class Eliashberg2(object):
 
         center = self.Omega[:] #*put units correctly...
         width = self.Gamma[:] #*put units the same as center
-        gauss_width = 100*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
+        gauss_width = 5*self.from_cm1_to_eV#(units.invcm/units.Hartree) #0.00002 # test the units of this... should be aprox. 5 cm-1 (1, 5 or 10)
         if (method == 1):
             #---------method1-------vvvv---
             summa = 0
@@ -763,8 +763,10 @@ class Eliashberg2(object):
         w = Frequencies[Frequencies != 0]
         mask = w >  0
         self.w = w[mask]
-        res = np.absolute(self.a2F_new(w))
-        a2F_x = np.absolute(np.divide(res, w))
+        res = self.a2F_new(w)
+        a2F_x = np.divide(res, w)
+        #res = np.absolute(self.a2F_new(w))
+        #a2F_x = np.absolute(np.divide(res, w))
         #self.lambda_2 = 2*integrate.simpson(a2F_x,w)
         self.lambda_2 = 2*np.trapz(a2F_x, w)
         print("plot a2F(w)")
