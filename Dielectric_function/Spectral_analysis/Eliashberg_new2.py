@@ -486,7 +486,89 @@ class Eliashberg2(object):
     This object calculates the Lambda from two methods:
     From the Eliashberg function amd fron the lambda at the q points.
     """
-
+    # def Lambda_q(self,gamma_q,omega_q,Nef):
+    #     """
+    #     Calculates the Lambda(q) functions
+    #     ---input---
+    #     gamma_q: widths of the lorentzian fitting of the plasmon
+    #     omega_q: Frequencies of the plasmon, fitted to lorentzian
+    #     Nef: Density of states at Fermi level per cell
+    #     ---output---
+    #     Lamb_q: Lambda(q)
+    #     """
+    #     Lamb_q=(1/(np.pi*Nef)) * (gamma_q/omega_q**2) #fix from omega to omega²
+    #     return Lamb_q
+    # def a2F(self,x):
+    #     """
+    #     Calculates the Eliashberg spectral functions
+    #     ---input---
+    #     x: coordiate to calculate the Eliashberg function.
+    #     ---output---
+    #     a2F = factor1*summa: The Eliashberg function at "x"
+    #     """
+    #     method=1
+    #     center = self.Omega
+    #     width = self.Gamma
+    #     width = np.absolute(width)
+    #     gauss_width = 0.004 #from 0.01 [0.1,0.05,0.01,0.005,0.001,0.0005,0.0001] 0.004 is the best option for the test
+    #     summa = 0
+    #     #---------method1---------------
+    #     if (method==1):
+    #         #factor1 = 1 / (2*(len(center)-self.indice_zeros)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
+    #         factor1 = 1 / (2*self.N) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
+    #         for i in range(len(center)):
+    #             summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width)
+    #         return factor1*summa
+    #     #--------method2------------------
+    #     else:
+    #         #factor2 = 1 / (2*np.pi*self.N_ef*(len(center-self.indice_zeros))) #a2F(w)=1/2piN(EF)N Sum{(Gamma/Omega)*delta(w-Omega)}
+    #         factor2 = 1 / (2*np.pi*self.N_ef*self.N) #a2F(w)=1/2piN(EF)N Sum{(Gamma/Omega)*delta(w-Omega)}
+    #         for i in range(len(center)):
+    #             summa += (width/center) * self.gaussian(x,center[i],gauss_width)
+    #         return factor2*summa
+    #     def Lambda(self,Frequencies):
+    #         """
+    #         Calculates the Lambda by two methods, notice that it must calculate the integral
+    #         in a range that takes the Lorenztian obtained by the Plasmon_analysis object.
+    #         """
+    #         center = self.Omega
+    #         width = self.Gamma
+    #         #print('len(Center)-indice_zeros=',len(center)-self.indice_zeros)
+    #         #Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
+    #         Nef = self.N_ef
+    #         center = np.absolute(center) #test to force the abs
+    #         width = np.absolute(width)
+    #         summa1 = 0
+    #         for i in range(len(center)):
+    #             summa1 += self.Lambda_q(width[i],center[i],Nef)
+    #         #Lambda_1=summa1/(len(center)-self.indice_zeros) #* 33 #misterious factor... joking, this is the number of nodes in the example.
+    #         Lambda_1=summa1/self.N
+    #         self.lambda_2=[]
+    # #        Frequncies = Frequencies+1
+    # #        Frequencies = np.append(Frequencies,Frequncies, axis=0)
+    #         if (Frequencies[0] != 0):
+    #              Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
+    #         else:
+    #              Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
+    # #        for w in Frequencies[0:int(2*len(Frequencies)/3)]:
+    #         for w in Frequencies[0:int(len(Frequencies))]: #edit for test
+    #              print('Frequencie(',w,')              ', end="\r", flush=True)
+    #              if (w == 0):
+    #                  a2F_x = []
+    #              else:
+    #                  a2F_x.append(self.a2F(w)/w)
+    # #---test--v--multiprocessing*****
+    #         w = Frequencies[Frequencies != 0]
+    #         # w = np.append(w,w[:len(w)//3]+w[-1]) # to expand the frequencies to cover the widths (and some extra) for the calculations
+    #         with mp.Pool() as pool:
+    #            res = pool.map(self.a2F,w)
+    #         # a2F_x = res / w #or np.divide(res, w)
+    #         a2F_x = np.divide(res, w)
+    # #---test--^--multiprocessing*****
+    #         #self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies)) <-- this makes lambda1 20 times bigger than lambda2 (???)
+    #         self.lambda_2 = 2*np.trapz(a2F_x) #test <-- this lambda2 is 250 times lambda1 (that corresponds to q_x*q_y ???)
+    #         self.plot_lambda(a2F_x,w)
+    #         return Lambda_1
     def __init__(self, qx,qy,Omega,Gamma,Ratio):
         """
         Set parameters into object and transformation units.
@@ -537,19 +619,6 @@ class Eliashberg2(object):
         self.N_ef = self.Ne[(np.where(self.energy==0.0)[0][0])] #1.8855775
         pass
 
-    def Lambda_q(self,gamma_q,omega_q,Nef):
-        """
-        Calculates the Lambda(q) functions
-        ---input---
-        gamma_q: widths of the lorentzian fitting of the plasmon
-        omega_q: Frequencies of the plasmon, fitted to lorentzian
-        Nef: Density of states at Fermi level per cell
-        ---output---
-        Lamb_q: Lambda(q)
-        """
-        Lamb_q=(1/(np.pi*Nef)) * (gamma_q/omega_q**2) #fix from omega to omega²
-        return Lamb_q
-
     def Lambda_q_new(self,i):
         """
         Calculates the Lambda(q) functions
@@ -571,35 +640,6 @@ class Eliashberg2(object):
             self.indice_zeros += 1
             print("Indice_zeros=",self.indice_zeros)
         return Lamb_q
-
-    def a2F(self,x):
-        """
-        Calculates the Eliashberg spectral functions
-        ---input---
-        x: coordiate to calculate the Eliashberg function.
-        ---output---
-        a2F = factor1*summa: The Eliashberg function at "x"
-        """
-        method=1
-        center = self.Omega
-        width = self.Gamma
-        width = np.absolute(width)
-        gauss_width = 0.004 #from 0.01 [0.1,0.05,0.01,0.005,0.001,0.0005,0.0001] 0.004 is the best option for the test
-        summa = 0
-        #---------method1---------------
-        if (method==1):
-            #factor1 = 1 / (2*(len(center)-self.indice_zeros)) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
-            factor1 = 1 / (2*self.N) #a2F(w)=1/2N Sum{Lambda*Omega*delta(w-Omega)}
-            for i in range(len(center)):
-                summa += (width[i]*center[i]) * self.gaussian(x,center[i],gauss_width)
-            return factor1*summa
-        #--------method2------------------
-        else:
-            #factor2 = 1 / (2*np.pi*self.N_ef*(len(center-self.indice_zeros))) #a2F(w)=1/2piN(EF)N Sum{(Gamma/Omega)*delta(w-Omega)}
-            factor2 = 1 / (2*np.pi*self.N_ef*self.N) #a2F(w)=1/2piN(EF)N Sum{(Gamma/Omega)*delta(w-Omega)}
-            for i in range(len(center)):
-                summa += (width/center) * self.gaussian(x,center[i],gauss_width)
-            return factor2*summa
 
     def a2F_new(self,x,method = 0):
         """
@@ -697,50 +737,6 @@ class Eliashberg2(object):
         plt.show()
         pass
 
-    def Lambda(self,Frequencies):
-        """
-        Calculates the Lambda by two methods, notice that it must calculate the integral
-        in a range that takes the Lorenztian obtained by the Plasmon_analysis object.
-        """
-        center = self.Omega
-        width = self.Gamma
-        #print('len(Center)-indice_zeros=',len(center)-self.indice_zeros)
-        #Nef = self.Ne[np.where(self.energy==0.0)[0][0]]  #test
-        Nef = self.N_ef
-        center = np.absolute(center) #test to force the abs
-        width = np.absolute(width)
-        summa1 = 0
-        for i in range(len(center)):
-            summa1 += self.Lambda_q(width[i],center[i],Nef)
-        #Lambda_1=summa1/(len(center)-self.indice_zeros) #* 33 #misterious factor... joking, this is the number of nodes in the example.
-        Lambda_1=summa1/self.N
-        self.lambda_2=[]
-#        Frequncies = Frequencies+1
-#        Frequencies = np.append(Frequencies,Frequncies, axis=0)
-        if (Frequencies[0] != 0):
-             Frequencies = np.append(Frequencies,Frequencies[:len(Frequencies)//3]+Frequencies[-1])
-        else:
-             Frequencies = np.append(Frequencies,Frequencies[1:len(Frequencies)//3]+Frequencies[-1])
-#        for w in Frequencies[0:int(2*len(Frequencies)/3)]:
-        for w in Frequencies[0:int(len(Frequencies))]: #edit for test
-             print('Frequencie(',w,')              ', end="\r", flush=True)
-             if (w == 0):
-                 a2F_x = []
-             else:
-                 a2F_x.append(self.a2F(w)/w)
-#---test--v--multiprocessing*****
-        w = Frequencies[Frequencies != 0]
-        # w = np.append(w,w[:len(w)//3]+w[-1]) # to expand the frequencies to cover the widths (and some extra) for the calculations
-        with mp.Pool() as pool:
-           res = pool.map(self.a2F,w)
-        # a2F_x = res / w #or np.divide(res, w)
-        a2F_x = np.divide(res, w)
-#---test--^--multiprocessing*****
-        #self.lambda_2 = 2*np.trapz(a2F_x,dx=(Frequencies[-1]-Frequencies[0])/len(Frequencies)) <-- this makes lambda1 20 times bigger than lambda2 (???)
-        self.lambda_2 = 2*np.trapz(a2F_x) #test <-- this lambda2 is 250 times lambda1 (that corresponds to q_x*q_y ???)
-        self.plot_lambda(a2F_x,w)
-        return Lambda_1
-
     def Lambda_new(self,Frequencies):
         """
         Calculates the Lambda by two methods, notice that it must calculate the integral
@@ -772,12 +768,13 @@ class Eliashberg2(object):
         #method 2 -------------------------------
         self.lambda_2=[]
         w = Frequencies[Frequencies != 0]
-        self.w = w
+        mask = w >  0
+        self.w = w[mask]
         #w = np.linspace(0.0001,0.9999,20000) #test
         # with mp.Pool() as pool:
         #     res = pool.map(self.a2F_new,w)
-        res = self.a2F_new(w)
-        a2F_x = np.divide(res, w)
+        res = np.absolute(self.a2F_new(w))
+        a2F_x = np.absolute(np.divide(res, w))
         #self.lambda_2_test2 = 2*integrate.simpson(np.divide(res,w)*self.from_cm1_to_Hartree /29.9792458,w)
         #self.lambda_2 = 2*integrate.simpson(a2F_x,w)
         self.lambda_2 = 2*np.trapz(a2F_x, w)
@@ -786,8 +783,9 @@ class Eliashberg2(object):
         print("plot Lambda(w)")
         #self.lambda_w_lista = []
         #-------removin negatives w's---
-        mask = w >=  0
-        self.w_0 = w[mask]
+        #mask = w >=  0
+        #mask = self.w >  0
+        self.w_0 = self.w #w[mask]
         self.lambda_w_lista = np.zeros(len(self.w_0))
         #print("a2F(",i,")/w=",np.divide(self.a2F_new(self.w_0), self.w_0)) #test
         diff_w_0 = np.diff(self.w_0)
