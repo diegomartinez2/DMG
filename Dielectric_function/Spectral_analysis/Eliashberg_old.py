@@ -564,6 +564,7 @@ class Eliashberg(object):
         #plt.figure().set_figwidth(15)
         #plt.figure().set_figheight(2)
         plt.plot(x)
+        plt.tight_layout()
         plt.show()
         pass
 
@@ -840,6 +841,7 @@ class Eliashberg_test(object):
         #plt.figure().set_figwidth(15)
         #plt.figure().set_figheight(2)
         plt.plot(x)
+        plt.tight_layout()
         plt.show()
         pass
 
