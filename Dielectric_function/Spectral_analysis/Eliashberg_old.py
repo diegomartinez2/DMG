@@ -224,6 +224,7 @@ class Plasmon_analysis(object):
         ax1.set_ylabel(r'Frequency (cm$^{-1}$)', fontsize=12)
 
         cbar = fig.colorbar(cax)
+        plt.tight_layout()
         plt.show()
         pass
 
@@ -256,6 +257,7 @@ class Plasmon_analysis(object):
             plt.savefig("Ajuste_{}".format("original_vs_fitted"))
         else:
             plt.savefig("Ajuste_{}_{}".format(self.namefile,"original_vs_fitted"))
+        plt.tight_layout()
         plt.show()
         pass
 
@@ -317,7 +319,7 @@ class Plasmon_analysis(object):
             plt.savefig("Ajuste_d_{}".format("original_vs_fitted"))
         else:
             plt.savefig("Ajuste_d_{}_{}".format(self.namefile,"original_vs_fitted"))
-
+        plt.tight_layout()
         plt.show()
         pass
 
