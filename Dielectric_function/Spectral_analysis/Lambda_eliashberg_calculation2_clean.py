@@ -32,8 +32,8 @@ def Excel_data(filename,flag_1DP = False):
     return qx,qy,Omega/1000,Gamma/1000,Ratio
 
 def main(arg):
-    calculate_all_hyperplasmons = False
-    calculate_all_hyperplasmons_and_1DP = False
+    calculate_all_hyperplasmons = True
+    calculate_all_hyperplasmons_and_1DP = True
     plot_contour_flag = False
 
     if calculate_all_hyperplasmons:
@@ -55,8 +55,8 @@ def main(arg):
             Gamma = np.append(Gamma,Gamma_temp)
             Ratio = np.append(Ratio,Ratio_temp)
     else:
-        file_HP = "1DP"
-        qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c3".format(file_HP),flag_1DP=False)
+        file_HP = "HPII"
+        qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c2".format(file_HP),flag_1DP=False)
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
     print("Omega range:",np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),'::',np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))))
