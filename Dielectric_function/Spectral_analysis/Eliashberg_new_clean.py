@@ -824,20 +824,22 @@ class Eliashberg2(object):
         #mask = self.w >  0
         w = self.w#[mask]#*eV_to_K
         print("max(w)=",max(w))
-        w_log = np.exp((2.0/lambda_t)*
+        w_log = np.exp(
+            (2.0/lambda_t)*
             #integrate.simpson(
             #(np.divide(self.a2F_new(self.w), self.w)*np.log(self.w)),self.w))
-            np.trapz(
-            (np.divide(self.a2F_new(w), w)*np.log(w)),w))
+            np.trapz((np.divide(self.a2F_new(w), w)*np.log(w)),w)
+            )
         return w_log
 
     def w_2(self,lambda_t):
         #eV_to_K=11604
         w = self.w#*eV_to_K
-        w_2 = np.sqrt((2.0/lambda_t)*
+        w_2 = np.sqrt(
+            (2.0/lambda_t)*
             #integrate.simpson(
-            np.trapz(
-            (self.a2F_new(w)*w),w))
+            np.trapz((self.a2F_new(w)*w),w)
+            )
         return w_2
 
     def f_1(self,mu_par,lambda_t):
