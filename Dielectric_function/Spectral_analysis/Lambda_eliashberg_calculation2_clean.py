@@ -139,6 +139,8 @@ def main(arg):
     print("T_c=",T_c,"K")
     print("test T_C*K_b²=",T_c*8.617333262e-5*8.617333262e-5)
     np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_C (K)')
+    np.savetxt("w_vs_a2F_{}.txt".format(file_HP),frequencies,a2F_lista) # ¿,superconductor.w_0?
+    np.savetxt("W_vs_LambdaW_{}".format(file_HP),frequencies,superconductor.lambda_w_lista)
     pass
 
 if __name__ == '__main__':
