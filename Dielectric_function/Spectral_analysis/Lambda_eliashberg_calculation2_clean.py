@@ -32,8 +32,8 @@ def Excel_data(filename,flag_1DP = False):
     return qx,qy,Omega/1000,Gamma/1000,Ratio
 
 def main(arg):
-    calculate_all_hyperplasmons = True
-    calculate_all_hyperplasmons_and_1DP = True
+    calculate_all_hyperplasmons = False
+    calculate_all_hyperplasmons_and_1DP = False
     plot_contour_flag = False
 
     if calculate_all_hyperplasmons:
@@ -138,6 +138,7 @@ def main(arg):
     #T_c = superconductor.T_c(mu_par=0.1,lambda_t=superconductor.lambda_2) #(lambda_HPI+lambda_HPII)) #mu*=0.1 y mu*=0.15. Son los valores típicos.
     T_c = superconductor.T_c(mu_par=0.1,lambda_t=superconductor.lambda_w_lista[-1]) #(lambda_HPI+lambda_HPII)) #mu*=0.1 y mu*=0.15. Son los valores típicos.
     print("T_c=",T_c,"K")
+    np.savetxt("Tc{}".format(file_HP),[T_c], header = "#T_c (K)")
     print("test T_C*K_b²=",T_c*8.617333262e-5*8.617333262e-5)
     np.savetxt("lambda_and_T_C.txt",(superconductor.lambda_2,T_c), header='Lambda, T_C (K)')
     np.savetxt("w_vs_a2F_{}.txt".format(file_HP),np.vstack((frequencies, a2F_lista)).T) # ¿,superconductor.w_0?

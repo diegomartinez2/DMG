@@ -755,7 +755,7 @@ class Eliashberg2(object):
 
             summa1 += self.Lambda_q_new(i)*symmetry_factor
             self.lambda_q_lista = np.append(self.lambda_q_lista, self.Lambda_q_new(i)*symmetry_factor)
-            
+
         #Lambda_1=summa1/(len(center)-self.indice_zeros)
         Lambda_1=summa1/self.N
         #print("Test Lambda with lambda_q=",summa1/(len(center)),":test lambda_q[N]=",summa1/self.N,":lambda_q[N_qs]=",summa1/self.N_qs)
@@ -824,7 +824,7 @@ class Eliashberg2(object):
         #mask = self.w >  0
         w = self.w#[mask]#*eV_to_K
         print("max(w)=",max(w))
-        w_log = np.exp(2.0/lambda_t*
+        w_log = np.exp((2.0/lambda_t)*
             #integrate.simpson(
             #(np.divide(self.a2F_new(self.w), self.w)*np.log(self.w)),self.w))
             np.trapz(
@@ -834,7 +834,7 @@ class Eliashberg2(object):
     def w_2(self,lambda_t):
         #eV_to_K=11604
         w = self.w#*eV_to_K
-        w_2 = np.sqrt(2.0/lambda_t*
+        w_2 = np.sqrt((2.0/lambda_t)*
             #integrate.simpson(
             np.trapz(
             (self.a2F_new(w)*w),w))
