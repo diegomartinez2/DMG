@@ -564,7 +564,16 @@ def main(args):
     'SERVICIOS ESPECIALES: Centro de cibernética de segunda mano (hay una trastienda, donde les consiguen cosas «a la carta»)',
     'SERVICIOS ESPECIALES: Nueva ID para ti -oficina',
     'SERVICIOS ESPECIALES: Agencia de viajes fuera de la ciudad',
-    'SILVESTRES: ',
+    'SILVESTRES: Bosque arruinado por fugas de petróleo',
+    'SILVESTRES: Mina de hierro agotada',
+    'SILVESTRES: Montañas radiactivas',
+    'SILVESTRES: Desierto lleno de droides locos',
+    'SILVESTRES: Pantano repleto de animales mutados',
+    'SILVESTRES: Bosque convertido en desguace',
+    'SILVESTRES: Cavernas perdidas bajo la ciudad',
+    'SILVESTRES: Ruinas de una gran ciudad',
+    'SILVESTRES: Lago lleno de nano residuos',
+    'SILVESTRES: Cañón lleno de residuos de alta tecnología – una batalla de robots tuvo lugar aquí',
     'CENTRO DE INVESTIGACIÓN: ',
     'ESTACIÓN ESPACIAL: '
     ]
