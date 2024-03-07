@@ -574,7 +574,16 @@ def main(args):
     'SILVESTRES: Ruinas de una gran ciudad',
     'SILVESTRES: Lago lleno de nano residuos',
     'SILVESTRES: Cañón lleno de residuos de alta tecnología – una batalla de robots tuvo lugar aquí',
-    'CENTRO DE INVESTIGACIÓN: ',
+    'CENTRO DE INVESTIGACIÓN: Armas futuristas',
+    'CENTRO DE INVESTIGACIÓN: Nueva cibertecnología',
+    'CENTRO DE INVESTIGACIÓN: Poderes psíquicos y control mental',
+    'CENTRO DE INVESTIGACIÓN: Nuevos colorantes y aromas alimenticios artificiales',
+    'CENTRO DE INVESTIGACIÓN: Experimentos en humanos',
+    'CENTRO DE INVESTIGACIÓN: Fábrica de supercoches',
+    'CENTRO DE INVESTIGACIÓN: Nanodrogas y cromopastillas',
+    'CENTRO DE INVESTIGACIÓN: Realidad alternativa del ciberespacio real',
+    'CENTRO DE INVESTIGACIÓN: Prisión: ¿sabes que utilizan presos para todo tipo de experimentos, desde pañales para adultos hasta radiación?',
+    'CENTRO DE INVESTIGACIÓN: Nuevos métodos de educación para niños',
     'ESTACIÓN ESPACIAL: '
     ]
     Antagonistas_list = [
