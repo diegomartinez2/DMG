@@ -584,7 +584,16 @@ def main(args):
     'CENTRO DE INVESTIGACIÓN: Realidad alternativa del ciberespacio real',
     'CENTRO DE INVESTIGACIÓN: Prisión: ¿sabes que utilizan presos para todo tipo de experimentos, desde pañales para adultos hasta radiación?',
     'CENTRO DE INVESTIGACIÓN: Nuevos métodos de educación para niños',
-    'ESTACIÓN ESPACIAL: '
+    'ESTACIÓN ESPACIAL: Megacorporación'
+    'ESTACIÓN ESPACIAL: Militar'
+    'ESTACIÓN ESPACIAL: Instituto de investigación'
+    'ESTACIÓN ESPACIAL: Casino'
+    'ESTACIÓN ESPACIAL: Prisión máxima seguridad'
+    'ESTACIÓN ESPACIAL: Abandonada'
+    'ESTACIÓN ESPACIAL: En construcción'
+    'ESTACIÓN ESPACIAL: Transmisión automatizada'
+    'ESTACIÓN ESPACIAL: ¿Conoces a esos locos que esperan que los extraterrestres vengan a por ellos? Están aquí, más cerca del espacio.'
+    'ESTACIÓN ESPACIAL: Espaciopuerto'
     ]
     Antagonistas_list = [
     'SUPER A.I. SE HA REBELADO',
