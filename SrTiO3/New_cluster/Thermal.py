@@ -14,7 +14,11 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
 def thermal_calculo(d3, dyn_prefix = 'final_dyn',nqirr = 8,T_init=250,T_end=350,T_steps=3):
-    """pass"""
+    """
+    Calculate the lattice thermal conductivity with tho methods:
+    * Boltzman transport equation (label as SRTA)
+    * Green_Kubo method (label as GK)
+    """
     SSCHA_TO_MS = cellconstructor.ThermalConductivity.SSCHA_TO_MS
     RY_TO_THZ = cellconstructor.ThermalConductivity.SSCHA_TO_THZ
     dyn = CC.Phonons.Phonons(dyn_prefix, nqirr)
