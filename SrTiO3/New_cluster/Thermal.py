@@ -227,6 +227,9 @@ def main(args):
     Tg: temperature used to generate the SSCHA configurations
     T: temperature of the calculation
     n_random: number of configurations used in teh essemble used in SSCHA
+
+    Note: SrTiO3 undergoes a structural transition at 105 K [H. Unoki and T. Sakudo, Journal of the Physical Society of Japan 23, 546 (1967), https://doi.org/10.1143/JPSJ.23.546.]
+    
     """
     if (len( sys.argv ) > 1):
 
