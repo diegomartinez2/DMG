@@ -60,7 +60,10 @@ def thermal_calculo(d3, dyn_prefix = 'final_dyn',nqirr = 8,T_init=250,T_end=350,
 
 #----------loop for figure Tau vs. smear----------------------
 def thermal_calculo_bis(d3, dyn_prefix = 'final_dyn',nqirr = 8,T=[300],Mesh_range=[10,30,10],smear_range=[0.01,0.1,10]):
-    """pass"""
+    """
+    Alternate function to calculate the lattice thermal conductance with two Methods
+    within a ranged defined calculation mesh and smear values. 
+    """
     SSCHA_TO_MS = cellconstructor.ThermalConductivity.SSCHA_TO_MS
     RY_TO_THZ = cellconstructor.ThermalConductivity.SSCHA_TO_THZ
     dyn = CC.Phonons.Phonons(dyn_prefix, nqirr)
