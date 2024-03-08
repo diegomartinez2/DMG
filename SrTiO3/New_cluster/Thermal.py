@@ -62,7 +62,7 @@ def thermal_calculo(d3, dyn_prefix = 'final_dyn',nqirr = 8,T_init=250,T_end=350,
 def thermal_calculo_bis(d3, dyn_prefix = 'final_dyn',nqirr = 8,T=[300],Mesh_range=[10,30,10],smear_range=[0.01,0.1,10]):
     """
     Alternate function to calculate the lattice thermal conductance with two Methods
-    within a ranged defined calculation mesh and smear values. 
+    within a ranged defined calculation mesh and smear values.
     """
     SSCHA_TO_MS = cellconstructor.ThermalConductivity.SSCHA_TO_MS
     RY_TO_THZ = cellconstructor.ThermalConductivity.SSCHA_TO_THZ
@@ -220,6 +220,13 @@ def Hessian_calculus(DATA_DIR = 'pop3/data',N_RANDOM = 512,DYN_PREFIX =  'pop3/d
 
 def main(args):
     """
+    Main code for the thermal calculation using SSCHA.
+    This code takes arguments from the command line:
+    Population: the polulation index for the hessian calculation
+    nqirr: the number of irreducible q points, number of files in the dynamical matrix output
+    Tg: temperature used to generate the SSCHA configurations
+    T: temperature of the calculation
+    n_random: number of configurations used in teh essemble used in SSCHA
     """
     if (len( sys.argv ) > 1):
 
