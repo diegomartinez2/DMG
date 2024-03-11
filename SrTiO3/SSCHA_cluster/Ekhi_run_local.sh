@@ -22,9 +22,9 @@ if [[ $? != 0 ]]; then
     echo "No calculations running."
     echo "Hold for a while so we are sure the files are there"
     sleep 300
-    echo "Taking the files from cluster"
-    ssh -t $CLUSTER "cd $DESTINO/pop$1/vasp; rm ML_FF"
-    scp -r $CLUSTER":"$DESTINO"/pop$1" $ORIGEN
+    #echo "Taking the files from cluster"
+    #ssh -t $CLUSTER "cd $DESTINO/pop$1/vasp; rm ML_FF"
+    #scp -r $CLUSTER":"$DESTINO"/pop$1" $ORIGEN
     break
 elif [[ $files ]]; then
     echo $files
