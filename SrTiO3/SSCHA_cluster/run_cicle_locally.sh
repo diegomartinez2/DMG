@@ -43,8 +43,8 @@ do
        ;;
    (False)
        echo "NOT-converged"
-       bash run_ekhi.sh $POPULATION
-       bash run_local.sh $POPULATION
+       bash run_VASP_ekhi.sh $POPULATION
+       bash run_SSCHA_ekhi.sh $POPULATION
        ((POPULATION++))
        runner=True
        ;;

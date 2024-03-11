@@ -7,7 +7,7 @@
 #scp $ORIGEN"run_Ekhi.bash" $CLUSTER":"$DESTINO"/pop"$1"/vasp/run.sh"
 #echo "cd $DESTINO/pop$1/vasp; sbatch run.sh $1"
 #ssh -t $CLUSTER "cd $DESTINO/pop$1/vasp; sbatch run.sh $1"
-sbatch $1
+sbatch run_Ekhi2.bash
 
 echo "##########"
 while true
