@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=16384_4_300            # Job name
+#SBATCH --job-name=tetragonal_2            # Job name
 #SBATCH --mail-type=ALL                     # Mail events (NONE, BEGIN, END, FAIL, ALL)
 #SBATCH --mail-user=diego.martinez@ehu.eus  # Where to send mail
 #SBATCH -p long                             # queue
