@@ -99,7 +99,7 @@ def main(args):
         if (Tau_vs_smear==False):
             Thermal.thermal_calculo(d3,FINAL_DYN,NQIRR,T_init,T_end,T_steps)
         else:
-            Thermal.thermal_calculo_bis(d3,FINAL_DYN,NQIRR,T=[300],Mesh_range=[10,30,10],smear_range=[0.1,1.0,10]) #smear from 0.01 to 0.1 is too small, do smear from 0.1 to 1.0 or to 2.0
+            Thermal.thermal_calculo_bis(d3,FINAL_DYN,NQIRR,T=[300],Mesh_range=[10,45,10],smear_range=[0.1,1.0,10]) #smear from 0.01 to 0.1 is too small, do smear from 0.1 to 1.0 or to 2.0
         harm_dos, anharm_dos = Thermal.processing()
         Thermal.plot(harm_dos, anharm_dos)
         np.savetxt("dos_harmonic.dat",harm_dos,header='Temperature dependent Harmonic DOS from auxiliary force constants:')
