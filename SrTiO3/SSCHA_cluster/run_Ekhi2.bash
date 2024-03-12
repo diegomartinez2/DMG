@@ -26,7 +26,12 @@ cd /lscratch/$USER/$SLURM_JOB_ID
 export NPROCS=$SLURM_NTASKS
 rm slurm*.out
 ############################################################################
-module load VASP
+module load ASE/3.22.1-foss-2022a
+source ~/SSCHA_1.4.1/sscha-1.4.1/bin/activate
+export PYTHONPATH=~/.local/software/sscha_1.4.1/lib/python3.10/site-packages:$PYTHONPATH
+export PATH=~/.local/software/sscha_1.4.1/bin:$PATH
+echo "============================"
+echo "Run SSCHA bash"
 #np=4           #number of cpus
 POPULATION=$1    #population index
 IONS=320         #number of atoms in the supercells
