@@ -874,7 +874,7 @@ class Eliashberg2(object):
         cax = ax1.imshow(data.T[:2500,:],
         #	vmin = 0.0 , vmax = 0.004,
         #	vmin = 0.0 , vmax = 0.2,
-        	vmin = 0.0 , vmax = 0.08,
+        	vmin = 0.0 , vmax = 0.1,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
         ax1.set_ylabel(r'Frequency (eV)', fontsize=12)
@@ -892,6 +892,49 @@ class Eliashberg2(object):
         print("qx=",self.qx[1:10])
         plt.tight_layout()
         plt.show()
+
+        pass
+
+
+    def plot_contour_e(self,data,mask_value=50, diagonal = True):
+        print ("Leyendo datos")
+
+        for index in range(0,51):
+            plasmon = Plasmon_analysis(index,"A7_EPS.dat")
+            if diagonal:
+                mask = self.qx == self.qy
+                data, frequencies = plasmon.load_big_file(index, diagonal=True)
+            else:
+                mask = self.qx == mask_value
+                data, frequencies = plasmon.load_big_file(index, diagonal=False)
+
+            plt.style.use('_mpl-gallery-nogrid')
+            fig, ax1 = plt.subplots(1,1)
+            fig.set_size_inches(10, 5)
+            fig.set_dpi(100)
+            cax = ax1.imshow(data.T[:2500,:],
+            #	vmin = 0.0 , vmax = 0.004,
+            #	vmin = 0.0 , vmax = 0.2,
+            	vmin = 0.0 , vmax = 0.1,
+            	cmap=plt.colormaps['jet'], origin='lower',
+            	interpolation='gaussian', aspect='auto')
+            ax1.set_ylabel(r'Frequency (eV)', fontsize=12)
+            ax1.set_xticks([0,50])
+            ax1.set_yticks([0,500,1000,1500,2000,2500])
+            ax1.set_xticklabels(["0","$\pi$"])
+            ax1.set_yticklabels(["0","0.1","0.2","0.3","0.4","0.5"])
+
+            print (mask)
+            #cax2 = ax1.scatter(x = self.qy[mask]/50, y = self.Omega[mask]*5001,c='k',marker='x',s=10)
+            #cax2 = ax1.scatter(x = self.qy[mask]/50, y = (self.Omega[mask]+self.Gamma[mask]/2)*5001,c='k',marker='1',s=10)
+            #cax2 = ax1.scatter(x = self.qy[mask]/50, y = (self.Omega[mask]-self.Gamma[mask]/2)*5001,c='k',marker='2',s=10)
+            #cax3 = ax1.errorbar(x = self.qy[mask]/50, y = self.Omega[mask]*5001, yerr = self.Gamma[mask]*5001/2, fmt = 'o') #¿y*5001? para la escala
+            cbar = fig.colorbar(cax)
+            print("qx=",self.qx[1:10])
+            plt.tight_layout()
+            plt.savefig("Figura_e_{}".format(index))
+            #plt.show()
+
 
         pass
 #-------------------------------------------------------------------------------
