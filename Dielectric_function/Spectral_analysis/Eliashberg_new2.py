@@ -925,7 +925,10 @@ class Eliashberg2(object):
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
         ax1.set_ylabel(r'Frequency (eV*5001)', fontsize=12)
-
+        ax1.set_xticks([0,51])
+        ax1.set_yticks([0,5001])
+        ax1.set_xticklabels(["0","$\pi$"])
+        ax1.set_yticklabels(["0","1"])
 
         print (mask)
         cax2 = ax1.scatter(x = self.qy[mask]/50, y = self.Omega[mask]*5001,c='k',marker='x',s=10)

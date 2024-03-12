@@ -871,13 +871,17 @@ class Eliashberg2(object):
         fig, ax1 = plt.subplots(1,1)
         fig.set_size_inches(10, 5)
         fig.set_dpi(100)
-        cax = ax1.imshow(data.T,
+        cax = ax1.imshow(data.T[:2500,:],
         #	vmin = 0.0 , vmax = 0.004,
-        	vmin = 0.0 , vmax = 0.2,
+        #	vmin = 0.0 , vmax = 0.2,
+        	vmin = 0.0 , vmax = 0.08,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
-        ax1.set_ylabel(r'Frequency (eV*5001)', fontsize=12)
-
+        ax1.set_ylabel(r'Frequency (eV)', fontsize=12)
+        ax1.set_xticks([0,50])
+        ax1.set_yticks([0,500,1000,1500,2000,2500])
+        ax1.set_xticklabels(["0","$\pi$"])
+        ax1.set_yticklabels(["0","0.1","0.2","0.3","0.4","0.5"])
 
         print (mask)
         #cax2 = ax1.scatter(x = self.qy[mask]/50, y = self.Omega[mask]*5001,c='k',marker='x',s=10)
