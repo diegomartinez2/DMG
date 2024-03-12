@@ -38,6 +38,7 @@ IONS=320         #number of atoms in the supercells
 NCONFSSHA=16384   #number of configurations in the sscha ensemble
 #mpirun vasp_std > stdout
 bash run_local.sh $POPULATION
+echo "============================"
 #########################################################################
 #########################################################################
 
