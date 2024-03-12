@@ -37,7 +37,7 @@ def thermal_calculo(d3, dyn_prefix = 'final_dyn',nqirr = 8,T_init=250,T_end=350,
 
     tc = CC.ThermalConductivity.ThermalConductivity(dyn, fc3,
     kpoint_grid = mesh, scattering_grid = mesh, smearing_scale = None,
-    smearing_type = 'constant', cp_mode = 'quantum', off_diag = False)
+    smearing_type = 'adaptive', cp_mode = 'quantum', off_diag = False) #'adaptive' or 'constant'
 
     temperatures = np.linspace(T_init,T_end,T_steps,dtype=float)
     start_time = time.time()
@@ -84,7 +84,7 @@ def thermal_calculo_bis(d3, dyn_prefix = 'final_dyn',nqirr = 8,T=[300],Mesh_rang
 
             tc = CC.ThermalConductivity.ThermalConductivity(dyn, fc3,
             kpoint_grid = mesh, scattering_grid = mesh, smearing_scale = None,
-            smearing_type = 'constant', cp_mode = 'quantum', off_diag = False)
+            smearing_type = 'adaptive', cp_mode = 'quantum', off_diag = False) # 'adaptive' or 'constant'
 
             #temperatures = np.linspace(T_init,T_end,T_steps,dtype=float)
             start_time = time.time()
@@ -229,7 +229,7 @@ def main(args):
     n_random: number of configurations used in teh essemble used in SSCHA
 
     Note: SrTiO3 undergoes a structural transition at 105 K [H. Unoki and T. Sakudo, Journal of the Physical Society of Japan 23, 546 (1967), https://doi.org/10.1143/JPSJ.23.546.]
-    
+
     """
     if (len( sys.argv ) > 1):
 
