@@ -34,7 +34,7 @@ def Excel_data(filename,flag_1DP = False):
 def main(arg):
     calculate_all_hyperplasmons = False
     calculate_all_hyperplasmons_and_1DP = False
-    plot_contour_flag = False
+    plot_contour_flag = True
 
     if calculate_all_hyperplasmons:
         file_HP = "HPI"
@@ -63,7 +63,7 @@ def main(arg):
     #frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),10000) #test
     frequencies = np.linspace(0,0.5,10000) #test to set the frequency range the same
     if plot_contour_flag:
-        superconductor.plot_contour_d(data=[],mask_value=0, diagonal = True)
+        superconductor.plot_contour_d(data=[],mask_value=0, diagonal = True, index = 0)
     lambda_1 = superconductor.Lambda_new(frequencies)
     #np.savetxt('Lambda.txt', (lambda_1))
     print('Lambda_1[{}]='.format(file_HP),lambda_1,'[Lambda calculated from Lambda_q for {}]?'.format(file_HP)) # Lambda calculated from Lambda_q

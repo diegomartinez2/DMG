@@ -857,15 +857,15 @@ class Eliashberg2(object):
         return 1 + (( self.w_2(lambda_t)/self.w_log(lambda_t) - 1) * lambda_t**2)/(
         (lambda_t**2) + (LAMBDA_temp**2))
 
-    def plot_contour_d(self,data,mask_value=50, diagonal = True):
+    def plot_contour_d(self,data,mask_value=50, diagonal = True, index = 4):
         print ("Leyendo datos")
-        plasmon = Plasmon_analysis(4,"A7_EPS.dat")
+        plasmon = Plasmon_analysis(index,"A7_EPS.dat")
         if diagonal:
             mask = self.qx == self.qy
-            data, frequencies = plasmon.load_big_file(4, diagonal=True)
+            data, frequencies = plasmon.load_big_file(index, diagonal=True)
         else:
             mask = self.qx == mask_value
-            data, frequencies = plasmon.load_big_file(4, diagonal=False)
+            data, frequencies = plasmon.load_big_file(index, diagonal=False)
 
         plt.style.use('_mpl-gallery-nogrid')
         fig, ax1 = plt.subplots(1,1)
