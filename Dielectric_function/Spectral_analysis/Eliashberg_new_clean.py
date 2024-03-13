@@ -874,10 +874,12 @@ class Eliashberg2(object):
         cax = ax1.imshow(data.T[:2500,:],
         #	vmin = 0.0 , vmax = 0.004,
         #	vmin = 0.0 , vmax = 0.2,
-        	vmin = 0.0 , vmax = 0.1,
+        	#vmin = 0.0 , vmax = 0.03,
+            vmin = 0.0 , vmax = 0.1,
         	cmap=plt.colormaps['jet'], origin='lower',
         	interpolation='gaussian', aspect='auto')
         ax1.set_ylabel(r'Frequency (eV)', fontsize=12)
+        ax1.set_xlabel(r'$q_x$', fontsize=12)
         ax1.set_xticks([0,50])
         ax1.set_yticks([0,500,1000,1500,2000,2500])
         ax1.set_xticklabels(["0","$\pi$"])
