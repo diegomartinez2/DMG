@@ -1,9 +1,9 @@
 #!/bin/bash
 echo "cd pop$1/vasp; sbatch run.sh $1"
-cd "pop$1/vasp"
+cd "pop$1/vasp";pwd
 cp ../../run_Ekhi.bash run_Ekhi.bash
 sbatch run_Ekhi.bash
-echo "return to base directoty"
+echo "return to *base* directoty"
 cd ../..; pwd
 echo "##########"
 while true
