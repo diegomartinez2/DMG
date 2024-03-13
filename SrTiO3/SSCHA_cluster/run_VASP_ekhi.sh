@@ -1,6 +1,6 @@
 #!/bin/bash
-echo "cd $DESTINO/pop$1/vasp; sbatch run.sh $1"
-cd pop$1/vasp
+echo "cd pop$1/vasp; sbatch run.sh $1"
+cd "pop$1/vasp"
 sbatch run_Ekhi.bash
 
 echo "##########"
