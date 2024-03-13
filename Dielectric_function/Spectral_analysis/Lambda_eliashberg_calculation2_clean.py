@@ -55,7 +55,7 @@ def main(arg):
             Gamma = np.append(Gamma,Gamma_temp)
             Ratio = np.append(Ratio,Ratio_temp)
     else:
-        file_HP = "1DP"
+        file_HP = "HPII"
         qx,qy,Omega,Gamma,Ratio = Excel_data(filename="{}_c2".format(file_HP),flag_1DP=False)
     superconductor = Eliashberg.Eliashberg2(qx,qy,Omega,Gamma,Ratio)
     superconductor.read_Ne()
