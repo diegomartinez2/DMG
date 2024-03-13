@@ -877,7 +877,7 @@ class Eliashberg2(object):
         	#vmin = 0.0 , vmax = 0.03,
             vmin = 0.0 , vmax = 0.1,
         	cmap=plt.colormaps['jet'], origin='lower',
-        	interpolation='gaussian', aspect='auto')
+        	interpolation='gaussian', aspect='auto') #'none', 'nearest', 'bilinear', 'bicubic', 'spline16', 'spline36', 'hanning', 'hamming', 'hermite', 'kaiser', 'quadric', 'catrom', 'gaussian', 'bessel', 'mitchell', 'sinc', 'lanczos', y 'antialias'
         ax1.set_ylabel(r'Frequency (eV)', fontsize=12)
         ax1.set_xlabel(r'$q_x$', fontsize=12)
         ax1.set_xticks([0,50])
