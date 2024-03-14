@@ -63,7 +63,7 @@ def main(arg):
     #frequencies = np.linspace(np.min(superconductor.Omega-np.abs(np.max(superconductor.Gamma))),np.max(superconductor.Omega+np.abs(np.max(superconductor.Gamma))),10000) #test
     frequencies = np.linspace(0,0.5,10000) #test to set the frequency range the same
     if plot_contour_flag:
-        superconductor.plot_contour_d(data=[],mask_value=900, diagonal = False, index = 18)
+        superconductor.plot_contour_d(data=[],mask_value=50, diagonal = False, index = 1)
         #superconductor.plot_contour_e(data=[],mask_value=0, diagonal = False)
         exit()
     lambda_1 = superconductor.Lambda_new(frequencies)
