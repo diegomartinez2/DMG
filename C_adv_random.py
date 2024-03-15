@@ -642,7 +642,16 @@ def main(args):
     'ALIADO PODEROSO; Jefe megacorporación',
     'ALIADO PODEROSO; Androide psicótico de gatillo fácil',
     'ALIADO PODEROSO; Poderosa sociedad secreta (Illuminati, cura Cthulhu, etc.)',
-    'REPUTACIÓN: ',
+    'REPUTACIÓN: Pase VIP a club nocturno (lanza en tabla f-4)',
+    'REPUTACIÓN: Gran descuento en el armero personalizado',
+    'REPUTACIÓN: No será molestado por los «capos»',
+    'REPUTACIÓN: Oficiales de la milicia miraran a otro lado (50% posibilidades)',
+    'REPUTACIÓN: Jefe megacorporación te tiene en marcación rápida',
+    'REPUTACIÓN: Tu teléfono no para de sonar para trabajos extraños cada día',
+    'REPUTACIÓN: Los reporteros ruegan por tener una entrevista y noticias',
+    'REPUTACIÓN: Fanboy acosador molesto',
+    'REPUTACIÓN: Reconocido como un héroe: la gente se para a saludarte',
+    'REPUTACIÓN: Se rumorea en las calles que «no hay que joderte»',
     'TRAICIÓN: ',
     'MUERTE (O BUENO, CASI): '
     ]
