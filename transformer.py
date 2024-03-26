@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  untitled.py
+#  transformer.py
 #
 #  Copyright 2023 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
@@ -73,4 +73,3 @@ def main(args):
 if __name__ == '__main__':
     import sys
     sys.exit(main(sys.argv))
-
