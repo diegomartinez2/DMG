@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  SSCHA_spectarl_ploter.py
+#  2plot_spectra.py
 #
 #  Copyright 2022 Diego <diego@u038025>
 #
