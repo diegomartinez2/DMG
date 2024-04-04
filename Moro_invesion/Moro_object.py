@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  untitled.py
+#  Moro_object.py
 #
 #  Copyright 2022 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
@@ -145,7 +145,7 @@ def main(args):
              plt.hist(data.T[i], bins=20)#int(size/2))
              plt.show()
              plt.scatter(data.T[i],range(len(data.T[i])))
-             plt.show()             
+             plt.show()
 
     return 0
 
