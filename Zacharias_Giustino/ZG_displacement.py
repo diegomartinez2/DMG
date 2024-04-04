@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  untitled.py
+#  ZG_displacement.py
 #
 #  Copyright 2022 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
