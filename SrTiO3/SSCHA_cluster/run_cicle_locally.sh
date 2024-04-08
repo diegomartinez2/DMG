@@ -22,7 +22,8 @@
 runner=True
 Start_POPULATION=32
 POPULATION=$Start_POPULATION
-#IONS=320
+IONS=320
+NCONFSSHA=16384
 while [[ $runner = 'True' ]]
 do
   if [[ $POPULATION -eq $Start_POPULATION ]]
@@ -45,7 +46,7 @@ do
    (False)
        echo "NOT-converged"
        bash run_VASP_ekhi.sh $POPULATION
-       bash run_SSCHA_ekhi.sh $POPULATION
+       bash run_SSCHA_ekhi.sh $POPULATION $IONS $NCONFSSHA
        ((POPULATION++))
        runner=True
        ;;

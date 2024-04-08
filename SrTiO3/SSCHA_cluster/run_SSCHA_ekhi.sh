@@ -2,7 +2,7 @@
 
 #echo "cd $DESTINO/pop$1/vasp; sbatch run.sh $1"
 pwd
-sbatch run_Ekhi2.bash $1
+sbatch run_Ekhi2.bash $1 $2 $3
 
 echo "##########"
 while true
