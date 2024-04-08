@@ -22,6 +22,7 @@
 runner=True
 Start_POPULATION=32
 POPULATION=$Start_POPULATION
+#IONS=320
 while [[ $runner = 'True' ]]
 do
   if [[ $POPULATION -eq $Start_POPULATION ]]
