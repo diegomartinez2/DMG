@@ -22,10 +22,10 @@
 POPULATION=$1       #population index
 SUPERCELL_SIZE=4
 TEMPERATURE=300
-NCONFSSCHA=16384      #number of configurations in the sscha ensemble
+NCONFSSCHA=$3      #number of configurations in the sscha ensemble
 NQIRR=10             #number of irreducible q points
 kong_liu_ratio=0.5  # The parameter that estimates whether the ensemble is still good
-IONS=320             #number of atoms in the supercells
+IONS=$2             #number of atoms in the supercells
 #PATH_interface="/media/diego/Calculations/SrTiO3/SSCHA_PHONOPY_VASP/SrTiO3_2x2x2_hessian5/vasp-phonopy-sscha"
 PATH_interface="/media/diego/Calculations/SrTiO3/SSCHA/Hessian_vs_T_and_Nconfs/VASP_24_4_2023/4x4x4/T50/vasp-phonopy-sscha"
 echo "============================="

@@ -35,9 +35,9 @@ echo "Run SSCHA bash"
 #np=4           #number of cpus
 POPULATION=$1    #population index
 IONS=$2         #number of atoms in the supercells
-NCONFSSHA=$3   #number of configurations in the sscha ensemble
+NCONFSSCHA=$3   #number of configurations in the sscha ensemble
 #mpirun vasp_std > stdout
-bash run_local.sh $POPULATION
+bash run_local.sh $POPULATION $IONS $NCONFSSCHA
 echo "============================"
 #########################################################################
 #########################################################################
