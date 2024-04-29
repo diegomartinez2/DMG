@@ -653,6 +653,15 @@ def main(args):
     'REPUTACIÓN: Reconocido como un héroe: la gente se para a saludarte',
     'REPUTACIÓN: Se rumorea en las calles que «no hay que joderte»',
     'TRAICIÓN: ',
+    'TRAICIÓN: ',
+    'TRAICIÓN: ',
+    'TRAICIÓN: ',
+    'TRAICIÓN: ',
+    'TRAICIÓN: ',
+    'TRAICIÓN: ',
+    'TRAICIÓN: ',
+    'TRAICIÓN: ',
+    'TRAICIÓN: ',
     'MUERTE (O BUENO, CASI): '
     ]
     Evento_Aleatorio_list = [
