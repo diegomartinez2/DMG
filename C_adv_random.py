@@ -662,6 +662,15 @@ def main(args):
     'TRAICIÓN: ',
     'TRAICIÓN: ',
     'TRAICIÓN: ',
+    'MUERTE (O BUENO, CASI): ',
+    'MUERTE (O BUENO, CASI): ',
+    'MUERTE (O BUENO, CASI): ',
+    'MUERTE (O BUENO, CASI): ',
+    'MUERTE (O BUENO, CASI): ',
+    'MUERTE (O BUENO, CASI): ',
+    'MUERTE (O BUENO, CASI): ',
+    'MUERTE (O BUENO, CASI): ',
+    'MUERTE (O BUENO, CASI): ',
     'MUERTE (O BUENO, CASI): '
     ]
     Evento_Aleatorio_list = [
