@@ -55,7 +55,7 @@ def dibuja1():
                 hessian_data[i,2] = hessian_data[i,2]**2
         plt.plot(hessian_data[:,0], hessian_data[:,2], marker = "o")
         b = estimate_coef(hessian_data[:,0], hessian_data[:,2])
-        plt.plot(x, b[0] + b[1]*x , color = "g")
+        plt.plot(x, b[0] + b[1]*x , color = "g", linestyle='dashdot')
     #----------------------RANDOM-----------------------------------------------
         hessian_data0 = np.loadtxt("Random/0_hessian_vs_temperature.dat")
         hessian_data1 = np.loadtxt("Random/1_hessian_vs_temperature.dat")
