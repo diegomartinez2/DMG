@@ -46,6 +46,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 import timeit
 def dibuja1():
+    #----------------------SOBOL------------------------------------------------
         hessian_data = np.loadtxt("Sobol/16384_hessian_vs_temperature.dat")
         for i in range(len(hessian_data[:,2])):
             if (hessian_data[i,2]<0):
@@ -53,6 +54,8 @@ def dibuja1():
             else:
                 hessian_data[i,2] = hessian_data[i,2]**2
         plt.plot(hessian_data[:,0], hessian_data[:,2], marker = "o")
+        
+    #----------------------RANDOM-----------------------------------------------
         hessian_data0 = np.loadtxt("Random/0_hessian_vs_temperature.dat")
         hessian_data1 = np.loadtxt("Random/1_hessian_vs_temperature.dat")
         hessian_data2 = np.loadtxt("Random/2_hessian_vs_temperature.dat")
@@ -83,7 +86,7 @@ def dibuja1():
             else:
                 min_a[i] = min_a[i]**2
         plt.fill_between(hessian_data2[:,0], max_a, min_a,alpha=0.2)
-
+    #-------------------------SOBOL+SCATTER-------------------------------------
         hessian_data0 = np.loadtxt("SobolScatter/0_hessian_vs_temperature.dat")
         hessian_data1 = np.loadtxt("SobolScatter/1_hessian_vs_temperature.dat")
         hessian_data2 = np.loadtxt("SobolScatter/2_hessian_vs_temperature.dat")
