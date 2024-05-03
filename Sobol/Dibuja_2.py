@@ -213,7 +213,7 @@ def dibuja2():
         #plt.show()
 def main(args):
     dibuja1()
-    #dibuja2()
+    dibuja2()
     return 0
 
 if __name__ == '__main__':
