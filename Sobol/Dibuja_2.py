@@ -120,7 +120,8 @@ def dibuja1():
             else:
                 min_a[i] = min_a[i]**2
         plt.fill_between(hessian_data2[:,0], max_a, min_a,alpha=0.2)
-
+        b = estimate_coef(hessian_data2[:,0], media_data[:,2])
+        plt.plot(x, b[0] + b[1]*x , color = "b", linestyle='dashdot')
         #plt.figure(dpi = 120)
         plt.axhline(0, 0, 1, color = "k", ls = "dotted") # Draw the zero
         plt.xlabel("Temperature [K]")
