@@ -258,12 +258,12 @@ def plot_regression_line(x, y, b):
 def main(args):
     dibuja1()
     dibuja2()
-    b = estimate_coef(x, y)
-	print("Estimated coefficients:\nb_0 = {} \
-		\nb_1 = {}".format(b[0], b[1]))
-
-	# plotting regression line
-	plot_regression_line(x, y, b)
+    # b = estimate_coef(x, y)
+	# print("Estimated coefficients:\nb_0 = {} \
+	# 	\nb_1 = {}".format(b[0], b[1]))
+    #
+	# # plotting regression line
+	# plot_regression_line(x, y, b)
     return 0
 
 if __name__ == '__main__':
