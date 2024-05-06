@@ -54,9 +54,9 @@ def dibuja1():
                 hessian_data[i,2] = -(hessian_data[i,2]**2)
             else:
                 hessian_data[i,2] = hessian_data[i,2]**2
-        plt.plot(hessian_data[:,0], hessian_data[:,2], marker = "o")
+        plt.plot(hessian_data[:,0], hessian_data[:,2], marker = "o", label='SOBOL')
         b = estimate_coef(hessian_data[6:24,0], hessian_data[6:24,2])  #only use the points near the root
-        plt.plot(hessian_data[:,0], b[0] + b[1]*hessian_data[:,0] , color = "g", linestyle='dashdot')
+        plt.plot(hessian_data[:,0], b[0] + b[1]*hessian_data[:,0] , color = "g", linestyle='dashdot', label='SOBOL FITTING')
     #----------------------RANDOM-----------------------------------------------
         hessian_data0 = np.loadtxt("Random/0_hessian_vs_temperature.dat")
         hessian_data1 = np.loadtxt("Random/1_hessian_vs_temperature.dat")
@@ -72,7 +72,7 @@ def dibuja1():
                 media_data[i] = -(media_data[i]**2)
             else:
                 media_data[i] = media_data[i]**2
-        plt.plot(hessian_data2[:,0], media_data)
+        plt.plot(hessian_data2[:,0], media_data, label='RANDOM')
         max_a = np.zeros(len(hessian_data0[:,0]))
         min_a = np.zeros(len(hessian_data0[:,0]))
         for i in range(len(hessian_data0[:,0])):
@@ -89,7 +89,7 @@ def dibuja1():
                 min_a[i] = min_a[i]**2
         plt.fill_between(hessian_data2[:,0], max_a, min_a,alpha=0.2)
         b = estimate_coef(hessian_data2[6:24,0], media_data[6:24])
-        plt.plot(hessian_data2[:,0], b[0] + b[1]*hessian_data2[:,0] , color = "r", linestyle='dashdot')
+        plt.plot(hessian_data2[:,0], b[0] + b[1]*hessian_data2[:,0] , color = "r", linestyle='dashdot', label='RANDOM FITTING')
     #-------------------------SOBOL+SCATTER-------------------------------------
         hessian_data0 = np.loadtxt("SobolScatter/0_hessian_vs_temperature.dat")
         hessian_data1 = np.loadtxt("SobolScatter/1_hessian_vs_temperature.dat")
@@ -105,7 +105,7 @@ def dibuja1():
                 media_data[i] = -(media_data[i]**2)
             else:
                 media_data[i] = media_data[i]**2
-        plt.plot(hessian_data2[:,0], media_data)
+        plt.plot(hessian_data2[:,0], media_data, label='SOBOL+SCATTER')
         max_a = np.zeros(len(hessian_data0[:,0]))
         min_a = np.zeros(len(hessian_data0[:,0]))
         for i in range(len(hessian_data0[:,0])):
