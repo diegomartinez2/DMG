@@ -147,9 +147,11 @@ def dibuja1():
 
 def dibuja2():
         #x = np.array([0, 50, 100, 200, 300])
-        hessian_data = np.loadtxt("Sobol/16384_hessian_vs_configuraciones.dat")
+        #-----------------------SOBOL------------------------------------------------------------------
+        hessian_data = np.loadtxt("Sobol/0_hessian_vs_configuraciones.dat")
         plt.plot(hessian_data[:,0], hessian_data[:,2], label = "Sobol Free energy curvature", marker = "o")
-        hessian_data0 = np.loadtxt("Random/hessian_vs_configuraciones.dat")
+        #-----------------------RANDOM-----------------------------------------------------------------
+        hessian_data0 = np.loadtxt("Random/0_hessian_vs_configuraciones.dat")
         hessian_data1 = np.loadtxt("Random/1_hessian_vs_configuraciones.dat")
         hessian_data2 = np.loadtxt("Random/2_hessian_vs_configuraciones.dat")
         hessian_data3 = np.loadtxt("Random/3_hessian_vs_configuraciones.dat")
