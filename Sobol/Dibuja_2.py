@@ -46,6 +46,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 import timeit
 def dibuja1():
+        x = np.array([0, 50, 100, 200, 300])
     #----------------------SOBOL------------------------------------------------
         hessian_data = np.loadtxt("Sobol/16384_hessian_vs_temperature.dat")
         for i in range(len(hessian_data[:,2])):
@@ -145,6 +146,7 @@ def dibuja1():
         #plt.show()
 
 def dibuja2():
+        x = np.array([0, 50, 100, 200, 300])
         hessian_data = np.loadtxt("Sobol/16384_hessian_vs_configuraciones.dat")
         plt.plot(hessian_data[:,0], hessian_data[:,2], label = "Sobol Free energy curvature", marker = "o")
         hessian_data0 = np.loadtxt("Random/hessian_vs_configuraciones.dat")
