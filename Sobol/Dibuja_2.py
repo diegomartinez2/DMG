@@ -46,7 +46,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 import timeit
 def dibuja1():
-        x = np.array([0, 50, 100, 200, 300])
+        #x = np.array([0, 50, 100, 200, 300])
     #----------------------SOBOL------------------------------------------------
         hessian_data = np.loadtxt("Sobol/16384_hessian_vs_temperature.dat")
         for i in range(len(hessian_data[:,2])):
@@ -56,7 +56,7 @@ def dibuja1():
                 hessian_data[i,2] = hessian_data[i,2]**2
         plt.plot(hessian_data[:,0], hessian_data[:,2], marker = "o")
         b = estimate_coef(hessian_data[:,0], hessian_data[:,2])
-        plt.plot(x, b[0] + b[1]*x , color = "g", linestyle='dashdot')
+        plt.plot(hessian_data[:,0], b[0] + b[1]*hessian_data[:,0] , color = "g", linestyle='dashdot')
     #----------------------RANDOM-----------------------------------------------
         hessian_data0 = np.loadtxt("Random/0_hessian_vs_temperature.dat")
         hessian_data1 = np.loadtxt("Random/1_hessian_vs_temperature.dat")
@@ -146,7 +146,7 @@ def dibuja1():
         #plt.show()
 
 def dibuja2():
-        x = np.array([0, 50, 100, 200, 300])
+        #x = np.array([0, 50, 100, 200, 300])
         hessian_data = np.loadtxt("Sobol/16384_hessian_vs_configuraciones.dat")
         plt.plot(hessian_data[:,0], hessian_data[:,2], label = "Sobol Free energy curvature", marker = "o")
         hessian_data0 = np.loadtxt("Random/hessian_vs_configuraciones.dat")
