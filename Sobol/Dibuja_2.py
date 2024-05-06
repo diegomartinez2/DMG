@@ -88,7 +88,7 @@ def dibuja1():
             else:
                 min_a[i] = min_a[i]**2
         plt.fill_between(hessian_data2[:,0], max_a, min_a,alpha=0.2)
-        b = estimate_coef(hessian_data2[:,0], media_data[:,2])
+        b = estimate_coef(hessian_data2[6:24,0], media_data[6:24])
         plt.plot(hessian_data2[:,0], b[0] + b[1]*hessian_data2[:,0] , color = "r", linestyle='dashdot')
     #-------------------------SOBOL+SCATTER-------------------------------------
         hessian_data0 = np.loadtxt("SobolScatter/0_hessian_vs_temperature.dat")
