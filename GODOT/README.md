@@ -5,3 +5,5 @@
 [2D Character controller](https://github.com/POWERHACK69/Godot4-2D-Character-Controllers)
 
 [Aprender GODOT](https://github.com/findemor/findemor-youtube-aprender-godot/tree/main)
+
+ [New features in godot-4](https://github.com/gdquest-demos/godot-4-new-features)
