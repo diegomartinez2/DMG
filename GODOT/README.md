@@ -14,4 +14,6 @@
 
 [GODOT demos](https://github.com/gdquest-demos)
 
-[]()
+[Godot isometric](https://www.youtube.com/watch?v=dclc8w6JW7Y)
+
+[Godot isometric 2](https://www.youtube.com/watch?v=XK5qpEmUA6w)
