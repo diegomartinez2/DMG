@@ -25,7 +25,9 @@
 # Importación de los módulos
 # ---------------------------
 import curses
-
+# ----------
+# Funciones
+# ----------
 def main(stdscr):
     stdscr.clear()
     if curses.has_colors():
