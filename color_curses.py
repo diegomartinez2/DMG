@@ -21,8 +21,11 @@
 #  MA 02110-1301, USA.
 #
 ##colores
-
+# ---------------------------
+# Importación de los módulos
+# ---------------------------
 import curses
+
 def main(stdscr):
     stdscr.clear()
     if curses.has_colors():
