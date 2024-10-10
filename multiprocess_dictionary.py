@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from itertools import repeat
 import multiprocessing as mp
 import os
