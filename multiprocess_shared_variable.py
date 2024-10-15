@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import multiprocessing
 from functools import partial
 
