@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# multiprocessing library example of use.
 from itertools import repeat
 import multiprocessing as mp
 import os
