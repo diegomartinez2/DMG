@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#multiprocessing test of multiple runs
 from multiprocessing import Process, Manager
 
 def f(d):
