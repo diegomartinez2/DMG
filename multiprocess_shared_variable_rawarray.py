@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# Example of use of multiprocessing library with
+# Pool call (map a function)
 import numpy as np
 import time
 from multiprocessing import Pool, RawArray
