@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import curses
 
 def calculate(a, b, c):
