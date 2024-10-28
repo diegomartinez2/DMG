@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#module for SSCHA cellconstructor
 import numpy as np
 from scipy.special import tanh, sinh, cosh
 
