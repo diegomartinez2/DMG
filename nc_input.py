@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#TUI curses test/example
 import curses
 
 def calculate(a, b, c):
