@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+#TUI example (making a clock is a way to see how this works)
 import curses
 import time
 import threading
