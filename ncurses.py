@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import curses
 
 def create_window(rows, cols, y, x, title):
