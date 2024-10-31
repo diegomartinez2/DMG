@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 #TUI example (making a clock is a way to see how this works)
 import curses
 import time
