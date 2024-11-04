@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from collections import defaultdict
 
 def combine_values(*dicts):
@@ -24,7 +25,7 @@ ages = {
   'Isabel': 10,
   'Anna': 9,
 }
-collect_dictionary(ages) # { 10: ['Peter', 'Isabel'], 9: ['Anna'] }    
+collect_dictionary(ages) # { 10: ['Peter', 'Isabel'], 9: ['Anna'] }
     """
   inv_obj = defaultdict(list)
   for key, value in obj.items():
