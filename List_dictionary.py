@@ -1,4 +1,5 @@
 #Functions to transform from lists to dictionaries and from dictionaries to lists
+# use with 'import List_dictionary'
 def list_to_dictionary(keys, values):
     """
     to_dictionary(['a', 'b'], [1, 2]) # { a: 1, b: 2 }
