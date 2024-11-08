@@ -1,4 +1,5 @@
-# script.py
+#!/usr/bin/env python
+# script parser.py
 import argparse
 
 if __name__ == '__main__':
