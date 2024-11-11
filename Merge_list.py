@@ -1,4 +1,5 @@
 # This function merge lists in python.
+# from [a,b],[1,2] to [[a,1],[b,2]]
 def merge(*args, fill_value = None):
     """
         Merge lists in python, examples:
