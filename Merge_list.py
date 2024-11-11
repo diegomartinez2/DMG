@@ -1,3 +1,4 @@
+# This function merge lists in python.
 def merge(*args, fill_value = None):
     """
         Merge lists in python, examples:
