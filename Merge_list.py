@@ -17,7 +17,7 @@ def merge(*args, fill_value = None):
   return result
 
 
-
+# Simple sorting function for lists
 
 def sort_by_indexes(lst, indexes, reverse=False):
     """
