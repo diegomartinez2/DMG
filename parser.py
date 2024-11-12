@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # script parser.py
+#This code is a test for introducing arguments from the terminal
+#also to give help.
 import argparse
 
 if __name__ == '__main__':
