@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#another parser for imput from the terminal
 import argparse
 
 argParser = argparse.ArgumentParser()
