@@ -1,4 +1,4 @@
 #!/bin/bash
-#Not tested yet
+#Require imagemagic installed
 convert -delay 20 -loop 0 *.jpg myimage.gif
 #
