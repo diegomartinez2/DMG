@@ -1,0 +1,12 @@
+body {
+    background-color: #9dbbd9;
+	color: black;
+}
+#DniClock {
+    font-family: "D\'ni Script",Dnifont;
+    font-size: 48px;
+}
+#DniClockRoman {
+    font-family: Book Antiqua,Palatino,Palatino Linotype,Palatino LT STD,Georgia,serif;
+    font-size: 40px;
+}
