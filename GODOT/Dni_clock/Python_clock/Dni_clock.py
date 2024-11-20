@@ -20,3 +20,5 @@ def Earth2Dni(arg):
    pass
 def FIX(arg):
     return nt(arg//1)
+def Gregorian_to_Julian(arg):
+    pass
