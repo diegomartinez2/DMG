@@ -11,8 +11,10 @@ def Earth2Dni(arg):
     if Month < 3 then
         Month = Month + 12
         Year = Year - 1
-    end if
-       WD = Day + FIX(((153 * Month) - 457) / 5) + floor(365.25 * Year) - floor(0.01 * Year) + floor(0.0025 * Year)
+#whole days
+    WD = Day + FIX(((153 * Month) - 457) / 5) + floor(365.25 * Year) - floor(0.01 * Year) + floor(0.0025 * Year)
+#fractional day
+    FD = ((Hour * 3600) + (Minute * 60) + Second) / 86400
     pass
 def FIX(arg):
     return nt(arg//1)
