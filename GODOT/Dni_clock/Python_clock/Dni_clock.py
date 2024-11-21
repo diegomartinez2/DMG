@@ -26,4 +26,12 @@ def Gregorian_to_Julian(arg):
     pass
 
 def Julian_to_Gregorian(arg):
+    Z = INT(JD)
+    G = Z - 0.25
+    A = floor(G / 36524.25)
+    B = A - (0.25 * A)
+    Year = floor((G + B) / 365.25)
+    C = Z + B - floor(365.25 * Year)
+    Month = FIX(((5 * C) + 456) / 153)
+    Day = C - FIX(((153 * Month) - 457) / 5)
     pass
