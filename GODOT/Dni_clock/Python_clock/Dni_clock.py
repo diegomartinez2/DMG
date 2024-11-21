@@ -18,8 +18,10 @@ def Earth2Dni(arg):
 # Julian Day
     JD = WD + FD
    pass
+
 def FIX(arg):
     return nt(arg//1)
+
 def Gregorian_to_Julian(arg):
     pass
 
