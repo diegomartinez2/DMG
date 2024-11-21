@@ -22,3 +22,6 @@ def FIX(arg):
     return nt(arg//1)
 def Gregorian_to_Julian(arg):
     pass
+
+def Julian_to_Gregorian(arg):
+    pass
