@@ -8,7 +8,7 @@ def Earth2Dni(arg):
     har = floor(Millisec / MillisecPerHar)
     if Year<0:
         Year = -(Year - 1)
-    if Month < 3 then
+    if Month < 3:
         Month = Month + 12
         Year = Year - 1
 #whole days
@@ -34,4 +34,8 @@ def Julian_to_Gregorian(arg):
     C = Z + B - floor(365.25 * Year)
     Month = FIX(((5 * C) + 456) / 153)
     Day = C - FIX(((153 * Month) - 457) / 5)
+    if Month > 12:
+       Year = Year + 1
+       Month = Month - 12
+
     pass
