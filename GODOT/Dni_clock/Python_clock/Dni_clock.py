@@ -39,4 +39,9 @@ def Julian_to_Gregorian(arg):
         Month = Month - 12
     if Year < 1:
         Year = 1 - Year
+    Z = (JD - INT(JD)) * 86400
+    Hour = FIX(Z / 3600)
+    R = Z - (Hour * 3600)
+    Minute = FIX(R / 60)
+    Second = R - (Minute * 60)
     pass
