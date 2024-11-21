@@ -35,7 +35,8 @@ def Julian_to_Gregorian(arg):
     Month = FIX(((5 * C) + 456) / 153)
     Day = C - FIX(((153 * Month) - 457) / 5)
     if Month > 12:
-       Year = Year + 1
-       Month = Month - 12
-
+        Year = Year + 1
+        Month = Month - 12
+    if Year < 1:
+        Year = 1 - Year
     pass
