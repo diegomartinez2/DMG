@@ -44,4 +44,4 @@ def Julian_to_Gregorian(arg):
     R = Z - (Hour * 3600)
     Minute = FIX(R / 60)
     Second = R - (Minute * 60)
-    pass
+    return Year,Month,Hour,Minute,Second
