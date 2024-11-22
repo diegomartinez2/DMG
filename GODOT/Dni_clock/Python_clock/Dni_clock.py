@@ -45,3 +45,12 @@ def Julian_to_Gregorian(arg):
     Minute = FIX(R / 60)
     Second = R - (Minute * 60)
     return Year,Month,Hour,Minute,Second
+
+def Cavernian_to_AYN(arg):
+    #whole yahrtee
+    WY = Yahr + ((Vailee - 1) * 29) + ((Hahr - 9647) * 290)
+    #fractional yahr
+    FY = ((Gahrtahvo * 15625) + (Tahvo * 625) + (Gorahn * 25) + Prorahn) / 78125
+    #Atrian Yahr
+    AY = WY + FY
+    return AY
