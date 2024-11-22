@@ -25,7 +25,7 @@ def FIX(arg):
 def Gregorian_to_Julian(arg):
     pass
 
-def Julian_to_Gregorian(arg):
+def Julian_to_Gregorian(JD):
     Z = INT(JD)
     G = Z - 0.25
     A = floor(G / 36524.25)
