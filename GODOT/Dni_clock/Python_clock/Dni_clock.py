@@ -6,11 +6,8 @@ from numpy import floor #the greatest integer that does not exceed x.
 def Earth2Dni(arg):
     delta = strftime('%H:%M:%S %p')
     har = floor(Millisec / MillisecPerHar)
-    if Year<0:
-        Year = -(Year - 1)
-    if Month < 3:
-        Month = Month + 12
-        Year = Year - 1
+
+
 
    pass
 
@@ -18,7 +15,8 @@ def FIX(arg):
     return nt(arg//1)
 
 def Gregorian_to_Julian(arg):
-    Year = -(Year - 1)
+    if Year<0:
+        Year = -(Year - 1)
     if Month < 3:
         Month = Month + 12
         Year = Year - 1
