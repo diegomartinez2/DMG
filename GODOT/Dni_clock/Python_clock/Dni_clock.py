@@ -6,9 +6,6 @@ from numpy import floor #the greatest integer that does not exceed x.
 def Earth2Dni(arg):
     delta = strftime('%H:%M:%S %p')
     har = floor(Millisec / MillisecPerHar)
-
-
-
    pass
 
 def FIX(arg):
