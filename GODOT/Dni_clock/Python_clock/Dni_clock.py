@@ -11,19 +11,24 @@ def Earth2Dni(arg):
     if Month < 3:
         Month = Month + 12
         Year = Year - 1
-#whole days
-    WD = Day + FIX(((153 * Month) - 457) / 5) + floor(365.25 * Year) - floor(0.01 * Year) + floor(0.0025 * Year)
-#fractional day
-    FD = ((Hour * 3600) + (Minute * 60) + Second) / 86400
-# Julian Day
-    JD = WD + FD
+
    pass
 
 def FIX(arg):
     return nt(arg//1)
 
 def Gregorian_to_Julian(arg):
-    pass
+    Year = -(Year - 1)
+    if Month < 3:
+        Month = Month + 12
+        Year = Year - 1
+    #whole days
+        WD = Day + FIX(((153 * Month) - 457) / 5) + floor(365.25 * Year) - floor(0.01 * Year) + floor(0.0025 * Year)
+    #fractional day
+        FD = ((Hour * 3600) + (Minute * 60) + Second) / 86400
+    # Julian Day
+        JD = WD + FD
+    return JD
 
 def Julian_to_Gregorian(JD):
     Z = INT(JD)
