@@ -54,3 +54,8 @@ def Cavernian_to_AYN(arg):
     #Atrian Yahr
     AY = WY + FY
     return AY
+
+def Cavernian_to_Gregorian(arg):
+    #Atrian Yahr
+    AYD = AY - 1.0
+    pass
