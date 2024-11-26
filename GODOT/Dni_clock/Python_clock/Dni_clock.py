@@ -58,4 +58,8 @@ def Cavernian_to_AYN(arg):
 def Cavernian_to_Gregorian(arg):
     #Atrian Yahr
     AYD = AY - 1.0
+    #to Julian
+    JDD = AYD * 1.25945582758621
+    JD = JDD + 727249.704166666
+    Julian_to_Gregorian(JD)
     pass
