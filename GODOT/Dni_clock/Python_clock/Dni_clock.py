@@ -66,4 +66,7 @@ def Cavernian_to_Gregorian(arg):
 def Gregorian_to_Cavernian(arg):
     JD = Gregorian_to_Julian(arg)
     JDD = JD - 727249.704166666
+    AYD = JDD * 0.793993705929756
+    AY = AYD + 1.0
+    #Convert the calculated Atrian Yahr to a Cavernian date
     pass
