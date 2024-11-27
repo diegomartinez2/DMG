@@ -62,3 +62,8 @@ def Cavernian_to_Gregorian(arg):
     JDD = AYD * 1.25945582758621
     JD = JDD + 727249.704166666
     return Julian_to_Gregorian(JD)
+
+def Gregorian_to_Cavernian(arg):
+    JD = Gregorian_to_Julian(arg)
+    JDD = JD - 727249.704166666
+    pass
