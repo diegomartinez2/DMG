@@ -26,7 +26,7 @@ def Gregorian_to_Julian(arg):
     return JD
 
 def Julian_to_Gregorian(JD):
-    Z = INT(JD)
+    Z = floor(JD)
     G = Z - 0.25
     A = floor(G / 36524.25)
     B = A - (0.25 * A)
@@ -73,11 +73,11 @@ def Gregorian_to_Cavernian(arg):
 
 def AYN_to_Cavernian(arg):
     #Extract the number of whole yahrtee and calculate the date
-    Z = INT(AY)
+    Z = floor(AY)
     G = Z - 0.25
-    A = INT(G / 290)
+    A = floor(G / 290)
     Hahr = 9647 + A
     C = Z - (A * 290)
-    Vailee = INT((C - 0.25) / 29) + 1
+    Vailee = floor((C - 0.25) / 29) + 1
     Yahr = C - ((Vailee - 1) * 29)
     pass
