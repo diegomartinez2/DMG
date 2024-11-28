@@ -70,3 +70,14 @@ def Gregorian_to_Cavernian(arg):
     AY = AYD + 1.0
     #Convert the calculated Atrian Yahr to a Cavernian date
     pass
+
+def AYN_to_Cavernian(arg):
+    #Extract the number of whole yahrtee and calculate the date
+    Z = INT(AY)
+    G = Z - 0.25
+    A = INT(G / 290)
+    Hahr = 9647 + A
+    C = Z - (A * 290)
+    Vailee = INT((C - 0.25) / 29) + 1
+    Yahr = C - ((Vailee - 1) * 29)
+    pass
