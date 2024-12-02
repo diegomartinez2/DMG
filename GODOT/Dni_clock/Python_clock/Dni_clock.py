@@ -55,6 +55,17 @@ def Cavernian_to_AYN(arg):
     AY = WY + FY
     return AY
 
+def AYN_to_Cavernian(arg):
+    #Extract the number of whole yahrtee and calculate the date
+    Z = floor(AY)
+    G = Z - 0.25
+    A = floor(G / 290)
+    Hahr = 9647 + A
+    C = Z - (A * 290)
+    Vailee = floor((C - 0.25) / 29) + 1
+    Yahr = C - ((Vailee - 1) * 29)
+    pass
+
 def Cavernian_to_Gregorian(arg):
     #Atrian Yahr
     AYD = AY - 1.0
@@ -69,15 +80,4 @@ def Gregorian_to_Cavernian(arg):
     AYD = JDD * 0.793993705929756
     AY = AYD + 1.0
     #Convert the calculated Atrian Yahr to a Cavernian date
-    pass
-
-def AYN_to_Cavernian(arg):
-    #Extract the number of whole yahrtee and calculate the date
-    Z = floor(AY)
-    G = Z - 0.25
-    A = floor(G / 290)
-    Hahr = 9647 + A
-    C = Z - (A * 290)
-    Vailee = floor((C - 0.25) / 29) + 1
-    Yahr = C - ((Vailee - 1) * 29)
     pass
