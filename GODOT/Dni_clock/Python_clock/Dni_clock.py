@@ -11,7 +11,7 @@ def Earth2Dni(arg):
 def FIX(arg):
     return nt(arg//1)
 
-def Gregorian_to_Julian(arg):
+def Gregorian_to_Julian(Day, Month, Year, Hour=0, Minute=0, Second=0):
     if Year<0:
         Year = -(Year - 1)
     if Month < 3:
@@ -66,7 +66,7 @@ def AYN_to_Cavernian(arg):
     Yahr = C - ((Vailee - 1) * 29)
     pass
 
-def Cavernian_to_Gregorian(arg):
+def Cavernian_to_Gregorian(AY):
     #Atrian Yahr
     AYD = AY - 1.0
     #to Julian
