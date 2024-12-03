@@ -80,4 +80,4 @@ def Gregorian_to_Cavernian(Day, Month, Year, Hour=0, Minute=0, Second=0):
     AYD = JDD * 0.793993705929756
     AY = AYD + 1.0
     #Convert the calculated Atrian Yahr to a Cavernian date
-    pass
+    return AYN_to_Cavernian(AY)
