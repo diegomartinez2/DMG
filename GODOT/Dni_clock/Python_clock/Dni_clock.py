@@ -53,7 +53,7 @@ def Julian_to_Gregorian(JD):
     R = Z - (Hour * 3600)
     Minute = FIX(R / 60)
     Second = R - (Minute * 60)
-    return Year,Month,Day,Hour,Minute,Second
+    return Day, Month, Year, Hour, Minute, Second
 
 def Cavernian_to_AYN(arg):
     #whole yahrtee
