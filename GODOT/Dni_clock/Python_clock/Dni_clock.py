@@ -8,6 +8,15 @@ def Earth2Dni(arg):
     har = floor(Millisec / MillisecPerHar)
    pass
 
+def get_time(arg):
+    Day = strftime('%d')
+    Month = strftime('%m')
+    Year = strftime('%Y')
+    Hour = strftime('%H')
+    Minute = strftime('%M')
+    Second = strftime('%S')
+    return Day, Month, Year, Hour, Minute, Second
+
 def FIX(arg):
     return nt(arg//1)
 
