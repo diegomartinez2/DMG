@@ -64,7 +64,7 @@ def Cavernian_to_AYN(Yahr, Vailee, Hahr,Gahrtahvo=0, Tahvo=0, Gorahn=0, Prorahn=
     AY = WY + FY
     return AY
 
-def AYN_to_Cavernian(arg):
+def AYN_to_Cavernian(AY):
     #Extract the number of whole yahrtee and calculate the date
     Z = floor(AY)
     G = Z - 0.25
@@ -73,7 +73,7 @@ def AYN_to_Cavernian(arg):
     C = Z - (A * 290)
     Vailee = floor((C - 0.25) / 29) + 1
     Yahr = C - ((Vailee - 1) * 29)
-    pass
+    return Yahr, Vailee, Hahr
 
 def Cavernian_to_Gregorian(AY):
     #Atrian Yahr
