@@ -73,6 +73,7 @@ def AYN_to_Cavernian(AY):
     C = Z - (A * 290)
     Vailee = floor((C - 0.25) / 29) + 1
     Yahr = C - ((Vailee - 1) * 29)
+    #If AY includes a fractional (time of yahr) part, extract the fraction and calculate the time
     return Yahr, Vailee, Hahr
 
 def Cavernian_to_Gregorian(AY):
