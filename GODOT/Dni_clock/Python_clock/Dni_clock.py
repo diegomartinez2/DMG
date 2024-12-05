@@ -55,7 +55,7 @@ def Julian_to_Gregorian(JD):
     Second = R - (Minute * 60)
     return Day, Month, Year, Hour, Minute, Second
 
-def Cavernian_to_AYN(arg):
+def Cavernian_to_AYN(Yahr, Vailee, Hahr,Gahrtahvo=0, Tahvo=0, Gorahn=0, Prorahn=0):
     #whole yahrtee
     WY = Yahr + ((Vailee - 1) * 29) + ((Hahr - 9647) * 290)
     #fractional yahr
