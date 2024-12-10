@@ -74,7 +74,14 @@ def AYN_to_Cavernian(AY):
     Vailee = floor((C - 0.25) / 29) + 1
     Yahr = C - ((Vailee - 1) * 29)
     #If AY includes a fractional (time of yahr) part, extract the fraction and calculate the time
-    return Yahr, Vailee, Hahr
+    Z = (AY - INT(AY)) * 78125
+    Gahrtahvo = FIX(Z / 15625)
+    R = Z - (Gahrtahvo * 15625)
+    Tahvo = FIX(R / 625)
+    R = R - (Tahvo * 625)
+    Gorahn = FIX(R / 25)
+    Prorahn = R - (Gorahn * 25)
+    return Yahr, Vailee, Hahr, Gahrtahvo, Tahvo, Gorahn, Prorahn
 
 def Cavernian_to_Gregorian(AY):
     #Atrian Yahr
