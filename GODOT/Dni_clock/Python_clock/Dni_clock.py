@@ -18,7 +18,7 @@ def get_time(arg):
     return Day, Month, Year, Hour, Minute, Second
 
 def FIX(arg):
-    return nt(arg//1)
+    return int(arg//1)
 
 def Gregorian_to_Julian(Day, Month, Year, Hour=0, Minute=0, Second=0):
     if Year<0:
@@ -48,7 +48,7 @@ def Julian_to_Gregorian(JD):
         Month = Month - 12
     if Year < 1:
         Year = 1 - Year
-    Z = (JD - INT(JD)) * 86400
+    Z = (JD - floor(JD)) * 86400
     Hour = FIX(Z / 3600)
     R = Z - (Hour * 3600)
     Minute = FIX(R / 60)
@@ -74,7 +74,7 @@ def AYN_to_Cavernian(AY):
     Vailee = floor((C - 0.25) / 29) + 1
     Yahr = C - ((Vailee - 1) * 29)
     #If AY includes a fractional (time of yahr) part, extract the fraction and calculate the time
-    Z = (AY - INT(AY)) * 78125
+    Z = (AY - floor(AY)) * 78125
     Gahrtahvo = FIX(Z / 15625)
     R = Z - (Gahrtahvo * 15625)
     Tahvo = FIX(R / 625)
