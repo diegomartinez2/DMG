@@ -138,6 +138,7 @@ def Gregorian_to_Cavernian(Day, Month, Year, Hour=0, Minute=0, Second=0):
 
 def main(args):
     Day, Month, Year, Hour, Minute, Second = get_time()
+    print("Year:", Year, "Month=", Month, "Day:", Day, "Hour=",Hour,":",Minute,":",Second)
     return 0
 
 if __name__ == '__main__':
