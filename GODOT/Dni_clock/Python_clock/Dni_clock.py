@@ -133,3 +133,12 @@ def Gregorian_to_Cavernian(Day, Month, Year, Hour=0, Minute=0, Second=0):
     AY = AYD + 1.0
     #Convert the calculated Atrian Yahr to a Cavernian date
     return AYN_to_Cavernian(AY)
+
+#-----------------------------------------------------
+
+def main(args):
+    return 0
+
+if __name__ == '__main__':
+    import sys
+    sys.exit(main(sys.argv))
