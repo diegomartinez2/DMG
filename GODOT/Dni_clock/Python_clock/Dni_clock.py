@@ -134,6 +134,21 @@ def Gregorian_to_Cavernian(Day, Month, Year, Hour=0, Minute=0, Second=0):
     #Convert the calculated Atrian Yahr to a Cavernian date
     return AYN_to_Cavernian(AY)
 
+def Vailee_to_VaileeTEXT(arg):
+    VaileeDictionary = {
+    1:Leefo,
+    2:Leebro,
+    3:Leesahn,
+    4:Leetar,
+    5:Leevot,
+    6:Leevofo,
+    7:Leevobro,
+    8:Leevosahn,
+    9:Leevotar,
+    10:Leenovoo
+    }
+    pass
+
 #-----------------------------------------------------
 
 def main(args):
