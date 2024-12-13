@@ -156,7 +156,7 @@ def main(args):
     Day, Month, Year, Hour, Minute, Second = get_time()
     print("Year:", Year, "Month=", Month, "Day:", Day, "Hour=",Hour,":",Minute,":",Second)
     Yahr, Vailee, Hahr, Gahrtahvo, Tahvo, Gorahn, Prorahn = Gregorian_to_Cavernian(Day, Month, Year, Hour, Minute, Second)
-    print("Yahr:",Yahr, "Vailee:",Vailee, "Hahr:", Hahr, "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
+    print("Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Hahr:", Hahr, "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
     return 0
 
 if __name__ == '__main__':
