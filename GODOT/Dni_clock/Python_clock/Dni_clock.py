@@ -41,7 +41,7 @@ from numpy import floor #the greatest integer that does not exceed x.
 def Earth2Dni(arg):
     delta = strftime('%H:%M:%S %p')
     har = floor(Millisec / MillisecPerHar)
-   pass
+    pass
 
 def get_time(arg):
     Day = strftime('%d')
@@ -152,7 +152,7 @@ def Gregorian_to_Cavernian(Day, Month, Year, Hour=0, Minute=0, Second=0):
 #-----------------------------------------------------
 
 def main(args):
-    VaileeDictionary = {1:Leefo,2:Leebro,3:Leesahn,4:Leetar,5:Leevot,6:Leevofo,7:Leevobro,8:Leevosahn,9:Leevotar,10:Leenovoo}
+    VaileeDictionary = {1:"Leefo",2:"Leebro",3:"Leesahn",4:"Leetar",5:"Leevot",6:"Leevofo",7:"Leevobro",8:"Leevosahn",9:"Leevotar",10:"Leenovoo"}
     Day, Month, Year, Hour, Minute, Second = get_time()
     print("Year:", Year, "Month=", Month, "Day:", Day, "Hour=",Hour,":",Minute,":",Second)
     Yahr, Vailee, Hahr, Gahrtahvo, Tahvo, Gorahn, Prorahn = Gregorian_to_Cavernian(Day, Month, Year, Hour, Minute, Second)
