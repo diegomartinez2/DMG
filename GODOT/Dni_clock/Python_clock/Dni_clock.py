@@ -43,7 +43,7 @@ def Earth2Dni(arg):
     har = floor(Millisec / MillisecPerHar)
     pass
 
-def get_time(arg):
+def get_time():
     Day = strftime('%d')
     Month = strftime('%m')
     Year = strftime('%Y')
