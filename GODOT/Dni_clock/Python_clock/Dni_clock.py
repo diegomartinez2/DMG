@@ -127,7 +127,7 @@ def Cavernian_to_Gregorian(AY):
     return Julian_to_Gregorian(JD)
 
 def Gregorian_to_Cavernian(Day, Month, Year, Hour=0, Minute=0, Second=0):
-    JD = Gregorian_to_Julian(arg)
+    JD = Gregorian_to_Julian(Day, Month, Year, Hour, Minute, Second)
     JDD = JD - 727249.704166666
     AYD = JDD * 0.793993705929756
     AY = AYD + 1.0
