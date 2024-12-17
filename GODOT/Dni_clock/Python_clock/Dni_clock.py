@@ -44,12 +44,12 @@ def Earth2Dni(arg):
     pass
 
 def get_time():
-    Day = strftime('%d')
-    Month = strftime('%m')
-    Year = strftime('%Y')
-    Hour = strftime('%H')
-    Minute = strftime('%M')
-    Second = strftime('%S')
+    Day = int(strftime('%d'))
+    Month = int(strftime('%m'))
+    Year = int(strftime('%Y'))
+    Hour = int(strftime('%H'))
+    Minute = int(strftime('%M'))
+    Second = int(strftime('%S'))
     return Day, Month, Year, Hour, Minute, Second
 
 def FIX(arg):
