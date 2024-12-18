@@ -116,7 +116,7 @@ def AYN_to_Cavernian(AY):
     R = R - (Tahvo * 625)
     Gorahn = FIX(R / 25)
     Prorahn = R - (Gorahn * 25)
-    return Yahr, Vailee, Hahr, Gahrtahvo, Tahvo, Gorahn, Prorahn
+    return Hahr, Vailee, Yahr, Gahrtahvo, Tahvo, Gorahn, Prorahn
 
 def Cavernian_to_Gregorian(AY):
     #Atrian Yahr
@@ -155,7 +155,7 @@ def main(args):
     VaileeDictionary = {1:"Leefo",2:"Leebro",3:"Leesahn",4:"Leetar",5:"Leevot",6:"Leevofo",7:"Leevobro",8:"Leevosahn",9:"Leevotar",10:"Leenovoo"}
     Day, Month, Year, Hour, Minute, Second = get_time()
     print("Year:", Year, "Month=", Month, "Day:", Day, "Hour=",Hour,":",Minute,":",Second)
-    Yahr, Vailee, Hahr, Gahrtahvo, Tahvo, Gorahn, Prorahn = Gregorian_to_Cavernian(Day, Month, Year, Hour, Minute, Second)
+    Hahr, Vailee, Yahr, Gahrtahvo, Tahvo, Gorahn, Prorahn = Gregorian_to_Cavernian(Day, Month, Year, Hour, Minute, Second)
     print("Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Hahr:", Hahr, "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
     return 0
 
