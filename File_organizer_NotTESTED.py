@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 import shutil
 
@@ -69,4 +70,3 @@ if __name__ == "__main__":
     else:
         organize_files(source_folder)
         print("Organization complete!")
-        
