@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  untitled.py
+#  Dni_clock.py
 #
-#  Copyright 2024 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
+#  Copyright 2025 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #  MA 02110-1301, USA.
 #
 #
+# D'ni clock converter from Gregorian to D'ni
 # ---------------------------
 # Importación de los módulos
 # ---------------------------
