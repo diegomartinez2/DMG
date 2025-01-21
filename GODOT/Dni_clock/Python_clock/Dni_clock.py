@@ -156,13 +156,15 @@ def Gregorian_to_Cavernian(Day, Month, Year, Hour=0, Minute=0, Second=0):
 #-----------------------------------------------------
 
 def main(args):
+    base = 25
     VaileeDictionary = {1:"Leefo",2:"Leebro",3:"Leesahn",4:"Leetar",5:"Leevot",6:"Leevofo",7:"Leevobro",8:"Leevosahn",9:"Leevotar",10:"Leenovoo"}
     Day, Month, Year, Hour, Minute, Second = get_time()
     print("Year:", Year, "Month=", Month, "Day:", Day, "Hour=",Hour,":",Minute,":",Second)
     Hahr, Vailee, Yahr, Gahrtahvo, Tahvo, Gorahn, Prorahn = Gregorian_to_Cavernian(Day, Month, Year, Hour, Minute, Second)
-    print("Hahr:", Hahr, "Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
-    print("Base 25")
-    print("Hahr:", toDigits(Hahr,25), "Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
+    if base=10:
+        print("Hahr:", Hahr, "Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
+    else:
+        print("Hahr:", toDigits(Hahr,25), "Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
     return 0
 
 if __name__ == '__main__':
