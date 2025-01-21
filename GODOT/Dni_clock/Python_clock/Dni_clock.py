@@ -161,6 +161,7 @@ def main(args):
     print("Year:", Year, "Month=", Month, "Day:", Day, "Hour=",Hour,":",Minute,":",Second)
     Hahr, Vailee, Yahr, Gahrtahvo, Tahvo, Gorahn, Prorahn = Gregorian_to_Cavernian(Day, Month, Year, Hour, Minute, Second)
     print("Hahr:", Hahr, "Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
+    print("Base 25")
     print("Hahr:", toDigits(Hahr,25), "Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
     return 0
 
