@@ -1,0 +1,78 @@
+#########################################################
+#
+# Template of LAMMPS script
+# Last revised by: Luciano Colombo
+#              on: July 1st, 2011
+#
+# Title: TRAJECTORY 
+# ------
+#
+# Description
+# -----------
+# GEOMETRY
+# - sample generated from scratch (no input)
+# - define a 3x3x3 cubic box with 3D periodic boundary conditions 
+# - box filled by a diamond lattice
+# - lattice sites occupied by Si atoms
+# INTERACTIONS
+# - Stillinger-Weber potential 
+# - the file Si.sw (containing potential parameters) MUST BE
+#   in the working directory
+# MOLECULAR DYNAMICS PARAMETERS
+# - timestep set to 1.0 fs (corresponding to 0.001 time LAMMPS "metal units")
+# - inital velocities assigned with Gaussian distribution
+# - initial temperature set to 300 Kelvin
+# SIMULATION
+# - sample thermalized by VELOCITY RESCALING at constant T=300K
+# - saved the trajectory of all atoms in the xyz format (suitable for instance for VMD)
+# - no output file provided, but for the standard output
+#   written in the log.lammps file (LAMMPS default output name)
+# AIM
+# - generating a movie file named: movie.xyz 
+#   (one frame every 5 time-step)
+########################################################
+
+# Defining the units
+#-------------------
+units           metal
+
+# Defining atom style and boundary conditions 
+#--------------------------------------------
+atom_style      atomic
+boundary        p p p
+
+# Defining the simulation box
+#----------------------------
+lattice         diamond  5.431 
+region          simulbox block 0 3 0 3 0 3 
+create_box      1 simulbox 
+create_atoms    1 region simulbox 
+
+# Defining atom type
+#-------------------
+mass  1  28.06
+
+# Defining interaction potential
+#-------------------------------
+pair_style     sw
+pair_coeff * * Si.sw Si
+
+# Defining simulation parameters
+#-------------------------------
+#
+timestep        0.001 
+velocity	all create 300.0 727 dist gaussian
+
+#-----------
+# SIMULATION 
+#-----------
+fix    VV   all temp/rescale 1 300.0 300.0 10.0 1.0
+fix    RUN1 all nve
+dump   TRJ  all xyz 5 movie.xyz
+run    5000
+unfix  VV 
+unfix  RUN1 
+
+#
+# END
+########################################
