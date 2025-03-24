@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import random
 gender = ["boy", "girl"]
 def generate_family(family_size):
