@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+#A code created to solve a quaestion about who have more
+#sisters, boys or girls.
 import random
 gender = ["boy", "girl"]
 def generate_family(family_size):
