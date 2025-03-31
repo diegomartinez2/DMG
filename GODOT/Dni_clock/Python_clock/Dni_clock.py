@@ -167,6 +167,8 @@ def main(args):
         print("Hahr:", toDigits(Hahr,25), "Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
     return 0
 
+# Add a funtion to print instruction of use. 
+
 if __name__ == '__main__':
     import sys
     sys.exit(main(sys.argv))
