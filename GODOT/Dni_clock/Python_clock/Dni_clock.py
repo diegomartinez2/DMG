@@ -167,7 +167,10 @@ def main(args):
         print("Hahr:", toDigits(Hahr,25), "Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
     return 0
 
-# Add a funtion to print instruction of use. 
+# Add a funtion to print instruction of use.
+def tutorial(arg):
+    print("Instructions of use:")
+    pass
 
 if __name__ == '__main__':
     import sys
