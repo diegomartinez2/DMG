@@ -170,6 +170,7 @@ def main(args):
 # Add a funtion to print instruction of use.
 def tutorial(arg):
     print("Instructions of use:")
+    print("")
     pass
 
 if __name__ == '__main__':
