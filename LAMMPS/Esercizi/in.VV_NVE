@@ -67,7 +67,8 @@ pair_coeff * * Si.sw Si
 # Defining simulation parameters
 #-------------------------------
 #
-timestep        0.001 
+#timestep        0.001
+timestep        0.005
 velocity	all create 900.0 727 dist gaussian
 
 # Defining the output format (ie. customize thermo_style)
