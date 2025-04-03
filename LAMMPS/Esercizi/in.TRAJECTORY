@@ -4,18 +4,18 @@
 # Last revised by: Luciano Colombo
 #              on: July 1st, 2011
 #
-# Title: TRAJECTORY 
+# Title: TRAJECTORY
 # ------
 #
 # Description
 # -----------
 # GEOMETRY
 # - sample generated from scratch (no input)
-# - define a 3x3x3 cubic box with 3D periodic boundary conditions 
+# - define a 3x3x3 cubic box with 3D periodic boundary conditions
 # - box filled by a diamond lattice
 # - lattice sites occupied by Si atoms
 # INTERACTIONS
-# - Stillinger-Weber potential 
+# - Stillinger-Weber potential
 # - the file Si.sw (containing potential parameters) MUST BE
 #   in the working directory
 # MOLECULAR DYNAMICS PARAMETERS
@@ -28,7 +28,7 @@
 # - no output file provided, but for the standard output
 #   written in the log.lammps file (LAMMPS default output name)
 # AIM
-# - generating a movie file named: movie.xyz 
+# - generating a movie file named: movie.xyz
 #   (one frame every 5 time-step)
 ########################################################
 
@@ -36,17 +36,17 @@
 #-------------------
 units           metal
 
-# Defining atom style and boundary conditions 
+# Defining atom style and boundary conditions
 #--------------------------------------------
 atom_style      atomic
 boundary        p p p
 
 # Defining the simulation box
 #----------------------------
-lattice         diamond  5.431 
-region          simulbox block 0 3 0 3 0 3 
-create_box      1 simulbox 
-create_atoms    1 region simulbox 
+lattice         diamond  5.431
+region          simulbox block 0 3 0 3 0 3
+create_box      1 simulbox
+create_atoms    1 region simulbox
 
 # Defining atom type
 #-------------------
@@ -60,18 +60,20 @@ pair_coeff * * Si.sw Si
 # Defining simulation parameters
 #-------------------------------
 #
-timestep        0.001 
-velocity	all create 300.0 727 dist gaussian
+timestep        0.001
+velocity	all create 300.0 727 dist gaussian #temperature 300K
+velocity	all create 1200.0 727 dist gaussian #temperature 1200K
 
 #-----------
-# SIMULATION 
+# SIMULATION
 #-----------
-fix    VV   all temp/rescale 1 300.0 300.0 10.0 1.0
+#fix    VV   all temp/rescale 1 300.0 300.0 10.0 1.0 #rescale to temperature 300K (fix ID group-ID temp/rescale N Tstart Tstop window fraction)
+fix    VV   all temp/rescale 1 1200.0 1200.0 10.0 1.0 #rescale to temperature 1200K
 fix    RUN1 all nve
 dump   TRJ  all xyz 5 movie.xyz
 run    5000
-unfix  VV 
-unfix  RUN1 
+unfix  VV
+unfix  RUN1
 
 #
 # END
