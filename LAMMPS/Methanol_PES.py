@@ -1,3 +1,8 @@
+import os
+import lammps
+import numpy as np
+import pandas as pd
+
 """
 Here is an example on how to use LAMMPS in order to compute the energy of your system, considering a given methodology (molecular mechanics here) and a series of molecular structures.
 
