@@ -70,12 +70,14 @@ pair_coeff * * Si.sw Si
 #-------------------------------
 #
 timestep        0.001
-velocity	all create 300.0 727 dist gaussian
+velocity	all create 300.0 727 dist gaussian #temperature 300K
+velocity	all create 1200.0 727 dist gaussian #temperature 1200K
 
 #-----------
 # SIMULATION
 #-----------
-fix    VV   all temp/rescale 1 300.0 300.0 10.0 1.0
+#fix    VV   all temp/rescale 1 300.0 300.0 10.0 1.0 #rescale to temperature 300K (fix ID group-ID temp/rescale N Tstart Tstop window fraction)
+fix    VV   all temp/rescale 1 1200.0 1200.0 10.0 1.0 #rescale to temperature 1200K
 fix    RUN1 all nve
 dump   TRJ  all xyz 5 movie.xyz
 run    5000
@@ -93,22 +95,22 @@ Neighbor list info ...
       bin: standard
 Per MPI rank memory allocation (min/avg/max) = 4.112 | 4.112 | 4.112 Mbytes
 Step Temp E_pair E_mol TotEng Press 
-       0          300    -936.7056            0   -928.36832    2030.7885 
-    5000          300   -926.44412            0   -918.10684    3492.7013 
-Loop time of 0.835793 on 1 procs for 5000 steps with 216 atoms
+       0         1200    -936.7056            0   -903.35648      8207.56 
+    5000         1200   -898.58241            0   -865.23329     10543.34 
+Loop time of 1.09817 on 1 procs for 5000 steps with 216 atoms
 
-Performance: 516.875 ns/day, 0.046 hours/ns, 5982.344 timesteps/s
-98.1% CPU use with 1 MPI tasks x 1 OpenMP threads
+Performance: 393.381 ns/day, 0.061 hours/ns, 4553.018 timesteps/s
+99.1% CPU use with 1 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 0.71835    | 0.71835    | 0.71835    |   0.0 | 85.95
+Pair    | 0.98397    | 0.98397    | 0.98397    |   0.0 | 89.60
 Neigh   | 0          | 0          | 0          |   0.0 |  0.00
-Comm    | 0.0098498  | 0.0098498  | 0.0098498  |   0.0 |  1.18
-Output  | 0.097624   | 0.097624   | 0.097624   |   0.0 | 11.68
-Modify  | 0.0071629  | 0.0071629  | 0.0071629  |   0.0 |  0.86
-Other   |            | 0.002802   |            |       |  0.34
+Comm    | 0.0091538  | 0.0091538  | 0.0091538  |   0.0 |  0.83
+Output  | 0.094414   | 0.094414   | 0.094414   |   0.0 |  8.60
+Modify  | 0.0078028  | 0.0078028  | 0.0078028  |   0.0 |  0.71
+Other   |            | 0.002834   |            |       |  0.26
 
 Nlocal:        216.000 ave         216 max         216 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
@@ -129,4 +131,4 @@ unfix  RUN1
 #
 # END
 ########################################
-Total wall time: 0:00:00
+Total wall time: 0:00:01
