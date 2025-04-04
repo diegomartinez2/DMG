@@ -80,8 +80,8 @@ thermo_style custom step temp etotal
 # PART ONE: thermalization by velocity rescaling
 #-----------------------------------------------
 #fix    NH   all nvt temp 900.0 900.0 1.0   #what will change with Tdamp?
-#fix    NH   all nvt temp 900.0 900.0 10.0
-fix    NH   all nvt temp 900.0 900.0 20.0
+#fix    NH   all nvt temp 900.0 900.0 10.0  #it reduces noise but increases
+fix    NH   all nvt temp 900.0 900.0 20.0   #the time needed to convrgence
 thermo 10
 run    10000
 unfix  NH
