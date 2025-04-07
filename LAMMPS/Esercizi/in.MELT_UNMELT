@@ -112,13 +112,11 @@ unfix   RUN4
 #
 fix     RELAX all temp/rescale 1 300.0 300.0 90.0 1.0
 fix     RUN5  all nve
-
-fix 1 all ave/correlate 5 100 1000 temp file temp.correlate
-
 thermo  10
 #dump    1      all     xyz     10   DUMP.xyz    #output positions of all atoms during this run
 dump    1      all     xyz    10   DUMP_unmelted.xyz    #output positions of all atoms of this run
 #fix 1 all ave/correlate 5 xyz file xyz.correlate
+#fix 1 all ave/correlate 5 100 1000 temp file temp.correlate
 
 run     1000
 
