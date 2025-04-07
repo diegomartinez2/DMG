@@ -112,7 +112,7 @@ unfix   RUN4
 fix     RELAX all temp/rescale 1 1800.0 1800.0 90.0 1.0
 fix     RUN5  all nve
 thermo  10
-dump    1      all     xyz     10   DUMP.xyz
+dump    1      all     xyz     10   DUMP.xyz    #output positions of all atoms during this run
 run     1000
 unfix   RELAX
 unfix   RUN5
