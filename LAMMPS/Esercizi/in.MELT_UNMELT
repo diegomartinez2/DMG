@@ -114,8 +114,9 @@ fix     RELAX all temp/rescale 1 300.0 300.0 90.0 1.0
 fix     RUN5  all nve
 thermo  10
 #dump    1      all     xyz     10   DUMP.xyz    #output positions of all atoms during this run
+dump    1      all     xyz    10   DUMP_unmelted.xyz    #output positions of all atoms of this run
+
 run     1000
-dump    1      all     xyz    10   DUMP_unmelted.xyz    #output positions of all atoms at the end of this run
 unfix   RELAX
 unfix   RUN5
 

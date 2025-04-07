@@ -201,20 +201,20 @@ Step Temp TotEng
      980    1035.3674   -4060.5872 
      990    1017.9111   -4060.5764 
     1000    1026.9389    -4067.577 
-Loop time of 0.902654 on 1 procs for 1000 steps with 1000 atoms
+Loop time of 0.908372 on 1 procs for 1000 steps with 1000 atoms
 
-Performance: 95.718 ns/day, 0.251 hours/ns, 1107.844 timesteps/s
-98.8% CPU use with 1 MPI tasks x 1 OpenMP threads
+Performance: 95.115 ns/day, 0.252 hours/ns, 1100.871 timesteps/s
+98.4% CPU use with 1 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 0.88955    | 0.88955    | 0.88955    |   0.0 | 98.55
+Pair    | 0.89519    | 0.89519    | 0.89519    |   0.0 | 98.55
 Neigh   | 0          | 0          | 0          |   0.0 |  0.00
-Comm    | 0.0042515  | 0.0042515  | 0.0042515  |   0.0 |  0.47
-Output  | 0.00070164 | 0.00070164 | 0.00070164 |   0.0 |  0.08
-Modify  | 0.0060753  | 0.0060753  | 0.0060753  |   0.0 |  0.67
-Other   |            | 0.002072   |            |       |  0.23
+Comm    | 0.0042756  | 0.0042756  | 0.0042756  |   0.0 |  0.47
+Output  | 0.00066685 | 0.00066685 | 0.00066685 |   0.0 |  0.07
+Modify  | 0.0061313  | 0.0061313  | 0.0061313  |   0.0 |  0.67
+Other   |            | 0.002106   |            |       |  0.23
 
 Nlocal:        1000.00 ave        1000 max        1000 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
@@ -341,20 +341,20 @@ Step Temp TotEng
     1980    4910.1718   -2721.2524 
     1990    4900.8315   -2721.2476 
     2000     4961.648   -2708.2968 
-Loop time of 1.23026 on 1 procs for 1000 steps with 1000 atoms
+Loop time of 1.22783 on 1 procs for 1000 steps with 1000 atoms
 
-Performance: 70.229 ns/day, 0.342 hours/ns, 812.837 timesteps/s
-100.0% CPU use with 1 MPI tasks x 1 OpenMP threads
+Performance: 70.368 ns/day, 0.341 hours/ns, 814.444 timesteps/s
+99.9% CPU use with 1 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 1.1807     | 1.1807     | 1.1807     |   0.0 | 95.97
-Neigh   | 0.036064   | 0.036064   | 0.036064   |   0.0 |  2.93
-Comm    | 0.0048322  | 0.0048322  | 0.0048322  |   0.0 |  0.39
-Output  | 0.0007315  | 0.0007315  | 0.0007315  |   0.0 |  0.06
-Modify  | 0.0060933  | 0.0060933  | 0.0060933  |   0.0 |  0.50
-Other   |            | 0.001886   |            |       |  0.15
+Pair    | 1.1783     | 1.1783     | 1.1783     |   0.0 | 95.96
+Neigh   | 0.036018   | 0.036018   | 0.036018   |   0.0 |  2.93
+Comm    | 0.0048373  | 0.0048373  | 0.0048373  |   0.0 |  0.39
+Output  | 0.00069911 | 0.00069911 | 0.00069911 |   0.0 |  0.06
+Modify  | 0.0061437  | 0.0061437  | 0.0061437  |   0.0 |  0.50
+Other   |            | 0.001845   |            |       |  0.15
 
 Nlocal:        1000.00 ave        1000 max        1000 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
@@ -881,20 +881,20 @@ Step Temp TotEng
     6980    5037.1691   -2683.7578 
     6990    4979.9894   -2683.7424 
     7000    5022.2807   -2683.7873 
-Loop time of 8.05098 on 1 procs for 5000 steps with 1000 atoms
+Loop time of 8.14817 on 1 procs for 5000 steps with 1000 atoms
 
-Performance: 53.658 ns/day, 0.447 hours/ns, 621.043 timesteps/s
-100.0% CPU use with 1 MPI tasks x 1 OpenMP threads
+Performance: 53.018 ns/day, 0.453 hours/ns, 613.635 timesteps/s
+99.8% CPU use with 1 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 7.6929     | 7.6929     | 7.6929     |   0.0 | 95.55
-Neigh   | 0.28786    | 0.28786    | 0.28786    |   0.0 |  3.58
-Comm    | 0.026972   | 0.026972   | 0.026972   |   0.0 |  0.34
-Output  | 0.0038886  | 0.0038886  | 0.0038886  |   0.0 |  0.05
-Modify  | 0.030538   | 0.030538   | 0.030538   |   0.0 |  0.38
-Other   |            | 0.008807   |            |       |  0.11
+Pair    | 7.785      | 7.785      | 7.785      |   0.0 | 95.54
+Neigh   | 0.29084    | 0.29084    | 0.29084    |   0.0 |  3.57
+Comm    | 0.027411   | 0.027411   | 0.027411   |   0.0 |  0.34
+Output  | 0.0043704  | 0.0043704  | 0.0043704  |   0.0 |  0.05
+Modify  | 0.031601   | 0.031601   | 0.031601   |   0.0 |  0.39
+Other   |            | 0.008935   |            |       |  0.11
 
 Nlocal:        1000.00 ave        1000 max        1000 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
@@ -1022,20 +1022,20 @@ Step Temp TotEng
     7980    425.11114   -3857.1545 
     7990    378.08502   -3870.6849 
     8000    330.89876    -3884.129 
-Loop time of 1.58738 on 1 procs for 1000 steps with 1000 atoms
+Loop time of 1.62519 on 1 procs for 1000 steps with 1000 atoms
 
-Performance: 54.429 ns/day, 0.441 hours/ns, 629.970 timesteps/s
+Performance: 53.163 ns/day, 0.451 hours/ns, 615.314 timesteps/s
 99.9% CPU use with 1 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 1.5332     | 1.5332     | 1.5332     |   0.0 | 96.59
-Neigh   | 0.039609   | 0.039609   | 0.039609   |   0.0 |  2.50
-Comm    | 0.0051139  | 0.0051139  | 0.0051139  |   0.0 |  0.32
-Output  | 0.00088502 | 0.00088502 | 0.00088502 |   0.0 |  0.06
-Modify  | 0.0065249  | 0.0065249  | 0.0065249  |   0.0 |  0.41
-Other   |            | 0.002007   |            |       |  0.13
+Pair    | 1.5702     | 1.5702     | 1.5702     |   0.0 | 96.62
+Neigh   | 0.039384   | 0.039384   | 0.039384   |   0.0 |  2.42
+Comm    | 0.0054095  | 0.0054095  | 0.0054095  |   0.0 |  0.33
+Output  | 0.001156   | 0.001156   | 0.001156   |   0.0 |  0.07
+Modify  | 0.0068819  | 0.0068819  | 0.0068819  |   0.0 |  0.42
+Other   |            | 0.002135   |            |       |  0.13
 
 Nlocal:        1000.00 ave        1000 max        1000 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
@@ -1059,8 +1059,10 @@ fix     RELAX all temp/rescale 1 300.0 300.0 90.0 1.0
 fix     RUN5  all nve
 thermo  10
 #dump    1      all     xyz     10   DUMP.xyz    #output positions of all atoms during this run
+dump    1      all     xyz    10   DUMP_unmelted.xyz    #output positions of all atoms of this run
+
 run     1000
-Per MPI rank memory allocation (min/avg/max) = 3.150 | 3.150 | 3.150 Mbytes
+Per MPI rank memory allocation (min/avg/max) = 4.238 | 4.238 | 4.238 Mbytes
 Step Temp TotEng 
     8000    330.89876    -3884.129 
     8010    376.11827   -3884.1335 
@@ -1163,20 +1165,20 @@ Step Temp TotEng
     8980    356.02059     -3942.74 
     8990    372.66513   -3942.7419 
     9000    370.72006   -3942.7415 
-Loop time of 1.37465 on 1 procs for 1000 steps with 1000 atoms
+Loop time of 1.65147 on 1 procs for 1000 steps with 1000 atoms
 
-Performance: 62.852 ns/day, 0.382 hours/ns, 727.455 timesteps/s
-100.0% CPU use with 1 MPI tasks x 1 OpenMP threads
+Performance: 52.317 ns/day, 0.459 hours/ns, 605.521 timesteps/s
+99.6% CPU use with 1 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 1.3518     | 1.3518     | 1.3518     |   0.0 | 98.34
-Neigh   | 0.0098885  | 0.0098885  | 0.0098885  |   0.0 |  0.72
-Comm    | 0.0041121  | 0.0041121  | 0.0041121  |   0.0 |  0.30
-Output  | 0.00068636 | 0.00068636 | 0.00068636 |   0.0 |  0.05
-Modify  | 0.0061067  | 0.0061067  | 0.0061067  |   0.0 |  0.44
-Other   |            | 0.002021   |            |       |  0.15
+Pair    | 1.5684     | 1.5684     | 1.5684     |   0.0 | 94.97
+Neigh   | 0.010453   | 0.010453   | 0.010453   |   0.0 |  0.63
+Comm    | 0.0061597  | 0.0061597  | 0.0061597  |   0.0 |  0.37
+Output  | 0.05481    | 0.05481    | 0.05481    |   0.0 |  3.32
+Modify  | 0.0084335  | 0.0084335  | 0.0084335  |   0.0 |  0.51
+Other   |            | 0.003197   |            |       |  0.19
 
 Nlocal:        1000.00 ave        1000 max        1000 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
@@ -1191,6 +1193,10 @@ Total # of neighbors = 38496
 Ave neighs/atom = 38.496000
 Neighbor list builds = 8
 Dangerous builds = 0
-dump    1      all     xyz   DUMP_unmelted.xyz    #output positions of all atoms at the end of this run
-ERROR: Illegal dump command (src/output.cpp:532)
-Last command: dump    1      all     xyz   DUMP_unmelted.xyz    #output positions of all atoms at the end of this run
+unfix   RELAX
+unfix   RUN5
+
+#
+# END
+########################################
+Total wall time: 0:00:13
