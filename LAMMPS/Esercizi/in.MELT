@@ -4,18 +4,18 @@
 # Last revised by: Luciano Colombo
 #              on: July 1st, 2011
 #
-# Title: MELT 
+# Title: MELT
 # ------
 #
 # Description
 # -----------
 # GEOMETRY
 # - sample generated from scratch (no input)
-# - define a 5x5x5x cubic box with 3D periodic boundary conditions 
+# - define a 5x5x5x cubic box with 3D periodic boundary conditions
 # - box filled by a diamond lattice
 # - lattice sites occupied by Si atoms
 # INTERACTIONS
-# - Stillinger-Weber potential 
+# - Stillinger-Weber potential
 # - the file Si.sw (containing potential parameters) MUST BE
 #   in the working directory
 # MOLECULAR DYNAMICS PARAMETERS
@@ -36,17 +36,17 @@
 #-------------------
 units           metal
 
-# Defining atom style and boundary conditions 
+# Defining atom style and boundary conditions
 #--------------------------------------------
 atom_style      atomic
 boundary        p p p
 
 # Defining the simulation box
 #----------------------------
-lattice         diamond  5.431 
-region          simulbox block 0 5 0 5 0 5 
-create_box      1 simulbox 
-create_atoms    1 region simulbox 
+lattice         diamond  5.431
+region          simulbox block 0 5 0 5 0 5
+create_box      1 simulbox
+create_atoms    1 region simulbox
 
 # Defining atom type
 #-------------------
@@ -60,7 +60,7 @@ pair_coeff * * Si.sw Si
 # Defining simulation parameters
 #-------------------------------
 #
-timestep        0.001 
+timestep        0.001
 velocity	all create 1000.0 727 dist gaussian
 
 # Defining the output format (ie. customize thermo_style)
@@ -68,7 +68,7 @@ velocity	all create 1000.0 727 dist gaussian
 thermo_style custom step temp etotal
 
 #-----------
-# SIMULATION 
+# SIMULATION
 #-----------
 
 # equilibration run
@@ -108,10 +108,11 @@ unfix   DOWN
 unfix   RUN4
 
 # relax l-Si sample
-# 
+#
 fix     RELAX all temp/rescale 1 1800.0 1800.0 90.0 1.0
 fix     RUN5  all nve
 thermo  10
+dump    1      all     xyz     10   DUMP.xyz
 run     1000
 unfix   RELAX
 unfix   RUN5
