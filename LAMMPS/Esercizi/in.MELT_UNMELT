@@ -116,13 +116,14 @@ thermo  10
 #dump    1      all     xyz     10   DUMP.xyz    #output positions of all atoms during this run
 dump    1      all     xyz    10   DUMP_unmelted.xyz    #output positions of all atoms of this run
 #fix 1 all ave/correlate 5 xyz file xyz.correlate
-#fix 1 all ave/correlate 5 100 1000 temp file temp.correlate
+#fix OUT_1 all ave/correlate 5 100 1000 temp file temp.correlate
 
 run     1000
 
 compute myRDF all rdf 50
-fix 1 all ave/time 100 1 100 c_myRDF[*] file tmp.rdf mode vector
+fix OUT_1 all ave/time 100 1 100 c_myRDF[*] file tmp.rdf mode vector
 
+unfix   OUT_1
 unfix   RELAX
 unfix   RUN5
 
