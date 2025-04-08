@@ -120,8 +120,8 @@ dump    1      all     xyz    10   DUMP_unmelted.xyz    #output positions of all
 
 run     1000
 
-compute myRDF all rdf 50
-fix OUT_1 all ave/time 100 1 100 c_myRDF[*] file tmp.rdf mode vector
+#compute myRDF all rdf 50
+#fix OUT_1 all ave/time 100 1 100 c_myRDF[*] file tmp.rdf mode vector
 
 unfix   OUT_1
 unfix   RELAX
