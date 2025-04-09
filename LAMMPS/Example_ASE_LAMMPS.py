@@ -1,3 +1,4 @@
+#!/usr/local/bin/python
 from ase import Atom, Atoms
 from ase.build import bulk
 from ase.calculators.lammpsrun import LAMMPS
