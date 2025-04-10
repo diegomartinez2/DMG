@@ -1,4 +1,4 @@
-from ase import Atoms, Atom
+#!/usr/local/bin/python
 from ase.calculators.lammpsrun import LAMMPS
 
 a = [6.5, 6.5, 7.7]
