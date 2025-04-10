@@ -1,3 +1,4 @@
+#!/usr/local/bin/python
 import os
 import lammps
 import numpy as np
