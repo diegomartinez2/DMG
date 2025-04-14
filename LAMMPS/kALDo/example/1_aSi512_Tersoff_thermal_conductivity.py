@@ -1,7 +1,9 @@
+#!/usr/local/bin/python
 # Example: amorphous silicon, Tersoff potential 
 # Computes: Quasi Harmonic Green Kubo (QHGK) thermal conductivity for amorphous silicon (512 atoms)
 # Uses: LAMMPS
 # External files: forcefields/Si.tersoff
+#!/usr/local/bin/python
 
 # Import necessary packages
 
@@ -25,11 +27,11 @@ forceconstants = ForceConstants.from_folder(folder='fc_aSi512',supercell=superce
 # 'is_classic': specify if the system is classic, True for classical and False for quantum
 # 'temperature: temperature (Kelvin) at which simulation is performed
 # 'folder': name of folder containing phonon property and thermal conductivity calculations
-# 'storage': Format to storage phonon properties ('formatted' for ASCII format data, 'numpy' 
+# 'storage': Format to storage phonon properties ('formatted' for ASCII format data, 'numpy'
 #            for python numpy array and 'memory' for quick calculations, no data stored)
 THz_to_meV = 4.136
 
-phonons_config = {'is_classic': False, 
+phonons_config = {'is_classic': False,
                   'temperature': 300, #'temperature'=300K
                   'folder': 'ALD_aSi512',
                    'third_bandwidth':0.5/THz_to_meV, # 0.5 meV is used here.
@@ -45,9 +47,9 @@ phonons = Phonons(forceconstants=forceconstants, **phonons_config)
 # Equation (BTE) with various of methods
 
 # 'phonons': phonon object obtained from the above calculations
-# 'method': specify methods to solve for BTE  
+# 'method': specify methods to solve for BTE
 #   ('qhgk' for Quasi-Harmonic Green Kubo (QHGK))
-# 'storage': Format to storage phonon properties ('formatted' for ASCII format data, 'numpy' 
+# 'storage': Format to storage phonon properties ('formatted' for ASCII format data, 'numpy'
 #            for python numpy array and 'memory' for quick calculations, no data stored)
 
 print('\n')
