@@ -6,8 +6,8 @@ import pandas as pd
 #Here we run simulation on a methane box using a Lenard Jones potential. Let’s write a LAMMPS input file in which you fill a box with 2000 methane particles using the TraPPE potential. The syntax is the same as the one of a classic LAMMPS input.
 methane_inp = """# LAMMPS input file for Methane
 
-units real
-atom_style atomic
+units real #grams/mole;Angstroms;femtoseconds;kcal/mol;Kelvin;atmospheres
+atom_style atomic #tag, type, x, v, f, image, mask
 
 region myRegion block 0. 400. 0. 400. 0. 400. units box
 create_box 1 myRegion
