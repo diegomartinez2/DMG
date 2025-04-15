@@ -27,7 +27,7 @@ neighbor 2.0 bin
 neigh_modify delay 10
 
 timestep 2.0
-thermo_style multi
+thermo_style multi #Style multi prints a multiple-line listing of thermodynamic info that is the equivalent of “thermo_style custom etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong press”. The listing contains numeric values and a string ID for each quantity.
 thermo 200
 """
 #In order to run the calculations, you have to initialize the lammps object and execute LAMMPS commands through it.
