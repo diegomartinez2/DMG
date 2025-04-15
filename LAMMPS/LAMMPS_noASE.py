@@ -1,4 +1,7 @@
 #!/usr/local/bin/python
+"""
+Example of LAMMPS python calculation without ASE libraries.
+"""
 import os
 import lammps
 import numpy as np
