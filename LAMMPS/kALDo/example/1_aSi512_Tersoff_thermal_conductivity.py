@@ -1,5 +1,5 @@
 #!/usr/local/bin/python
-# Example: amorphous silicon, Tersoff potential 
+# Example: amorphous silicon, Tersoff potential
 # Computes: Quasi Harmonic Green Kubo (QHGK) thermal conductivity for amorphous silicon (512 atoms)
 # Uses: LAMMPS
 # External files: forcefields/Si.tersoff
@@ -31,7 +31,7 @@ forceconstants = ForceConstants.from_folder(folder='fc_aSi512',supercell=superce
 #            for python numpy array and 'memory' for quick calculations, no data stored)
 THz_to_meV = 4.136
 
-phonons_config = {'is_classic': False,
+phonons_config = {'is_classic': False, #quantum=true
                   'temperature': 300, #'temperature'=300K
                   'folder': 'ALD_aSi512',
                    'third_bandwidth':0.5/THz_to_meV, # 0.5 meV is used here.
