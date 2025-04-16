@@ -1,3 +1,4 @@
+#Eample of LAMMPS calculation with ASE
 #!/usr/local/bin/python
 from ase import Atom, Atoms
 from ase.build import bulk
