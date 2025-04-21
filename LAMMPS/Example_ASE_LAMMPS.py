@@ -1,4 +1,5 @@
-#Eample of LAMMPS calculation with ASE
+#Example of LAMMPS calculation with ASE
+#this code only outputs the potential energy.
 #!/usr/local/bin/python
 from ase import Atom, Atoms
 from ase.build import bulk
