@@ -45,7 +45,7 @@ lmp.commands_list([
     "run 0"
 ])
 
-etotal_0 = lmp.get_thermo("etotal")
+etotal_0 = lmp.get_thermo("etotal") #this get the total energy without making a 'dump' in LAMMPS
 print(f"E_total = {etotal_0:.2f} kcal.mol-1")
 #Let’s now run a minimization and get back energies:
 lmp.commands_string("minimize 1.0e-4 1.0e-6 1000 1000")
