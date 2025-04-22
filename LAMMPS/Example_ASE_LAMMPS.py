@@ -8,7 +8,9 @@ from ase.calculators.lammpsrun import LAMMPS
 parameters = {'pair_style': 'eam/alloy',
             'pair_coeff': ['* * NiAlH_jea.eam.alloy H Ni']}
 
-files = ['NiAlH_jea.eam.alloy']
+files = ['NiAlH_jea.eam.alloy'] #included in lammps/potentials as examples
+#The prefix of each file indicates the element(s)
+#The suffix of each file indicates the pair style it is used
 
 Ni = bulk('Ni', cubic=True)
 H = Atom('H', position=Ni.cell.diagonal()/2)
