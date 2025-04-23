@@ -18,6 +18,6 @@ NiH = Ni + H
 
 lammps = LAMMPS(files=files, **parameters)
 
-NiH.calc = lammps #what kind of calculation?, NVE?
+NiH.calc = lammps #what kind of calculation?, NVE? (calculation with default settings?)
 print("Energy ", NiH.get_potential_energy())
 print("Total energy", NiH.get_thermo("etotal")) #does this work without setting the thermo_style?
