@@ -20,3 +20,4 @@ lammps = LAMMPS(files=files, **parameters)
 
 NiH.calc = lammps
 print("Energy ", NiH.get_potential_energy())
+print("Total energy", NiH.get_thermo("etotal")) #does this work without setting the thermo_style?
