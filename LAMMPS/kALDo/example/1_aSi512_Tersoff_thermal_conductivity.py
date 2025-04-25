@@ -53,7 +53,7 @@ phonons = Phonons(forceconstants=forceconstants, **phonons_config)
 #            for python numpy array and 'memory' for quick calculations, no data stored)
 
 print('\n')
-qhgk_cond = Conductivity(phonons=phonons, method='qhgk', storage='numpy')
+qhgk_cond = Conductivity(phonons=phonons, method='qhgk', storage='numpy') #rta is relaxation time approximation; sc is self-consistent; qhgk is Quasi-Harmonic Green Kubo; inverse is inversion of the scattering matrix for mean free path.
 qhgk_cond.diffusivity_bandwidth = phonons.bandwidth
 print('Conductivity from QHGK (W/m-K): %.3f' % (np.mean(np.diag(qhgk_cond.conductivity.sum(axis=0)))))
 print(qhgk_cond.conductivity.sum(axis=0))
