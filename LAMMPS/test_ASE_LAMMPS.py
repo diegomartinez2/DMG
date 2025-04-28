@@ -1,4 +1,5 @@
 #!/usr/local/bin/python
+#This will calculate a single salt unit cell with periodic boundary conditions
 from ase.calculators.lammpsrun import LAMMPS
 
 a = [6.5, 6.5, 7.7]
