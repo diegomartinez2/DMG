@@ -1,5 +1,8 @@
 #Example of LAMMPS calculation with ASE
 #this code only outputs the potential energy.
+"""the code now tries to output the total energy and can output:
+etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong press
+"""
 #!/usr/local/bin/python
 from ase import Atom, Atoms
 from ase.build import bulk
