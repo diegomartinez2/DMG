@@ -24,7 +24,9 @@ make mpi mode=shlib
 """
 
 #!/usr/local/bin/python
-
+"""
+LAMMPS calculation with ASE for C cristal (diamond)
+"""
 from ase import Atoms, Atom
 from ase.calculators.lammpsrun import LAMMPS
 from ase.visualize import view
