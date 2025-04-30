@@ -11,7 +11,7 @@ dimension 3
 atom_style full
 pair_style lj/class2/coul/long 10.0
 pair_style lj/class2/coul/long 10.0 8.0
-kspace_style    pppm 1.0e-4
+kspace_style pppm 1.0e-4
 boundary p p p
 
 # 2) System definition
@@ -26,7 +26,7 @@ group vapor region aweva
 pair_coeff 3 3 0.15535 3.5533
 pair_coeff 2 2 0.21 3.36
 pair_coeff 1 1 0.00 0.00
-neigh_modify    delay 10 every 1
+neigh_modify delay 10 every 1
 fix 1 all npt temp 413.15 413.15 10.0 iso 4.0 4.0 10.0
 fix 2 vapor evaporate 1000 10 aweva 49892 molecule yes
 
