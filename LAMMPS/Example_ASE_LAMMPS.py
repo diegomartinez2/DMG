@@ -24,8 +24,10 @@ lammps = LAMMPS(files=files, **parameters)
 NiH.calc = lammps #what kind of calculation?, NVE? (calculation with default settings?)
 print("Energy ", NiH.get_potential_energy())
 input_lammps = """
-thermo_style multi #Style multi prints a multiple-line listing of thermodynamic info that is the equivalent of “thermo_style custom etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong press”. The listing contains numeric values and a string ID for each quantity.
+thermo_style multi
 thermo 200
 """
+#Style multi prints a multiple-line listing of thermodynamic info that is the equivalent of “thermo_style custom etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong press”. The listing contains numeric values and a string ID for each quantity.
+
 #lammps.commands_string(input_lammps) #testing adding termo
 print("Total energy", NiH.get_thermo("etotal")) #does this work without setting the thermo_style?
