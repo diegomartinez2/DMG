@@ -37,11 +37,11 @@ special_bonds amber
 fix NVE all nve
 """
 
-"""
-One single calculation
 
-Again, we create the lammps object. Here we reduce output and redirect stdout to devnull.
-"""
+#One single calculation
+
+#Again, we create the lammps object. Here we reduce output and redirect stdout to devnull.
+
 
 lmp.close()
 lmp = lammps.lammps(cmdargs=["-log", "none", "-screen", os.devnull,  "-nocite"])
@@ -55,9 +55,7 @@ for energy in ["etotal", "evdwl", "ecoul", "ebond", "eangle", "edihed"]:
     print(f"{energy:8s} {lmp.get_thermo(energy):10.4f} kcal.mol-1")
 
 """It’s possible to extract the last (current) geometry of the calculation and reconstruct the molecule. Note that, in this particular case, with run 0 the geometry is the same as the input one.
-
 Remember also, that in LAMMPS, by default, atoms are not sorted (if you perform several steps). It is thus safer to get atom ids.
-
 Here we use the numpy property of the lammps object to get numpy arrays (more convenient) instead of pointers."""
 
 coords = lmp.numpy.extract_atom("x")
@@ -83,9 +81,7 @@ for iat in range(lmp.get_natoms()):
 lmp.close()
 
 """PES calculations
-
 Hereafter, we compute the energy on a series of geometries read from an xyz file.
-
 First we read the coordinates in the scan.allxyz file. It consists in 73 geometries of methanol along the dihedral angle H-O-C-H."""
 
 scan_coords = list()
