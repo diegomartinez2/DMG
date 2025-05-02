@@ -54,9 +54,9 @@ lmp.command("run 0")
 for energy in ["etotal", "evdwl", "ecoul", "ebond", "eangle", "edihed"]:
     print(f"{energy:8s} {lmp.get_thermo(energy):10.4f} kcal.mol-1")
 
-"""It’s possible to extract the last (current) geometry of the calculation and reconstruct the molecule. Note that, in this particular case, with run 0 the geometry is the same as the input one.
-Remember also, that in LAMMPS, by default, atoms are not sorted (if you perform several steps). It is thus safer to get atom ids.
-Here we use the numpy property of the lammps object to get numpy arrays (more convenient) instead of pointers."""
+#It’s possible to extract the last (current) geometry of the calculation and reconstruct the molecule. Note that, in this particular case, with run 0 the geometry is the same as the input one.
+#Remember also, that in LAMMPS, by default, atoms are not sorted (if you perform several steps). It is thus safer to get atom ids.
+#Here we use the numpy property of the lammps object to get numpy arrays (more convenient) instead of pointers.
 
 coords = lmp.numpy.extract_atom("x")
 print("coords\n", coords)
@@ -80,9 +80,9 @@ for iat in range(lmp.get_natoms()):
     print(line)
 lmp.close()
 
-"""PES calculations
-Hereafter, we compute the energy on a series of geometries read from an xyz file.
-First we read the coordinates in the scan.allxyz file. It consists in 73 geometries of methanol along the dihedral angle H-O-C-H."""
+#PES calculations
+#Hereafter, we compute the energy on a series of geometries read from an xyz file.
+#First we read the coordinates in the scan.allxyz file. It consists in 73 geometries of methanol along the dihedral angle H-O-C-H.
 
 scan_coords = list()
 with open("scan.allxyz", "r") as f:
@@ -104,11 +104,9 @@ lmp.close()
 lmp = lammps.lammps(cmdargs=["-log", "none", "-screen", os.devnull,  "-nocite"])
 lmp.commands_string(methanol_inp)
 
-"""We write a loop over the geometries read in the the scan.allxyz file. The atoms’ coordinates are accessible from a pointer by interacting with the current LAMMPS execution.
-
-Hereafter, we get back the pointer in the p_coords variable. Then, in a loop, the coordinates are updated and the energy is computed as done previously for one single geometry.
-
-Thanks to the default thermo variables, for each geometry we store the different energy components in a dictionary."""
+#We write a loop over the geometries read in the the scan.allxyz file. The atoms’ coordinates are accessible from a pointer by interacting with the current LAMMPS execution.
+#Hereafter, we get back the pointer in the p_coords variable. Then, in a loop, the coordinates are updated and the energy is computed as done previously for one single geometry.
+#Thanks to the default thermo variables, for each geometry we store the different energy components in a dictionary.
 
 # get the pointers on coordinates => used to update geometry
 p_coords = lmp.extract_atom("x")
