@@ -150,9 +150,8 @@ qm_df -= qm_df.QM.min()
 qm_df *= 627.5095  # Hartree -> kcal.mol-1
 qm_df.head()
 
-"""Now depending on what you want to do, you can compare the contributions of each energy to the total energy and compare them to the QM energy.
-
-Here, in the case of OPLS force field of a dihedral angle, considering the height of the energy barriers, differences are smaller than the expected accuracy."""
+#Now depending on what you want to do, you can compare the contributions of each energy to the total energy and compare them to the QM energy.
+#Here, in the case of OPLS force field of a dihedral angle, considering the height of the energy barriers, differences are smaller than the expected accuracy.
 
 ax = df.plot(y=["edihed", "etotal"], marker="o", ls="--")
 ax = qm_df.plot(ax=ax, marker="d", ls=":")
