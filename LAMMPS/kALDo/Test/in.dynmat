@@ -1,0 +1,42 @@
+dimension       3
+units           real
+atom_style      full
+boundary        p p p
+dielectric      1
+special_bonds   lj/coul 0.0 0.0 0.5
+box tilt	large
+
+# Lists
+neighbor        2.0  bin
+neigh_modify    every 1 delay 0 check yes
+
+pair_style lj/charmm/coul/long 10.0 12.0 12.0
+pair_modify shift yes mix arithmetic
+
+bond_style harmonic
+angle_style harmonic
+dihedral_style opls
+improper_style cvff
+
+read_data	T4_relaxed.lammps
+
+kspace_style pppm 1.0e-6
+
+include Tudor.mod
+
+variable        natoms equal count(all)
+
+variable        rx equal 3
+variable        ry equal 3
+
+replicate       ${rx} ${ry} 1
+
+#variable       natoms equal count(all)
+
+group core id 1:${natoms}
+
+print 'calculating calculate_dynmat'
+dynamical_matrix core eskm 1.00e-03 file Dyn.form binary no fold yes
+print 'calculating third_order'
+third_order core eskm 1.00e-03 file THIRD binary no fold yes
+
