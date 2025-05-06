@@ -1,0 +1,14 @@
+Quick Install
+
+We recommend creating a new environment with Python 3.10.
+
+conda create -n kaldo python=3.10
+
+and enable the environment
+
+conda activate kaldo
+conda install pip
+
+kALDo installation can be done using pip
+
+pip install kaldo
