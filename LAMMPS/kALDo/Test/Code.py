@@ -14,6 +14,7 @@ import numpy as np
 import warnings
 warnings.filterwarnings("ignore")
 
+#Functions
 def cumulative_cond_cal(freq,full_cond,n_phonons):
 
   conductivity = np.einsum('maa->m', 1/3 * full_cond)
@@ -74,6 +75,8 @@ def set_fig_properties(ax_list, panel_color_str='black', line_width=2):
         for t in ax.yaxis.get_ticklines(): t.set_color(panel_color_str)
         for t in ax.xaxis.get_ticklines(): t.set_linewidth(line_width)
         for t in ax.yaxis.get_ticklines(): t.set_linewidth(line_width)
+
+#main
 
 atom_type={}
 
