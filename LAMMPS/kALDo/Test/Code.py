@@ -1,3 +1,4 @@
+#!/usr/local/bin/python
 from ase.build import bulk
 from ase.io import lammpsdata
 from ase.calculators.lammpslib import LAMMPSlib
