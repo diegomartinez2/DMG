@@ -78,6 +78,17 @@ def set_fig_properties(ax_list, panel_color_str='black', line_width=2):
         for t in ax.yaxis.get_ticklines(): t.set_linewidth(line_width)
 
 #main
+def main(args):
+    """
+    Test code for a kALDo calculation
+    """
+    return 0
+
+if __name__ == '__main__':
+    import sys
+    sys.exit(main(sys.argv))
+
+#main
 
 atom_type={}
 
