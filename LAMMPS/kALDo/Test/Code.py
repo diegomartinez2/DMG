@@ -82,6 +82,71 @@ def main(args):
     """
     Test code for a kALDo calculation
     """
+    atom_type={}
+
+    for i in range(1,17):
+        atom_type[i] = 6
+    for i in range(17,27):
+        atom_type[i] = 1
+    for i in range(27,31):
+        atom_type[i] = 16
+
+    atoms=lammpsdata.read_lammps_data('T4_relaxed.lammps',Z_of_type=atom_type,sort_by_id='True',units = 'real',style = 'full')
+
+    b1 = atoms.get_reciprocal_cell()[:,0]
+    b2 = atoms.get_reciprocal_cell()[:,1]
+    b3 = atoms.get_reciprocal_cell()[:,2]
+
+    b1_length = np.linalg.norm(b1)
+    b2_length = np.linalg.norm(b2)
+    b3_length = np.linalg.norm(b3)
+    # Calculate the number of divisions along each direction
+    # N1 = 3
+    # N2 = 4
+    # N3 = 2
+
+    # res1 = b1_length/N1
+    # res2 = b2_length/N2
+    # res3 = b3_length/N3
+
+    # print(res1,res2,res3)
+
+    res = 0.03
+    N1 = b1_length/res
+    N2 = b2_length/res
+    N3 = b3_length/res
+
+    print(np.round(N1),np.round(N2),np.round(N3))
+
+    nrep = 3
+    supercell = np.array([nrep, nrep, 1])
+
+    write('replicated_atoms.xyz',format ='extxyz',images=atoms.copy().repeat(supercell))
+
+    # Print reminder information
+    print('Supercell structures and LAMMPS input generated.')
+    print('Supercell dimension is: ' + str(supercell))
+
+    forceconstants = ForceConstants.from_folder(folder='./',supercell=supercell,format='lammps')
+
+    kx = int(np.round(N1))
+    ky = int(np.round(N2))
+    kz = int(np.round(N3))
+    kpts = [kx, ky, kz]
+    temperature = 10
+    is_classic = False
+    k_label = str(kx) + '_' + str(ky) + '_' + str(kz)
+    folder='dynmat-' + k_label
+    # Create a phonon object
+    phonons = Phonons(forceconstants=forceconstants,
+                    kpts=kpts,
+                    is_classic=is_classic,
+                    temperature=temperature,
+                    folder=folder,
+                    # is_unfolding=True,
+                    storage='numpy')
+
+
     return 0
 
 if __name__ == '__main__':
@@ -90,70 +155,7 @@ if __name__ == '__main__':
 
 #main
 
-atom_type={}
 
-for i in range(1,17):
-    atom_type[i] = 6
-for i in range(17,27):
-    atom_type[i] = 1
-for i in range(27,31):
-    atom_type[i] = 16
-
-atoms=lammpsdata.read_lammps_data('T4_relaxed.lammps',Z_of_type=atom_type,sort_by_id='True',units = 'real',style = 'full')
-
-b1 = atoms.get_reciprocal_cell()[:,0]
-b2 = atoms.get_reciprocal_cell()[:,1]
-b3 = atoms.get_reciprocal_cell()[:,2]
-
-b1_length = np.linalg.norm(b1)
-b2_length = np.linalg.norm(b2)
-b3_length = np.linalg.norm(b3)
-
-# Calculate the number of divisions along each direction
-# N1 = 3
-# N2 = 4
-# N3 = 2
-
-# res1 = b1_length/N1
-# res2 = b2_length/N2
-# res3 = b3_length/N3
-
-# print(res1,res2,res3)
-
-res = 0.03
-N1 = b1_length/res
-N2 = b2_length/res
-N3 = b3_length/res
-
-print(np.round(N1),np.round(N2),np.round(N3))
-
-nrep = 3
-supercell = np.array([nrep, nrep, 1])
-
-write('replicated_atoms.xyz',format ='extxyz',images=atoms.copy().repeat(supercell))
-
-# Print reminder information
-print('Supercell structures and LAMMPS input generated.')
-print('Supercell dimension is: ' + str(supercell))
-
-forceconstants = ForceConstants.from_folder(folder='./',supercell=supercell,format='lammps')
-
-kx = int(np.round(N1))
-ky = int(np.round(N2))
-kz = int(np.round(N3))
-kpts = [kx, ky, kz]
-temperature = 10
-is_classic = False
-k_label = str(kx) + '_' + str(ky) + '_' + str(kz)
-folder='dynmat-' + k_label
-# Create a phonon object
-phonons = Phonons(forceconstants=forceconstants,
-                kpts=kpts,
-                is_classic=is_classic,
-                temperature=temperature,
-                folder=folder,
-                # is_unfolding=True,
-                storage='numpy')
 
 plotter.plot_dos(phonons,bandwidth=0.25,n_points=500)
 
