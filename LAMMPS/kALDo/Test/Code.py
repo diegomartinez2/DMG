@@ -1,4 +1,7 @@
 #!/usr/local/bin/python
+"""
+kALDo calculation script, requires LAMMPS output file with...
+"""
 from ase.build import bulk
 from ase.io import lammpsdata
 from ase.calculators.lammpslib import LAMMPSlib
