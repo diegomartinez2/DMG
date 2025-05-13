@@ -1,6 +1,7 @@
 #!/usr/local/bin/python
 """
 kALDo calculation script, requires LAMMPS output file with...(dynamicak matrix???)
+requires ASE, pylab, subprocess, and kALDo
 """
 from ase.build import bulk
 from ase.io import lammpsdata
