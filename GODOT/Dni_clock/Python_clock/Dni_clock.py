@@ -153,6 +153,77 @@ def Gregorian_to_Cavernian(Day, Month, Year, Hour=0, Minute=0, Second=0):
     #Convert the calculated Atrian Yahr to a Cavernian date
     return AYN_to_Cavernian(AY)
 
+import math
+from PIL import Image
+import matplotlib.pyplot as plt
+import os
+
+def create_image_row(inputs, image_dir="images", output_file="output.png"):
+    """
+    Create a single image by arranging 9 input images (0.png to 24.png) in a row with separators.
+
+    Args:
+        inputs (list): List of 9 numbers (0 to 24) to be rounded down.
+        image_dir (str): Directory containing images named 0.png to 24.png.
+        output_file (str): Path to save the output image.
+    """
+    # Validate input length
+    if len(inputs) != 9:
+        raise ValueError("Exactly 9 inputs are required.")
+
+    # Round down inputs and ensure they are within 0-24
+    rounded_inputs = []
+    for num in inputs:
+        if not isinstance(num, (int, float)) or num < 0 or num > 24:
+            raise ValueError("All inputs must be numbers between 0 and 24.")
+        rounded_inputs.append(math.floor(num))
+
+    # Load images
+    image_files = [f"{i}.png" for i in rounded_inputs]
+    images = []
+    for file in image_files:
+        file_path = os.path.join(image_dir, file)
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"Image {file} not found in {image_dir}.")
+        img = Image.open(file_path)
+        images.append(img)
+
+    # Assume all images have the same size
+    img_width, img_height = images[0].size
+
+    # Calculate total width: 9 images + 8 separators (10 pixels each)
+    separator_width = 10
+    total_width = 9 * img_width + 8 * separator_width
+    total_height = img_height
+
+    # Create a new blank image
+    result = Image.new("RGB", (total_width, total_height), color="white")
+
+    # Paste images and add separators
+    x_offset = 0
+    for i, img in enumerate(images):
+        result.paste(img, (x_offset, 0))
+        x_offset += img_width
+        if i < 8:  # Add separator after each image except the last
+            # Draw a black vertical line
+            for x in range(x_offset, x_offset + separator_width):
+                for y in range(total_height):
+                    result.putpixel((x, y), (0, 0, 0))
+            x_offset += separator_width
+
+    # Save the image using matplotlib to ensure proper rendering
+    plt.figure(figsize=(total_width / 100, total_height / 100))
+    plt.imshow(result)
+    plt.axis("off")
+    plt.savefig(output_file, bbox_inches="tight", pad_inches=0)
+    plt.close()
+
+## Example usage:
+#if __name__ == "__main__":
+#    # Example inputs
+#    sample_inputs = [0.7, 5.2, 10.8, 15.3, 20.9, 2.1, 7.6, 12.4, 24.0]
+#    create_image_row(sample_inputs, image_dir="images", output_file="output.png")
+
 #-----------------------------------------------------
 
 def main(args):
