@@ -211,12 +211,18 @@ def create_image_row(inputs, image_dir="images", output_file="output.png"):
                     result.putpixel((x, y), (0, 0, 0))
             x_offset += separator_width
 
-    # Save the image using matplotlib to ensure proper rendering
+    ## Save the image using matplotlib to ensure proper rendering
+    #plt.figure(figsize=(total_width / 100, total_height / 100))
+    #plt.imshow(result)
+    #plt.axis("off")
+    #plt.savefig(output_file, bbox_inches="tight", pad_inches=0)
+    #plt.close()
+
+    # Display the image using matplotlib
     plt.figure(figsize=(total_width / 100, total_height / 100))
     plt.imshow(result)
     plt.axis("off")
-    plt.savefig(output_file, bbox_inches="tight", pad_inches=0)
-    plt.close()
+    plt.show()
 
 ## Example usage:
 #if __name__ == "__main__":
