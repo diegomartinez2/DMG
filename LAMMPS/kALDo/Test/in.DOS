@@ -1,0 +1,25 @@
+# Input file para LAMMPS: Cálculo de la matriz dinámica
+
+# Inicialización
+units metal
+atom_style atomic
+boundary p p p
+
+# Crear la celda de simulación
+read data data.lmp
+replicate 2 2 2
+
+# Definir el potencial ML
+pair_style hybrid/overlay coul/cut 10 chimesFF
+pair_coeff * * coul/cut 10
+pair_coeff * * chimersFF params.txt
+
+# Configurar la minimización energética
+minimize 1.0e-8 1.0e-8 1000 10000
+
+# Configurar el cálculo de la matriz dinámica
+fix phonon all phonon 10 10000 0.0001 binary
+dynamical_matrix phonon eskm 0.0001 binary
+
+# Ejecutar la simulación
+run 0
