@@ -1,4 +1,4 @@
-# Input file para LAMMPS: Cálculo de la matriz dinámica (test)
+# Input file para LAMMPS: Cálculo de la matriz dinámica desde el output de LAMMPS (test)
 dimension       3
 units           real
 atom_style      full
