@@ -1,3 +1,4 @@
+# Input file para LAMMPS: Cálculo de la matriz dinámica (test)
 dimension       3
 units           real
 atom_style      full
@@ -39,4 +40,3 @@ print 'calculating calculate_dynmat'
 dynamical_matrix core eskm 1.00e-03 file Dyn.form binary no fold yes
 print 'calculating third_order'
 third_order core eskm 1.00e-03 file THIRD binary no fold yes
-
