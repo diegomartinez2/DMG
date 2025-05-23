@@ -13,6 +13,8 @@ def fname(arg):
     # Example: Assign atom types
     atoms = Atoms('Si2O', positions=[[0, 0, 0], [1, 1, 1], [2, 2, 2]])
     atoms.set_tags([1, 1, 2])  # Assign atom types (e.g., 1 for Si, 2 for O)
+    atoms.set_initial_charges([0.0, 0.0, -1.0])  # Set charges for each atom
+
     write(f'{poscar}.lammps', atoms, format='lammps-data')
     pass
 
