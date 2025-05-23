@@ -12,3 +12,7 @@ if __name__ == '__main__':
     for poscar in glob.glob('POSCAR-*'):
         atoms = read(poscar, format='vasp')
         write(f'{poscar}.lammps', atoms, format='lammps-data', style='atomic')
+
+def image(atoms):
+    from ase.visualize import view
+    write('image.png', atoms)
