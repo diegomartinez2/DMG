@@ -31,7 +31,12 @@ def write_lammps_file(output_file, header, masses, atoms):
             atom_id, atom_type, x, y, z = atom
             charge = charges.get(int(atom_type), 0.0)  # Default to 0.0 if type not found
             # Convert x, y, z to floats
-            x, y, z = float(x), float(y), float(z)
+            #x, y, z = float(x), float(y), float(z)
+            try:
+                x, y, z = float(x), float(y), float(z)
+            except ValueError as e:
+                print(f"Error converting coordinates for atom {atom_id}: {e}")
+                raise
             f.write(f"{atom_id:>10} {atom_type:>4} {charge:>10.6f} {x:>12.6f} {y:>12.6f} {z:>12.6f}\n")
 
 def parse_lammps_file(lines):
