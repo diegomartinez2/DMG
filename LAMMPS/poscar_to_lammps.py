@@ -1,3 +1,4 @@
+#!/usr/local/bin/python
 import numpy as np
 
 # Dictionary of atomic masses (amu) for common elements
@@ -26,22 +27,22 @@ def read_poscar(filename):
     """Read a VASP POSCAR file and extract lattice, atom types, counts, and coordinates."""
     with open(filename, 'r') as f:
         lines = f.readlines()
-    
+
     # Line 1: Comment
     comment = lines[0].strip()
-    
+
     # Line 2: Scaling factor
     scale = float(lines[1].strip())
-    
+
     # Lines 3-5: Lattice vectors
     lattice = np.array([list(map(float, lines[i].split())) for i in range(2, 5)]) * scale
-    
+
     # Line 6: Element types
     elements = lines[5].split()
-    
+
     # Line 7: Number of atoms per type
     atom_counts = list(map(int, lines[6].split()))
-    
+
     # Line 8: Coordinate type (Direct or Cartesian)
     coord_type = lines[7].strip().lower()
     if coord_type.startswith('s'):  # Selective dynamics
@@ -49,13 +50,13 @@ def read_poscar(filename):
         start_line = 9
     else:
         start_line = 8
-    
+
     # Read coordinates
     coords = []
     for i in range(start_line, start_line + sum(atom_counts)):
         coords.append(list(map(float, lines[i].split()[:3])))
     coords = np.array(coords)
-    
+
     # Check for velocities (optional in POSCAR)
     velocities = None
     if start_line + sum(atom_counts) < len(lines) and lines[start_line + sum(atom_counts)].strip():
@@ -63,7 +64,7 @@ def read_poscar(filename):
         for i in range(start_line + sum(atom_counts), start_line + 2 * sum(atom_counts)):
             velocities.append(list(map(float, lines[i].split()[:3])))
         velocities = np.array(velocities)
-    
+
     return comment, lattice, elements, atom_counts, coords, coord_type, velocities
 
 def fractional_to_cartesian(coords, lattice):
@@ -78,24 +79,24 @@ def write_lammps_data(filename, comment, lattice, elements, atom_counts, coords,
     xhi = np.linalg.norm(a)
     yhi = np.linalg.norm(b)
     zhi = np.linalg.norm(c)
-    
+
     # For non-orthorhombic cells, compute xy, xz, yz tilts
     xy = np.dot(b, a) / np.linalg.norm(a)
     xz = np.dot(c, a) / np.linalg.norm(a)
     yz = np.dot(c, b) / np.linalg.norm(b)
-    
+
     # Assign atom types
     atom_types = []
     type_map = {elem: i+1 for i, elem in enumerate(set(elements))}
     for elem, count in zip(elements, atom_counts):
         atom_types.extend([type_map[elem]] * count)
-    
+
     # Write LAMMPS data file
     with open(filename, 'w') as f:
         f.write(f"{comment} (Converted from POSCAR by poscar_to_lammps.py)\n\n")
         f.write(f"{sum(atom_counts)} atoms\n")
         f.write(f"{len(set(elements))} atom types\n\n")
-        
+
         # Box dimensions
         f.write(f"{xlo:.6f} {xhi:.6f} xlo xhi\n")
         f.write(f"{ylo:.6f} {yhi:.6f} ylo yhi\n")
@@ -103,7 +104,7 @@ def write_lammps_data(filename, comment, lattice, elements, atom_counts, coords,
         if any([abs(xy) > 1e-6, abs(xz) > 1e-6, abs(yz) > 1e-6]):
             f.write(f"{xy:.6f} {xz:.6f} {yz:.6f} xy xz yz\n")
         f.write("\n")
-        
+
         # Masses section
         f.write("Masses\n\n")
         for elem, type_id in sorted(type_map.items(), key=lambda x: x[1]):
@@ -111,12 +112,12 @@ def write_lammps_data(filename, comment, lattice, elements, atom_counts, coords,
                 raise ValueError(f"Atomic mass for element {elem} not found in ATOMIC_MASSES dictionary.")
             f.write(f"{type_id} {ATOMIC_MASSES[elem]:.6f} # {elem}\n")
         f.write("\n")
-        
+
         # Atoms section
         f.write("Atoms # atom\n\n")
         for i, (type_id, coord) in enumerate(zip(atom_types, coords), 1):
             f.write(f"{i} {type_id} {coord[0]:.6f} {coord[1]:.6f} {coord[2]:.6f}\n")
-        
+
         # Velocities section (if present)
         if velocities is not None:
             f.write("\nVelocities\n\n")
@@ -126,13 +127,13 @@ def write_lammps_data(filename, comment, lattice, elements, atom_counts, coords,
 def poscar_to_lammps(poscar_file, lammps_file):
     """Main function to convert POSCAR to LAMMPS data file."""
     comment, lattice, elements, atom_counts, coords, coord_type, velocities = read_poscar(poscar_file)
-    
+
     # Convert coordinates if necessary
     if coord_type.startswith('d'):  # Direct (fractional) coordinates
         coords = fractional_to_cartesian(coords, lattice)
         if velocities is not None:
             velocities = fractional_to_cartesian(velocities, lattice)
-    
+
     write_lammps_data(lammps_file, comment, lattice, elements, atom_counts, coords, velocities)
     print(f"LAMMPS data file written to {lammps_file}")
 
