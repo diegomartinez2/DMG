@@ -1,1 +1,2 @@
-phonopy --lammps -c POSCAR --dim="2 2 2"
+###phonopy --lammps -c POSCAR --dim="2 2 2"
+phonopy -c POSCAR --dim="2 2 2"
