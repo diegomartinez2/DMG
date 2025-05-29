@@ -1,3 +1,4 @@
+#!/usr/local/bin/python
 import uuid
 
 # Define charges for each atom type (hypothetical values)
