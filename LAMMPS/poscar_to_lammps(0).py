@@ -1,4 +1,8 @@
 #!/usr/local/bin/python
+"""
+This code tries to transform from vasp POSCAR to LAMMPS datafile.
+It laks the masses and charges.
+"""
 from ase.io import read, write
 from ase import Atoms
 import numpy as np
