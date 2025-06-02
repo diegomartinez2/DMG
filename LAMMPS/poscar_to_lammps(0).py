@@ -1,3 +1,4 @@
+#!/usr/local/bin/python
 from ase.io import read, write
 from ase import Atoms
 import numpy as np
@@ -5,7 +6,7 @@ import numpy as np
 def poscar_to_lammps(poscar_file, output_file, atom_types=None):
     """
     Convert a POSCAR file to a LAMMPS data file using ASE.
-    
+
     Parameters:
     poscar_file (str): Path to the POSCAR file or string containing POSCAR content.
     output_file (str): Path to the output LAMMPS data file.
@@ -33,7 +34,7 @@ def poscar_to_lammps(poscar_file, output_file, atom_types=None):
     # Assign atom types if not provided
     if atom_types is None:
         atom_types = {symbol: idx + 1 for idx, symbol in enumerate(unique_symbols)}
-    
+
     # Set atom types as tags
     tags = [atom_types[symbol] for symbol in symbols]
     atoms.set_tags(tags)
@@ -47,8 +48,8 @@ def poscar_to_lammps(poscar_file, output_file, atom_types=None):
 # Example usage
 if __name__ == "__main__":
     # POSCAR content as a string (from your input)
-    poscar_content = """Cu3BHT Stacking AA                      
-   1.0000000000000000     
+    poscar_content = """Cu3BHT Stacking AA
+   1.0000000000000000
      8.6583927714873727   -0.0012334306861130   -0.0977516149958681
     -4.3297941313395762    7.5169175210519228    0.3625204288635386
      0.0199674387339069    1.0622118669401301    3.2308891839373146
