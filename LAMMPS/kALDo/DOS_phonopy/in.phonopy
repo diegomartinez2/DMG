@@ -1,0 +1,43 @@
+# inicialization
+units metal
+dimension 3
+boundary p p p
+#atom_style atomic
+#read data
+atom_style charge
+#read_data POSCAR-001.lammps
+read_data ${datafile}
+
+#Remap the box to reduce tilt factors
+change_box all triclinic remap
+
+#interatomic potential (Chebyshev Interaction Model for Efficient Simulation -- ChIMES)
+pair_style       hybrid/overlay coul/cut 10 chimesFF
+pair_coeff      * *  coul/cut 10
+pair_coeff      * * chimesFF params.txt
+
+
+#neigthbour setting
+neighbor 2.0 bin
+neigh_modify every 1 delay 0 check yes
+
+#minimize
+
+#minimize 1.0e-8 1.0e-8 1000 10000
+# output forces
+#compute forces all property/atom fx fy fz
+#dump 1 all custom 1 forces-001.dump id type x y z fx fy fz
+#dump_modify 1 format line "%d %d %.10f %.10f %.10f %.10f %.10f %.10f"
+#run 0
+
+# Compute forces
+#compute forces all group/all force
+compute forces all property/atom fx fy fz
+
+# Output forces in a Phonopy-compatible format
+#dump 1 all custom 1 forces.dump id type x y z fx fy fz
+dump 1 all custom 1 ${dumpfile} id type x y z fx fy fz
+dump_modify 1 sort id
+
+# Run a single step to compute forces
+run 0
