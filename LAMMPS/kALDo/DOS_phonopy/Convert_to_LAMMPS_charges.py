@@ -1,4 +1,7 @@
 #!/usr/local/bin/python
+"""
+This code takes the output of the atomsk converted file from POSCAR and add the charges.
+"""
 import os
 import numpy as np
 
