@@ -1,0 +1,49 @@
+#inicializacion
+units        	metal
+boundary    	p p p
+#atom_style   	atomic
+
+#read data
+atom_style charge
+
+atom_modify     map yes
+
+box		tilt large
+# geometry
+#read_data	relax.dat
+read_data POSCAR.lammps
+#maybe remap the box to reduce tilt factors
+#change_box all triclinic remap
+
+#mass		*   12.0107
+
+#interatomic potential
+pair_style       hybrid/overlay coul/cut 10 chimesFF
+pair_coeff      * *  coul/cut 10
+pair_coeff      * * chimesFF params.txt
+
+#pair_style      airebo 3.0 0 0
+#pair_coeff 	* * CH.airebo C
+
+
+
+thermo_style	custom step cella cellb cellc cellalpha cellbeta cellgamma etotal
+
+
+variable        natoms equal count(all)
+
+replicate	3 3 1
+
+#relax the structure
+fix     	RELAX all box/relax tri 0.0 vmax 0.0001 fixedpoint 0 0 0
+minimize 	1.0e-50 1.0e-50 10000000 10000000
+unfix   	RELAX
+
+#calculate the dinamical matrixes:
+group           core    id 1:${natoms}
+
+print 'calculating dynmat'
+dynamical_matrix core eskm 1e-2 file Dyn.form binary no
+
+print 'calculating third_order'
+third_order     core eskm 5e-2 file THIRD binary no
