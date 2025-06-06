@@ -24,7 +24,8 @@ import os
 import matplotlib.pyplot as plt
 
 # In[2]:
-
+Lz = 1      #this is the z of the calculation box in LAMMPS
+dist = 1    #this is the thickness of the 2D material
 
 def cumulative_cond_cal(observables, kappa_tensor, prefactor=1/3):
 
@@ -153,10 +154,39 @@ savefig("ase_DOS.png")
 
 print('\n')
 inv_cond_matrix = (Conductivity(phonons=phonons, method='inverse').conductivity.sum(axis=0))
-#print('Conductivity from inversion (W/m-K): %.3f' % ((Lz/(dist))*np.mean(np.diag(inv_cond_matrix[0:2,0:2]))))
-#print((Lz/(dist))*inv_cond_matrix)
-print('Conductivity from inversion (W/m-K): %.3f' % np.mean(np.diag(inv_cond_matrix[0:2,0:2])) )
-print(inv_cond_matrix)
+print('Conductivity from inversion (W/m-K): %.3f' % ((Lz/(dist))*np.mean(np.diag(inv_cond_matrix[0:2,0:2]))))
+print((Lz/(dist))*inv_cond_matrix)
+"""
+This calculates the conductiviti from inversion, as it is a 2D system it only takes x and y.
+The z is calculated from:
+The problem with graphene is that
+BTE requires the system volume at the denominator
+
+but the cell used for the calculations has a very large Lz because it
+is in pbc and we don't want the graphene sheet interacting with its
+image. So we have to multiply by a factor Lz/d where d is the z
+thickness of a graphene monolayer which conventionally is chosen as
+the distance between two layers (I might have deleted that value in
+the notebook by mistake) and for the Airebo potential in the example I
+sent you is 3.4A.
+In the kALDo example there is no need to scale by this factor because
+it calculates the thermal conductivity for bulk silicon.
+Also, as you might notice, to average the thermal conductivity tensor
+I'm taking the trace of the tensor excluding the zz value, while the
+example from the kALDo page does not.
+
+print('Conductivity from inversion (W/m-K): %.3f' %
+((Lz/(dist))*np.mean(np.diag(inv_cond_matrix[0:2,0:2]))))
+
+vs
+
+print('Inverse conductivity (W/mK):
+%.3f'%(np.mean(np.diag(inv_cond_matrix))))
+
+
+"""
+#print('Conductivity from inversion (W/m-K): %.3f' % np.mean(np.diag(inv_cond_matrix[0:2,0:2])) )
+#print(inv_cond_matrix)
 
 
 # In[25]:
@@ -281,11 +311,11 @@ for i in range(3):
 # Sum over the 0th dimension to recover 3-by-3 kappa matrix
 kappa_matrix = kappa_tensor.sum(axis=0)
 print("Bulk thermal conductivity: %.1f W m^-1 K^-1\n"
-     # %((Lz/(dist))*np.mean(np.diag(kappa_matrix[0:2,0:2]))))
-      %((1/1)*np.mean(np.diag(kappa_matrix[0:2,0:2]))))
+      %((Lz/(dist))*np.mean(np.diag(kappa_matrix[0:2,0:2]))))
+     # %((1/1)*np.mean(np.diag(kappa_matrix[0:2,0:2]))))
 print("kappa matrix: ")
-#print((Lz/(dist))*kappa_matrix)
-print((1/1)*kappa_matrix)
+print((Lz/(dist))*kappa_matrix)
+#print((1/1)*kappa_matrix)
 print('\n')
 
 # Compute kappa in per mode and cumulative representations
@@ -300,8 +330,8 @@ figure(figsize=(12, 3))
 subplot(1,3, 1)
 set_fig_properties([gca()])
 scatter(frequency.flatten(order='C'),
-        #(Lz/(dist))*kappa_per_mode, facecolor='w', edgecolor='r', s=10, marker='>')
-        (1/1)*kappa_per_mode, facecolor='w', edgecolor='r', s=10, marker='>')
+        (Lz/(dist))*kappa_per_mode, facecolor='w', edgecolor='r', s=10, marker='>')
+        #(1/1)*kappa_per_mode, facecolor='w', edgecolor='r', s=10, marker='>')
 gca().axhline(y = 0, color='k', ls='--', lw=1)
 ylabel(r'$\kappa_{per \ mode}\;\left(\frac{\rm{W}}{\rm{m}\cdot\rm{K}}\right)$',fontsize=14)
 xlabel('Frequency (THz)', fontsize=14)
@@ -309,16 +339,16 @@ xlabel('Frequency (THz)', fontsize=14)
 
 subplot(1,3, 2)
 set_fig_properties([gca()])
-#plot(freq_sorted, (Lz/(dist))*kappa_cum_wrt_freq, 'r')
-plot(freq_sorted, (1/1)*kappa_cum_wrt_freq, 'r')
+plot(freq_sorted, (Lz/(dist))*kappa_cum_wrt_freq, 'r')
+#plot(freq_sorted, (1/1)*kappa_cum_wrt_freq, 'r')
 ylabel(r'$\kappa_{cumulative, \omega}\;\left(\frac{\rm{W}}{\rm{m}\cdot\rm{K}}\right)$',fontsize=14)
 xlabel('Frequency (THz)', fontsize=14)
 legend(loc=4, frameon=False, fontsize=6)
 
 subplot(1,3, 3)
 set_fig_properties([gca()])
-#plot(lambda_sorted, (Lz/(dist))*kappa_cum_wrt_lambda, 'r')
-plot(lambda_sorted, (1/1)*kappa_cum_wrt_lambda, 'r')
+plot(lambda_sorted, (Lz/(dist))*kappa_cum_wrt_lambda, 'r')
+#plot(lambda_sorted, (1/1)*kappa_cum_wrt_lambda, 'r')
 xlabel(r'$\lambda \ (nm)$', fontsize=14)
 ylabel(r'$\kappa_{cumulative, \lambda}\;\left(\frac{\rm{W}}{\rm{m}\cdot\rm{K}}\right)$',fontsize=14)
 xscale('log')
