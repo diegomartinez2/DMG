@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# Script to calculate the DOS and ... using kALDo, from a LAMMPS dynamical matrix
 
 
 from ase.build import bulk, surface
@@ -88,7 +88,7 @@ plt.rcParams['mathtext.fontset'] = 'cm'
 
 
 # In[ ]:
-
+#Supercell structure (this has to be the same as the LAMMPS input)
 
 nx = 3
 ny = 3
