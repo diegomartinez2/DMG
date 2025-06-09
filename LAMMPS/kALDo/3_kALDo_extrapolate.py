@@ -1,3 +1,4 @@
+#!/usr/local/bin/python
 from scipy.interpolate import InterpolatedUnivariateSpline
 import matplotlib.pyplot as plt
 plt.style.use ("seaborn-darkgrid")
