@@ -48,6 +48,9 @@ atomsk POSCAR-042 lammps
 atomsk POSCAR-043 lammps
 atomsk POSCAR-044 lammps
 atomsk POSCAR-045 lammps
+#for i in POSCAR-*; do
+#  atomsk $i lammps
+#done  
 echo "...now convert to LAMMPS with charges"
 python Convert_to_LAMMPS_charges.py
 echo "...calculate with LAMMPS"
