@@ -27,6 +27,8 @@
 # ---------------------------
 #from tkinter import
 #from tkinter.ttk import
+import tkinter as tk
+
 from time import strftime
 from numpy import floor #the greatest integer that does not exceed x.
 #int(a//1) #the value of x with the fractional portion removed.
@@ -234,7 +236,7 @@ def create_image_row(inputs, image_dir="images", output_file="output.png"):
 
 def main(args):
     #---------salida grafica con tkinter
-    import tkinter as tk
+    #import tkinter as tk
     # Crear la ventana principal
     ventana = tk.Tk()
     ventana.title("D'ni time")
