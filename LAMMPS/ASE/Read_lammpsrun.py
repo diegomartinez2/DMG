@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # fmt: off
 
 import gzip
