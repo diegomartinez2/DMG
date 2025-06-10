@@ -265,7 +265,7 @@ def get_max_index(index):
 
 
 
-[docs]
+#[docs]
 
 def read_lammps_dump_text(fileobj, index=-1, **kwargs):
     """Process cleartext lammps dumpfiles
@@ -356,7 +356,7 @@ def read_lammps_dump_text(fileobj, index=-1, **kwargs):
 
 
 
-[docs]
+#[docs]
 
 def read_lammps_dump_binary(
     fileobj, index=-1, colnames=None, intformat="SMALLBIG", **kwargs
