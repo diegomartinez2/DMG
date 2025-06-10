@@ -155,20 +155,20 @@ def Gregorian_to_Cavernian(Day, Month, Year, Hour=0, Minute=0, Second=0):
     #Convert the calculated Atrian Yahr to a Cavernian date
     return AYN_to_Cavernian(AY)
 
-import math
+"""import math
 from PIL import Image
 import matplotlib.pyplot as plt
 import os
 
 def create_image_row(inputs, image_dir="images", output_file="output.png"):
-    """
+"""    """
     Create a single image by arranging 9 input images (0.png to 24.png) in a row with separators.
 
     Args:
         inputs (list): List of 9 numbers (0 to 24) to be rounded down.
         image_dir (str): Directory containing images named 0.png to 24.png.
         output_file (str): Path to save the output image.
-    """
+"""    """
     # Validate input length
     if len(inputs) != 9:
         raise ValueError("Exactly 9 inputs are required.")
@@ -231,7 +231,7 @@ def create_image_row(inputs, image_dir="images", output_file="output.png"):
 #    # Example inputs
 #    sample_inputs = [0.7, 5.2, 10.8, 15.3, 20.9, 2.1, 7.6, 12.4, 24.0]
 #    create_image_row(sample_inputs, image_dir="images", output_file="output.png")
-
+"""
 #-----------------------------------------------------
 
 def main(args):
