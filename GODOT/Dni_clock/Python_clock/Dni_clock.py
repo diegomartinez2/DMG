@@ -233,6 +233,32 @@ def create_image_row(inputs, image_dir="images", output_file="output.png"):
 #-----------------------------------------------------
 
 def main(args):
+    #---------salida grafica con tkinter
+    import tkinter as tk
+    # Crear la ventana principal
+    ventana = tk.Tk()
+    ventana.title("D'ni time")
+
+    # Función para actualizar la ventana con la salida de print
+    def actualizar_ventana(texto):
+        etiqueta.config(text=texto)
+
+    # Crear una etiqueta para mostrar el texto
+    etiqueta = tk.Label(ventana, text="")
+    etiqueta.pack()
+
+    # Función para el print
+    def mi_print(texto):
+        actualizar_ventana(texto)
+        print(texto) # Esto también se imprime en la consola
+        # El print dentro de mi_print() se puede quitar si solo se quiere la salida en la ventana
+
+# Ejemplo de uso
+#mi_print("Hola, mundo!")
+#mi_print("Esta es una prueba de salida en ventana.")
+#mi_print("Fin del programa.")
+
+    #----------end-------
     base = 25
     VaileeDictionary = {1:"Leefo",2:"Leebro",3:"Leesahn",4:"Leetar",5:"Leevot",6:"Leevofo",7:"Leevobro",8:"Leevosahn",9:"Leevotar",10:"Leenovoo"}
     Day, Month, Year, Hour, Minute, Second = get_time()
@@ -243,6 +269,9 @@ def main(args):
     else:
         print("Hahr:", toDigits(Hahr,25), "Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
         #print("Hahr:", toDigits(Hahr,25), "Yahr:",toDigits(Yahr), "Vailee:",toDigits(Vailee),"_",VaileeDictionary[Vailee], "Gahrtahvo:", toDigits(Gahrtahvo), "Tahvo:", toDigits(Tahvo), "Gorahn:", toDigits(Gorahn), "Prorahn:", toDigits(Prorahn))
+    mi_print("Year:", Year, "Month=", Month, "Day:", Day, "Hour=",Hour,":",Minute,":",Second,"/n","Hahr:", toDigits(Hahr,25), "Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
+    # Mantener la ventana abierta
+    ventana.mainloop()
     return 0
 
 # Add a funtion to print instruction of use.
