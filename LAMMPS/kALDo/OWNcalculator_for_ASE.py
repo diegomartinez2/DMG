@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from ase import Atoms
 from ase.calculators.calculator import Calculator
 import numpy as np
