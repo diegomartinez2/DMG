@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from kaldo.observables.secondorder import SecondOrder
 from kaldo.observables.thirdorder import ThirdOrder
 #from ase.calculators.lammpslib import LAMMPSlib
