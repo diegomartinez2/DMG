@@ -101,7 +101,8 @@ nz = 1
 
 #get_ipython().system('rm -r *fd* *xyz ge-* plots *lmp *log* graphene')
 
-atoms = lammpsdata.read_lammps_data('relax.dat',Z_of_type={1:6},sort_by_id=True,style='atomic',units='metal')
+#atoms = lammpsdata.read_lammps_data('relax.dat',Z_of_type={1:6},sort_by_id=True,style='atomic',units='metal')
+atoms = lammpsdata.read_lammps_data('relax.dat',style='charge',units='metal')
 
 supercell = np.array([nx,ny,nz])
 
