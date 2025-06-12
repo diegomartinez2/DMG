@@ -31,14 +31,17 @@ thermo_style	custom step cella cellb cellc cellalpha cellbeta cellgamma etotal
 
 
 variable        natoms equal count(all)
-
-replicate	3 3 1
+#replicate the unit cell to
+#replicate	3 3 1
+#maybe is not necesary for the calculation of the dynamical matrix....
 
 #relax the structure
 fix     	RELAX all box/relax tri 0.0 vmax 0.0001 fixedpoint 0 0 0
-minimize 	1.0e-50 1.0e-50 10000000 10000000
+#minimize 	1.0e-50 1.0e-50 10000000 10000000
+#too big calculation reduce a bit...
+minimize 	1.0e-5 1.0e-5 10000 100000
 unfix   	RELAX
-
+write_data relax.dat
 #calculate the dinamical matrixes:
 group           core    id 1:${natoms}
 
