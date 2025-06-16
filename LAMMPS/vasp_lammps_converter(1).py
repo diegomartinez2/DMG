@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import numpy as np
 from ase.io import read, write
 from ase import Atoms
@@ -21,47 +22,47 @@ def poscar_to_lammps(input_file, output_file):
     """
     # Read POSCAR file
     atoms = read(input_file, format='vasp')
-    
+
     # Get cell parameters and atom information
     cell = atoms.get_cell()
     positions = atoms.get_positions()
     symbols = atoms.get_chemical_symbols()
-    
+
     # Map unique chemical symbols to atom types (1-based for LAMMPS)
     unique_symbols = sorted(set(symbols))
     symbol_to_type = {symbol: i+1 for i, symbol in enumerate(unique_symbols)}
     atom_types = [symbol_to_type[symbol] for symbol in symbols]
-    
+
     # Check if all symbols have defined masses
     for symbol in unique_symbols:
         if symbol not in ATOMIC_MASSES:
             raise ValueError(f"Atomic mass for element {symbol} not defined in ATOMIC_MASSES")
-    
+
     # Count number of atoms and atom types
     natoms = len(atoms)
     ntypes = len(unique_symbols)
-    
+
     # Write LAMMPS data file
     with open(output_file, 'w') as f:
         f.write('# LAMMPS data file generated from POSCAR\n\n')
         f.write(f'{natoms} atoms\n')
         f.write(f'{ntypes} atom types\n\n')
-        
+
         # Write cell boundaries (assuming orthorhombic cell for simplicity)
         f.write('0.0 {:.6f} xlo xhi\n'.format(cell[0][0]))
         f.write('0.0 {:.6f} ylo yhi\n'.format(cell[1][1]))
         f.write('0.0 {:.6f} zlo zhi\n\n'.format(cell[2][2]))
-        
+
         # Write Masses section
         f.write('Masses\n\n')
         for symbol, type_id in symbol_to_type.items():
             f.write(f'{type_id} {ATOMIC_MASSES[symbol]:.6f} # {symbol}\n')
-        
+
         # Write Atoms section
         f.write('\nAtoms # atomic\n\n')
         for i in range(natoms):
             f.write(f'{i+1} {atom_types[i]} {positions[i][0]:.6f} {positions[i][1]:.6f} {positions[i][2]:.6f}\n')
-    
+
     print(f"Converted {input_file} to {output_file} (LAMMPS atomic style with masses)")
 
 def lammps_to_poscar(input_file, output_file, atom_symbols):
@@ -72,7 +73,7 @@ def lammps_to_poscar(input_file, output_file, atom_symbols):
     # Read LAMMPS data file manually
     with open(input_file, 'r') as f:
         lines = f.readlines()
-    
+
     # Parse header to get number of atoms and atom types
     natoms = 0
     ntypes = 0
@@ -81,7 +82,7 @@ def lammps_to_poscar(input_file, output_file, atom_symbols):
             natoms = int(line.split()[0])
         if 'atom types' in line:
             ntypes = int(line.split()[0])
-    
+
     # Parse cell boundaries
     cell = []
     for line in lines:
@@ -94,7 +95,7 @@ def lammps_to_poscar(input_file, output_file, atom_symbols):
         if 'zlo zhi' in line:
             zlo, zhi = map(float, line.split()[:2])
             cell.append([0.0, 0.0, zhi - zlo])
-    
+
     # Parse atom data
     positions = []
     atom_types = []
@@ -108,25 +109,25 @@ def lammps_to_poscar(input_file, output_file, atom_symbols):
             if len(parts) >= 5:  # Expect atom-ID, atom-type, x, y, z
                 atom_types.append(int(parts[1]))
                 positions.append([float(parts[2]), float(parts[3]), float(parts[4])])
-    
+
     # Convert atom types to chemical symbols
     if len(atom_symbols) < ntypes:
         raise ValueError(f"Provided {len(atom_symbols)} atom symbols, but {ntypes} atom types found")
     symbols = [atom_symbols[t-1] for t in atom_types]
-    
+
     # Create ASE Atoms object
     atoms = Atoms(symbols=symbols, positions=positions, cell=cell, pbc=[True, True, True])
-    
+
     # Write POSCAR file
     write(output_file, atoms, format='vasp', vasp5=True, direct=True)
-    
+
     print(f"Converted {input_file} to {output_file} (VASP POSCAR)")
 
 # Example usage
 if __name__ == "__main__":
     # Example: Convert POSCAR to LAMMPS
     poscar_to_lammps('POSCAR', 'data.lammps')
-    
+
     # Example: Convert LAMMPS back to POSCAR
     # Need to specify the chemical symbols corresponding to LAMMPS atom types
     # e.g., if atom type 1 is Si and type 2 is O
