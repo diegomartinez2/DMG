@@ -26,6 +26,7 @@ import matplotlib.pyplot as plt
 # In[2]:
 Lz = 1      #this is the z of the calculation box in LAMMPS
 dist = 1    #this is the thickness of the 2D material
+print("Parameters for the conductivity calculation: Lz=",Lz," dist=",dist)
 
 def cumulative_cond_cal(observables, kappa_tensor, prefactor=1/3):
 
@@ -94,7 +95,7 @@ plt.rcParams['mathtext.fontset'] = 'cm'
 nx = 3
 ny = 3
 nz = 1
-
+print("Supercell:",nx,"x",ny,"x",nz)
 
 # In[19]:
 
@@ -102,12 +103,14 @@ nz = 1
 #get_ipython().system('rm -r *fd* *xyz ge-* plots *lmp *log* graphene')
 
 #atoms = lammpsdata.read_lammps_data('relax.dat',Z_of_type={1:6},sort_by_id=True,style='atomic',units='metal')
+print("Read LAMMPS relaxed data")
 atoms = lammpsdata.read_lammps_data('relax.dat',style='charge',units='metal')
 
 supercell = np.array([nx,ny,nz])
-
+print("Save replicated_atoms.xyz file")
 write('replicated_atoms.xyz',format ='extxyz',images=atoms.copy().repeat(supercell))
-
+print("set force constants from LAMMPS format data:")
+print("from folder; FORMAT:lammps,Config_filename:replicated_atoms.xyz,ASE_format:xyz,2nd_order_FC:Dyn.form,3rd_order_FC:THIRD")
 forceconstants = ForceConstants.from_folder(folder='./', supercell=supercell,format='lammps')
 
 
@@ -131,6 +134,7 @@ temperature = 300
 is_classic = False
 k_label = str(kx) + '_' + str(ky) + '_' + str(kz)
 
+print("create phonon object")
 # Create a phonon object
 phonons = Phonons(forceconstants=forceconstants,
                 kpts=kpts,
@@ -142,11 +146,11 @@ phonons = Phonons(forceconstants=forceconstants,
 
 # In[23]:
 
-
+print("set kpath and plot dispersion")
 kpath=atoms.cell.bandpath(path='GMKG',npoints=200,special_points={'G': [0, 0, 0], 'M': [0.5, 0, 0], 'K': [1/3, 1/3, 0]})
 plotter.plot_dispersion(phonons,with_velocity=True,is_showing=True,manually_defined_path=kpath)
 savefig("ase_dispersion.png")
-
+print("plot DOS")
 plotter.plot_dos(phonons,p_atoms=None,bandwidth=2,n_points=200,filename='dos',is_showing=False)
 savefig("ase_DOS.png")
 
@@ -154,6 +158,7 @@ savefig("ase_DOS.png")
 
 
 print('\n')
+print("calculate conductivity (by inverse method)")
 inv_cond_matrix = (Conductivity(phonons=phonons, method='inverse').conductivity.sum(axis=0))
 print('Conductivity from inversion (W/m-K): %.3f' % ((Lz/(dist))*np.mean(np.diag(inv_cond_matrix[0:2,0:2]))))
 print((Lz/(dist))*inv_cond_matrix)
