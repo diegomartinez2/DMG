@@ -197,7 +197,7 @@ print('Inverse conductivity (W/mK):
 
 # In[25]:
 
-
+print("Load in group velocity and frequency data")
 data_folder = "graphene/"+k_label
 # Load in group velocity and frequency data
 frequency =  np.load(
