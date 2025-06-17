@@ -130,7 +130,7 @@ kx=10
 ky=10
 kz=1
 kpts = [kx, ky, kz]
-temperature = 300
+temperature = 300   #note that if this changes then you must change the sucesive directories in this code...
 is_classic = False
 k_label = str(kx) + '_' + str(ky) + '_' + str(kz)
 
