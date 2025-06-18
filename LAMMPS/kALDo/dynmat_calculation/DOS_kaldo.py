@@ -160,8 +160,10 @@ savefig("ase_DOS.png")
 print('\n')
 print("calculate conductivity (by inverse method)")
 inv_cond_matrix = (Conductivity(phonons=phonons, method='inverse').conductivity.sum(axis=0))
-print('Conductivity from inversion (W/m-K): %.3f' % ((Lz/(dist))*np.mean(np.diag(inv_cond_matrix[0:2,0:2]))))
-print((Lz/(dist))*inv_cond_matrix)
+#print('Conductivity from inversion (W/m-K): %.3f' % ((Lz/(dist))*np.mean(np.diag(inv_cond_matrix[0:2,0:2]))))
+#print((Lz/(dist))*inv_cond_matrix)
+print('Conductivity from inversion (W/m-K): %.3f' % (np.mean(np.diag(inv_cond_matrix)))) #for 3D materials
+print(inv_cond_matrix)
 """
 This calculates the conductiviti from inversion, as it is a 2D system it only takes x and y.
 The z is calculated from:
