@@ -94,7 +94,7 @@ plt.rcParams['mathtext.fontset'] = 'cm'
 
 nx = 3
 ny = 3
-nz = 1
+nz = 3
 print("Supercell:",nx,"x",ny,"x",nz)
 
 # In[19]:
@@ -128,7 +128,7 @@ fig.savefig("ase_atoms.png")
 
 kx=10
 ky=10
-kz=1
+kz=10
 kpts = [kx, ky, kz]
 temperature = 300   #WARNING: note that if this changes then you must change the sucesive directories in this code...
 is_classic = False
