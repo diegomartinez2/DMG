@@ -149,7 +149,10 @@ phonons = Phonons(forceconstants=forceconstants,
 # In[23]:
 
 print("set kpath and plot dispersion")
-kpath=atoms.cell.bandpath(path='GMKG',npoints=200,special_points={'G': [0, 0, 0], 'M': [0.5, 0, 0], 'K': [1/3, 1/3, 0]})
+kpath=atoms.cell.bandpath(path='GXVRGY',npoints=200,
+special_points={'G': [0, 0, 0], 'X': [1/2, 0, 0], 'Y': [0, 1/2, 0],
+'Z': [0, 0, 1/2], 'R': [1/2, 1/2, 1/2], 'T': [0, 1/2, 1/2], 'U': [1/2, 0, 1/2],
+'V': [1/2, 0, 1/2]})
 plotter.plot_dispersion(phonons,with_velocity=True,is_showing=True,manually_defined_path=kpath)
 savefig("ase_dispersion.png")
 print("plot DOS")
