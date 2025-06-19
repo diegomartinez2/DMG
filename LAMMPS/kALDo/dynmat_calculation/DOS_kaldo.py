@@ -24,10 +24,11 @@ import os
 import matplotlib.pyplot as plt
 
 # In[2]:
+#-------only for 2D materials--------------------
 Lz = 1      #this is the z of the calculation box in LAMMPS
 dist = 1    #this is the thickness of the 2D material
 print("Parameters for the conductivity calculation: Lz=",Lz," dist=",dist)
-
+#------------------------------------------------
 def cumulative_cond_cal(observables, kappa_tensor, prefactor=1/3):
 
     """Compute cumulative conductivity based on either frequency or mean-free path
