@@ -117,7 +117,7 @@ forceconstants = ForceConstants.from_folder(folder='./', supercell=supercell,for
 
 # In[21]:
 
-
+print("Make a figure of the atoms positions")
 from ase.visualize.plot import plot_atoms
 fig, ax = plt.subplots()
 plot_atoms(atoms.copy().repeat(supercell), ax, radii=0.3, rotation=('0x,0y,0z'))
@@ -142,7 +142,7 @@ phonons = Phonons(forceconstants=forceconstants,
                 kpts=kpts,
                 is_classic=is_classic,
                 temperature=temperature,
-                folder='graphene',
+                folder='Supercell',
                 storage='numpy')
 
 
@@ -169,7 +169,7 @@ print(inv_cond_matrix)
 """
 This calculates the conductiviti from inversion, as it is a 2D system it only takes x and y.
 The z is calculated from:
-The problem with graphene is that
+The problem with Supercell is that
 BTE requires the system volume at the denominator
 
 but the cell used for the calculations has a very large Lz because it
@@ -202,7 +202,7 @@ print('Inverse conductivity (W/mK):
 # In[25]:
 
 print("Load in group velocity and frequency data")
-data_folder = "graphene/"+k_label
+data_folder = "Supercell/"+k_label
 # Load in group velocity and frequency data
 frequency =  np.load(
     data_folder + '/frequency.npy',
