@@ -155,7 +155,20 @@ savefig("ase_dispersion.png")
 print("plot DOS")
 plotter.plot_dos(phonons,p_atoms=None,bandwidth=2,n_points=200,filename='dos',is_showing=False)
 savefig("ase_DOS.png")
+## Cargar constantes de fuerza de segundo orden desde Dyn.form
+# La API de kALDo tiene una función para esto, por ejemplo:
+#fc2 = ForceConstants.from_lammps(file_name='Dyn.form', format='shengbte', replicated_atoms_file='replicated_atoms.xyz')
 
+# Si necesitas constantes de tercer orden (para conductividad térmica, por ejemplo)
+# fc3 = ForceConstants.from_lammps_third_order(file_name='THIRD', replicated_atoms_file='replicated_atoms.xyz')
+# Ejemplo conceptual con kALDo (la sintaxis exacta puede variar)
+# Asegúrate de tener una clase de red definida para tu sistema
+# Por ejemplo, si tienes una red de la clase Lattice de kALDo
+# lattice = kaldo.Lattice(unit_cell_filename='your_structure.xyz')
+#GAMMA=0,0,0  X=0.5,0,0  Y=0,0.5,0  Z=0,0,0.5  R=0.5,0.5,0.5  T=0,0.5,0.5  U=0.5,0,0.5  V=0.5,0.5,0
+# Si ya tienes fc2 cargado
+# dispersions = fc2.calculate_dispersions(q_points=your_q_point_path)
+# dispersions.plot()
 # In[24]:
 
 
