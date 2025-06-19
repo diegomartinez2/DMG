@@ -25,9 +25,9 @@ import matplotlib.pyplot as plt
 
 # In[2]:
 #-------only for 2D materials--------------------
-Lz = 1      #this is the z of the calculation box in LAMMPS
-dist = 1    #this is the thickness of the 2D material
-print("Parameters for the conductivity calculation: Lz=",Lz," dist=",dist)
+#Lz = 1      #this is the z of the calculation box in LAMMPS
+#dist = 1    #this is the thickness of the 2D material
+#print("Parameters for the conductivity calculation: Lz=",Lz," dist=",dist)
 #------------------------------------------------
 def cumulative_cond_cal(observables, kappa_tensor, prefactor=1/3):
 
@@ -91,7 +91,7 @@ plt.rcParams['mathtext.fontset'] = 'cm'
 
 
 # In[ ]:
-#Supercell structure (this has to be the same as the LAMMPS input)
+#Supercell structure (this makes the supercell bigger for better calculations)
 
 nx = 3
 ny = 3
@@ -126,7 +126,7 @@ fig.savefig("ase_atoms.png")
 
 # In[22]:
 
-
+print("Set the kappa grid:")
 kx=10
 ky=10
 kz=10
@@ -134,6 +134,7 @@ kpts = [kx, ky, kz]
 temperature = 300   #WARNING: note that if this changes then you must change the sucesive directories in this code...
 is_classic = False
 k_label = str(kx) + '_' + str(ky) + '_' + str(kz)
+print(k_label)
 
 print("create phonon object")
 # Create a phonon object
