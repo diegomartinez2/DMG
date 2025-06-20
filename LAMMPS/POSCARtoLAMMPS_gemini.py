@@ -25,8 +25,9 @@ atoms = read(poscar_file, format='vasp')
 # 'atomic' is basic (atom ID, type, x, y, z)
 # 'full' includes molecule ID, atom ID, type, charge, x, y, z, etc.
 # Choose based on your LAMMPS simulation needs.
-write(lammps_data_file, atoms, format='lammps-data', atom_style='charge')
+atomstyle = 'charge'
+write(lammps_data_file, atoms, format='lammps-data', atom_style=atomstyle)
 
-print(f"Successfully converted {poscar_file} to {lammps_data_file} with atom_style='charge'")
+print(f"Successfully converted {poscar_file} to {lammps_data_file} with atom_style=",atomstyle)
 print("Remember to adjust atom_style and other parameters in the script if needed.")
 print("You may also need to manually add atom masses to the LAMMPS data file if not automatically included or specify them in the 'write' function.")
