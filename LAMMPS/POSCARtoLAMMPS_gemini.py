@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from ase.io import read, write
 
 # Replace 'POSCAR' with the name of your VASP POSCAR file
