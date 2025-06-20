@@ -161,7 +161,7 @@ savefig("ase_DOS.png")
 ## Cargar constantes de fuerza de segundo orden desde Dyn.form
 # La API de kALDo tiene una función para esto, por ejemplo:
 #fc2 = ForceConstants.from_lammps(file_name='Dyn.form', format='shengbte', replicated_atoms_file='replicated_atoms.xyz')
-
+#NOTA: esto no existe!!!!!
 # Si necesitas constantes de tercer orden (para conductividad térmica, por ejemplo)
 # fc3 = ForceConstants.from_lammps_third_order(file_name='THIRD', replicated_atoms_file='replicated_atoms.xyz')
 # Ejemplo conceptual con kALDo (la sintaxis exacta puede variar)
