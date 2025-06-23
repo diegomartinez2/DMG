@@ -240,6 +240,7 @@ group_velcotiy_norm = np.linalg.norm(
     group_velocity.reshape(-1, 3), axis=1) / 10.0
 
 # Plot observables in subplot
+print("Plot observables in subplot")
 figure(figsize=(12, 3))
 subplot(1,3, 1)
 set_fig_properties([gca()])
