@@ -208,8 +208,6 @@ vs
 
 print('Inverse conductivity (W/mK):
 %.3f'%(np.mean(np.diag(inv_cond_matrix))))
-
-
 """
 #print('Conductivity from inversion (W/m-K): %.3f' % np.mean(np.diag(inv_cond_matrix[0:2,0:2])) )
 #print(inv_cond_matrix)
@@ -237,6 +235,7 @@ phase_space = np.load(data_folder +
 
 # Compute norm of group velocity
 # Convert the unit from angstrom / picosecond to kilometer/ second
+print("Compute norm of group velocity. ")
 group_velcotiy_norm = np.linalg.norm(
     group_velocity.reshape(-1, 3), axis=1) / 10.0
 
