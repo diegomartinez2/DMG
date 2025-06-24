@@ -295,6 +295,7 @@ mean_free_path_norm = np.linalg.norm(
     mean_free_path.reshape(-1, 3), axis=1) / 10.0
 
 # Plot observables in subplot
+print("Plot observables")
 figure(figsize=(12, 3))
 subplot(1,3, 1)
 set_fig_properties([gca()])
