@@ -272,6 +272,7 @@ savefig("ase_multiplot.png")
 
 
 # Load in scattering rate
+print("Load in scattering rate")
 scattering_rate = np.load(
     data_folder +
     '/300/quantum/bandwidth.npy', allow_pickle=True)
