@@ -279,6 +279,9 @@ scattering_rate = np.load(
 
 # Derive lifetime, which is inverse of scattering rate
 life_time = scattering_rate ** (-1)
+print("check if scattering_rate is not zero or a matrix:")
+print(scattering_rate)
+#life_time = np.linalg.inv(scattering_rate)  #if is a matrix use this
 
 # Denote lists to intake mean free path in each direction
 mean_free_path = []
