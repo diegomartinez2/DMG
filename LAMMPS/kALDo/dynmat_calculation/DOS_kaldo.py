@@ -357,6 +357,7 @@ lambda_sorted, kappa_cum_wrt_lambda = cumulative_cond_cal(
     mean_free_path_norm, kappa_tensor)
 
 # Plot observables in subplot
+print("Plot observables")
 figure(figsize=(12, 3))
 subplot(1,3, 1)
 set_fig_properties([gca()])
@@ -387,5 +388,3 @@ xlim(1e-1,)
 subplots_adjust(wspace=0.33)
 show()
 savefig("ase_multiplot3.png")
-
-# In[ ]:
