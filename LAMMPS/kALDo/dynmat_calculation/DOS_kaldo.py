@@ -350,6 +350,7 @@ print((Lz/(dist))*kappa_matrix)
 print('\n')
 
 # Compute kappa in per mode and cumulative representations
+print("Compute kappa in per mode and cumulative representations")
 kappa_per_mode = kappa_tensor.sum(axis=-1).sum(axis=1)
 freq_sorted, kappa_cum_wrt_freq = cumulative_cond_cal(
     frequency.flatten(order='C'), kappa_tensor)
