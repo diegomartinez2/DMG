@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+"""
+This code uses ASE to read and write data files of the atomic positions.
+It can read LAMMPS and convert to VASP (POSCAR), it requires the atom types as data extra.
+It can read VASP (POSCAR) and write into LAMMPS data file in 'atomic' format
+"""
 import numpy as np
 from ase.io import read, write
 from ase import Atoms
