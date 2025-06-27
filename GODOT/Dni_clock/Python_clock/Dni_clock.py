@@ -245,6 +245,21 @@ def main(args):
     else:
         print("Hahr:", toDigits(Hahr,25), "Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
         #print("Hahr:", toDigits(Hahr,25), "Yahr:",toDigits(Yahr), "Vailee:",toDigits(Vailee),"_",VaileeDictionary[Vailee], "Gahrtahvo:", toDigits(Gahrtahvo), "Tahvo:", toDigits(Tahvo), "Gorahn:", toDigits(Gorahn), "Prorahn:", toDigits(Prorahn))
+        ventana = tk.Tk()
+        ventana.title("Fecha y Hora")
+
+        # Etiquetas para la fecha y la hora
+        etiqueta_fecha = tk.Label(ventana, text="")
+        etiqueta_fecha.pack(pady=10)
+
+        etiqueta_hora = tk.Label(ventana, text="")
+        etiqueta_hora.pack(pady=10)
+
+        # Llamar a la función para actualizar la hora cada segundo
+        actualizar_hora()
+
+        ventana.mainloop()
+
     return 0
 
 # Add a funtion to print instruction of use.
@@ -260,7 +275,7 @@ if __name__ == '__main__':
 """
 import tkinter as tk
 import datetime
-
+"""
 def actualizar_hora():
     ahora = datetime.datetime.now()
     Year = ahora.year
@@ -278,19 +293,3 @@ def actualizar_hora():
     )
 
     ventana.after(1000, actualizar_hora) # Actualizar cada segundo
-
-ventana = tk.Tk()
-ventana.title("Fecha y Hora")
-
-# Etiquetas para la fecha y la hora
-etiqueta_fecha = tk.Label(ventana, text="")
-etiqueta_fecha.pack(pady=10)
-
-etiqueta_hora = tk.Label(ventana, text="")
-etiqueta_hora.pack(pady=10)
-
-# Llamar a la función para actualizar la hora cada segundo
-actualizar_hora()
-
-ventana.mainloop()
-"""
