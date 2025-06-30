@@ -31,7 +31,7 @@ thermo_style	custom step cella cellb cellc cellalpha cellbeta cellgamma etotal
 
 
 variable        natoms equal count(all)
-#replicate the unit cell to
+#replicate the unit cell to make better phonon dispersion relations.
 replicate	2 2 2
 
 #relax the structure
