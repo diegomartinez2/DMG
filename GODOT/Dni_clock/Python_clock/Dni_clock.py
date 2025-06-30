@@ -248,7 +248,7 @@ def main(args):
         etiqueta_fecha.config(text=f"Fecha: {Year}-{Month:02}-{Day:02}")
         etiqueta_hora.config(text=f"Hora: {Hour:02}:{Minute:02}:{Second:02}")
         etiqueta_fecha_Dni.config(
-        text=f"Fecha Dni: DHahr: {toDigits(Hahr,25)}-Yahr:{Yahr}-Vailee:{Vailee}_{VaileeDictionary[Vailee]}Gahrtahvo:{Gahrtahvo}-Tahvo:{Tahvo}-Gorahn:{Gorahn}-Prorahn:{Prorahn}"
+        text=f"Fecha Dni:= DHahr:{toDigits(Hahr,25)}/-/Yahr:{Yahr}/-/Vailee:{Vailee}_{VaileeDictionary[Vailee]}/-/Gahrtahvo:{Gahrtahvo}/-/Tahvo:{Tahvo}/-/Gorahn:{Gorahn}/-/Prorahn:{Prorahn}"
         )
 
         ventana.after(1000, actualizar_hora) # Actualizar cada segundo
