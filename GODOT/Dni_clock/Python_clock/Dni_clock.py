@@ -235,6 +235,24 @@ def create_image_row(inputs, image_dir="images", output_file="output.png"):
 #-----------------------------------------------------
 
 def main(args):
+    def actualizar_hora():
+        ahora = datetime.datetime.now()
+        Year = ahora.year
+        Month = ahora.month
+        Day = ahora.day
+        Hour = ahora.hour
+        Minute = ahora.minute
+        Second = ahora.second
+        Hahr, Vailee, Yahr, Gahrtahvo, Tahvo, Gorahn, Prorahn = Gregorian_to_Cavernian(Day, Month, Year, Hour, Minute, Second)
+
+        etiqueta_fecha.config(text=f"Fecha: {Year}-{Month:02}-{Day:02}")
+        etiqueta_hora.config(text=f"Hora: {Hour:02}:{Minute:02}:{Second:02}")
+        etiqueta_fecha_Dni.config(
+        text=f"Fecha Dni: DHahr: {toDigits(Hahr,25)}-Yahr:{Yahr}-Vailee:{Vailee}_{VaileeDictionary[Vailee]}Gahrtahvo:{Gahrtahvo}-Tahvo:{Tahvo}-Gorahn:{Gorahn}-Prorahn:{Prorahn}"
+        )
+
+        ventana.after(1000, actualizar_hora) # Actualizar cada segundo
+
     base = 25
     VaileeDictionary = {1:"Leefo",2:"Leebro",3:"Leesahn",4:"Leetar",5:"Leevot",6:"Leevofo",7:"Leevobro",8:"Leevosahn",9:"Leevotar",10:"Leenovoo"}
     Day, Month, Year, Hour, Minute, Second = get_time()
@@ -255,6 +273,8 @@ def main(args):
         etiqueta_hora = tk.Label(ventana, text="")
         etiqueta_hora.pack(pady=10)
 
+        etiqueta_fecha_Dni = tk.Label(ventana, text="")
+        etiqueta_fecha_Dni.pack(pady=10)
         # Llamar a la función para actualizar la hora cada segundo
         actualizar_hora()
 
@@ -276,20 +296,3 @@ if __name__ == '__main__':
 import tkinter as tk
 import datetime
 """
-def actualizar_hora():
-    ahora = datetime.datetime.now()
-    Year = ahora.year
-    Month = ahora.month
-    Day = ahora.day
-    Hour = ahora.hour
-    Minute = ahora.minute
-    Second = ahora.second
-    Hahr, Vailee, Yahr, Gahrtahvo, Tahvo, Gorahn, Prorahn = Gregorian_to_Cavernian(Day, Month, Year, Hour, Minute, Second)
-
-    etiqueta_fecha.config(text=f"Fecha: {Year}-{Month:02}-{Day:02}")
-    etiqueta_hora.config(text=f"Hora: {Hour:02}:{Minute:02}:{Second:02}")
-    etiqueta_fecha_Dni.config(
-    text=f"Fecha Dni: DHahr: {toDigits(Hahr,25)}-Yahr:{Yahr}-Vailee:{Vailee}_{VaileeDictionary[Vailee]}Gahrtahvo:{Gahrtahvo}-Tahvo:{Tahvo}-Gorahn:{Gorahn}-Prorahn:{Prorahn}
-    )
-
-    ventana.after(1000, actualizar_hora) # Actualizar cada segundo
