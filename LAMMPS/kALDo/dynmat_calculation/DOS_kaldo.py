@@ -105,7 +105,7 @@ print("Supercell:",nx,"x",ny,"x",nz)
 
 #atoms = lammpsdata.read_lammps_data('relax.dat',Z_of_type={1:6},sort_by_id=True,style='atomic',units='metal')
 print("Read LAMMPS relaxed data")
-atoms = lammpsdata.read_lammps_data('relax.dat',style='charge',units='metal')
+atoms = lammpsdata.read_lammps_data('relax.dat',Z_of_type={1:16, 2:6, 3:29},style='charge',units='metal') 
 
 supercell = np.array([nx,ny,nz])
 print("Save replicated_atoms.xyz file")
