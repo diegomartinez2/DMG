@@ -149,6 +149,8 @@ phonons = Phonons(forceconstants=forceconstants,
 #np.save('bandwidth', phonons.bandwidth)
 #np.save('diffusivity', phonons.diffusivity)
 #np.save('participation', phonons.participation_ratio)
+#np.save('participation', phonons.eigenvalues)
+#np.save('participation', phonons.eigenvectors)
 # In[23]:
 
 print("set kpath and plot dispersion")
