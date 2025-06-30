@@ -261,7 +261,7 @@ def main(args):
     if base==10:
         print("Hahr:", Hahr, "Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
     else:
-        print("Hahr:", toDigits(Hahr,25), "Yahr:",Yahr, "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
+        print("Hahr:", toDigits(Hahr,25), "Yahr:", toDigits(Yahr,25), "Vailee:",Vailee,"_",VaileeDictionary[Vailee], "Gahrtahvo:", Gahrtahvo, "Tahvo:", Tahvo, "Gorahn:", Gorahn, "Prorahn:", Prorahn)
         #print("Hahr:", toDigits(Hahr,25), "Yahr:",toDigits(Yahr), "Vailee:",toDigits(Vailee),"_",VaileeDictionary[Vailee], "Gahrtahvo:", toDigits(Gahrtahvo), "Tahvo:", toDigits(Tahvo), "Gorahn:", toDigits(Gorahn), "Prorahn:", toDigits(Prorahn))
         ventana = tk.Tk()
         ventana.title("Fecha y Hora")
