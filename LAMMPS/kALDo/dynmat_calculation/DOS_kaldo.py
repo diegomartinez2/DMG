@@ -145,7 +145,10 @@ phonons = Phonons(forceconstants=forceconstants,
                 folder='Supercell',
                 storage='numpy')
 
-
+#np.save('frequency', phonons.frequency)
+#np.save('bandwidth', phonons.bandwidth)
+#np.save('diffusivity', phonons.diffusivity)
+#np.save('participation', phonons.participation_ratio)
 # In[23]:
 
 print("set kpath and plot dispersion")
@@ -212,6 +215,11 @@ print('Inverse conductivity (W/mK):
 #print('Conductivity from inversion (W/m-K): %.3f' % np.mean(np.diag(inv_cond_matrix[0:2,0:2])) )
 #print(inv_cond_matrix)
 
+# Conductivity Object
+# This will print out the total conductivity and save the contribution per mode
+#conductivity = Conductivity(phonons=phonons, method='qhgk').conductivity
+#np.save('conductivity', 1/3*np.einsum('iaa->i', conductivity))
+#print("Thermal Conductivity (W/m/K): %.3f" % conductivity.sum(axis=0).diagonal().mean())
 
 # In[25]:
 
