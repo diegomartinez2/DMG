@@ -93,9 +93,9 @@ plt.rcParams['mathtext.fontset'] = 'cm'
 # In[ ]:
 #Supercell structure (this makes the supercell bigger for better calculations)
 
-nx = 3
-ny = 3
-nz = 3
+nx = 2
+ny = 2
+nz = 2
 print("Supercell:",nx,"x",ny,"x",nz)
 
 # In[19]:
@@ -105,14 +105,15 @@ print("Supercell:",nx,"x",ny,"x",nz)
 
 #atoms = lammpsdata.read_lammps_data('relax.dat',Z_of_type={1:6},sort_by_id=True,style='atomic',units='metal')
 print("Read LAMMPS relaxed data")
-atoms = lammpsdata.read_lammps_data('relax.dat',Z_of_type={1:16, 2:6, 3:29},style='charge',units='metal') 
+atoms = lammpsdata.read_lammps_data('relax.dat',Z_of_type={1:16, 2:6, 3:29},style='charge',units='metal')
 
 supercell = np.array([nx,ny,nz])
 print("Save replicated_atoms.xyz file")
 write('replicated_atoms.xyz',format ='extxyz',images=atoms.copy().repeat(supercell))
 print("set force constants from LAMMPS format data:")
 print("from folder; FORMAT:lammps,Config_filename:replicated_atoms.xyz,ASE_format:xyz,2nd_order_FC:Dyn.form,3rd_order_FC:THIRD")
-forceconstants = ForceConstants.from_folder(folder='./', supercell=supercell,format='lammps')
+#forceconstants = ForceConstants.from_folder(folder='./', supercell=supercell,format='lammps')
+forceconstants = ForceConstants.from_folder(folder='./', supercell=supercell,only_second=True,format='lammps') #test with only the second order
 
 
 # In[21]:
