@@ -18,9 +18,9 @@ read_data POSCAR.lammps
 #mass		*   12.0107
 
 #interatomic potential
-#pair_style       hybrid/overlay coul/cut 10 chimesFF
-#pair_coeff      * *  coul/cut 10
-#pair_coeff      * * chimesFF params.txt
+#pair_style       hybrid/overlay coul/cut 10 chimesFF #this was a test to check
+#pair_coeff      * *  coul/cut 10     # the chimes+hybrid potential
+#pair_coeff      * * chimesFF params.txt  # not use now.
 pair_style      chimesFF
 pair_coeff      * * params.txt
 
