@@ -1,5 +1,8 @@
 #!/bin/bash
-
+# Este script de bash busca la ejecucion de nohup mediante 'ps aux' y permite
+# pausar el calculo o continuarlo.
+# NOTA: no funciona como esperaba ya que los programas lanzados con nohup no
+# se muestran como 'nohup' el el 'ps aux'
 # --- Colores para la salida en terminal ---
 RED='\033[0;31m'
 GREEN='\033[0;32m'
