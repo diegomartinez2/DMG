@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Script to calculate the DOS and ... using kALDo, from a LAMMPS dynamical matrix
+# Script to calculate the DOS, conductivity and more... using kALDo, from a LAMMPS dynamical matrix
 
 
 from ase.build import bulk, surface
