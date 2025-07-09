@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+"""
+This is a simple script python that uses ASE libraries to convert formats between
+VASP POSCAR and LAMMPS datafiles.
+"""
 from ase.io import read, write
 
 # Replace 'POSCAR' with the name of your VASP POSCAR file
