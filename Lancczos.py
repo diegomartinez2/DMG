@@ -1,3 +1,6 @@
+"""
+Lancczos method on python using scipy for calculating the eigenvalues and eigenvectors.
+"""
    import numpy as np
    from scipy.sparse.linalg import svds
 
