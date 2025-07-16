@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Example of Lanczos method on python using scipy for calculating the eigenvalues and eigenvectors.
 """
