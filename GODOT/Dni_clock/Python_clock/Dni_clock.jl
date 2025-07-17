@@ -30,7 +30,7 @@ using Tk # Para la interfaz gráfica
 # Constantes D'ni
 # -------
 const DNISH_VAILEE_DAYS = 29
-const DNISH_HAHR_VAILLEE = 10 # Number of Vailee in a Hahr
+const DNISH_HAHR_VAILEE = 10 # Number of Vailee in a Hahr
 const DNISH_EPOCH_HAHR = 9647
 
 const DNISH_YR_TO_GREGORIAN_DAY_RATIO = 1.25945582758621
@@ -176,7 +176,7 @@ Converts a Cavernian (D'ni) date and time to Atrian Yahr (decimal).
 function cavernian_to_atrian_yahr(yahr::Int, vailee::Int, hahr::Int, gahrtahvo::Int=0, tahvo::Int=0, gorahn::Int=0, prorahn::Int=0)::Float64
     # Whole yahrtee (days)
     whole_yahrtee = yahr + ((vailee - 1) * DNISH_VAILEE_DAYS) +
-                    ((hahr - DNISH_EPOCH_HAHR) * (DNISH_VAILEE_DAYS * DNISH_HAHR_VAILLEE))
+                    ((hahr - DNISH_EPOCH_HAHR) * (DNISH_VAILEE_DAYS * DNISH_HAHR_VAILEE))
 
     # Fractional yahr (time of yahr)
     fractional_yahr = ((gahrtahvo * GARHTAHVO_UNIT_VAL) +
@@ -198,9 +198,9 @@ function atrian_yahr_to_cavernian(ay::Float64)::Tuple{Int, Int, Int, Int, Int, I
 
     # Date calculation
     g = z - 0.25 # Similar offset as in Julian conversion
-    a = floor(Int, g / (DNISH_VAILEE_DAYS * DNISH_HAHR_VAILLEE))
+    a = floor(Int, g / (DNISH_VAILEE_DAYS * DNISH_HAHR_VAILEE))
     hahr = DNISH_EPOCH_HAHR + a
-    c = z - (a * (DNISH_VAILEE_DAYS * DNISH_HAHR_VAILLEE))
+    c = z - (a * (DNISH_VAILEE_DAYS * DNISH_HAHR_VAILEE))
 
     vailee = floor(Int, (c - 0.25) / DNISH_VAILEE_DAYS) + 1
     yahr = c - ((vailee - 1) * DNISH_VAILEE_DAYS)
