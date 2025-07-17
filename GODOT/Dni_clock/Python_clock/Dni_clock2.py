@@ -46,7 +46,7 @@ DNISH_YAHR_PRORAHN = 78125 # 78125 Prorahn per Yahr
 
 # D'ni Calendar Constants
 DNISH_VAILEE_DAYS = 29
-DNISH_HAHR_VAILLEE = 10 # Number of Vailee in a Hahr
+DNISH_HAHR_VAILEE = 10 # Number of Vailee in a Hahr
 DNISH_EPOCH_HAHR = 9647
 
 VAILEE_NAMES = {
@@ -140,7 +140,7 @@ def julian_to_gregorian(jd):
 def cavernian_to_atrian_yahr(yahr, vailee, hahr, gahrtahvo=0, tahvo=0, gorahn=0, prorahn=0):
     """Converts a Cavernian (D'ni) date and time to Atrian Yahr (decimal)."""
     # Whole yahrtee
-    whole_yahrtee = yahr + ((vailee - 1) * DNISH_VAILEE_DAYS) + ((hahr - DNISH_EPOCH_HAHR) * (DNISH_VAILEE_DAYS * DNISH_HAHR_VAILLEE))
+    whole_yahrtee = yahr + ((vailee - 1) * DNISH_VAILEE_DAYS) + ((hahr - DNISH_EPOCH_HAHR) * (DNISH_VAILEE_DAYS * DNISH_HAHR_VAILEE))
 
     # Fractional yahr (time of yahr)
     # Total units in a Yahr is 25^4 = 390625. Wait, 78125 is 5^7. D'ni uses base 5 and base 25.
@@ -169,9 +169,9 @@ def atrian_yahr_to_cavernian(ay):
 
     # Date calculation
     g = z - 0.25 # This -0.25 is unusual for a simple floor, might relate to epoch
-    a = floor(g / (DNISH_VAILEE_DAYS * DNISH_HAHR_VAilee))
+    a = floor(g / (DNISH_VAILEE_DAYS * DNISH_HAHR_VAILEE))
     hahr = DNISH_EPOCH_HAHR + a
-    c = z - (a * (DNISH_VAILEE_DAYS * DNISH_HAHR_VAilee))
+    c = z - (a * (DNISH_VAILEE_DAYS * DNISH_HAHR_VAILEE))
 
     vailee = floor((c - 0.25) / DNISH_VAILEE_DAYS) + 1 # Similar -0.25 offset
     yahr = c - ((vailee - 1) * DNISH_VAILEE_DAYS)
