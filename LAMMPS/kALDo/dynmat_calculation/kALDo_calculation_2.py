@@ -191,7 +191,8 @@ def main():
     # Plot Dispersion
     fig_dispersion, ax_dispersion = plt.subplots(figsize=(8, 6))
     plotter.plot_dispersion(phonons, with_velocity=True, is_showing=False, # Don't show immediately
-                            manually_defined_path=band_path, fig=fig_dispersion, ax=ax_dispersion)
+                            #manually_defined_path=band_path, fig=fig_dispersion, ax=ax_dispersion)
+                            manually_defined_path=band_path)  #for older versions of kALDo that don't recognises fig and ax...
     ax_dispersion.set_title('Phonon Dispersion Relation')
     set_plot_style([ax_dispersion])
     fig_dispersion.savefig("ase_dispersion.png", dpi=300, bbox_inches='tight')
@@ -203,7 +204,8 @@ def main():
     # `plotter.plot_dos` usually returns ax, figure directly, or plot to current ax.
     # If it creates a new figure, pass fig, ax arguments, or capture them.
     plotter.plot_dos(phonons, p_atoms=None, bandwidth=2, n_points=200, filename='dos',
-                     is_showing=False, fig=fig_dos, ax=ax_dos)
+                     #is_showing=False, fig=fig_dos, ax=ax_dos)
+                     is_showing=False)   #for older versions of kALDo tha do not have 'fig' and 'ax' inputs (note: this takes out control over the output figure, so it is better to get a new version of kALDo)                
     ax_dos.set_title('Phonon Density of States (DOS)')
     set_plot_style([ax_dos])
     fig_dos.savefig("ase_DOS.png", dpi=300, bbox_inches='tight')
