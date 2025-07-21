@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import numpy as np
 import matplotlib.pyplot as plt
 def surface_gf(omega, epsilon, t, eta=1e-5, max_iter=100, tol=1e-10):
