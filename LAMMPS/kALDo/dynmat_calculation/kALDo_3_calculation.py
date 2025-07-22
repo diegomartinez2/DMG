@@ -36,6 +36,8 @@ IS_2D_MATERIAL = False # Set to True for 2D materials
 Lz = 1.0 # Box size in z-direction in LAMMPS (if applicable for 2D)
 DIST = 1.0 # Thickness of the 2D material (if applicable)
 
+# Conductivity method ('rta', 'sc', 'qhgk', 'inverse')
+CONDUCTIVITY_METHOD = 'inverse'
 # --- Plotting Configuration ---
 # Denote plot default format (using plt.rcParams for consistency)
 LINE_WIDTH_AXES = 2
@@ -226,8 +228,8 @@ def main():
 
     # --- 6. Calculate Conductivity ---
     print("\n--- Calculating Conductivity (Inverse Method) ---")
-    total_cond_matrix = Conductivity(phonons=phonons, method='inverse').conductivity.sum(axis=0)
-    # method='rta', 'sc', 'qhgk', 'inverse'
+    #total_cond_matrix = Conductivity(phonons=phonons, method='inverse').conductivity.sum(axis=0)
+    total_cond_matrix = Conductivity(phonons=phonons, method=CONDUCTIVITY_METHOD).conductivity.sum(axis=0)
     kappa_factor = (Lz / DIST) if IS_2D_MATERIAL and DIST != 0 else 1.0
     effective_cond_matrix = kappa_factor * total_cond_matrix
 
