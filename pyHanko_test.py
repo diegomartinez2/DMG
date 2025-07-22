@@ -10,8 +10,8 @@ from pyhanko.sign.diff_analysis import summarize_and_validate_pdf_with_diff
 # 1. Rutas a tus archivos
 PDF_INPUT = 'documento.pdf'
 PDF_OUTPUT = 'documento_firmado_visible.pdf'
-CERT_FILE = 'mi_certificado.pem'  # o .crt
-KEY_FILE = 'mi_clave_privada.pem' # o .key
+CERT_FILE = 'cert.pem'#'mi_certificado.pem'  # o .crt
+KEY_FILE = 'myKey.pem'#'mi_clave_privada.pem' # o .key
 KEY_PASS = b'tu_contrasena' # Si tu clave tiene contraseña
 CA_CHAIN_FILES = ('tu_ca_intermedia.pem', 'tu_ca_raiz.pem') # Opcional: cadena de CA
 
