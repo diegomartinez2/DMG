@@ -227,7 +227,7 @@ def main():
     # --- 6. Calculate Conductivity ---
     print("\n--- Calculating Conductivity (Inverse Method) ---")
     total_cond_matrix = Conductivity(phonons=phonons, method='inverse').conductivity.sum(axis=0)
-
+    # method='rta', 'sc', 'qhgk', 'inverse'
     kappa_factor = (Lz / DIST) if IS_2D_MATERIAL and DIST != 0 else 1.0
     effective_cond_matrix = kappa_factor * total_cond_matrix
 
