@@ -115,6 +115,25 @@ def set_plot_style(ax_list):
             t.set_color('black')
             t.set_linewidth(LINE_WIDTH_AXES)
 
+def append_to_text_file(filename, variables):
+    """
+    Guarda las variables en un archivo de texto, añadiéndolas al final.
+    Cada variable se guarda en una línea separada.
+
+    Args:
+        filename (str): El nombre del archivo donde se guardarán los datos.
+        variables (list or tuple): Una lista o tupla de las variables a guardar.
+                                   Pueden ser números, cadenas, etc.
+    """
+    try:
+        with open(filename, 'a') as f:
+            for var in variables:
+                f.write(str(var) + '\n') # Convierte la variable a string y añade un salto de línea
+            f.write('---\n') # Opcional: un separador para distinguir entradas
+        print(f"Variables añadidas a '{filename}' con éxito.")
+    except IOError as e:
+        print(f"Error al escribir en el archivo '{filename}': {e}")
+
 def main():
     # --- 1. Clean previous results (optional, use with caution) ---
     # try:
@@ -235,6 +254,7 @@ def main():
 
     mean_conductivity_3D = np.mean(np.diag(effective_cond_matrix))
     print(f'Total Conductivity (W/m-K): {mean_conductivity_3D:.3f}')
+    append_to_text_file("Conductivity.txt",["Total Conductivity (W/m-K):",mean_conductivity_3, "Full conductivity matrix:",effective_cond_matrix])
     print("Full conductivity matrix:")
     print(effective_cond_matrix)
 
@@ -402,14 +422,17 @@ def main():
     kappa_matrix_total = kappa_tensor_modes_3x3_scaled.sum(axis=0)
 
     print(f"Bulk thermal conductivity (W m^-1 K^-1):")
+    append_to_text_file("Conductivity.txt",["Bulk thermal conductivity (W m^-1 K^-1):",kappa_matrix_total])
     print(kappa_matrix_total)
 
     if IS_2D_MATERIAL:
         mean_in_plane_kappa = np.mean(np.diag(kappa_matrix_total[0:2, 0:2]))
         print(f"Mean in-plane thermal conductivity (W m^-1 K^-1): {mean_in_plane_kappa:.1f}")
+        append_to_text_file("Conductivity.txt",["Mean in-plane thermal conductivity (W m^-1 K^-1):",mean_in_plane_kappa])
     else:
         mean_total_kappa = np.mean(np.diag(kappa_matrix_total))
         print(f"Mean total thermal conductivity (W m^-1 K^-1): {mean_total_kappa:.1f}")
+        append_to_text_file("Conductivity.txt",["Mean total thermal conductivity (W m^-1 K^-1):",mean_total_kappa])
 
     # Compute kappa per mode and cumulative representations for filtered data
     kappa_per_mode_sum_diag = np.einsum('mdd->m', kappa_tensor_modes_3x3_scaled)
