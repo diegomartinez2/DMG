@@ -254,7 +254,8 @@ def main():
 
     mean_conductivity_3D = np.mean(np.diag(effective_cond_matrix))
     print(f'Total Conductivity (W/m-K): {mean_conductivity_3D:.3f}')
-    append_to_text_file("Conductivity.txt",["Total Conductivity (W/m-K):",mean_conductivity_3, "Full conductivity matrix:",effective_cond_matrix])
+    append_to_text_file("Conductivity.txt",["Total Conductivity (W/m-K):",mean_conductivity_3])
+    append_to_text_file("Conductivity.txt",["Full conductivity matrix:",effective_cond_matrix])
     print("Full conductivity matrix:")
     print(effective_cond_matrix)
 
