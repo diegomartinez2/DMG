@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import curses
 import time
 import random
