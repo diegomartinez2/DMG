@@ -169,7 +169,7 @@ def main():
     print("\n--- Setting Force Constants ---")
     try:
         forceconstants = ForceConstants.from_folder(
-            folder='./', supercell=supercell_dims, only_second=True, format='lammps'
+            folder='./', supercell=supercell_dims, only_second=False, format='lammps'
         )
         print("Force constants set from LAMMPS format data.")
     except Exception as e:
