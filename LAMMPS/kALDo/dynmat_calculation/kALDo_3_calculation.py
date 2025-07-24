@@ -20,7 +20,7 @@ import kaldo.controllers.plotter as plotter # Alias for convenience
 
 # --- Configuration ---
 # Geometry and Supercell
-NX, NY, NZ = 2, 2, 2
+NX, NY, NZ = 3, 3, 3
 print(f"Supercell dimensions: {NX}x{NY}x{NZ}")
 
 # k-point grid for phonon calculations
