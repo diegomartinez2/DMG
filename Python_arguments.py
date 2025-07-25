@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys, getopt
 
 def main(argv):
