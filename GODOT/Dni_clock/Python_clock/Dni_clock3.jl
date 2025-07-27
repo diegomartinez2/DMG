@@ -252,16 +252,15 @@ end
 # ----------
 
 mutable struct DniClockApp
-    root::Tk.Widget # Kept as Tk.Widget (this is a good general type)
+    root::Tk.Widget
     gregorian_date_label::Tk.Widget
     gregorian_time_label::Tk.Widget
     dni_date_label::Tk.Widget
     base_display::Int
 
-    # REMOVED TYPE ANNOTATION for 'master' here to bypass the ArgumentError
     function DniClockApp(master)
         t = new()
-        t.root = master # This will correctly store the Tk.Toplevel object
+        t.root = master
         Tk.title(master, "D'ni Clock Converter")
 
         t.base_display = 25 # Default display base for D'ni numbers
@@ -295,29 +294,20 @@ function update_time(app::DniClockApp)
     Tk.configure(app.gregorian_date_label, text=@sprintf("Fecha: %d-%02d-%02d", year, month, day))
     Tk.configure(app.gregorian_time_label, text=@sprintf("Hora: %02d:%02d:%02d", hour, minute, second))
 
-    # Format D'ni numbers in base 25 for display
-    # Join digits as string
-    hahr_dni_digits_str = join(to_digits_base_n(hahr, app.base_display))
-    yahr_dni_digits_str = join(to_digits_base_n(yahr, app.base_display))
-    gahrtahvo_dni_digits_str = join(to_digits_base_n(gahrtahvo, app.base_display))
-    tahvo_dni_digits_str = join(to_digits_base_n(tahvo, app.base_display))
-    gorahn_dni_digits_str = join(to_digits_base_n(gorahn, app.base_display))
-    prorahn_dni_digits_str = join(to_digits_base_n(prorahn, app.base_display))
-
-    vailee_name = get(VAILEE_NAMES, vailee, "Desconocido") # Handle unknown Vailee
-
+    # Fix: Combine the format string into a single literal using triple quotes
     Tk.configure(app.dni_date_label,
-        text=@sprintf("Hahr: %s / Yahr: %s / Vailee: %d (%s)\n" * "Gahrtahvo: %s / Tahvo: %s / Gorahn: %s / Prorahn: %s",
-                     hahr_dni_digits_str, yahr_dni_digits_str, vailee, vailee_name,
-                     gahrtahvo_dni_digits_str, tahvo_dni_digits_str, gorahn_dni_digits_str, prorahn_dni_digits_str)
+        text=@sprintf("""Hahr: %s / Yahr: %s / Vailee: %d (%s)
+                         Gahrtahvo: %s / Tahvo: %s / Gorahn: %s / Prorahn: %s""",
+                    hahr_dni_digits_str, yahr_dni_digits_str, vailee, vailee_name,
+                    gahrtahvo_dni_digits_str, tahvo_dni_digits_str, gorahn_dni_digits_str, prorahn_dni_digits_str)
     )
 
     Tk.after(app.root, 1000, () -> update_time(app)) # Schedule next update
 end
 
 function main_julia()
-    root = Tk.toplevel() # This call correctly creates the Toplevel object
-    app = DniClockApp(root) # This will pass the Toplevel object to the constructor
+    root = Tk.toplevel()
+    app = DniClockApp(root)
     Tk.wait_until_closed(root)
 end
 
