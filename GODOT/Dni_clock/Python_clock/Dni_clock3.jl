@@ -252,15 +252,16 @@ end
 # ----------
 
 mutable struct DniClockApp
-    root::Tk.Widget # Changed from Tk.Toplevel to Tk.Widget
+    root::Tk.Widget # Kept as Tk.Widget (this is a good general type)
     gregorian_date_label::Tk.Widget
     gregorian_time_label::Tk.Widget
     dni_date_label::Tk.Widget
     base_display::Int
 
-    function DniClockApp(master::Tk.Toplevel) # This remains Tk.Toplevel for the argument type
+    # REMOVED TYPE ANNOTATION for 'master' here to bypass the ArgumentError
+    function DniClockApp(master)
         t = new()
-        t.root = master
+        t.root = master # This will correctly store the Tk.Toplevel object
         Tk.title(master, "D'ni Clock Converter")
 
         t.base_display = 25 # Default display base for D'ni numbers
@@ -315,8 +316,8 @@ function update_time(app::DniClockApp)
 end
 
 function main_julia()
-    root = Tk.toplevel() # This is the function call
-    app = DniClockApp(root)
+    root = Tk.toplevel() # This call correctly creates the Toplevel object
+    app = DniClockApp(root) # This will pass the Toplevel object to the constructor
     Tk.wait_until_closed(root)
 end
 
