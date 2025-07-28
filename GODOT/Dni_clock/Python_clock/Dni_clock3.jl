@@ -306,7 +306,10 @@ function update_time(app::DniClockApp)
 end
 
 function main_julia()
-    root = Tk.toplevel()
+    # FIX: Revert to Tk.toplevel() as the no-argument main window creator,
+    # as Tk.window() is not defined in your Tk.jl setup.
+    #root = Tk.root()
+    root = Tk.Tk()
     app = DniClockApp(root)
     Tk.wait_until_closed(root)
 end
