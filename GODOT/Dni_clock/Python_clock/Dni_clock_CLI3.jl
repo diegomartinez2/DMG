@@ -1,30 +1,7 @@
-import Pkg; # No necesitas Pkg.add("Tk") si ya no lo usas.
-
-# Dni_clock.jl
-#
-# Copyright 2025 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-# MA 02110-1301, USA.
-#
-# D'ni clock converter from Gregorian to D'ni
-# ---------------------------
-
+import Pkg; # Ya no necesitas Pkg.add("Tk") si ya no lo usas.
 using Dates # Para fechas y horas
 using Printf # Para formato de cadenas
-# Removed: using Tk # Ya no se usa Tk.jl
+using Terminals # Para control avanzado de terminal (modo raw, etc.)
 
 # -------
 # Constantes D'ni
@@ -208,7 +185,7 @@ function atrian_yahr_to_cavernian(ay::Float64)::Tuple{Int, Int, Int, Int, Int, I
     # Time calculation
     total_time_units = round(Int, (ay - floor(ay)) * DNISH_YAHR_UNITS)
     gahrtahvo = floor(Int, total_time_units / GARHTAHVO_UNIT_VAL)
-    remainder = total_time_units - (gahrtahvo * GARHTAHVO_UNIT_VAL)
+    remainder = total_time_units - (gahrtahvo * GARHTAHVO_UNIT_VAL) # <-- CORREGIDO: GARHTAHVO_UNIT_VAL
     tahvo = floor(Int, remainder / TAHVO_UNIT_VAL)
     remainder = remainder - (tahvo * TAHVO_UNIT_VAL)
     gorahn = floor(Int, remainder / GORAHN_UNIT_VAL)
@@ -257,33 +234,40 @@ function main_julia()
     # Códigos de escape ANSI:
     # \033[2J   - Borra toda la pantalla
     # \033[H    - Mueve el cursor a la posición Home (0,0)
-    # \033[NA   - Mueve el cursor N líneas hacia arriba
+    # \033[<N>A - Mueve el cursor N líneas hacia arriba
+    # \033[<N>B - Mueve el cursor N líneas hacia abajo
+    # \033[<N>;<M>H - Mueve el cursor a la fila N, columna M
     # \033[K    - Borra desde el cursor hasta el final de la línea
 
-    # Borra la pantalla y mueve el cursor al inicio para un arranque limpio
-    print("\033[2J\033[H")
-
-    # Imprime encabezados estáticos que no se sobrescribirán
-    println("------------------------------------")
-    println("  Convertidor de Reloj D'ni (Terminal)   ")
-    println("------------------------------------")
-    println("\nFecha y Hora Actual (Gregoriana):")
-    # Líneas de marcador de posición para el contenido dinámico Gregoriano
-    println("Fecha: -- -- --")
-    println("Hora: --:--:--")
-    println("\nFecha y Hora D'ni:")
-    # Líneas de marcador de posición para el contenido dinámico D'ni
-    println("Hahr: --- / Yahr: --- / Vailee: -- (----------)")
-    println("Gahrtahvo: --- / Tahvo: --- / Gorahn: --- / Prorahn: ---")
-    println("\nPresiona Ctrl+C para salir.")
-
-    # El número de líneas de contenido dinámico que se actualizarán
-    # Esto incluye 2 líneas para Gregoriano y 2 líneas para D'ni.
-    # Los encabezados ("Fecha y Hora Actual...", "Fecha y Hora D'ni...") son estáticos arriba.
-    num_dynamic_lines = 4 # (Fecha Greg. + Hora Greg. + Fecha D'ni L1 + Fecha D'ni L2)
+    # Configuración del terminal para lectura de un solo carácter
+    term = Terminals.TTYTerminal("xterm", stdin, stdout, stderr)
+    Terminals.raw!(term, true) # Entra en modo raw para lectura de caracteres directos
+    Base.exit_on_sigint(false) # Deshabilita Ctrl+C para que 'q' sea la única forma de salir
 
     try
-        while true
+        # Borra la pantalla y mueve el cursor al inicio para un arranque limpio
+        print("\033[2J\033[H")
+
+        # Imprime encabezados estáticos
+        println("------------------------------------")
+        println("  Convertidor de Reloj D'ni (Terminal)   ")
+        println("------------------------------------")
+        println("\nFecha y Hora Actual (Gregoriana):")
+        println("\nFecha y Hora D'ni:")
+        println("\nPresiona 'q' para salir.") # Mensaje de salida actualizado
+
+        # Definir las filas para la salida dinámica
+        const GREG_DATE_ROW = 6
+        const GREG_TIME_ROW = 7
+        const DNI_LINE1_ROW = 10
+        const DNI_LINE2_ROW = 11
+        const EXIT_MESSAGE_ROW = 13 # Fila del mensaje "Presiona 'q' para salir."
+
+        # Columna inicial para la mayoría del texto dinámico
+        const START_COL = 1
+
+        should_exit = false
+        while !should_exit
             now = Dates.now()
             day, month, year = Dates.day(now), Dates.month(now), Dates.year(now)
             hour, minute, second = Dates.hour(now), Dates.minute(now), Dates.second(now)
@@ -310,49 +294,52 @@ function main_julia()
             dni_output_line2 = @sprintf("Gahrtahvo: %s / Tahvo: %s / Gorahn: %s / Prorahn: %s",
                                         gahrtahvo_dni_digits_str, tahvo_dni_digits_str, gorahn_dni_digits_str, prorahn_dni_digits_str)
 
-            # --- Mover el cursor y sobrescribir ---
-            # Nos movemos N líneas hacia arriba desde la posición actual del cursor.
-            # El cursor estará al final de la línea "Presiona Ctrl+C para salir."
-            # Necesitamos movernos hacia arriba para llegar a la primera línea de datos dinámicos.
-            # (2 líneas de D'ni + 1 línea de "Fecha y Hora D'ni:" + 2 líneas de Gregoriano + 1 línea de "Fecha y Hora Actual (Gregoriana):" = 6 líneas)
-            # No, mejor contamos desde el final del *bloque de marcador de posición dinámico*
-            # Es decir, 4 líneas hacia arriba.
-            print("\033[$(num_dynamic_lines)A") # Mueve el cursor 4 líneas hacia arriba (al inicio del bloque Gregoriano)
-            #print("\033[6A]")
-            # Imprime y borra las líneas Gregorianas
-            print("\033[K") # Borra la línea actual
-            println(greg_date_str)
-            print("\033[K") # Borra la línea actual
-            println(greg_time_str)
-            # Ahora el cursor está en la línea siguiente a la hora Gregoriana.
-            # Necesitamos movernos 1 línea hacia abajo para saltar el encabezado D'ni.
-            # O, más simple, simplemente borrar la línea actual del encabezado D'ni y reescribirla si fuese dinámica.
-            # Como los encabezados son estáticos, el cursor está ahora al final de la línea de hora Gregoriana.
-            # La siguiente línea dinámica es la primera de D'ni. Entonces, no necesitamos saltar el encabezado D'ni.
-            #print("\033[1B]")
-            # Imprime y borra las líneas D'ni
-            print("\033[K") # Borra la línea actual (donde iría la primera línea D'ni)
-            println(dni_output_line1)
-            print("\033[K") # Borra la línea actual (donde iría la segunda línea D'ni)
-            println(dni_output_line2)
-            #print("\033[1A]")
+            # --- Actualizar la pantalla ---
+            # Fecha Gregoriana
+            print("\033[$(GREG_DATE_ROW);$(START_COL)H") # Mueve el cursor a la fila 6, columna 1
+            print("\033[K") # Borra la línea
+            print(greg_date_str)
 
-            # ¡Muy importante! Fuerza a que la salida se muestre en la terminal inmediatamente
-            flush(stdout)
+            # Hora Gregoriana
+            print("\033[$(GREG_TIME_ROW);$(START_COL)H") # Mueve el cursor a la fila 7, columna 1
+            print("\033[K") # Borra la línea
+            print(greg_time_str)
 
-            sleep(1) # Espera 1 segundo antes de la próxima actualización
+            # Línea 1 D'ni
+            print("\033[$(DNI_LINE1_ROW);$(START_COL)H") # Mueve el cursor a la fila 10, columna 1
+            print("\033[K") # Borra la línea
+            print(dni_output_line1)
+
+            # Línea 2 D'ni
+            print("\033[$(DNI_LINE2_ROW);$(START_COL)H") # Mueve el cursor a la fila 11, columna 1
+            print("\033[K") # Borra la línea
+            print(dni_output_line2)
+
+            flush(stdout) # Fuerza la actualización de la pantalla
+
+            # Comprobar si se ha presionado 'q'
+            if bytesavailable(stdin) > 0
+                char_input = read(stdin, Char)
+                if char_input == 'q'
+                    should_exit = true
+                end
+            end
+
+            sleep(1) # Espera 1 segundo
         end
-    catch e
-        if isa(e, InterruptException)
-            # Manejar Ctrl+C: Mover el cursor al final para imprimir un mensaje de salida limpio.
-            # Nos movemos al final del bloque dinámico (4 líneas más 1 línea de "Presiona Ctrl+C..." = 5 líneas)
-            # No, es más fácil moverse al inicio de la pantalla y reescribir la parte final.
-            print("\033[H") # Mueve el cursor a la posición Home (arriba a la izquierda)
-            # Imprime el mensaje de salida al final
-            println("\n\n\n\n\n\n\nPrograma terminado.                                            ") # Espacios para borrar cualquier cosa
-        else
-            rethrow(e) # Volver a lanzar otras excepciones
-        end
+
+    finally
+        # Restaurar el terminal a su estado normal al salir
+        Terminals.raw!(term, false)
+        Base.exit_on_sigint(true) # Reactivar Ctrl+C
+
+        # Limpiar la pantalla y dejar un mensaje final
+        print("\033[2J\033[H") # Borra toda la pantalla y mueve el cursor al inicio
+        println("------------------------------------")
+        println("  Convertidor de Reloj D'ni (Terminal)   ")
+        println("------------------------------------")
+        println("\nPrograma terminado limpiamente.                   ")
+        flush(stdout)
     end
 end
 
