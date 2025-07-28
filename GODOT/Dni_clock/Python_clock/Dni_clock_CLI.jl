@@ -318,24 +318,28 @@ function main_julia()
             # No, mejor contamos desde el final del *bloque de marcador de posición dinámico*
             # Es decir, 4 líneas hacia arriba.
             print("\033[$(num_dynamic_lines)A") # Mueve el cursor 4 líneas hacia arriba (al inicio del bloque Gregoriano)
-            #print("\033[6A]")
+
             # Imprime y borra las líneas Gregorianas
+            print("\033[6;1H") # Mueve el cursor a la fila 6, columna 1
             print("\033[K") # Borra la línea actual
             println(greg_date_str)
+            print("\033[7;1H") # Mueve el cursor a la fila 7, columna 1
             print("\033[K") # Borra la línea actual
             println(greg_time_str)
+
             # Ahora el cursor está en la línea siguiente a la hora Gregoriana.
             # Necesitamos movernos 1 línea hacia abajo para saltar el encabezado D'ni.
             # O, más simple, simplemente borrar la línea actual del encabezado D'ni y reescribirla si fuese dinámica.
             # Como los encabezados son estáticos, el cursor está ahora al final de la línea de hora Gregoriana.
             # La siguiente línea dinámica es la primera de D'ni. Entonces, no necesitamos saltar el encabezado D'ni.
-            #print("\033[1B]")
+
             # Imprime y borra las líneas D'ni
+            print("\033[10;1H") # Mueve el cursor a la fila 10, columna 1
             print("\033[K") # Borra la línea actual (donde iría la primera línea D'ni)
             println(dni_output_line1)
+            print("\033[11;1H") # Mueve el cursor a la fila 11, columna 1            
             print("\033[K") # Borra la línea actual (donde iría la segunda línea D'ni)
             println(dni_output_line2)
-            #print("\033[1A]")
 
             # ¡Muy importante! Fuerza a que la salida se muestre en la terminal inmediatamente
             flush(stdout)
