@@ -20,7 +20,10 @@ function dniclock_window()
     push!(vbox, GtkLabel("Fecha y Hora Actual (Gregoriana)"))
     push!(vbox, label_greg_date)
     push!(vbox, label_greg_time)
-    push!(vbox, GtkSeparator())
+    #push!(vbox, Gtk.Separator(:horizontal))
+    spacer = Gtk.Box(:v)
+    set_gtk_property!(spacer, :height_request, 10)  # Alto de 10 píxeles para separación
+    push!(vbox, spacer)
     push!(vbox, GtkLabel("Fecha y Hora D'ni"))
     push!(vbox, label_dni)
 
