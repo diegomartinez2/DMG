@@ -1,4 +1,4 @@
-import Pkg; # No necesitas Pkg.add("Tk") si ya no lo usas.
+import Pkg; # Ya no necesitas Pkg.add("Tk") si ya no lo usas.
 
 # Dni_clock.jl
 #
@@ -208,7 +208,7 @@ function atrian_yahr_to_cavernian(ay::Float64)::Tuple{Int, Int, Int, Int, Int, I
     # Time calculation
     total_time_units = round(Int, (ay - floor(ay)) * DNISH_YAHR_UNITS)
     gahrtahvo = floor(Int, total_time_units / GARHTAHVO_UNIT_VAL)
-    remainder = total_time_units - (gahrtahvo * GARHTAHVO_UNIT_VAL)
+    remainder = total_time_units - (gahrtahvo * GARHTAHVO_UNIT_VAL) # <-- CORREGIDO: GARHTAHVO_UNIT_VAL
     tahvo = floor(Int, remainder / TAHVO_UNIT_VAL)
     remainder = remainder - (tahvo * TAHVO_UNIT_VAL)
     gorahn = floor(Int, remainder / GORAHN_UNIT_VAL)
@@ -269,18 +269,18 @@ function main_julia()
     println("------------------------------------")
     println("\nFecha y Hora Actual (Gregoriana):")
     # Líneas de marcador de posición para el contenido dinámico Gregoriano
+    # Estas 2 líneas son las que se actualizarán dinámicamente
     println("Fecha: -- -- --")
     println("Hora: --:--:--")
     println("\nFecha y Hora D'ni:")
-    # Líneas de marcador de posición para el contenido dinámico D'ni
+    # Estas 2 líneas son las que se actualizarán dinámicamente
     println("Hahr: --- / Yahr: --- / Vailee: -- (----------)")
     println("Gahrtahvo: --- / Tahvo: --- / Gorahn: --- / Prorahn: ---")
     println("\nPresiona Ctrl+C para salir.")
 
-    # El número de líneas de contenido dinámico que se actualizarán
-    # Esto incluye 2 líneas para Gregoriano y 2 líneas para D'ni.
-    # Los encabezados ("Fecha y Hora Actual...", "Fecha y Hora D'ni...") son estáticos arriba.
-    num_dynamic_lines = 4 # (Fecha Greg. + Hora Greg. + Fecha D'ni L1 + Fecha D'ni L2)
+    # El número de líneas de contenido dinámico que se actualizarán.
+    # Tenemos 2 líneas para Gregoriano y 2 para D'ni. Total = 4 líneas.
+    num_dynamic_lines = 4
 
     try
         while true
@@ -311,26 +311,21 @@ function main_julia()
                                         gahrtahvo_dni_digits_str, tahvo_dni_digits_str, gorahn_dni_digits_str, prorahn_dni_digits_str)
 
             # --- Mover el cursor y sobrescribir ---
-            # Nos movemos N líneas hacia arriba desde la posición actual del cursor.
-            # El cursor estará al final de la línea "Presiona Ctrl+C para salir."
-            # Necesitamos movernos hacia arriba para llegar a la primera línea de datos dinámicos.
-            # (2 líneas de D'ni + 1 línea de "Fecha y Hora D'ni:" + 2 líneas de Gregoriano + 1 línea de "Fecha y Hora Actual (Gregoriana):" = 6 líneas)
-            # No, mejor contamos desde el final del *bloque de marcador de posición dinámico*
-            # Es decir, 4 líneas hacia arriba.
-            print("\033[$(num_dynamic_lines)A") # Mueve el cursor 4 líneas hacia arriba (al inicio del bloque Gregoriano)
+            # Nos movemos `num_dynamic_lines` (4) líneas hacia arriba.
+            # Esto nos posiciona al inicio del bloque de "Fecha: -- -- --".
+            print("\033[$(num_dynamic_lines)A")
 
-            # Imprime y borra las líneas Gregorianas
+            # Actualiza la fecha y hora Gregoriana
             print("\033[K") # Borra la línea actual
             println(greg_date_str)
             print("\033[K") # Borra la línea actual
             println(greg_time_str)
-            # Ahora el cursor está en la línea siguiente a la hora Gregoriana.
-            # Necesitamos movernos 1 línea hacia abajo para saltar el encabezado D'ni.
-            # O, más simple, simplemente borrar la línea actual del encabezado D'ni y reescribirla si fuese dinámica.
-            # Como los encabezados son estáticos, el cursor está ahora al final de la línea de hora Gregoriana.
-            # La siguiente línea dinámica es la primera de D'ni. Entonces, no necesitamos saltar el encabezado D'ni.
-            print("\033[1B]")
-            # Imprime y borra las líneas D'ni
+
+            # Actualiza las líneas D'ni
+            # El cursor ahora está en la línea "Fecha y Hora D'ni:", que es estática.
+            # Necesitamos saltarla para ir a la primera línea dinámica D'ni.
+            # Después de los println anteriores, el cursor ya está al inicio de la línea de encabezado "Fecha y Hora D'ni:",
+            # y la siguiente es la primera línea de D'ni dinámica. No hace falta salto extra.
             print("\033[K") # Borra la línea actual (donde iría la primera línea D'ni)
             println(dni_output_line1)
             print("\033[K") # Borra la línea actual (donde iría la segunda línea D'ni)
@@ -343,12 +338,19 @@ function main_julia()
         end
     catch e
         if isa(e, InterruptException)
-            # Manejar Ctrl+C: Mover el cursor al final para imprimir un mensaje de salida limpio.
-            # Nos movemos al final del bloque dinámico (4 líneas más 1 línea de "Presiona Ctrl+C..." = 5 líneas)
-            # No, es más fácil moverse al inicio de la pantalla y reescribir la parte final.
+            # Manejar Ctrl+C: Limpiar las líneas dinámicas y dejar un mensaje final.
+            print("\033[$(num_dynamic_lines)A") # Mueve el cursor al inicio del bloque dinámico
+            for _ in 1:num_dynamic_lines
+                print("\033[K\n") # Borra la línea y mueve a la siguiente
+            end
+            # Borrar la línea de "Presiona Ctrl+C para salir."
+            print("\033[K\n")
             print("\033[H") # Mueve el cursor a la posición Home (arriba a la izquierda)
-            # Imprime el mensaje de salida al final
-            println("\n\n\n\n\n\n\nPrograma terminado.                                            ") # Espacios para borrar cualquier cosa
+            println("------------------------------------")
+            println("  Convertidor de Reloj D'ni (Terminal)   ")
+            println("------------------------------------")
+            println("\nPrograma terminado limpiamente.                   ") # Mensaje final con espacios para limpiar
+            flush(stdout)
         else
             rethrow(e) # Volver a lanzar otras excepciones
         end
