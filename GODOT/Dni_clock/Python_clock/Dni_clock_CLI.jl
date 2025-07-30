@@ -1,6 +1,6 @@
 import Pkg; # No necesitas Pkg.add("Tk") si ya no lo usas.
 
-# Dni_clock.jl
+# Dni_clock_CLI.jl
 #
 # Copyright 2025 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
@@ -337,7 +337,7 @@ function main_julia()
             print("\033[10;1H") # Mueve el cursor a la fila 10, columna 1
             print("\033[K") # Borra la línea actual (donde iría la primera línea D'ni)
             println(dni_output_line1)
-            print("\033[11;1H") # Mueve el cursor a la fila 11, columna 1            
+            print("\033[11;1H") # Mueve el cursor a la fila 11, columna 1
             print("\033[K") # Borra la línea actual (donde iría la segunda línea D'ni)
             println(dni_output_line2)
 
