@@ -1,4 +1,4 @@
-using Terminals # Necesitarás este módulo para has_buffered_input
+using Terminals # Necesitarás este módulo para has_buffered_input, pero no se si existe en la libreria de Julia.
 
 """
     non_blocking_getc()

@@ -208,7 +208,7 @@ def main():
     # If removed, kALDo will create a new figure which you cannot style with set_plot_style easily.
     # So, the best solution is to update kALDo.
     try:
-        fig_dispersion, ax_dispersion = plt.subplots(figsize=(8, 6))
+        fig_dispersion, ax_dispersion = plt.subplots(figsize=(16, 12))
         plotter.plot_dispersion(phonons, with_velocity=True, is_showing=False,
                                 manually_defined_path=band_path, fig=fig_dispersion, ax=ax_dispersion)
         ax_dispersion.set_title('Phonon Dispersion Relation')
@@ -229,7 +229,7 @@ def main():
 
     # Plot DOS
     try:
-        fig_dos, ax_dos = plt.subplots(figsize=(8, 6))
+        fig_dos, ax_dos = plt.subplots(figsize=(16, 12))
         plotter.plot_dos(phonons, p_atoms=None, bandwidth=2, n_points=200, filename='dos',
                          is_showing=False, fig=fig_dos, ax=ax_dos)
         ax_dos.set_title('Phonon Density of States (DOS)')
