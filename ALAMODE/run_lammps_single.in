@@ -1,0 +1,26 @@
+# run_lammps_single.in - Template para calcular fuerzas en una configuración desplazada
+units metal
+atom_style atomic
+boundary p p p
+
+# --- Leer la estructura desplazada (se pasará como variable en el script de bash) ---
+read_data ${structure_file}
+
+# --- Definir el potencial ---
+# Asegúrate de que el archivo del potencial (ej., Si.sw para Stillinger-Weber) esté accesible
+pair_style sw
+pair_coeff * * Si.sw Si # Asegúrate de tener este archivo de potencial
+
+# --- Configurar el cálculo de fuerzas estático ---
+# Un solo paso para evaluar las fuerzas en la configuración actual
+# El 'minimize' es solo para asegurar que las fuerzas se calculen internamente
+# También puedes usar 'run 0' después de la definición de fuerzas si no quieres minimización.
+minimize 1.0e-10 1.0e-10 1000 100000 # Minimiza con tolerancia muy pequeña, esencialmente un paso estático
+run 0 # Asegura que las fuerzas se calculan y están listas para ser volcadas
+
+# --- Volcar las fuerzas y posiciones ---
+# dump custom: id, tipo de átomo, coordenadas (x,y,z), fuerzas (fx,fy,fz)
+dump 1 all custom 1 ${output_file} id type x y z fx fy fz
+dump_modify 1 append no # No apilar en el mismo archivo si es una única configuración
+
+write_data final_structure.lammps # Opcional: escribir la estructura final si hubo minimización
