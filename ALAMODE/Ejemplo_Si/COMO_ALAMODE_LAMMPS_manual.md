@@ -86,18 +86,28 @@ Crea un archivo llamado `alm_suggest.in` con el siguiente contenido. Asegúrate 
   MODE = suggest              ! Modo para generar patrones de desplazamiento
   NAT = 64                    ! Número total de átomos en la supercelda
   NKD = 1                     ! Número de tipos de átomos
-  KD = Si /&interaction       ! Nombre del tipo de átomo, seguido del delimitador del siguiente bloque
+  KD = Si
+  /
 
-  NORDER = 2  # 1: armónico, 2: cúbico /&cell ! Orden máximo de las FC a considerar
+  &interaction       ! Nombre del tipo de átomo, seguido del delimitador del siguiente bloque
+
+  NORDER = 2  # 1: armónico, 2: cúbico  ! Orden máximo de las FC a considerar
+  /
+  &cell
 !--------------------------------------------------------------------------------------------------
 20.5212                     ! Factor de escala de la red en Bohr (Constante de red de la supercelda 2x2x2)
 1.0 0.0 0.0                 ! Vectores de la red normalizados
 0.0 1.0 0.0
-0.0 0.0 1.0 /&cutoff
+0.0 0.0 1.0
+/
+
+&cutoff
 !--------------------------------------------------------------------------------------------------
-Si-Si 5.0                   ! Distancia de corte para interacciones armónicas (FC2) en Angstroms
-Si-Si-Si 3.0                ! Distancia de corte para interacciones cúbicas (FC3) en Angstroms
-/&position
+Si-Si 5.0 3.0                  ! Distancia de corte para interacciones armónicas (FC2) en Angstroms y Distancia de corte para interacciones cúbicas (FC3) en Angstroms
+# *-* 5.0 3.0                ! También se pueden poner asteriscos
+/
+
+&position
 !--------------------------------------------------------------------------------------------------
 ! ATENCIÓN: PEGA AQUÍ LAS 64 LÍNEAS DE POSICIONES ATÓMICAS DE TU ARCHIVO SPOSCAR.
 ! El formato es: [ÍNDICE_TIPO_ÁTOMO] [COORD_X] [COORD_Y] [COORD_Z]
@@ -251,18 +261,29 @@ Crea un archivo llamado `alm_optimize.in`. **Copia exactamente el mismo contenid
   MODE = optimize             ! Modo para optimizar las constantes de fuerza
   NAT = 64                    ! Número total de átomos en la supercelda
   NKD = 1
-  KD = Si /&interaction
+  KD = Si
+  /
 
-  NORDER = 2 /&cell           ! Orden de las FC a optimizar
+  &interaction
+
+  NORDER = 2
+  /
+
+  &cell           ! Orden de las FC a optimizar
 !--------------------------------------------------------------------------------------------------
 20.5212                     ! Factor de escala de la red en Bohr (COPIAR del alm_suggest.in)
 1.0 0.0 0.0                 ! Vectores de la red normalizados (COPIAR del alm_suggest.in)
 0.0 1.0 0.0
-0.0 0.0 1.0 /&cutoff
+0.0 0.0 1.0
+/
+
+&cutoff
 !--------------------------------------------------------------------------------------------------
-Si-Si 5.0                   ! Distancia de corte para FC2 (COPIAR del alm_suggest.in)
-Si-Si-Si 3.0                ! Distancia de corte para FC3 (COPIAR del alm_suggest.in)
-/&position
+Si-Si 5.0 3.0                  ! Distancia de corte para FC2 (COPIAR del alm_suggest.in)
+# *-* 5.0 3.0                ! Distancia de corte para FC3 (COPIAR del alm_suggest.in)
+/
+
+&position
 !--------------------------------------------------------------------------------------------------
 ! ATENCIÓN: PEGA AQUÍ LAS 64 LÍNEAS DE POSICIONES ATÓMICAS DE TU ARCHIVO SPOSCAR.
 ! DEBEN SER IDÉNTICAS A LAS DE alm_suggest.in
@@ -307,18 +328,29 @@ Crea un archivo llamado `anphon.in`. **Copia de nuevo el mismo contenido de `&ce
   MODE = phonon               ! Modo para calcular propiedades fonónicas
   NAT = 64                    ! Número total de átomos en la supercelda
   NKD = 1
-  KD = Si /&interaction
+  KD = Si
+  /
 
-  NORDER = 2 /&cell           ! Orden de las FC utilizadas (armónicas y cúbicas)
+  &interaction
+
+  NORDER = 2
+  /
+
+  &cell           ! Orden de las FC utilizadas (armónicas y cúbicas)
 !--------------------------------------------------------------------------------------------------
 20.5212                     ! Factor de escala de la red en Bohr (COPIAR del alm_suggest.in)
 1.0 0.0 0.0                 ! Vectores de la red normalizados (COPIAR del alm_suggest.in)
 0.0 1.0 0.0
-0.0 0.0 1.0 /&cutoff
+0.0 0.0 1.0
+/
+
+&cutoff
 !--------------------------------------------------------------------------------------------------
-Si-Si 5.0                   ! Cutoff used when FCs were generated (COPIAR del alm_suggest.in)
-Si-Si-Si 3.0                ! Cutoff used when FCs were generated (COPIAR del alm_suggest.in)
-/&position
+Si-Si 5.0 3.0                  ! Cutoff used when FCs were generated (COPIAR del alm_suggest.in)
+# *-* 5.0 3.0                ! Cutoff used when FCs were generated (COPIAR del alm_suggest.in)
+/
+
+&position
 !--------------------------------------------------------------------------------------------------
 ! ATENCIÓN: PEGA AQUÍ LAS 64 LÍNEAS DE POSICIONES ATÓMICAS DE TU ARCHIVO SPOSCAR.
 ! DEBEN SER IDÉNTICAS A LAS DE alm_suggest.in
