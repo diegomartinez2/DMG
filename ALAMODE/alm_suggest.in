@@ -1,0 +1,11 @@
+! alm_suggest.in
+&general
+  MODE = suggest           ! Le decimos a ALM que genere patrones de desplazamiento
+  NORDER = 2               ! Orden de anarmonicidad a considerar (armónico y cúbico)
+  PREFIX = Si_patterns     ! Prefijo para los archivos de salida (ej., Si_patterns.HARMONIC_pattern)
+  STRUC_FILE = si.xyz      ! Nuestro archivo de estructura inicial
+/
+&interaction
+  CUTOFF_FC2 = 5.0         ! Radio de corte para interacciones armónicas (en Angstrom)
+  CUTOFF_FC3 = 3.0         ! Radio de corte para interacciones cúbicas (en Angstrom)
+/
