@@ -1,0 +1,56 @@
+! anphon.in for ALAMODE (ANPHON module) - Si example using LAMMPS-derived force constants
+
+&general
+  MODE = phonon
+  PREFIX = Si_LAMMPS_Phonons
+  STRUC_FILE = si.xyz
+  NORDER = 2
+  FC_FILE = Si_LAMMPS.FC2.fcs
+  FC_FILE = Si_LAMMPS.FC3.fcs
+  NONANALYTIC = 1
+  FCSYM_MODE = 1
+  EIGENDEV = 1.0e-5
+  DOS_BIN_WIDTH = 0.05
+  SYMMETRY_TOL = 1.0e-5
+  TEMP_MIN = 0.0
+  TEMP_MAX = 300.0
+  TEMP_INTERVAL = 25.0
+/
+
+&cell
+  SUPERCELL = 4 4 4
+  TEMP_MESHFREQ = 1.0
+/
+
+&cutoff
+  CUTOFF_PHONON = 10.0
+/
+
+&phonon
+  ! Ya no se usa BAND_POINTS si los puntos se especifican directamente con su número de pasos.
+  ISMEAR = 0
+  SMEAR = 0.005
+/
+
+&kpoint
+  KPOINT_MODE = BAND     ! Indicamos explícitamente que es modo de línea/banda.
+  ! KPOINT_MESH = 16 16 16 ! Mantener si también quieres calcular DOS/Conductividad en una malla.
+                         ! Si solo quieres bandas y no una malla, puedes omitirla.
+                         ! Pero normalmente quieres ambas cosas.
+
+  ! Definición de los segmentos de la ruta de k-points directamente aquí:
+  G 0.0 0.0 0.0 X 0.5 0.5 0.0 51   ! Gamma a X
+  X 0.5 0.5 0.0 W 0.5 0.25 0.0 51  ! X a W (W es otro punto de alta simetría en FCC)
+  W 0.5 0.25 0.0 L 0.5 0.5 0.5 51  ! W a L
+  L 0.5 0.5 0.5 K 0.375 0.750 0.375 51 ! L a K
+  K 0.375 0.750 0.375 GAMMA 0.0 0.0 0.0 51 ! K a Gamma
+/
+
+&dos
+  DOS_CALC = 1
+/
+
+&thermal
+  THERMAL_COND = 1
+  NKS_THERMAL = 1000 ! (Ver comentarios anteriores sobre la densidad de la malla para precisión)
+/
