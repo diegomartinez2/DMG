@@ -70,7 +70,7 @@ def build_alm_input_file(sposcar_filepath: str, alm_header: str, alm_output_file
 
 # --- Define el encabezado fijo para alm_suggest.in ---
 # Este es el contenido de tu template hasta justo antes del bloque '&position'
-ALM_SUGGEST_HEADER = """! alm_suggest.in (Formato adaptado a tu manual)
+ALM_SUGGEST_HEADER = """# ! alm_suggest.in (Formato adaptado a tu manual)
 &general
   PREFIX = Si_displacements_patterns
   MODE = suggest
@@ -82,15 +82,18 @@ ALM_SUGGEST_HEADER = """! alm_suggest.in (Formato adaptado a tu manual)
   &interaction
 
   NORDER = 2  # 1: armónico, 2: cúbico /&cell ! Orden máximo de las FC a considerar
-!--------------------------------------------------------------------------------------------------
+# !--------------------------------------------------------------------------------------------------
 20.5212                    # ! Factor de escala de la red en Bohr (Constante de red de la supercelda 2x2x2)
 1.0 0.0 0.0                # ! Vectores de la red normalizados
 0.0 1.0 0.0
-0.0 0.0 1.0 /&cutoff
-!--------------------------------------------------------------------------------------------------
-Si-Si 5.0                  # ! Distancia de corte para interacciones armónicas (FC2) en Angstroms
-Si-Si-Si 3.0               # ! Distancia de corte para interacciones cúbicas (FC3) en Angstroms
-/&position
+0.0 0.0 1.0
+/
+&cutoff
+# !--------------------------------------------------------------------------------------------------
+Si-Si 5.0 3.0                 # ! Distancia de corte para interacciones armónicas (FC2) en Angstroms
+#Si-Si-Si 3.0               # ! Distancia de corte para interacciones cúbicas (FC3) en Angstroms el formato no es así
+/
+&position
 """
 
 # --- Ejecuta la función para construir alm_suggest.in ---
@@ -104,23 +107,28 @@ build_alm_input_file(
 
 # --- Ejemplos para alm_optimize.in y anphon.in (tendrías que adaptar sus headers) ---
 
-# ALM_OPTIMIZE_HEADER = """! alm_optimize.in
+# ALM_OPTIMIZE_HEADER = """# ! alm_optimize.in
 # &general
 #   PREFIX = Si_optimize
 #   MODE = optimize
 #   NAT = 64
 #   NKD = 1
-#   KD = Si /&interaction
-#   NORDER = 2 /&cell
-# !--------------------------------------------------------------------------------------------------
+#   KD = Si
+# /
+# &interaction
+#   NORDER = 2
+# /
+# &cell
+# # !--------------------------------------------------------------------------------------------------
 # 20.5212
 # 1.0 0.0 0.0
 # 0.0 1.0 0.0
 # 0.0 0.0 1.0 /&cutoff
-# !--------------------------------------------------------------------------------------------------
-# Si-Si 5.0
-# Si-Si-Si 3.0
-# /&position
+# # !--------------------------------------------------------------------------------------------------
+# Si-Si 5.0 3.0
+# #Si-Si-Si 3.0
+# /
+# &position
 # """
 # build_alm_input_file(
 #     sposcar_filepath="SPOSCAR",
@@ -135,16 +143,21 @@ build_alm_input_file(
 #   NAT = 64
 #   NKD = 1
 #   KD = Si /&interaction
-#   NORDER = 2 /&cell
-# !--------------------------------------------------------------------------------------------------
+#   NORDER = 2
+# /
+# &cell
+# # !--------------------------------------------------------------------------------------------------
 # 20.5212
 # 1.0 0.0 0.0
 # 0.0 1.0 0.0
-# 0.0 0.0 1.0 /&cutoff
-# !--------------------------------------------------------------------------------------------------
-# Si-Si 5.0
-# Si-Si-Si 3.0
-# /&position
+# 0.0 0.0 1.0
+# /
+# &cutoff
+# # !--------------------------------------------------------------------------------------------------
+# Si-Si 5.0 3.0
+# #Si-Si-Si 3.0
+# /
+# &position
 # """
 # build_alm_input_file(
 #     sposcar_filepath="SPOSCAR",
