@@ -1,0 +1,33 @@
+! alm_optimize.in (el mismo que te di antes, pero el DFSET_FILE es generado por LAMMPS)
+&general
+  MODE = optimize        ! Modo de operación: 'optimize' para ajustar las constantes de fuerza.
+  PREFIX = Si_LAMMPS     ! Prefijo para los archivos de salida (ej. Si_LAMMPS.FC2.fcs).
+  NORDER = 2             ! Orden máximo de anarmonicidad.
+  STRUC_FILE = si.xyz    ! Archivo de estructura cristalina (base).
+  DFSET_FILE = si_displacements.xyz ! ¡Este es el archivo generado con LAMMPS!
+  ATOM_ORIGIN = 1
+  INIT_FC_FILE = unset
+  LEN_UNIT = AU
+  OUTPUT_FC_UNIT = THz_cm
+  FORMAT = VASP          ! Aunque las fuerzas vienen de LAMMPS, el formato es XYZ con 7 columnas como VASP
+/
+
+&interaction
+  CUTOFF_FC2 = 5.0
+  CUTOFF_FC3 = 3.0
+  CUTOFF_FC4 = 2.0
+/
+
+&optimize
+  METHOD = ALM
+  MAXITER = 100
+  CONV_THR = 1.0e-8
+  LAMBDA = 1.0e-3
+  PRINT_LOG = 1
+  PRINT_MATRIX = 0
+/
+
+&fitting
+  FC_FILE = Si_LAMMPS.FC2.fcs
+  FC_FILE = Si_LAMMPS.FC3.fcs
+/
