@@ -1,0 +1,64 @@
+! anphon.in for ALAMODE (ANPHON module) - Si example using LAMMPS-derived force constants
+
+&general
+  MODE = phonon          ! Modo de operación principal: 'phonon' para calcular propiedades fonónicas.
+  PREFIX = Si_LAMMPS_Phonons ! Prefijo para todos los archivos de salida de ANPHON.
+                         ! (ej: Si_LAMMPS_Phonons.band, Si_LAMMPS_Phonons.dos)
+  STRUC_FILE = si.xyz    ! Archivo de estructura cristalina original.
+  NORDER = 2             ! Orden máximo de anarmonicidad de las constantes de fuerza utilizadas.
+                         ! Debe coincidir con el NORDER usado en alm_optimize.in (2 para FC2 y FC3).
+
+  FC_FILE = Si_LAMMPS.FC2.fcs ! Archivo de constantes de fuerza armónicas (FC2) generado por ALM.
+  FC_FILE = Si_LAMMPS.FC3.fcs ! Archivo de constantes de fuerza cúbicas (FC3) generado por ALM.
+  ! Si hubieras calculado FC4, añadirías: FC_FILE = Si_LAMMPS.FC4.fcs
+
+  NONANALYTIC = 1        ! Habilita la corrección no analítica para el acoplamiento fonón-fonón.
+                         ! Es crucial para aislantes/semiconductores como el Si para el modo óptico en Gamma.
+  FCSYM_MODE = 1         ! Modo de simetrización de las constantes de fuerza (1 es el por defecto y suele ser bueno).
+  EIGENDEV = 1.0e-5      ! Tolerancia para la diagonalización de la matriz dinámica.
+  DOS_BIN_WIDTH = 0.05   ! Ancho de la celda (bin) para calcular la Densidad de Estados (DOS) en THz.
+  SYMMETRY_TOL = 1.0e-5  ! Tolerancia para la detección de simetrías.
+  TEMP_MIN = 0.0         ! Temperatura mínima para los cálculos de conductividad térmica (en Kelvin).
+  TEMP_MAX = 300.0       ! Temperatura máxima (en Kelvin).
+  TEMP_INTERVAL = 25.0   ! Intervalo de temperatura (en Kelvin).
+/
+
+&cell
+  SUPERCELL = 4 4 4      ! Define la supercelda para el cálculo de fonones.
+                         ! Debe ser lo suficientemente grande para los radios de corte de las FC.
+                         ! 4x4x4 significa 4 celdas unitarias en x, y, z.
+  TEMP_MESHFREQ = 1.0    ! Frecuencia de la malla de k para el cálculo de la conductividad térmica (en THz).
+/
+
+&cutoff
+  CUTOFF_PHONON = 10.0   ! Radio de corte para interacciones fonónicas (normalmente un poco mayor que FC_CUTOFF).
+/
+
+&phonon
+  BAND_POINTS = 50       ! Número de puntos en cada segmento de la ruta de k para las bandas de fonones.
+  ISMEAR = 0             ! Método de ensanchamiento para la integración en la Zona de Brillouin (0 = Gaussiano).
+  SMEAR = 0.005          ! Parámetro de ensanchamiento para el método ISMEAR (en Ry).
+/
+
+&kpoint
+  KPOINT_MODE = BAND     ! Modo de puntos k: 'BAND' para calcular a lo largo de una ruta específica.
+  KPOINT_MESH = 16 16 16 ! Malla de k para los cálculos de propiedades de bulto (ej., DOS, conductividad térmica).
+                         ! Un 16x16x16 es una buena densidad para Si.
+  KPATH_FILE = kpath.dat ! Archivo que define la ruta en el espacio k para las curvas de dispersión.
+/
+
+&dos
+  DOS_CALC = 1           ! Habilita el cálculo de la Densidad de Estados (DOS).
+/
+
+&thermal
+  THERMAL_COND = 1       ! Habilita el cálculo de la conductividad térmica.
+  NKS_THERMAL = 1000     ! Número de puntos k aleatorios para el cálculo de la conductividad térmica.
+  ! ESTO ES CRÍTICO: Para resultados precisos, NKS_THERMAL debe ser muy grande (miles a decenas de miles)
+  ! si no se usa una malla densa directamente. La malla de KPOINT_MESH para la conductividad es lo más importante.
+  ! El número de puntos k para la integración en la Zona de Brillouin para la conductividad térmica
+  ! se deriva de KPOINT_MESH. NKS_THERMAL es para una simulación Monte Carlo si se usa.
+  ! Generalmente, KPOINT_MESH define la malla y NKS_THERMAL se usa para otros métodos.
+  ! PARA UNA CONDUCTIVIDAD TÉRMICA CONFIABLE, la malla de KPOINT_MESH debe ser muy densa (ej. 40 40 40 o 60 60 60),
+  ! lo que hace el cálculo muy costoso.
+/
