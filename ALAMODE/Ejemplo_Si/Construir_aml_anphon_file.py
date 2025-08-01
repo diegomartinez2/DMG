@@ -80,7 +80,7 @@ def parse_sposcar_info(sposcar_filepath: str):
         return None, None, None, None, None, None, None, None
 
 # --- Módulo 2: Generación de la sección &general ---
-def generate_general_section_content(total_atoms: int, num_atom_kinds: int, unique_atom_species: list, prefix: str = "displacements", mode: str = "suggest"):
+def generate_general_section_content(total_atoms: int, num_atom_kinds: int, unique_atom_species: list, prefix: str = "run", program_type: str = "alm", program_mode: str = "suggest", fcsxml_file: str = None):
     """
     Genera el contenido de la sección '&general'.
 
@@ -89,7 +89,9 @@ def generate_general_section_content(total_atoms: int, num_atom_kinds: int, uniq
         num_atom_kinds (int): Número de tipos de átomos.
         unique_atom_species (list): Lista de los nombres de los tipos de átomos únicos.
         prefix (str): Prefijo para los archivos de salida.
-        mode (str): El modo de operación de ALAMODE ('suggest' o 'optimize').
+        program_type (str): El programa objetivo ('alm' o 'anphon').
+        program_mode (str): El modo de operación específico del programa (ej. 'suggest', 'optimize' para ALAMODE; 'phonons', 'RTA', 'SCPH' para ANPHON).
+        fcsxml_file (str, optional): Nombre del archivo XML de constantes de fuerza (FCSXML). Necesario para ANPHON.
 
     Returns:
         str: Contenido formateado de la sección '&general'.
@@ -98,7 +100,13 @@ def generate_general_section_content(total_atoms: int, num_atom_kinds: int, uniq
     content = ""
     content += "&general\n"
     content += f" PREFIX = {prefix} # ! Prefijo para los archivos de salida\n"
-    content += f" MODE = {mode} # ! Modo de operación de ALAMODE\n"
+    content += f" MODE = {program_mode} # ! Modo de operación de {program_type.upper()}\n"
+
+    if program_type.lower() == "anphon" and fcsxml_file:
+        content += f" FCSXML = {fcsxml_file} # ! Archivo XML de constantes de fuerza\n"
+    elif program_type.lower() == "anphon" and not fcsxml_file:
+        content += "# ! ADVERTENCIA: FCSXML es esencial para ANPHON. Asegúrate de que existe o añádelo manualmente.\n"
+
     content += f" NAT = {total_atoms} # ! Número total de átomos en la supercelda\n"
     content += f" NKD = {num_atom_kinds} # ! Número de tipos de átomos\n"
     content += f" KD = {unique_atom_species_str} # ! Nombres de los tipos de átomos\n"
@@ -134,11 +142,11 @@ def generate_cell_section_content(supercell_lattice_matrix_angstrom: np.ndarray)
     Returns:
         str: Contenido formateado de la sección '&cell'.
     """
-    # Calcular el factor de escala de ALAMODE en Bohr
+    # Calcular el factor de escala de ALAMODE/ANPHON en Bohr
     alamode_scale_factor_angstrom = np.linalg.norm(supercell_lattice_matrix_angstrom[0])
     alamode_scale_factor_bohr = alamode_scale_factor_angstrom * ANGSTROM_TO_BOHR
 
-    # Calcular los vectores de la red normalizados para ALAMODE
+    # Calcular los vectores de la red normalizados para ALAMODE/ANPHON
     normalized_lattice_vectors = supercell_lattice_matrix_angstrom / alamode_scale_factor_bohr
 
     content = ""
@@ -248,18 +256,70 @@ def generate_optimize_section_content(optimize_type: str = "harmonic", fc2xml_fi
     content += "/\n"
     return content
 
-# --- Función principal para generar el archivo alm_suggest.in ---
-def generate_alm_suggest_in(sposcar_filepath: str, output_filename: str = "alm_suggest.in", prefix: str = "displacements", alm_mode: str = "suggest", optimize_type: str = "harmonic", fc2xml_file: str = None):
+# --- Módulo 8: Generación de la sección &kpoint ---
+def generate_kpoint_section_content(kpmode: int = 2, kpoint_params: list = None):
     """
-    Genera el archivo 'alm_suggest.in' directamente a partir de un archivo SPOSCAR.
+    Genera el contenido de la sección '&kpoint' para ANPHON.
+
+    Args:
+        kpmode (int): Modo de puntos k (1: line mode, 2: uniform mesh mode). Por defecto: 2.
+        kpoint_params (list): Parámetros específicos del modo.
+                              Si kpmode = 1: Lista de strings de líneas de banda (ej. ["G 0.0 0.0 0.0 X 0.5 0.5 0.0 51"]).
+                              Si kpmode = 2: Lista de 3 enteros [nx, ny, nz] para la malla uniforme.
+                              Por defecto: None, que resultará en [20, 20, 20] para kpmode 2.
+
+    Returns:
+        str: Contenido formateado de la sección '&kpoint'.
+    """
+    content = ""
+    content += "&kpoint\n"
+    content += f" {kpmode} # KPMODE = {kpmode}: {'line mode' if kpmode == 1 else 'uniform mesh mode'}\n"
+
+    if kpmode == 1: # Line mode
+        if not kpoint_params:
+            # Ejemplo por defecto si no se dan parámetros para modo línea (ejemplo del manual para Si)
+            content += " G 0.0 0.0 0.0 X 0.5 0.5 0.0 51\n"
+            content += " X 0.5 0.5 1.0 G 0.0 0.0 0.0 51\n"
+            content += " G 0.0 0.0 0.0 L 0.5 0.5 0.5 51\n"
+            content += "# ! ADVERTENCIA: Se usaron líneas de banda por defecto. Modificar según necesidad.\n"
+        else:
+            for line_def in kpoint_params:
+                content += f" {line_def}\n"
+    elif kpmode == 2: # Uniform mesh mode
+        if not kpoint_params or len(kpoint_params) != 3:
+            default_mesh = [20, 20, 20]
+            content += f" {default_mesh[0]} {default_mesh[1]} {default_mesh[2]}\n"
+            content += "# ! ADVERTENCIA: Se usó una malla uniforme por defecto (20 20 20). Modificar según necesidad.\n"
+        else:
+            content += f" {kpoint_params[0]} {kpoint_params[1]} {kpoint_params[2]}\n"
+    else:
+        print(f"Advertencia: KPMODE = {kpmode} no es un modo válido. Usando 2 (uniform mesh) con valores por defecto.")
+        content += f" 2 # KPMODE = 2: uniform mesh mode\n"
+        content += f" 20 20 20\n"
+        content += "# ! ADVERTENCIA: Se usó una malla uniforme por defecto (20 20 20) debido a KPMODE inválido.\n"
+
+    content += "/\n"
+    return content
+
+
+# --- Función principal para generar el archivo alm_*.in / anphon_*.in ---
+def generate_input_file(sposcar_filepath: str, output_filename: str, prefix: str = "run", program_type: str = "alm", program_mode: str = "suggest", optimize_type: str = "harmonic", fc2xml_file: str = None, fcsxml_file: str = None, kpmode: int = 2, kpoint_params: list = None):
+    """
+    Genera el archivo de entrada para ALAMODE o ANPHON directamente a partir de un archivo SPOSCAR.
 
     Args:
         sposcar_filepath (str): Ruta al archivo SPOSCAR de la supercelda.
-        output_filename (str): Nombre del archivo de salida a generar.
-        prefix (str): Prefijo para los archivos de salida de ALAMODE.
-        alm_mode (str): Modo de operación de ALAMODE ('suggest' o 'optimize').
-        optimize_type (str): Tipo de optimización para el modo 'optimize' ('harmonic' o 'cubic').
-        fc2xml_file (str, optional): Nombre del archivo XML de IFCs de segundo orden si optimize_type es 'cubic'.
+        output_filename (str): Nombre del archivo de salida a generar (ej. alm_suggest.in, anphon_phonons.in).
+        prefix (str): Prefijo para los archivos de salida de ALAMODE/ANPHON.
+        program_type (str): El programa objetivo ('alm' o 'anphon').
+        program_mode (str): Modo de operación específico del programa.
+                            Para ALAMODE: 'suggest' o 'optimize'.
+                            Para ANPHON: 'phonons', 'RTA', 'SCPH'.
+        optimize_type (str): Tipo de optimización para ALAMODE 'optimize' ('harmonic' o 'cubic').
+        fc2xml_file (str, optional): Nombre del archivo XML de IFCs de segundo orden para ALAMODE 'optimize' con cubic.
+        fcsxml_file (str, optional): Nombre del archivo XML de constantes de fuerza (FCSXML) para ANPHON.
+        kpmode (int): Modo de puntos k para ANPHON (1: line mode, 2: uniform mesh mode).
+        kpoint_params (list): Parámetros específicos de puntos k para ANPHON.
     """
     # Parsear toda la información relevante del SPOSCAR
     total_atoms, num_atom_kinds, unique_atom_species, supercell_lattice_matrix_angstrom, \
@@ -269,87 +329,173 @@ def generate_alm_suggest_in(sposcar_filepath: str, output_filename: str = "alm_s
     if total_atoms is None:
         return # Salir si hubo un error al parsear
 
-    # Generar contenido de las secciones
-    # El modo 'general' ahora acepta el modo de ALAMODE como argumento
-    general_section = generate_general_section_content(total_atoms, num_atom_kinds, unique_atom_species, prefix, alm_mode)
-    interaction_section = generate_interaction_section_content()
+    # --- Generar contenido de las secciones comunes ---
+    general_section = generate_general_section_content(total_atoms, num_atom_kinds, unique_atom_species, prefix, program_type, program_mode, fcsxml_file if program_type == "anphon" else None)
     cell_section = generate_cell_section_content(supercell_lattice_matrix_angstrom)
-    cutoff_section = generate_cutoff_section_content()
     position_section = generate_position_section_content(atomic_coords_raw, unique_atom_species,
                                                          all_species_raw, all_counts_raw,
                                                          coords_type_line)
 
-    # La sección optimize solo se incluye si el modo es 'optimize'
+    # --- Generar contenido de secciones específicas por programa ---
+    interaction_section = ""
+    cutoff_section = ""
     optimize_section = ""
-    if alm_mode.lower() == "optimize":
-        optimize_section = generate_optimize_section_content(optimize_type, fc2xml_file)
+    kpoint_section = ""
 
+    if program_type.lower() == "alm":
+        interaction_section = generate_interaction_section_content()
+        cutoff_section = generate_cutoff_section_content()
+        if program_mode.lower() == "optimize": # Ahora program_mode viene de la elección del usuario
+            optimize_section = generate_optimize_section_content(optimize_type, fc2xml_file)
+    elif program_type.lower() == "anphon":
+        kpoint_section = generate_kpoint_section_content(kpmode, kpoint_params)
+        # ANPHON también puede necesitar &interaction y &cutoff si usamos anarmonicidades (DFSET_cubic/quartic)
+        # Por ahora, solo añadimos kpoint y FCSXML en general.
+        pass
 
     # Escribir el archivo
     try:
         with open(output_filename, 'w') as out_f:
             out_f.write(general_section)
             out_f.write("\n")
-            out_f.write(interaction_section)
-            out_f.write("\n")
-            out_f.write(cell_section)
-            out_f.write("\n")
-            out_f.write(cutoff_section)
-            out_f.write("\n")
-            out_f.write(position_section)
+            out_f.write(cell_section) # &cell es común a ambos
             out_f.write("\n")
 
-            # Escribir la sección optimize solo si se generó
-            if optimize_section:
-                out_f.write(optimize_section)
-                out_f.write("\n")
+            # Secciones específicas de ALAMODE
+            if interaction_section: out_f.write(interaction_section + "\n")
+            if cutoff_section: out_f.write(cutoff_section + "\n")
 
-            # Marcador para futuras secciones (species y atom son muy similares a lo que ya tenemos)
-            out_f.write("! --- Aún faltan las secciones &kpoint y &analysis (¡próximamente!) --- \n")
-            out_f.write("! También secciones de anphon como &scph, &qha, &relax, &strain, y &displace , si las necesitas.\n")
+            out_f.write(position_section) # &position es común a ambos
+            out_f.write("\n")
+
+            if optimize_section: out_f.write(optimize_section + "\n")
+
+            # Secciones específicas de ANPHON
+            if kpoint_section: out_f.write(kpoint_section + "\n")
+
+            # Marcador para futuras secciones
+            out_f.write("! --- Aún faltan las secciones &species y &atom (¡próximamente!) --- \n")
+            out_f.write("! Si es ANPHON, también faltan: &scph, &qha, &relax, &strain, &displace.\n")
 
 
-        print(f"\n¡Éxito! Archivo '{output_filename}' generado con las secciones necesarias para el modo '{alm_mode}'.")
-        print("Por favor, revisa el contenido de este archivo antes de usarlo con ALAMODE.")
+        print(f"\n¡Éxito! Archivo '{output_filename}' generado.")
+        print("Por favor, revisa el contenido de este archivo antes de usarlo con ALAMODE/ANPHON.")
 
     except Exception as e:
         print(f"Error al escribir el archivo '{output_filename}': {e}")
 
 # --- Bloque principal de ejecución ---
 if __name__ == "__main__":
-    print("--- Generador Modular de 'alm_suggest.in' con soporte para 'optimize' ---")
+    print("--- Generador Modular de archivos de entrada para ALAMODE/ANPHON ---")
 
     sposcar_input_file = input("Introduce la ruta al archivo SPOSCAR de la supercelda: ")
 
-    # Opciones para el usuario:
-    # 1. Modo de ALAMODE: 'suggest' (por defecto) o 'optimize'
-    # 2. Tipo de optimización (solo si el modo es 'optimize'): 'harmonic' (por defecto) o 'cubic'
-    # 3. Archivo FC2XML (solo si optimize_type es 'cubic')
+    # --- Elección del programa ---
+    program_choice = input("¿Deseas generar el archivo para 'alm' o 'anphon'? (alm/anphon): ").strip().lower()
+    if program_choice not in ["alm", "anphon"]:
+        print("Programa no válido. Se usará 'alm' por defecto.")
+        program_choice = "alm"
 
-    chosen_mode = input("¿Deseas generar el archivo para el modo 'suggest' o 'optimize'? (suggest/optimize): ").strip().lower()
-    if chosen_mode not in ["suggest", "optimize"]:
-        print("Modo no válido. Se usará 'suggest' por defecto.")
-        chosen_mode = "suggest"
-
+    # --- Variables para modos y archivos XML ---
+    alm_mode = "suggest"
     optimize_calculation_type = "harmonic"
-    fc2_xml_file = None
+    fc2_xml_file = None # Para ALAMODE (FC2XML)
 
-    if chosen_mode == "optimize":
-        opt_type_choice = input("¿Tipo de optimización: 'harmonic' o 'cubic'? (harmonic/cubic): ").strip().lower()
-        if opt_type_choice == "cubic":
-            optimize_calculation_type = "cubic"
-            fc2_xml_file = input("Introduce el nombre del archivo FC2XML (ej. si222.xml) o deja en blanco si no lo tienes: ").strip()
-            if not fc2_xml_file:
-                fc2_xml_file = None # Asegurarse de que sea None si está vacío
-        elif opt_type_choice != "harmonic":
-            print("Tipo de optimización no válido. Se usará 'harmonic' por defecto.")
-            optimize_calculation_type = "harmonic"
+    anphon_mode = "phonons" # Por defecto para ANPHON
+    anphon_fcs_xml_file = None # Para ANPHON (FCSXML)
+    anphon_kpmode = 2 # Por defecto: malla uniforme
+    anphon_kpoint_params = None
 
-    # Prefijo por defecto para los archivos de salida de ALAMODE
-    output_prefix = "my_alamode_run"
-    output_file_name = "alm_"+chosen_mode+".in"
+    # --- Configuración detallada según el programa ---
+    if program_choice == "alm":
+        alm_mode_choice = input("¿Modo de ALAMODE? (suggest/optimize): ").strip().lower()
+        if alm_mode_choice in ["suggest", "optimize"]:
+            alm_mode = alm_mode_choice
+        else:
+            print("Modo ALAMODE no válido. Se usará 'suggest' por defecto.")
 
-    generate_alm_suggest_in(sposcar_input_file, output_file_name, prefix=output_prefix,
-                            alm_mode=chosen_mode,
+        if alm_mode == "optimize":
+            opt_type_choice = input("¿Tipo de optimización: 'harmonic' o 'cubic'? (harmonic/cubic): ").strip().lower()
+            if opt_type_choice == "cubic":
+                optimize_calculation_type = "cubic"
+                fc2_xml_file = input("Introduce el nombre del archivo FC2XML (ej. si222.xml) o deja en blanco si no lo tienes: ").strip()
+                if not fc2_xml_file:
+                    fc2_xml_file = None
+            elif opt_type_choice != "harmonic":
+                print("Tipo de optimización no válido. Se usará 'harmonic' por defecto.")
+                optimize_calculation_type = "harmonic"
+
+    elif program_choice == "anphon":
+        anphon_mode_choice = input("¿Modo de ANPHON? (phonons/RTA/SCPH): ").strip().lower()
+        if anphon_mode_choice in ["phonons", "rta", "scph"]:
+            anphon_mode = anphon_mode_choice
+        else:
+            print("Modo ANPHON no válido. Se usará 'phonons' por defecto.")
+            anphon_mode = "phonons" # Asegurar que se use el defecto si la entrada es inválida
+
+        anphon_fcs_xml_file = input("Introduce el nombre del archivo FCSXML (ej. si222.xml) para ANPHON: ").strip()
+        if not anphon_fcs_xml_file:
+            print("¡ADVERTENCIA! FCSXML es crucial para ANPHON. Se dejará vacío por ahora.")
+            anphon_fcs_xml_file = None
+
+        kpmode_choice = input("¿Modo de puntos k para ANPHON? (1: línea de banda, 2: malla uniforme): ").strip()
+        try:
+            anphon_kpmode = int(kpmode_choice)
+            if anphon_kpmode not in [1, 2]:
+                raise ValueError
+        except ValueError:
+            print("KPMODE no válido. Se usará 2 (malla uniforme) por defecto.")
+            anphon_kpmode = 2
+
+        if anphon_kpmode == 1:
+            print("\nIntroduce las líneas de banda (una por línea, ej. 'G 0.0 0.0 0.0 X 0.5 0.5 0.0 51').")
+            print("Deja una línea en blanco y presiona Enter para finalizar la entrada.")
+            lines = []
+            while True:
+                line = input(f"Línea de banda {len(lines)+1}: ").strip()
+                if not line:
+                    break
+                lines.append(line)
+            anphon_kpoint_params = lines if lines else None
+            if not anphon_kpoint_params:
+                print("No se introdujeron líneas de banda. Se usarán valores por defecto para KPMODE 1.")
+        elif anphon_kpmode == 2:
+            mesh_input = input("Introduce los tres enteros para la malla uniforme (ej. '20 20 20') o deja en blanco para 20 20 20: ").strip().split()
+            if len(mesh_input) == 3:
+                try:
+                    anphon_kpoint_params = [int(n) for n in mesh_input]
+                except ValueError:
+                    print("Entrada de malla no válida. Se usará 20 20 20 por defecto.")
+                    anphon_kpoint_params = None
+            else:
+                print("Entrada de malla no válida. Se usará 20 20 20 por defecto.")
+                anphon_kpoint_params = None
+
+    # --- Determinación del nombre de archivo de salida y prefijo ---
+    output_prefix = "my_run" # Prefijo genérico, se puede personalizar
+
+    if program_choice == "alm":
+        output_file_name = f"alm_{alm_mode}.in"
+        # Para ALAMODE, program_mode es alm_mode
+        final_program_mode = alm_mode
+    elif program_choice == "anphon":
+        output_file_name = f"anphon_{anphon_mode}.in"
+        # Para ANPHON, program_mode es anphon_mode
+        final_program_mode = anphon_mode
+    else:
+        output_file_name = "unknown_program.in"
+        final_program_mode = "default" # Fallback
+        print("Error interno: Tipo de programa desconocido.")
+
+
+    # --- Llamada a la función principal ---
+    generate_input_file(sposcar_input_file,
+                            output_file_name,
+                            prefix=output_prefix,
+                            program_type=program_choice,
+                            program_mode=final_program_mode, # Pasamos el modo específico del programa
                             optimize_type=optimize_calculation_type,
-                            fc2xml_file=fc2_xml_file)
+                            fc2xml_file=fc2_xml_file,
+                            fcsxml_file=anphon_fcs_xml_file, # FCSXML para ANPHON
+                            kpmode=anphon_kpmode,
+                            kpoint_params=anphon_kpoint_params)
