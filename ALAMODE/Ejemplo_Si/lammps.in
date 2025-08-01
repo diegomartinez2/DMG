@@ -2,19 +2,10 @@ units           metal
 atom_style      atomic
 boundary        p p p
 
-read_data       Si222.lammps
+read_data       harm1.lammps
 
-pair_style tersoff
-pair_coeff * * Si.tersoff Si
-
-thermo_style    custom step cella cellb cellc cellalpha cellbeta cellgamma etotal
-variable        natoms equal count(all)
-fix            RELAX all box/relax tri 0.0 vmax 0.0001 fixedpoint 0 0 0
-minimize       1.0e-50 1.0e-50 10000000 10000000
-unfix          RELAX
-write_data relax.dat
-
-
+pair_style      tersoff
+pair_coeff 	* * si.tersoff Si
 
 dump            1 all custom 1 XFSET id xu yu zu fx fy fz
 dump_modify     1 format float "%20.15f"
