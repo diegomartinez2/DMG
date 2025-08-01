@@ -83,8 +83,11 @@ ALM_SUGGEST_HEADER = """# ! alm_suggest.in (Formato adaptado a tu manual)
 
   NORDER = 2  # 1: armónico, 2: cúbico /&cell ! Orden máximo de las FC a considerar
 # !--------------------------------------------------------------------------------------------------
-20.5212                    # ! Factor de escala de la red en Bohr (Constante de red de la supercelda 2x2x2)
-1.0 0.0 0.0                # ! Vectores de la red normalizados
+20.5212                    # ! Factor de escala de la red en Bohr (Constante de red de la supercelda 2x2x2) se calcula: La constante de red de la celda convencional de Si es 5.43 Å. Para una supercelda 2x2x2, la constante de red de la supercelda será 2x5.43=10.86 Å.
+# Tu ALAMODE requiere este valor en Bohr.
+# Factor de conversión: 1Bohr approx 0.529177Å.
+# Constante de red de la supercelda en Bohr: 10.86Å/0.529177Å/Bohr approx 20.5212Bohr. (para CuBHT seria 32.7441)
+1.0 0.0 0.0                # ! Vectores de la red normalizados (para CuBHT seria [[0.52885 -0.000075 -0.00597],[-0.26447 0.45914 0.02214],[0.00122 0.06488 0.19734]])
 0.0 1.0 0.0
 0.0 0.0 1.0
 /
