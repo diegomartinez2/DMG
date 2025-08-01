@@ -1,0 +1,26 @@
+&general
+  PREFIX = si222
+  MODE   = RTA
+  FCSXML = Si222_anharmonic.xml
+
+  NKD = 1; KD = Si
+  MASS = 28.0855
+
+  EMIN = 0; EMAX = 550; DELTA_E = 1.0 # <-- frequency range
+/
+
+&cell
+  10.203
+  0.0 0.5 0.5
+  0.5 0.0 0.5
+  0.5 0.5 0.0
+/
+
+&kpoint
+  2  # KPMODE = 2: uniform mesh mode
+  10 10 10
+/
+
+&analysis
+ KAPPA_SPEC = 1 # compute spectrum of kappa
+/
