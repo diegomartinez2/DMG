@@ -305,8 +305,8 @@ def generate_alm_suggest_in(sposcar_filepath: str, output_filename: str = "alm_s
                 out_f.write("\n")
 
             # Marcador para futuras secciones (species y atom son muy similares a lo que ya tenemos)
-            out_f.write("! --- Aún faltan las secciones &species y &atom (¡próximamente!) --- \n")
-            out_f.write("! También secciones opcionales como &fitting, &phonon, etc., si las necesitas.\n")
+            out_f.write("! --- Aún faltan las secciones &kpoint y &analysis (¡próximamente!) --- \n")
+            out_f.write("! También secciones de anphon como &scph, &qha, &relax, &strain, y &displace , si las necesitas.\n")
 
 
         print(f"\n¡Éxito! Archivo '{output_filename}' generado con las secciones necesarias para el modo '{alm_mode}'.")
