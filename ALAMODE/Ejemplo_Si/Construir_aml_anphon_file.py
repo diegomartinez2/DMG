@@ -5,6 +5,32 @@ import os
 # 1 Angstrom = 1.8897259886 Bohr
 ANGSTROM_TO_BOHR = 1.8897259886
 
+# Diccionario de masas atómicas (ejemplos, expandir según sea necesario)
+# Fuente: Pesos atómicos estándar de la IUPAC (aproximados para la mayoría de los casos)
+ATOMIC_MASSES = {
+    "H": 1.008, "He": 4.0026, "Li": 6.94, "Be": 9.0122, "B": 10.81, "C": 12.011,
+    "N": 14.007, "O": 15.999, "F": 18.998, "Ne": 20.180, "Na": 22.990, "Mg": 24.305,
+    "Al": 26.982, "Si": 28.0855, "P": 30.974, "S": 32.06, "Cl": 35.45, "Ar": 39.948,
+    "K": 39.0983, "Ca": 40.078, "Sc": 44.956, "Ti": 47.867, "V": 50.942, "Cr": 51.996,
+    "Mn": 54.938, "Fe": 55.845, "Co": 58.933, "Ni": 58.693, "Cu": 63.546, "Zn": 65.38,
+    "Ga": 69.723, "Ge": 72.63, "As": 74.922, "Se": 78.971, "Br": 79.904, "Kr": 83.798,
+    "Rb": 85.468, "Sr": 87.62, "Y": 88.906, "Zr": 91.224, "Nb": 92.906, "Mo": 95.96,
+    "Tc": 98.0, "Ru": 101.07, "Rh": 102.91, "Pd": 106.42, "Ag": 107.87, "Cd": 112.41,
+    "In": 114.82, "Sn": 118.71, "Sb": 121.76, "I": 126.90, "Te": 127.60, "Xe": 131.29,
+    "Cs": 132.91, "Ba": 137.33, "La": 138.91, "Ce": 140.12, "Pr": 140.91, "Nd": 144.24,
+    "Pm": 145.0, "Sm": 150.36, "Eu": 151.96, "Gd": 157.25, "Tb": 158.93, "Dy": 162.50,
+    "Ho": 164.93, "Er": 167.26, "Tm": 168.93, "Yb": 173.05, "Lu": 174.97, "Hf": 178.49,
+    "Ta": 180.95, "W": 183.84, "Re": 186.21, "Os": 190.23, "Ir": 192.22, "Pt": 195.08,
+    "Au": 196.97, "Hg": 200.59, "Tl": 204.38, "Pb": 207.2, "Bi": 208.98, "Po": 209.0,
+    "At": 210.0, "Rn": 222.0, "Fr": 223.0, "Ra": 226.0, "Ac": 227.0, "Th": 232.04,
+    "Pa": 231.04, "U": 238.03, "Np": 237.0, "Pu": 244.0, "Am": 243.0, "Cm": 247.0,
+    "Bk": 247.0, "Cf": 251.0, "Es": 252.0, "Fm": 257.0, "Md": 258.0, "No": 259.0,
+    "Lr": 262.0, "Rf": 267.0, "Db": 268.0, "Sg": 271.0, "Bh": 272.0, "Hs": 270.0,
+    "Mt": 276.0, "Ds": 281.0, "Rg": 280.0, "Cn": 285.0, "Nh": 286.0, "Fl": 289.0,
+    "Mc": 290.0, "Lv": 293.0, "Ts": 294.0, "Og": 294.0
+}
+
+
 # --- Módulo 1: Parsing de información atómica y de red del SPOSCAR ---
 def parse_sposcar_info(sposcar_filepath: str):
     """
@@ -102,10 +128,23 @@ def generate_general_section_content(total_atoms: int, num_atom_kinds: int, uniq
     content += f" PREFIX = {prefix} # ! Prefijo para los archivos de salida\n"
     content += f" MODE = {program_mode} # ! Modo de operación de {program_type.upper()}\n"
 
-    if program_type.lower() == "anphon" and fcsxml_file:
-        content += f" FCSXML = {fcsxml_file} # ! Archivo XML de constantes de fuerza\n"
-    elif program_type.lower() == "anphon" and not fcsxml_file:
-        content += "# ! ADVERTENCIA: FCSXML es esencial para ANPHON. Asegúrate de que existe o añádelo manualmente.\n"
+    if program_type.lower() == "anphon":
+        if fcsxml_file:
+            content += f" FCSXML = {fcsxml_file} # ! Archivo XML de constantes de fuerza\n"
+        else:
+            content += "# ! ADVERTENCIA: FCSXML es esencial para ANPHON. Asegúrate de que existe o añádelo manualmente.\n"
+
+        # Añadir la línea MASS para ANPHON
+        mass_values = []
+        for species in unique_atom_species:
+            mass = ATOMIC_MASSES.get(species)
+            if mass is None:
+                print(f"¡ADVERTENCIA! Masa para el elemento '{species}' no encontrada en el diccionario. Por favor, añádela manualmente.")
+                mass_values.append("???") # Placeholder para que el usuario sepa que falta
+            else:
+                mass_values.append(f"{mass:.4f}")
+        content += f" MASS = {' '.join(mass_values)} # ! Masas atómicas de los elementos definidos en KD\n"
+
 
     content += f" NAT = {total_atoms} # ! Número total de átomos en la supercelda\n"
     content += f" NKD = {num_atom_kinds} # ! Número de tipos de átomos\n"
@@ -246,7 +285,7 @@ def generate_optimize_section_content(optimize_type: str = "harmonic", fc2xml_fi
     elif optimize_type.lower() == "cubic":
         content += f" DFSET = DFSET_cubic\n"
         if fc2xml_file:
-            content += f" FC2XML = {fc2xml_file} # Fix harmonic IFCs\n"
+            content += f" FC2XML = {fc2_xml_file} # Fix harmonic IFCs\n"
         else:
             content += f"# ! ADVERTENCIA: Para DFSET_cubic, se recomienda especificar FC2XML.\n"
     else:
@@ -330,7 +369,7 @@ def generate_input_file(sposcar_filepath: str, output_filename: str, prefix: str
         return # Salir si hubo un error al parsear
 
     # --- Generar contenido de las secciones comunes ---
-    general_section = generate_general_section_content(total_atoms, num_atom_kinds, unique_atom_species, prefix, program_type, program_mode, fcsxml_file if program_type == "anphon" else None)
+    general_section = generate_general_section_content(total_atoms, num_atom_kinds, unique_atom_species, prefix, program_type, program_mode, fcsxml_file)
     cell_section = generate_cell_section_content(supercell_lattice_matrix_angstrom)
     position_section = generate_position_section_content(atomic_coords_raw, unique_atom_species,
                                                          all_species_raw, all_counts_raw,
@@ -345,7 +384,7 @@ def generate_input_file(sposcar_filepath: str, output_filename: str, prefix: str
     if program_type.lower() == "alm":
         interaction_section = generate_interaction_section_content()
         cutoff_section = generate_cutoff_section_content()
-        if program_mode.lower() == "optimize": # Ahora program_mode viene de la elección del usuario
+        if program_mode.lower() == "optimize":
             optimize_section = generate_optimize_section_content(optimize_type, fc2xml_file)
     elif program_type.lower() == "anphon":
         kpoint_section = generate_kpoint_section_content(kpmode, kpoint_params)
@@ -358,14 +397,14 @@ def generate_input_file(sposcar_filepath: str, output_filename: str, prefix: str
         with open(output_filename, 'w') as out_f:
             out_f.write(general_section)
             out_f.write("\n")
-            out_f.write(cell_section) # &cell es común a ambos
+            out_f.write(cell_section)
             out_f.write("\n")
 
             # Secciones específicas de ALAMODE
             if interaction_section: out_f.write(interaction_section + "\n")
             if cutoff_section: out_f.write(cutoff_section + "\n")
 
-            out_f.write(position_section) # &position es común a ambos
+            out_f.write(position_section)
             out_f.write("\n")
 
             if optimize_section: out_f.write(optimize_section + "\n")
@@ -399,11 +438,11 @@ if __name__ == "__main__":
     # --- Variables para modos y archivos XML ---
     alm_mode = "suggest"
     optimize_calculation_type = "harmonic"
-    fc2_xml_file = None # Para ALAMODE (FC2XML)
+    fc2_xml_file = None
 
-    anphon_mode = "phonons" # Por defecto para ANPHON
-    anphon_fcs_xml_file = None # Para ANPHON (FCSXML)
-    anphon_kpmode = 2 # Por defecto: malla uniforme
+    anphon_mode = "phonons"
+    anphon_fcs_xml_file = None
+    anphon_kpmode = 2
     anphon_kpoint_params = None
 
     # --- Configuración detallada según el programa ---
@@ -431,7 +470,7 @@ if __name__ == "__main__":
             anphon_mode = anphon_mode_choice
         else:
             print("Modo ANPHON no válido. Se usará 'phonons' por defecto.")
-            anphon_mode = "phonons" # Asegurar que se use el defecto si la entrada es inválida
+            anphon_mode = "phonons"
 
         anphon_fcs_xml_file = input("Introduce el nombre del archivo FCSXML (ej. si222.xml) para ANPHON: ").strip()
         if not anphon_fcs_xml_file:
@@ -476,15 +515,13 @@ if __name__ == "__main__":
 
     if program_choice == "alm":
         output_file_name = f"alm_{alm_mode}.in"
-        # Para ALAMODE, program_mode es alm_mode
         final_program_mode = alm_mode
     elif program_choice == "anphon":
         output_file_name = f"anphon_{anphon_mode}.in"
-        # Para ANPHON, program_mode es anphon_mode
         final_program_mode = anphon_mode
     else:
         output_file_name = "unknown_program.in"
-        final_program_mode = "default" # Fallback
+        final_program_mode = "default"
         print("Error interno: Tipo de programa desconocido.")
 
 
@@ -493,9 +530,9 @@ if __name__ == "__main__":
                             output_file_name,
                             prefix=output_prefix,
                             program_type=program_choice,
-                            program_mode=final_program_mode, # Pasamos el modo específico del programa
+                            program_mode=final_program_mode,
                             optimize_type=optimize_calculation_type,
                             fc2xml_file=fc2_xml_file,
-                            fcsxml_file=anphon_fcs_xml_file, # FCSXML para ANPHON
+                            fcsxml_file=anphon_fcs_xml_file,
                             kpmode=anphon_kpmode,
                             kpoint_params=anphon_kpoint_params)
