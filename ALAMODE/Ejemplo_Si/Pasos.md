@@ -12,3 +12,19 @@ cat DFSET_harmonic DFSET_cubic > DFSET_merged
 alm alm_optimize.in
 anphon si_phband.in
 plotband.py si222.bands
+anphon si_RTA.in
+
+$ gnuplot
+gnuplot> set logscale xy
+gnuplot> set xlabel "Temperature (K)"
+gnuplot> set ylabel "Lattice thermal conductivity (W/mK)"
+gnuplot> plot "si222.kl" usi 1:2 w lp
+
+analyze_phonons.py --calc kappa_boundary --size 1.0e+6 si222.result > si222_boundary_1mm.kl
+
+$ gnuplot
+gnuplot> set logscale xy
+gnuplot> set xlabel "Temperature (K)"
+gnuplot> set ylabel "Lattice thermal conductivity (W/mK)"
+gnuplot> plot "si222.kl" usi 1:2 w lp
+gnuplot> plot "si222_boundary_1mm.kl" usi 1:2 w lp
