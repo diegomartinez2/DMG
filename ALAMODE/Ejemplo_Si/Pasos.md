@@ -4,8 +4,8 @@
 2. cambiamos la estructura en alm_suggest.in con los datos de la estructura relajada "relax.dat"
 alm alm_suggest.in > si_alm.log1
 3. Creamos los ficheros con los desplazamientos sugeridos:
-python displace.py --LAMMPS=relax.dat --mag=0.01 --prefix harm  -pf Si_displacements_patterns.pattern_HARMONIC
-python displace.py --LAMMPS=relax.dat --mag=0.04 --prefix cubic  -pf Si_displacements_patterns.pattern_ANHARM3
+python displace.py --LAMMPS=LAMMPS-relax.dat --mag=0.01 --prefix harm  -pf My_displacements_patterns.pattern_HARMONIC
+python displace.py --LAMMPS=LAMMPS-relax.dat --mag=0.04 --prefix cubic  -pf My_displacements_patterns.pattern_ANHARM3
 4. calculamos con LAMMPS tanto la parte armónica como la anarmonica
 ./lmp_mpi_chimes < lammps.in
 bash run.bash
