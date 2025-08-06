@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import spglib
 import numpy as np
 
