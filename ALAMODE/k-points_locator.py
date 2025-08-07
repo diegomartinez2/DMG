@@ -33,7 +33,7 @@ def get_lattice_type_from_spglib(cell):
 def main():
     # Cambia 'POSCAR' por ruta a tu fichero POSCAR o data de LAMMPS
     atoms = read('POSCAR')
-    #atoms = read('data.lammps')
+    #atoms = read('data.lammps', format='lammps-data')
 
     # Construir la tupla para spglib: (celda, posiciones fraccionales, números atómicos)
     cell = (atoms.cell.array, atoms.get_scaled_positions(), atoms.get_atomic_numbers())
