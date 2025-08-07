@@ -33,6 +33,7 @@ def get_lattice_type_from_spglib(cell):
 def main():
     # Cambia 'POSCAR' por ruta a tu fichero POSCAR o data de LAMMPS
     atoms = read('POSCAR')
+    #atoms = read('data.lammps')
 
     # Construir la tupla para spglib: (celda, posiciones fraccionales, números atómicos)
     cell = (atoms.cell.array, atoms.get_scaled_positions(), atoms.get_atomic_numbers())
@@ -70,6 +71,10 @@ def main():
         kpt_frac = points[label]
         kpt_cart = np.dot(kpt_frac, recip_cell)
         print(f"{label}: {kpt_cart}")
+
+#    print("Puntos especiales:")
+#    for label, coord in points.items():
+#        print(f"{label}: {coord}")
 
 if __name__ == "__main__":
     main()
