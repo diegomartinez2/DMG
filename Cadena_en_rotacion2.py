@@ -46,7 +46,7 @@ def calcular_curva_centrifuga(L, N, omega, rho, num_iteraciones, dt):
         y_new = np.copy(y)
 
         # Iteramos sobre los puntos internos (excluyendo los extremos fijos)
-        for i in range(1, N - 1):
+        for i in range(1, N - 2):
             # Vector del punto anterior al actual
             vec_prev = np.array([x[i-1] - x[i], y[i-1] - y[i]])
             # Vector del punto siguiente al actual
@@ -70,6 +70,8 @@ def calcular_curva_centrifuga(L, N, omega, rho, num_iteraciones, dt):
         x = x_new
         y = y_new
 
+    print(f"Punto de anclaje inicial (final): x={x[0]:.2f}, y={y[0]:.2f}")
+    print(f"Punto de anclaje final (final): x={x[N-1]:.2f}, y={y[N-1]:.2f}")
     return x, y
 
 if __name__ == "__main__":
