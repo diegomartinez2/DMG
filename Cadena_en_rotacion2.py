@@ -39,6 +39,7 @@ def calcular_curva_centrifuga(L, N, omega, rho, num_iteraciones, dt):
     tension_magnitud = 100.0
     print(f"Punto de anclaje inicial: x={x[0]:.2f}, y={y[0]:.2f}")
     print(f"Punto de anclaje final: x={x[N-1]:.2f}, y={y[N-1]:.2f}")
+    print(x,y)
 
     # Bucle principal de relajación
     for _ in range(num_iteraciones):
@@ -72,6 +73,7 @@ def calcular_curva_centrifuga(L, N, omega, rho, num_iteraciones, dt):
 
     print(f"Punto de anclaje inicial (final): x={x[0]:.2f}, y={y[0]:.2f}")
     print(f"Punto de anclaje final (final): x={x[N-1]:.2f}, y={y[N-1]:.2f}")
+    print(x,y)
     return x, y
 
 if __name__ == "__main__":

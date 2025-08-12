@@ -1,72 +1,91 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def calcular_forma_cadena_rotacion(
-    num_puntos,
-    distancia_eje,
-    factor_rigidez,
-    num_iteraciones
-):
+def mantener_longitud_segmentos(x, y, L_segmento):
     """
-    Calcula la forma de una cadena "colgada" por la fuerza centrífuga.
-
-    La cadena está sujeta a dos puntos en el eje de rotación. La forma de la
-    cadena se determina por la fuerza centrífuga, que aumenta con la distancia
-    al eje de rotación.
-
-    Parámetros:
-    num_puntos (int): Número de puntos discretos que representan la cadena.
-    distancia_eje (float): Distancia entre los dos puntos de sujeción a lo largo del eje.
-    factor_rigidez (float): Un parámetro que representa la relación entre la fuerza
-                             centrífuga y la tensión de la cadena. Un valor más alto
-                             significa una curva más pronunciada.
-    num_iteraciones (int): Número de pasos de relajación para que la curva converja.
-
-    Retorna:
-    tuple: Una tupla con las coordenadas x e y de la curva.
+    Ajusta la posición de los puntos para mantener una distancia constante
+    entre los eslabones, partiendo del primer punto.
     """
+    for i in range(1, len(x)):
+        dx = x[i] - x[i-1]
+        dy = y[i] - y[i-1]
+        distancia_actual = np.sqrt(dx**2 + dy**2)
 
-    # Coordenadas y: se mantienen fijas a lo largo del eje de rotación
-    y_coords = np.linspace(-distancia_eje / 2, distancia_eje / 2, num_puntos)
+        # Factor de corrección
+        factor_correccion = L_segmento / distancia_actual
 
-    # Coordenadas x: se inicializan a cero (cadena recta) y se actualizan
-    x_coords = np.zeros(num_puntos)
+        # Ajustamos la posición del punto i para que la distancia sea L_segmento
+        x[i] = x[i-1] + dx * factor_correccion
+        y[i] = y[i-1] + dy * factor_correccion
+    return x, y
 
-    # Las coordenadas de los extremos de la cadena se fijan en 0, ya que están
-    # en el eje de rotación
-    x_coords[0] = 0
-    x_coords[-1] = 0
+def calcular_curva_centrifuga_con_correccion(L, N, omega, rho, num_iteraciones, dt):
+    """
+    Calcula la forma de la curva con corrección de la longitud de los segmentos.
+    """
+    L_segmento = L / (N - 1)
 
-    # Iteramos para encontrar la forma de equilibrio
-    # El método de relajación actualiza la posición de cada punto en función de
-    # sus vecinos y la fuerza centrífuga
+    # Inicialización de los puntos.
+    y = np.linspace(-L / 2, L / 2, N)
+    # Calcular los coeficientes de una parábola que pasa por los puntos de anclaje (0, +/-L/2)
+    # y tiene un "sag" inicial (distancia máxima al eje y)
+    sag_inicial = 0.5  # Puedes ajustar este valor
+    a = -4 * sag_inicial / (L**2)
+    x = a * y**2 + sag_inicial
+
+    masa_punto = L_segmento * rho
+    tension_magnitud = 100.0
+
     for _ in range(num_iteraciones):
-        for i in range(1, num_puntos - 1):
-            # Ecuación de diferencias finitas simplificada para la fuerza centrífuga
-            # La fórmula es: x_new = (x_prev + x_next) / (2 + C)
-            # Donde C es el factor de rigidez que depende de la tensión, masa y velocidad angular
-            x_coords[i] = (x_coords[i-1] + x_coords[i+1]) / (2 + factor_rigidez)
+        x_new = np.copy(x)
+        y_new = np.copy(y)
 
-    return x_coords, y_coords
+        # 1. Calcular y aplicar fuerzas (movimiento)
+        for i in range(1, N - 1):
+            vec_prev = np.array([x[i-1] - x[i], y[i-1] - y[i]])
+            vec_next = np.array([x[i+1] - x[i], y[i+1] - y[i]])
 
-# --- Configuración de la simulación ---
-num_puntos = 100
-distancia_eje = 10.0 # Metros
-factor_rigidez = 0.5 # Ajusta este valor para ver diferentes curvas
-num_iteraciones = 5000
+            # Se usa la longitud actual para normalizar, haciéndolo más preciso
+            fuerza_tension = (tension_magnitud * (vec_prev / np.linalg.norm(vec_prev)) +
+                             tension_magnitud * (vec_next / np.linalg.norm(vec_next)))
 
-# Calcular la forma de la curva
-x, y = calcular_forma_cadena_rotacion(num_puntos, distancia_eje, factor_rigidez, num_iteraciones)
+            fuerza_centripeta = np.array([masa_punto * omega**2 * x[i], 0.0])
+            fuerza_neta = fuerza_tension + fuerza_centripeta
 
-# --- Visualización del resultado ---
-plt.figure(figsize=(8, 6))
-plt.plot(x, y, label='Forma de la cadena')
-plt.xlabel('Distancia al eje de rotación (m)')
-plt.ylabel('Posición a lo largo del eje (m)')
-plt.title('Forma de una cadena suspendida por rotación')
-plt.grid(True)
-plt.axvline(0, color='gray', linestyle='--', linewidth=0.8) # Dibuja el eje de rotación
-plt.axhline(y[0], color='gray', linestyle='--', linewidth=0.8) # Puntos de sujeción
-plt.axhline(y[-1], color='gray', linestyle='--', linewidth=0.8)
-plt.legend()
-plt.show()
+            x_new[i] += dt * fuerza_neta[0]
+            y_new[i] += dt * fuerza_neta[1]
+
+        x, y = x_new, y_new
+
+        # 2. Corregir la longitud de los segmentos
+        x, y = mantener_longitud_segmentos(x, y, L_segmento)
+
+    return x, y
+
+if __name__ == "__main__":
+    # Parámetros del sistema
+    longitud_cadena = 10.0  # metros
+    num_puntos = 101
+    velocidad_angular = 2.0  # rad/s
+    densidad_masa_lineal = 1.0  # kg/m
+
+    # Parámetros del método numérico
+    iteraciones = 1000
+    paso_tiempo = 0.01  # Se ha reducido el dt para mayor estabilidad con la corrección
+
+    # Calcular la curva
+    x_curva, y_curva = calcular_curva_centrifuga_con_correccion(
+        longitud_cadena, num_puntos, velocidad_angular, densidad_masa_lineal, iteraciones, paso_tiempo
+    )
+
+    # Graficar la curva
+    plt.figure(figsize=(8, 6))
+    plt.plot(x_curva, y_curva, 'o-', markersize=2, label='Cadena en rotación (longitud constante)')
+    plt.plot([x_curva[0], x_curva[-1]], [y_curva[0], y_curva[-1]], 'ro', label='Puntos de anclaje')
+    plt.title('Forma de la Cadena bajo Fuerza Centrípeta')
+    plt.xlabel('Distancia al Eje de Rotación (x) [m]')
+    plt.ylabel('Posición a lo largo del Eje de Rotación (y) [m]')
+    plt.grid(True)
+    plt.legend()
+    plt.axis('equal')
+    plt.show()
