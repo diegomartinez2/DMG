@@ -19,8 +19,16 @@ def calcular_curva_centrifuga(L, N, omega, rho, num_iteraciones, dt):
     # Inicialización de los puntos.
     # Los puntos de anclaje están en el eje de rotación (x=0).
     # La cadena se inicia como una línea recta.
-    x = np.zeros(N)
+    #x = np.zeros(N)
     y = np.linspace(-L / 2, L / 2, N)
+    # Inicialización de los puntos
+
+    # Calcular los coeficientes de una parábola que pasa por los puntos de anclaje (0, +/-L/2)
+    # y tiene un "sag" inicial (distancia máxima al eje y)
+    sag_inicial = 0.5  # Puedes ajustar este valor
+    a = -4 * sag_inicial / (L**2)
+    x = a * y**2 + sag_inicial
+
 
     # La masa de cada punto.
     masa_punto = (L / (N - 1)) * rho
@@ -29,6 +37,8 @@ def calcular_curva_centrifuga(L, N, omega, rho, num_iteraciones, dt):
     # más rigurosamente. Para este ejemplo, lo asumimos como un valor fijo.
     # Cuanto mayor sea la tensión, más "rígida" es la cadena.
     tension_magnitud = 100.0
+    print(f"Punto de anclaje inicial: x={x[0]:.2f}, y={y[0]:.2f}")
+    print(f"Punto de anclaje final: x={x[N-1]:.2f}, y={y[N-1]:.2f}")
 
     # Bucle principal de relajación
     for _ in range(num_iteraciones):
