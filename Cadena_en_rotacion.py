@@ -4,19 +4,32 @@ import matplotlib.pyplot as plt
 def mantener_longitud_segmentos(x, y, L_segmento):
     """
     Ajusta la posición de los puntos para mantener una distancia constante
-    entre los eslabones, partiendo del primer punto.
+    entre los eslabones, manteniendo ambos extremos fijos.
     """
-    for i in range(1, len(x)):
+    N = len(x)
+
+    # 1. Corrección hacia adelante (desde el primer anclaje)
+    for i in range(1, N - 1):
         dx = x[i] - x[i-1]
         dy = y[i] - y[i-1]
         distancia_actual = np.sqrt(dx**2 + dy**2)
 
-        # Factor de corrección
         factor_correccion = L_segmento / distancia_actual
 
-        # Ajustamos la posición del punto i para que la distancia sea L_segmento
         x[i] = x[i-1] + dx * factor_correccion
         y[i] = y[i-1] + dy * factor_correccion
+
+    # 2. Corrección hacia atrás (desde el último anclaje)
+    for i in range(N - 2, 0, -1):
+        dx = x[i] - x[i+1]
+        dy = y[i] - y[i+1]
+        distancia_actual = np.sqrt(dx**2 + dy**2)
+
+        factor_correccion = L_segmento / distancia_actual
+
+        x[i] = x[i+1] + dx * factor_correccion
+        y[i] = y[i+1] + dy * factor_correccion
+
     return x, y
 
 def calcular_curva_centrifuga_con_correccion(L, N, omega, rho, num_iteraciones, dt):
@@ -27,14 +40,8 @@ def calcular_curva_centrifuga_con_correccion(L, N, omega, rho, num_iteraciones, 
 
     # Inicialización de los puntos.
     y = np.linspace(-L / 2, L / 2, N)
-    # Calcular los coeficientes de una parábola que pasa por los puntos de anclaje (0, +/-L/2)
-    # y tiene un "sag" inicial (distancia máxima al eje y)
-    sag_inicial = 0.5  # Puedes ajustar este valor
-    a = -4 * sag_inicial / (L**2)
-    x = a * y**2 + sag_inicial
-    L_segmento2 = np.sqrt(x[1]**2 + y[2]**2)
-    print(x,y)
-    print(x[0],x[-1],y[0],y[-1])
+    x = np.zeros(N)
+
     masa_punto = L_segmento * rho
     tension_magnitud = 100.0
 
@@ -47,19 +54,19 @@ def calcular_curva_centrifuga_con_correccion(L, N, omega, rho, num_iteraciones, 
             vec_prev = np.array([x[i-1] - x[i], y[i-1] - y[i]])
             vec_next = np.array([x[i+1] - x[i], y[i+1] - y[i]])
 
-            # Se usa la longitud actual para normalizar, haciéndolo más preciso
             fuerza_tension = (tension_magnitud * (vec_prev / np.linalg.norm(vec_prev)) +
                              tension_magnitud * (vec_next / np.linalg.norm(vec_next)))
 
             fuerza_centripeta = np.array([masa_punto * omega**2 * x[i], 0.0])
             fuerza_neta = fuerza_tension + fuerza_centripeta
+
             x_new[i] += dt * fuerza_neta[0]
             y_new[i] += dt * fuerza_neta[1]
-            print(x[0],y[0],":",x[-1],y[-1])
+
         x, y = x_new, y_new
 
-        # 2. Corregir la longitud de los segmentos
-        x, y = mantener_longitud_segmentos(x, y, L_segmento2)
+        # 2. Corregir la longitud de los segmentos manteniendo ambos extremos fijos
+        x, y = mantener_longitud_segmentos(x, y, L_segmento)
 
     return x, y
 
@@ -72,7 +79,7 @@ if __name__ == "__main__":
 
     # Parámetros del método numérico
     iteraciones = 1000
-    paso_tiempo = 0.01  # Se ha reducido el dt para mayor estabilidad con la corrección
+    paso_tiempo = 0.01
 
     # Calcular la curva
     x_curva, y_curva = calcular_curva_centrifuga_con_correccion(
