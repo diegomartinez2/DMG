@@ -82,8 +82,8 @@ if __name__ == "__main__":
     densidad_masa_lineal = 1.0  # kg/m
 
     # Parámetros del método numérico
-    iteraciones = 1000
-    paso_tiempo = 0.01
+    iteraciones = 10000
+    paso_tiempo = 0.001
 
     # Calcular la curva
     x_curva, y_curva = calcular_curva_centrifuga_con_correccion(
