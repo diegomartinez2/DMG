@@ -32,7 +32,9 @@ def calcular_curva_centrifuga_con_correccion(L, N, omega, rho, num_iteraciones, 
     sag_inicial = 0.5  # Puedes ajustar este valor
     a = -4 * sag_inicial / (L**2)
     x = a * y**2 + sag_inicial
-
+    L_segmento2 = np.sqrt(x[1]**2 + y[2]**2)
+    print(x,y)
+    print(x[0],x[-1],y[0],y[-1])
     masa_punto = L_segmento * rho
     tension_magnitud = 100.0
 
@@ -51,14 +53,13 @@ def calcular_curva_centrifuga_con_correccion(L, N, omega, rho, num_iteraciones, 
 
             fuerza_centripeta = np.array([masa_punto * omega**2 * x[i], 0.0])
             fuerza_neta = fuerza_tension + fuerza_centripeta
-
             x_new[i] += dt * fuerza_neta[0]
             y_new[i] += dt * fuerza_neta[1]
-
+            print(x[0],y[0],":",x[-1],y[-1])
         x, y = x_new, y_new
 
         # 2. Corregir la longitud de los segmentos
-        x, y = mantener_longitud_segmentos(x, y, L_segmento)
+        x, y = mantener_longitud_segmentos(x, y, L_segmento2)
 
     return x, y
 
