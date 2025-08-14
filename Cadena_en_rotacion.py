@@ -40,8 +40,12 @@ def calcular_curva_centrifuga_con_correccion(L, N, omega, rho, num_iteraciones, 
 
     # Inicialización de los puntos.
     y = np.linspace(-L / 2, L / 2, N)
-    x = np.zeros(N)
-
+    #x = np.zeros(N)
+    # Calcular los coeficientes de una parábola que pasa por los puntos de anclaje (0, +/-L/2)
+    # y tiene un "sag" inicial (distancia máxima al eje y)
+    sag_inicial = 0.5  # Puedes ajustar este valor
+    a = -4 * sag_inicial / (L**2)
+    x = a * y**2 + sag_inicial
     masa_punto = L_segmento * rho
     tension_magnitud = 100.0
 
