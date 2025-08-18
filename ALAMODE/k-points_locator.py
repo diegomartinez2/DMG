@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import spglib
 from ase.io import read
 from ase.dft.kpoints import sc_special_paths, sc_special_points
