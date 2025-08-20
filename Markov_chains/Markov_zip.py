@@ -1,3 +1,4 @@
+import Markov_1
 def generar_encabezado_zip():
     """
     Devuelve un encabezado típico de un archivo ZIP simple (puede ser ajustado).
