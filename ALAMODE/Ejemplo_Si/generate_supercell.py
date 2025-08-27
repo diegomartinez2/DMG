@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from ase.io import read, write
 from ase.build import make_supercell
 import numpy as np
