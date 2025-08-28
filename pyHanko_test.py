@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import asyncio
 from pyhanko.keys import SimpleSigner
 from pyhanko.pdf_utils.incremental_writer import IncrementalPdfFileWriter
