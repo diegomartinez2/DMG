@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # consolidate_forces.py
 import numpy as np
 
