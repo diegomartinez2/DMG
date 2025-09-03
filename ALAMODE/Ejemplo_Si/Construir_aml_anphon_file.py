@@ -1,7 +1,38 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#  Construir_aml_anphon_file.py
+#
+#  Copyright 2025 Diego Martinez Gutierrez
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+#
+'''
+Este programa crea los input files para ALAMODE.
+'''
+# ---------------------------
+# Importación de los módulos
+# ---------------------------
+
 import numpy as np
 import os
 
+# ----------
+# Parametros
+# ----------
 # Constante de conversión de Angstroms a Bohr
 # 1 Angstrom = 1.8897259886 Bohr
 ANGSTROM_TO_BOHR = 1.8897259886
@@ -31,6 +62,9 @@ ATOMIC_MASSES = {
     "Mc": 290.0, "Lv": 293.0, "Ts": 294.0, "Og": 294.0
 }
 
+# ----------
+# Funciones
+# ----------
 
 # --- Módulo 1: Parsing de información atómica y de red del SPOSCAR ---
 def parse_sposcar_info(sposcar_filepath: str):
