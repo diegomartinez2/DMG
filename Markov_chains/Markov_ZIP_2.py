@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import random
 
 def crear_matriz_transicion(estados, probabilidad_transicion):
