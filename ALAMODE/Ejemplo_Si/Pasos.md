@@ -17,9 +17,9 @@ cat DFSET_harmonic DFSET_cubic > DFSET_merged
 7. "Optimizamos"
 alm alm_optimize.in
 8. Calculamos las bandas
-anphon si_phband.in
+anphon my_alamode_run_phband.in
 9. Dibujamos:
-plotband.py si222.bands
+plotband.py my_alamode_run.bands
 ### conductividad terminca
 1. calculamos a partir de lo anterior
 anphon si_RTA.in
