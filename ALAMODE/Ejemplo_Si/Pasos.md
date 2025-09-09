@@ -10,7 +10,7 @@ python displace.py --LAMMPS=LAMMPS-relax.dat --mag=0.04 --prefix cubic  -pf My_d
 ./lmp_mpi_chimes < lammps.in
 bash run.bash
 5. Extraemos los datos:
-python extract.py --LAMMPS=relax.dat XFSET > DFSET_harmonic
+python extract.py --LAMMPS=relax.dat XFSET.harm* > DFSET_harmonic
 python extract.py --LAMMPS=relax.dat XFSET.cubic* > DFSET_cubic
 6. Unimos la parte armonica y la anarmónica en un fichero:
 cat DFSET_harmonic DFSET_cubic > DFSET_merged
