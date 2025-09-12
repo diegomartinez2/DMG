@@ -1,0 +1,1 @@
+python -m numpy.f2py --backend meson --build-dir meson_builddir --dep mpi -c third_order_ASR.f90  third_order_centering.f90  third_order_cond_centering.f90  third_order_cond.f90  third_order_dynbubble.f90  third_order_interpol.f90 -m thirdorder
