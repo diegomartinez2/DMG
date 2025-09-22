@@ -1,3 +1,4 @@
+#!/bin/bash
 echo "first build the 'anphon_RTA.in' with 'Construir_alm_anphon_file.py'"
 anphon anphon_RTA.in
 echo "$ gnuplot
