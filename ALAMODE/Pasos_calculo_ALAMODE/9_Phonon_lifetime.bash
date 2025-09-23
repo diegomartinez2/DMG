@@ -1,3 +1,4 @@
+#!/bin/bash
 analyze_phonons.py --calc tau --temp 300 si222.result > tau300K_10.dat
 echo "$ gnuplot
 gnuplot> set xrange [1:]
