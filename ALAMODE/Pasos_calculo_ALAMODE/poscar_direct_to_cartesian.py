@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import numpy as np
 
 def convert_poscar_direct_to_cartesian(input_filepath: str, output_filepath: str):
