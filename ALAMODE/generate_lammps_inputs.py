@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # generate_lammps_inputs.py
 import numpy as np
 
