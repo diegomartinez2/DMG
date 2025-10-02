@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 a="Mr."
 b="Tux"
 c="Penguin"
