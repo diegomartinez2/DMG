@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# Este script python no es la mejor opción ya que escribe en el disco múltipes
+# veces, lo que afecta tanto al rendimiento como a la computadora.
 from ase.calculators.calculator import Calculator, FileIOCalculator, all_changes
 from ase.io import write
 import os
