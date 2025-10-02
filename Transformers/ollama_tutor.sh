@@ -1,16 +1,18 @@
 #!/bin/bash
 
 # Script para iniciar un chat interactivo con Ollama en la terminal
-# Soporta Chain-of-Thought (CoT) prompting con estilo de tutor
-# Uso: ./ollama_chat.sh [modelo] [--cot]
+# Soporta Chain-of-Thought (CoT) prompting con opciones --cot o --tutor
+# Uso: ./ollama_chat.sh [modelo] [--cot | --tutor]
 
 set -e
 
 # Configuración
 MODEL=${1:-auto}  # Usa 'auto' por defecto, o el modelo especificado
-COT=false
+COT_STYLE="none"  # none, cot, o tutor
 if [ "$2" = "--cot" ]; then
-    COT=true
+    COT_STYLE="cot"
+elif [ "$2" = "--tutor" ]; then
+    COT_STYLE="tutor"
 fi
 OLLAMA_HOST="127.0.0.1:11434"
 OLLAMA_BINARY=$(command -v ollama)
@@ -82,14 +84,20 @@ select_model() {
     fi
 }
 
-# Aplica CoT al prompt si está habilitado
+# Aplica CoT al prompt según el estilo
 apply_cot() {
     local user_prompt="$1"
-    if [ "$COT" = true ]; then
-        echo "Explica como un tutor tratando de enseñar al estudiante: $user_prompt"
-    else
-        echo "$user_prompt"
-    fi
+    case "$COT_STYLE" in
+        cot)
+            echo "Piensa paso a paso y explica tu razonamiento antes de dar la respuesta final: $user_prompt"
+            ;;
+        tutor)
+            echo "Explica como un tutor tratando de enseñar al estudiante: $user_prompt"
+            ;;
+        *)
+            echo "$user_prompt"
+            ;;
+    esac
 }
 
 # Limpieza al salir
@@ -122,11 +130,17 @@ else
 fi
 
 status "Iniciando chat interactivo con $MODEL..."
-if [ "$COT" = true ]; then
-    status "Modo Chain-of-Thought activado: las respuestas se explicarán como un tutor."
-else
-    status "Modo chat normal activado."
-fi
+case "$COT_STYLE" in
+    cot)
+        status "Modo Chain-of-Thought activado: respuestas con razonamiento paso a paso."
+        ;;
+    tutor)
+        status "Modo Chain-of-Thought activado: respuestas explicadas como un tutor."
+        ;;
+    *)
+        status "Modo chat normal activado."
+        ;;
+esac
 status "Escribe tus mensajes y usa '/exit' o Ctrl+D para salir."
 
 # Bucle interactivo para leer prompts y aplicar CoT
