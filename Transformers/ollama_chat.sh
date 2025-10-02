@@ -91,6 +91,7 @@ apply_cot() {
         echo "$user_prompt"
     fi
 }
+# Para tareas específicas, personaliza el prompt CoT. Ejemplo para matemáticas: "Resuelve el problema paso a paso, mostrando cada cálculo matemático: $user_prompt"
 
 # Limpieza al salir
 cleanup() {
