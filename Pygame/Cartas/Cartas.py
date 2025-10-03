@@ -141,7 +141,7 @@ class Factory(Card):
         leftover_components = material.composition - recycled_components
         if leftover_components:
             # Crear basura con componentes sobrantes
-            basura_id = 999  # ID fijo para basura genérica
+            basura_id = 999
             basura_name = f"Basura de {material.name}"
             basura_tags = {"waste"}
             basura_comp = leftover_components
@@ -302,8 +302,8 @@ def main():
     # Diseños
     designs_db = {
         "Diseño de Silla de Madera con Patas de Metal": Design(1, "Diseño de Silla de Madera con Patas de Metal", {"wood", "metal"}, 4),
-        "Diseño de Reciclaje de Madera": Design(2, "Diseño de Reciclaje de Madera", {"furniture"}, 1, is_recycle=True),
-        "Diseño de Reciclaje de Metal": Design(3, "Diseño de Reciclaje de Metal", {"furniture"}, 2, is_recycle=True)
+        "Diseño de Reciclaje de Madera": Design(2, "Diseño de Reciclaje de Madera", {"furniture", "waste"}, 1, is_recycle=True),
+        "Diseño de Reciclaje de Metal": Design(3, "Diseño de Reciclaje de Metal", {"furniture", "waste"}, 2, is_recycle=True)
     }
 
     # Fábricas
@@ -325,6 +325,34 @@ def main():
     player.add_card(factories_db["Fabrica de muebles"])
     player.add_card(factories_db["Fabrica de reciclaje"])
     player.add_card(factories_db["Fabrica de reciclaje solo madera"])
+
+    # Simular reciclaje para generar basura y luego reciclarla
+    print("Simulación inicial: reciclar Silla de Madera con Patas de Metal solo para Madera")
+    recycled = factories_db["Fabrica de reciclaje solo madera"].recycle_r(
+        [designs_db["Diseño de Reciclaje de Madera"]],
+        Material(4, "Silla de Madera con Patas de Metal", {"furniture"}, {1, 2}),
+        material_db
+    )
+    for rec in recycled:
+        player.add_card(rec)
+    print(f"Reciclado: {', '.join(str(r) for r in recycled)}")
+
+    print(f"Cartas de {player.name}: {player.show_cards()}")
+    print("Ahora intenta reciclar la basura con Diseño de Reciclaje de Metal")
+    basura = player.find_card_r("Basura de Silla de Madera con Patas de Metal")
+    if basura:
+        recycled = factories_db["Fabrica de reciclaje"].recycle_r(
+            [designs_db["Diseño de Reciclaje de Metal"]],
+            basura,
+            material_db
+        )
+        if recycled:
+            player.remove_card(basura)
+            for rec in recycled:
+                player.add_card(rec)
+            print(f"Reciclado: {', '.join(str(r) for r in recycled)}")
+        else:
+            print("Reciclaje de basura fallido.")
 
     text_game(player, material_db, designs_db, factories_db)
 
