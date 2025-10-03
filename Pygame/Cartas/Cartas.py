@@ -44,7 +44,7 @@ class Material(Card):
 class Design(Card):
     def __init__(self, card_id: int, name: str, input_tags: Set[str], output_material_id: int, is_recycle: bool = False):
         super().__init__(CardType.DESIGN, card_id, name)
-        self.input_tags = input_tags  # Etiquetas requeridas para insumos (e.g., {'wood', 'metal'})
+        self.input_tags = input_tags  # Etiquetas requeridas para insumos
         self.output_material_id = output_material_id
         self.is_recycle = is_recycle  # Indica si es diseño de reciclaje
 
@@ -88,7 +88,6 @@ class Factory(Card):
                 for material in materials:
                     material.consume_r()
             name, tags, comp = material_db.get(design.output_material_id, ("Unknown", set(), set()))
-            # Composición del nuevo material es la unión de las composiciones de insumos
             new_comp = set()
             for mat in materials:
                 new_comp.update(mat.composition)
@@ -158,7 +157,7 @@ class Factory(Card):
 class Player:
     def __init__(self, name: str):
         self.name = name
-        self.cards: List[Card] = []  # Lista de cartas del jugador
+        self.cards: List[Card] = []
 
     def add_card(self, card: Card) -> None:
         self.cards.append(card)
@@ -200,31 +199,42 @@ def parse_input_m(input_str: str) -> List[str]:
 def text_game(player: Player, material_db: Dict[int, tuple[str, Set[str], Set[int]]], designs_db: Dict[str, Design], factories_db: Dict[str, Factory]):
     while True:
         print(f"Cartas de {player.name}: {player.show_cards()}")
-        user_input = input("Ingresa acción (e.g., 'Madera + Acero + Diseño de Silla de Madera con Patas de Metal + Fabrica de muebles') o 'salir': ")
+        user_input = input("Ingresa acción (e.g., 'Madera + Diseño de Silla de Madera con Patas de Metal + Acero + Fabrica de muebles') o 'salir': ")
         if user_input.lower() == 'salir':
             break
         parts = parse_input_r(user_input)  # Usa _R por defecto
         if len(parts) < 3:
-            print("Formato inválido. Usa 'Material(es) + Diseño(s) + Fábrica'")
+            print("Formato inválido. Usa al menos un Material, un Diseño y una Fábrica.")
             continue
 
-        # Buscar todas las cartas mencionadas
-        found_cards = []
+        # Clasificar cartas por tipo usando las bases de datos
+        materials = []
+        designs = []
+        factories = []
         for part in parts:
             card = player.find_card_r(part)
-            if card:
-                found_cards.append(card)
-            else:
+            if not card:
                 print(f"Carta '{part}' no encontrada.")
                 break
+            if part in designs_db:
+                designs.append(card)
+            elif part in factories_db:
+                factories.append(card)
+            elif part in [name for id, (name, _, _) in material_db.items()]:
+                materials.append(card)
+            else:
+                print(f"Carta '{part}' no reconocida como Material, Diseño o Fábrica.")
+                break
         else:
-            # Clasificar cartas
-            materials = [c for c in found_cards if isinstance(c, Material)]
-            designs = [c for c in found_cards if isinstance(c, Design)]
-            factories = [c for c in found_cards if isinstance(c, Factory)]
-
-            if len(factories) != 1 or len(designs) == 0 or len(materials) == 0:
-                print("Debe haber exactamente una Fábrica, al menos un Diseño y al menos un Material.")
+            # Validar cantidades
+            if len(factories) != 1:
+                print("Debe haber exactamente una Fábrica.")
+                continue
+            if len(designs) == 0:
+                print("Debe haber al menos un Diseño.")
+                continue
+            if len(materials) == 0:
+                print("Debe haber al menos un Material.")
                 continue
 
             factory = factories[0]
@@ -240,7 +250,7 @@ def text_game(player: Player, material_db: Dict[int, tuple[str, Set[str], Set[in
                         player.add_card(rec)
                     print(f"Reciclado: {', '.join(str(r) for r in recycled)}")
                 else:
-                    print("Reciclaje fallido.")
+                    print("Reciclaje fallido: ningún diseño compatible o material no válido.")
             else:
                 if len(designs) != 1:
                     print("Producción requiere exactamente un diseño.")
@@ -252,7 +262,12 @@ def text_game(player: Player, material_db: Dict[int, tuple[str, Set[str], Set[in
                     player.add_card(produced)
                     print(f"Producido: {produced}")
                 else:
-                    print("Producción fallida.")
+                    print("Producción fallida: diseño no compatible o materiales insuficientes.")
+                    for design in designs:
+                        if not design.is_compatible_r(factory):
+                            print(f"El diseño '{design.name}' no es compatible con la fábrica '{factory.name}'.")
+                        elif not design.check_materials_r(materials):
+                            print(f"El diseño '{design.name}' requiere materiales con etiquetas {design.input_tags}, pero solo se proporcionaron {[m.tags for m in materials]}.")
 
 # Ejemplo de uso
 def main():
@@ -271,21 +286,23 @@ def main():
         "Diseño de Reciclaje de Metal": Design(3, "Diseño de Reciclaje de Metal", {"furniture"}, 2, is_recycle=True)
     }
 
-    # Fábricas (ejemplo con una fábrica que no permite reciclaje de metal)
+    # Fábricas
     factories_db = {
         "Fabrica de muebles": Factory(1, "Fabrica de muebles", {1}, is_recycling=False),
         "Fabrica de reciclaje": Factory(2, "Fabrica de reciclaje", {2, 3}, is_recycling=True),
-        "Fabrica de reciclaje solo madera": Factory(3, "Fabrica de reciclaje solo madera", {2}, is_recycling=True)  # Solo permite reciclaje de madera
+        "Fabrica de reciclaje solo madera": Factory(3, "Fabrica de reciclaje solo madera", {2}, is_recycling=True)  # Solo reciclaje de madera
     }
 
     # Jugador
     player = Player("Jugador1")
     player.add_card(Material(1, "Madera", {"wood"}, {1}))
     player.add_card(Material(2, "Acero", {"metal"}, {2}))
+    player.add_card(Material(3, "Silla de Madera", {"furniture"}, {1}))
+    player.add_card(Material(4, "Silla de Madera con Patas de Metal", {"furniture"}, {1, 2}))
     player.add_card(designs_db["Diseño de Silla de Madera con Patas de Metal"])
-    player.add_card(factories_db["Fabrica de muebles"])
     player.add_card(designs_db["Diseño de Reciclaje de Madera"])
     player.add_card(designs_db["Diseño de Reciclaje de Metal"])
+    player.add_card(factories_db["Fabrica de muebles"])
     player.add_card(factories_db["Fabrica de reciclaje"])
     player.add_card(factories_db["Fabrica de reciclaje solo madera"])
 
