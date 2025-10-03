@@ -1,5 +1,6 @@
 from enum import Enum
-from typing import List, Set, Optional, Dict, Union
+from typing import List, Optional, Dict
+from collections import Counter
 import sys
 
 # Tipos de cartas
@@ -20,53 +21,64 @@ class Card:
 
 # Clase Material
 class Material(Card):
-    def __init__(self, card_id: int, name: str, tags: Set[str], composition: List[int]):
+    def __init__(self, card_id: int, name: str, tags: frozenset[str], composition: List[int], quantity: int = 1):
         super().__init__(CardType.MATERIAL, card_id, name)
-        self.tags = tags  # Etiquetas como 'metal', 'wood', etc.
-        self.composition = composition  # Lista de IDs de materiales básicos, permitiendo duplicados
+        self.tags = tags
+        self.composition = Counter(composition)  # Contador para componentes
+        self.quantity = quantity  # Cantidad de instancias de este material
 
-    def consume_r(self) -> None:
-        pass  # Marca el material como consumido
+    def __str__(self):
+        return f"{self.card_type.value}: {self.name} ({self.quantity})"
 
-    def consume_m(self) -> None:
-        pass  # Similar, sin objetos intermedios
-
-    def has_component_r(self, component_id: int) -> bool:
-        return component_id in self.composition
-
-    def has_component_m(self, component_id: int) -> bool:
-        for comp_id in self.composition:
-            if comp_id == component_id:
-                return True
+    def consume_r(self) -> bool:
+        if self.quantity > 0:
+            self.quantity -= 1
+            return True
         return False
 
+    def consume_m(self) -> bool:
+        if self.quantity > 0:
+            self.quantity -= 1
+            return True
+        return False
+
+    def has_component_r(self, component_id: int) -> bool:
+        return self.composition[component_id] > 0
+
+    def has_component_m(self, component_id: int) -> bool:
+        return self.composition.get(component_id, 0) > 0
+
     def add_components_r(self, components: List[int]) -> None:
-        self.composition.extend(components)
+        self.composition.update(components)
 
     def add_components_m(self, components: List[int]) -> None:
         for comp in components:
-            self.composition.append(comp)
+            self.composition[comp] += 1
 
     def remove_component_r(self, component_id: int) -> bool:
-        if component_id in self.composition:
-            self.composition.remove(component_id)
+        if self.composition[component_id] > 0:
+            self.composition[component_id] -= 1
+            if self.composition[component_id] == 0:
+                del self.composition[component_id]
             return True
         return False
 
     def remove_component_m(self, component_id: int) -> bool:
-        for i in range(len(self.composition)):
-            if self.composition[i] == component_id:
-                del self.composition[i]
-                return True
+        count = self.composition.get(component_id, 0)
+        if count > 0:
+            self.composition[component_id] = count - 1
+            if self.composition[component_id] == 0:
+                del self.composition[component_id]
+            return True
         return False
 
 # Clase Design
 class Design(Card):
-    def __init__(self, card_id: int, name: str, input_tags: Set[str], output_material_id: int, is_recycle: bool = False):
+    def __init__(self, card_id: int, name: str, input_tags: frozenset[str], output_material_id: int, is_recycle: bool = False):
         super().__init__(CardType.DESIGN, card_id, name)
-        self.input_tags = input_tags  # Etiquetas requeridas para insumos
+        self.input_tags = input_tags
         self.output_material_id = output_material_id
-        self.is_recycle = is_recycle  # Indica si es diseño de reciclaje
+        self.is_recycle = is_recycle
 
     def is_compatible_r(self, factory: 'Factory') -> bool:
         return self.card_id in factory.allowed_design_ids
@@ -89,105 +101,104 @@ class Design(Card):
             for tag in mat.tags:
                 if tag in required:
                     required.remove(tag)
-                if not required:
-                    return True
+                    if not required:
+                        return True
         return False
 
 # Clase Factory
 class Factory(Card):
-    def __init__(self, card_id: int, name: str, allowed_design_ids: Set[int], is_recycling: bool = False):
+    def __init__(self, card_id: int, name: str, allowed_design_ids: frozenset[int], is_recycling: bool = False):
         super().__init__(CardType.FACTORY, card_id, name)
         self.allowed_design_ids = allowed_design_ids
         self.is_recycling = is_recycling
 
-    def produce_r(self, design: Design, materials: List[Material], material_db: Dict[int, tuple[str, Set[str], List[int]]], consume: bool = True) -> Optional[Material]:
+    def produce_r(self, design: Design, materials: List[Material], material_db: Dict[int, tuple[str, frozenset[str], List[int]]], consume: bool = True) -> Optional[Material]:
         if not design.is_compatible_r(self) or not design.check_materials_r(materials):
             return None
         if not self.is_recycling:
             if consume:
                 for material in materials:
-                    material.consume_r()
-            name, tags, comp = material_db.get(design.output_material_id, ("Unknown", set(), []))
+                    if not material.consume_r():
+                        return None
+            name, tags, _ = material_db.get(design.output_material_id, ("Unknown", frozenset(), []))
             new_comp = []
             for mat in materials:
-                new_comp.extend(mat.composition)
+                new_comp.extend(mat.composition.elements())
             return Material(design.output_material_id, name, tags, new_comp)
         else:
             if len(materials) != 1 or not design.is_recycle:
                 return None
             input_material = materials[0]
             if input_material.has_component_r(design.output_material_id):
-                if consume:
-                    input_material.consume_r()
-                name, tags, comp = material_db.get(design.output_material_id, ("Unknown", set(), []))
+                if consume and not input_material.consume_r():
+                    return None
+                name, tags, comp = material_db.get(design.output_material_id, ("Unknown", frozenset(), []))
                 return Material(design.output_material_id, name, tags, comp)
         return None
 
-    def produce_m(self, design: Design, materials: List[Material], material_db: Dict[int, tuple[str, Set[str], List[int]]], consume: bool = True) -> Optional[Material]:
+    def produce_m(self, design: Design, materials: List[Material], material_db: Dict[int, tuple[str, frozenset[str], List[int]]], consume: bool = True) -> Optional[Material]:
         if not design.is_compatible_m(self) or not design.check_materials_m(materials):
             return None
         if not self.is_recycling:
             if consume:
                 for material in materials:
-                    material.consume_m()
-            name, tags, comp = material_db.get(design.output_material_id, ("Unknown", set(), []))
+                    if not material.consume_m():
+                        return None
+            name, tags, _ = material_db.get(design.output_material_id, ("Unknown", frozenset(), []))
             new_comp = []
             for mat in materials:
-                for c in mat.composition:
-                    new_comp.append(c)
+                for comp_id, count in mat.composition.items():
+                    new_comp.extend([comp_id] * count)
             return Material(design.output_material_id, name, tags, new_comp)
         else:
             if len(materials) != 1 or not design.is_recycle:
                 return None
             input_material = materials[0]
             if input_material.has_component_m(design.output_material_id):
-                if consume:
-                    input_material.consume_m()
-                name, tags, comp = material_db.get(design.output_material_id, ("Unknown", set(), []))
+                if consume and not input_material.consume_m():
+                    return None
+                name, tags, comp = material_db.get(design.output_material_id, ("Unknown", frozenset(), []))
                 return Material(design.output_material_id, name, tags, comp)
         return None
 
-    def recycle_r(self, designs: List[Design], material: Material, material_db: Dict[int, tuple[str, Set[str], List[int]]]) -> List[Material]:
+    def recycle_r(self, designs: List[Design], material: Material, material_db: Dict[int, tuple[str, frozenset[str], List[int]]]) -> List[Material]:
         if not self.is_recycling:
             return []
         result = []
-        leftover = list(material.composition)  # Copia para leftovers
+        leftover = Counter(material.composition)
         for design in designs:
-            if design.is_compatible_r(self):
-                if material.has_component_r(design.output_material_id):
-                    produced = self.produce_r(design, [material], material_db, consume=False)
-                    if produced:
-                        result.append(produced)
-                        leftover.remove(design.output_material_id)  # Remover una instancia
+            if design.is_compatible_r(self) and material.has_component_r(design.output_material_id):
+                produced = self.produce_r(design, [material], material_db, consume=False)
+                if produced and material.remove_component_r(design.output_material_id):
+                    result.append(produced)
+                    leftover[design.output_material_id] -= 1
+                    if leftover[design.output_material_id] == 0:
+                        del leftover[design.output_material_id]
         if leftover:
-            basura = Material(999, "Basura", {"waste"}, leftover)
-            result.append(basura)
-        if result:
-            material.consume_r()
+            result.append(Material(999, "Basura", frozenset(["waste"]), list(leftover.elements())))
+        if result and not material.consume_r():
+            return []
         return result
 
-    def recycle_m(self, designs: List[Design], material: Material, material_db: Dict[int, tuple[str, Set[str], List[int]]]) -> List[Material]:
+    def recycle_m(self, designs: List[Design], material: Material, material_db: Dict[int, tuple[str, frozenset[str], List[int]]]) -> List[Material]:
         if not self.is_recycling:
             return []
         result = []
-        leftover = []
-        for comp in material.composition:
-            leftover.append(comp)
+        leftover = Counter()
+        for comp_id, count in material.composition.items():
+            leftover[comp_id] = count
         for design in designs:
-            if design.is_compatible_m(self):
-                if material.has_component_m(design.output_material_id):
-                    produced = self.produce_m(design, [material], material_db, consume=False)
-                    if produced:
-                        result.append(produced)
-                        for i in range(len(leftover)):
-                            if leftover[i] == design.output_material_id:
-                                del leftover[i]
-                                break
+            if design.is_compatible_m(self) and material.has_component_m(design.output_material_id):
+                produced = self.produce_m(design, [material], material_db, consume=False)
+                if produced and material.remove_component_m(design.output_material_id):
+                    result.append(produced)
+                    leftover[design.output_material_id] -= 1
+                    if leftover[design.output_material_id] == 0:
+                        del leftover[design.output_material_id]
         if leftover:
-            basura = Material(999, "Basura", {"waste"}, leftover)
-            result.append(basura)
-        if result:
-            material.consume_m()
+            result.append(Material(999, "Basura", frozenset(["waste"]), list(leftover.elements())))
+        if result and not material.consume_m():
+            return []
         return result
 
 # Clase Player
@@ -197,9 +208,17 @@ class Player:
         self.cards: List[Card] = []
 
     def add_card(self, card: Card) -> None:
+        if isinstance(card, Material):
+            existing = self.find_card_r(card.name)
+            if existing:
+                existing.quantity += card.quantity
+                existing.add_components_r(card.composition.elements())
+                return
         self.cards.append(card)
 
     def remove_card(self, card: Card) -> None:
+        if isinstance(card, Material) and card.quantity > 0:
+            return  # No eliminamos, solo decrementamos quantity
         self.cards.remove(card)
 
     def find_card_r(self, name: str) -> Optional[Card]:
@@ -217,14 +236,16 @@ class Player:
     def add_basura_r(self, new_basura: Material) -> None:
         existing_basura = self.find_card_r("Basura")
         if existing_basura:
-            existing_basura.add_components_r(new_basura.composition)
+            existing_basura.quantity += new_basura.quantity
+            existing_basura.add_components_r(new_basura.composition.elements())
         else:
             self.add_card(new_basura)
 
     def add_basura_m(self, new_basura: Material) -> None:
         existing_basura = self.find_card_m("Basura")
         if existing_basura:
-            existing_basura.add_components_m(new_basura.composition)
+            existing_basura.quantity += new_basura.quantity
+            existing_basura.add_components_m(new_basura.composition.elements())
         else:
             self.add_card(new_basura)
 
@@ -238,30 +259,31 @@ def parse_input_m(input_str: str) -> List[str]:
     current = ''
     for char in input_str:
         if char == '+':
-            parts.append(current.strip())
+            if current.strip():
+                parts.append(current.strip())
             current = ''
         else:
             current += char
-    if current:
+    if current.strip():
         parts.append(current.strip())
     return parts
 
 # Lógica del juego en modo texto
-def text_game(player: Player, material_db: Dict[int, tuple[str, Set[str], List[int]]], designs_db: Dict[str, Design], factories_db: Dict[str, Factory]):
+def text_game(player: Player, material_db: Dict[int, tuple[str, frozenset[str], List[int]]], designs_db: Dict[str, Design], factories_db: Dict[str, Factory]):
     while True:
         print(f"Cartas de {player.name}: {player.show_cards()}")
         user_input = input("Ingresa acción (e.g., 'Madera + Diseño de Silla de Madera con Patas de Metal + Acero + Fabrica de muebles') o 'salir': ")
         if user_input.lower() == 'salir':
             break
-        parts = parse_input_r(user_input)  # Usa _R por defecto
+        parts = parse_input_r(user_input)
         if len(parts) < 3:
             print("Formato inválido. Usa al menos un Material, un Diseño y una Fábrica.")
             continue
 
-        # Clasificar cartas por tipo usando las bases de datos
         materials = []
         designs = []
         factories = []
+        material_names = {name for id, (name, _, _) in material_db.items()}
         for part in parts:
             card = player.find_card_r(part)
             if not card:
@@ -271,13 +293,16 @@ def text_game(player: Player, material_db: Dict[int, tuple[str, Set[str], List[i
                 designs.append(card)
             elif part in factories_db:
                 factories.append(card)
-            elif part in [name for id, (name, _, _) in material_db.items()] or part.lower().startswith("basura"):
-                materials.append(card)
+            elif part in material_names or part.lower().startswith("basura"):
+                if card.quantity > 0:
+                    materials.append(card)
+                else:
+                    print(f"Carta '{part}' no tiene cantidad suficiente.")
+                    break
             else:
                 print(f"Carta '{part}' no reconocida como Material, Diseño o Fábrica.")
                 break
         else:
-            # Validar cantidades
             if len(factories) != 1:
                 print("Debe haber exactamente una Fábrica.")
                 continue
@@ -296,12 +321,13 @@ def text_game(player: Player, material_db: Dict[int, tuple[str, Set[str], List[i
                     continue
                 recycled = factory.recycle_r(designs, materials[0], material_db)
                 if recycled:
-                    player.remove_card(materials[0])
                     for rec in recycled:
-                        if rec.name == "Basura":
+                        if rec.card_id == 999:
                             player.add_basura_r(rec)
                         else:
                             player.add_card(rec)
+                    if materials[0].quantity == 0:
+                        player.cards.remove(materials[0])
                     print(f"Reciclado: {', '.join(str(r) for r in recycled)}")
                 else:
                     print("Reciclaje fallido: ningún diseño compatible o material no válido.")
@@ -312,7 +338,8 @@ def text_game(player: Player, material_db: Dict[int, tuple[str, Set[str], List[i
                 produced = factory.produce_r(designs[0], materials, material_db)
                 if produced:
                     for mat in materials:
-                        player.remove_card(mat)
+                        if mat.quantity == 0:
+                            player.cards.remove(mat)
                     player.add_card(produced)
                     print(f"Producido: {produced}")
                 else:
@@ -322,45 +349,68 @@ def text_game(player: Player, material_db: Dict[int, tuple[str, Set[str], List[i
 def main():
     # Base de datos de materiales: {id: (name, tags, composition)}
     material_db = {
-        1: ("Madera", {"wood"}, []),  # Básico, composition vacía o [1] si self-referencial, pero para básicos, usamos [id] para contar
-        2: ("Acero", {"metal"}, []),
-        3: ("Silla de Madera", {"furniture"}, []),
-        4: ("Silla de Madera con Patas de Metal", {"furniture"}, []),
-        999: ("Basura", {"waste"}, [])
+        1: ("Madera", frozenset(["wood"]), [1]),
+        2: ("Acero", frozenset(["metal"]), [2]),
+        3: ("Silla de Madera", frozenset(["furniture"]), [1]),
+        4: ("Silla de Madera con Patas de Metal", frozenset(["furniture"]), [1, 2]),
+        999: ("Basura", frozenset(["waste"]), [])
     }
-
-    # Ajustar compositions para básicos
-    madera = Material(1, "Madera", {"wood"}, [1])
-    acero = Material(2, "Acero", {"metal"}, [2])
-    silla_madera = Material(3, "Silla de Madera", {"furniture"}, [1])
-    silla_madera_metal = Material(4, "Silla de Madera con Patas de Metal", {"furniture"}, [1, 2])
 
     # Diseños
     designs_db = {
-        "Diseño de Silla de Madera con Patas de Metal": Design(1, "Diseño de Silla de Madera con Patas de Metal", {"wood", "metal"}, 4),
-        "Diseño de Reciclaje de Madera": Design(2, "Diseño de Reciclaje de Madera", {"furniture", "waste"}, 1, is_recycle=True),
-        "Diseño de Reciclaje de Metal": Design(3, "Diseño de Reciclaje de Metal", {"furniture", "waste"}, 2, is_recycle=True)
+        "Diseño de Silla de Madera con Patas de Metal": Design(1, "Diseño de Silla de Madera con Patas de Metal", frozenset(["wood", "metal"]), 4),
+        "Diseño de Reciclaje de Madera": Design(2, "Diseño de Reciclaje de Madera", frozenset(["furniture", "waste"]), 1, is_recycle=True),
+        "Diseño de Reciclaje de Metal": Design(3, "Diseño de Reciclaje de Metal", frozenset(["furniture", "waste"]), 2, is_recycle=True)
     }
 
     # Fábricas
     factories_db = {
-        "Fabrica de muebles": Factory(1, "Fabrica de muebles", {1}, is_recycling=False),
-        "Fabrica de reciclaje": Factory(2, "Fabrica de reciclaje", {2, 3}, is_recycling=True),
-        "Fabrica de reciclaje solo madera": Factory(3, "Fabrica de reciclaje solo madera", {2}, is_recycling=True)  # Solo reciclaje de madera
+        "Fabrica de muebles": Factory(1, "Fabrica de muebles", frozenset([1]), is_recycling=False),
+        "Fabrica de reciclaje": Factory(2, "Fabrica de reciclaje", frozenset([2, 3]), is_recycling=True),
+        "Fabrica de reciclaje solo madera": Factory(3, "Fabrica de reciclaje solo madera", frozenset([2]), is_recycling=True)
     }
 
     # Jugador
     player = Player("Jugador1")
-    player.add_card(madera)
-    player.add_card(acero)
-    player.add_card(silla_madera)
-    player.add_card(silla_madera_metal)
+    player.add_card(Material(1, "Madera", frozenset(["wood"]), [1], quantity=2))  # 2 Maderas
+    player.add_card(Material(2, "Acero", frozenset(["metal"]), [2], quantity=3))  # 3 Aceros
+    player.add_card(Material(3, "Silla de Madera", frozenset(["furniture"]), [1], quantity=1))
+    player.add_card(Material(4, "Silla de Madera con Patas de Metal", frozenset(["furniture"]), [1, 2], quantity=2))  # 2 Sillas
     player.add_card(designs_db["Diseño de Silla de Madera con Patas de Metal"])
     player.add_card(designs_db["Diseño de Reciclaje de Madera"])
     player.add_card(designs_db["Diseño de Reciclaje de Metal"])
     player.add_card(factories_db["Fabrica de muebles"])
     player.add_card(factories_db["Fabrica de reciclaje"])
     player.add_card(factories_db["Fabrica de reciclaje solo madera"])
+
+    # Simulación: combinar basuras
+    print("Simulación: reciclar Silla de Madera con Patas de Metal solo para Madera")
+    recycled = factories_db["Fabrica de reciclaje solo madera"].recycle_r(
+        [designs_db["Diseño de Reciclaje de Madera"]],
+        Material(4, "Silla de Madera con Patas de Metal", frozenset(["furniture"]), [1, 2], quantity=1),
+        material_db
+    )
+    for rec in recycled:
+        if rec.card_id == 999:
+            player.add_basura_r(rec)
+        else:
+            player.add_card(rec)
+    print(f"Reciclado: {', '.join(str(r) for r in recycled)}")
+    print(f"Cartas de {player.name}: {player.show_cards()}")
+
+    print("Simulación: reciclar otra Silla para añadir más Madera a Basura")
+    recycled = factories_db["Fabrica de reciclaje solo madera"].recycle_r(
+        [designs_db["Diseño de Reciclaje de Madera"]],
+        Material(3, "Silla de Madera", frozenset(["furniture"]), [1], quantity=1),
+        material_db
+    )
+    for rec in recycled:
+        if rec.card_id == 999:
+            player.add_basura_r(rec)
+        else:
+            player.add_card(rec)
+    print(f"Reciclado: {', '.join(str(r) for r in recycled)}")
+    print(f"Cartas de {player.name}: {player.show_cards()}")
 
     text_game(player, material_db, designs_db, factories_db)
 
