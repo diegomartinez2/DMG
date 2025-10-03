@@ -131,11 +131,22 @@ class Factory(Card):
         if not self.is_recycling:
             return []
         result = []
+        recycled_components = set()
         for design in designs:
             if design.is_compatible_r(self):
                 produced = self.produce_r(design, [material], material_db, consume=False)
                 if produced:
                     result.append(produced)
+                    recycled_components.add(design.output_material_id)
+        leftover_components = material.composition - recycled_components
+        if leftover_components:
+            # Crear basura con componentes sobrantes
+            basura_id = 999  # ID fijo para basura genérica
+            basura_name = f"Basura de {material.name}"
+            basura_tags = {"waste"}
+            basura_comp = leftover_components
+            basura = Material(basura_id, basura_name, basura_tags, basura_comp)
+            result.append(basura)
         if result:
             material.consume_r()
         return result
@@ -144,11 +155,24 @@ class Factory(Card):
         if not self.is_recycling:
             return []
         result = []
+        recycled_components = set()
         for design in designs:
             if design.is_compatible_m(self):
                 produced = self.produce_m(design, [material], material_db, consume=False)
                 if produced:
                     result.append(produced)
+                    recycled_components.add(design.output_material_id)
+        leftover_components = set()
+        for comp in material.composition:
+            if comp not in recycled_components:
+                leftover_components.add(comp)
+        if leftover_components:
+            basura_id = 999
+            basura_name = f"Basura de {material.name}"
+            basura_tags = {"waste"}
+            basura_comp = leftover_components
+            basura = Material(basura_id, basura_name, basura_tags, basura_comp)
+            result.append(basura)
         if result:
             material.consume_m()
         return result
@@ -220,7 +244,7 @@ def text_game(player: Player, material_db: Dict[int, tuple[str, Set[str], Set[in
                 designs.append(card)
             elif part in factories_db:
                 factories.append(card)
-            elif part in [name for id, (name, _, _) in material_db.items()]:
+            elif part in [name for id, (name, _, _) in material_db.items()] or "Basura" in part:
                 materials.append(card)
             else:
                 print(f"Carta '{part}' no reconocida como Material, Diseño o Fábrica.")
@@ -263,11 +287,6 @@ def text_game(player: Player, material_db: Dict[int, tuple[str, Set[str], Set[in
                     print(f"Producido: {produced}")
                 else:
                     print("Producción fallida: diseño no compatible o materiales insuficientes.")
-                    for design in designs:
-                        if not design.is_compatible_r(factory):
-                            print(f"El diseño '{design.name}' no es compatible con la fábrica '{factory.name}'.")
-                        elif not design.check_materials_r(materials):
-                            print(f"El diseño '{design.name}' requiere materiales con etiquetas {design.input_tags}, pero solo se proporcionaron {[m.tags for m in materials]}.")
 
 # Ejemplo de uso
 def main():
@@ -276,7 +295,8 @@ def main():
         1: ("Madera", {"wood"}, {1}),  # Básico
         2: ("Acero", {"metal"}, {2}),
         3: ("Silla de Madera", {"furniture"}, {1}),
-        4: ("Silla de Madera con Patas de Metal", {"furniture"}, {1, 2})
+        4: ("Silla de Madera con Patas de Metal", {"furniture"}, {1, 2}),
+        999: ("Basura", {"waste"}, set())  # Entrada genérica para basura
     }
 
     # Diseños
