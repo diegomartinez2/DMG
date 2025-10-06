@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 
 """
  This module calculates the real and imaginary part of the dielectric function,
