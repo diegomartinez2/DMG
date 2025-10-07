@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import streamlit as st
 import requests
 import json
