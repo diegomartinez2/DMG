@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+"""
+Este es un script que permite usar ollama como un asistente que permita ser usado
+como 'Incrementador Cognitivo', es decir como ayuda para el razonamiento lógico.
+En princípio la idea es que se use en conjunto con otros elementos usando un archivo
+para el intercambio de información entre elementos.
+"""
 import streamlit as st
 import requests
 import json
