@@ -1,0 +1,49 @@
+\newif\iftablet    %\tablettrue % formato para tablets/pantalla
+\newif\ifcalli     \callitrue  % caligrafía para letras
+\newif\ifaudio     \audiotrue  % enlace para archivos de audio
+
+\iftablet
+\documentclass[12pt]{book}
+\else
+\documentclass[twoside,12pt]{book}
+\fi
+
+\title{El Fanal: Relato de ciencia ficción}
+
+\input{DASTpackages}
+\input{DASTmacros}
+\input{DASTmeta}
+
+\begin{document}
+
+\selectlanguage{spanish}
+\pagestyle{empty}
+%test\newpage
+\input{titelpage}\iftablet \newpage \else \cleardoublepage \fi
+
+\pagestyle{fancy}
+\pagenumbering{roman}
+\tableofcontents \iftablet \newpage \else \cleardoublepage \fi
+% XXX Si no deseas tener un índice, puedes eliminar esta línea desde \tableofcontents.
+
+\pagenumbering{arabic}
+\input{DASTsec}
+
+% XXX Coloca un % antes de las partes que no quieras que aparezcan en el PDF. Esto hará que toda la línea se vuelva azul. El código ya no será leído.
+\input{Inhalt/01- Introducción}
+\input{Inhalt/02- Antecedentes}
+\input{Inhalt/03- Más antecedentes}
+\input{Inhalt/04- 1er mes de embarazo}
+\input{Inhalt/05- 2do mes de embarazo}
+\input{Inhalt/06- 3er mes de embarazo}
+\input{Inhalt/07- 4to mes de embarazo}
+\input{Inhalt/08- 5to mes de embarazo}
+\input{Inhalt/09- 6to mes de embarazo}
+\input{Inhalt/10- 7mo mes de embarazo}
+\input{Inhalt/11- 8vo mes de embarazo}
+\input{Inhalt/12- 9no mes de embarazo}
+\input{Inhalt/13- 10mo mes de embarazo}
+\input{Inhalt/14- El parto}
+\input{Inhalt/15- El posparto}
+
+\end{document}

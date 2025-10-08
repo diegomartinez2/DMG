@@ -1,0 +1,1 @@
+$ENV{'TEXINPUTS'}='./pgfornament//:' . $ENV{'TEXINPUTS'};

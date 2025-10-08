@@ -1,0 +1,144 @@
+\hyphenation{Mi-khay-lo-vna Do-lo-khov Be-zu-khov Kar-lo-vich Lange-ron
+Co-pen-ha-gen Dmi-trie-vna Pav-lo-vich Na-ta-sha Kuz-mi-ni-chna Bol-kho-vi-ti-nov
+Bo-ro-di-no  Ku-tu-zov Pav-lo-vna
+Ger-mers-heim Ca-me-na Lou-ana Ka-rin Ka-rolin Ma-nu-el }
+
+% babel
+\selectlanguage{spanish}
+
+% graphixs
+\graphicspath{{img/}}
+
+% chngcntr
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+
+% color
+\definecolor{ornament}{RGB}{0,80,0}
+
+% \definecolor{marron}{RGB}{60,30,10}
+% \definecolor{darkblue}{RGB}{0,0,80}
+% \definecolor{lightblue}{RGB}{80,80,80}
+% \definecolor{darkgreen}{RGB}{0,80,0}
+% \definecolor{darkgray}{RGB}{0,80,0}
+% \definecolor{darkred}{RGB}{80,0,0}
+% \definecolor{shadecolor}{rgb}{0.97,0.97,0.97}
+
+\input Acorn.fd
+\newcommand*\initfamily{\usefont{U}{Acorn}{xl}{n}}
+
+\newcommand{\nm}{}
+
+\iftablet
+\geometry{
+  paperwidth=220mm,
+  paperheight=150mm,
+  left=2cm,
+  right=2cm,
+  top=1.5cm,
+  bottom=2.5cm,
+%  nohead
+}
+\else % periodicalaureo
+\geometry{
+ paperwidth=170mm,
+ paperheight=240mm,
+ right=18.9mm, %37.8mm,
+ left= 37.8mm,%18.9mm,
+ top=26.7mm,
+ bottom=41mm, % debería ser 53.3mm
+ }
+\fi
+
+\renewcommand{\headrule}{{\color{ornament}
+\raisebox{-2.1pt}[10pt][10pt]{\leafright} \hrulefill
+\raisebox{-2.1pt}[10pt][10pt]{~~~\decofourleft \decotwo\decofourright~~~} \hrulefill
+\raisebox{-2.1pt}[10pt][10pt]{ \leafleft}}
+}
+
+\renewcommand{\footnoterule}{\vspace{-0.8em}
+\noindent
+ {\color{ornament}\pgfornament[width=5cm]{88} }
+{\color{ornament}\includegraphics[width=5cm]{tikz/88} }
+\vspace{.5em} }
+
+\fancyfoot[RO,CO,LO,RE,CE,LE]{ }
+\fancyhead[RO,CO,LO,RE,CE,LE]{ }
+
+\fancyhead[RO,LE]{\scriptsize\thepage}
+\fancyfoot[RE,LO]{{\scriptsize Tu texto de pie de página -- idéntico en cada página izquierda}} % XXX Aquí cambias el texto del pie de página
+\fancyfoot[RO,LE]{\scriptsize\thepage}
+ \fancyfoot[C]{{\color{ornament}\pgfornament[width=1cm]{69}}}
+\fancyfoot[C]{{\color{ornament}\includegraphics[width=1cm]{tikz/69}}}
+
+\fancypagestyle{plain}{%
+\fancyfoot[RO,LE]{\scriptsize\thepage}
+\fancyhead[RO,LE]{\scriptsize\thepage}
+\fancyhead[CO]{}
+\fancyfoot[LO,CO]{}
+}
+
+\titleformat{\part}
+{\hbox{\begin{minipage}{\textwidth}\color{ornament}
+% \pgfornament[height=1cm]{63}\hfill%
+% \pgfornament[height=1cm]{71}\iftablet\pgfornament[height=1cm]{71}\fi\hfill%
+% \pgfornament[height=1cm]{64}\\[1em]
+\includegraphics[height=1cm]{tikz/63}\hfill%
+\includegraphics[height=1cm]{tikz/71}\iftablet\includegraphics[height=1cm]{tikz/71}\fi\hfill%
+\includegraphics[height=1cm]{tikz/64}\\
+\end{minipage}}
+\centering \LARGE\bfseries}
+{\newline \thepart.}{.5em}{}[\vspace{1ex}\hbox{%
+\begin{minipage}{\textwidth}\color{ornament}
+% \pgfornament[height=1cm,symmetry=h]{63}\hfill%
+% \pgfornament[height=1cm,symmetry=v]{71}\iftablet\pgfornament[height=1cm]{71}\fi\hfill%
+% \pgfornament[height=1cm,symmetry=h]{64}\\[1em]
+\scalebox{1}[-1]{\includegraphics[height=1cm]{tikz/63}}\hfill%
+\scalebox{1}[-1]{\includegraphics[height=1cm]{tikz/71}}\iftablet\scalebox{1}[-1]{\includegraphics[height=1cm]{tikz/71}}\fi\hfill%
+\scalebox{1}[-1]{\includegraphics[height=1cm]{tikz/64}}\\
+\end{minipage}
+}]
+
+\titleformat{\chapter}
+{\iftablet\vspace{-20mm}\else\vspace{-15mm}\fi\hbox{\begin{minipage}[0pt]{\textwidth}\color{ornament}
+% \pgfornament[height=1cm]{63}\hfill%
+% \pgfornament[height=1cm]{87}\hfill%
+% \pgfornament[height=1cm]{64}\\[1em]
+\includegraphics[height=1cm]{tikz/63}\hfill%
+\includegraphics[height=1cm]{tikz/87}\hfill%
+\includegraphics[height=1cm]{tikz/64}\\
+\end{minipage}}\vspace{-.5em}
+\LARGE\bfseries}
+{\newline \thechapter.}{0.5em}{}%
+[\iftablet\vspace{-13mm}\else\vspace{-10mm}\fi]
+
+\titleformat{\section}
+{\hbox{\begin{minipage}{\textwidth}\color{ornament}
+\hfill\parbox{4cm}{\pgfornament[width=2cm]{84}\pgfornament[width=2cm]{84}}%
+\raisebox{2.6pt}{\pgfornament[width=1cm,symmetry=v]{14}}
+\end{minipage}}
+\Large\bfseries}
+{\newline \thesection.}{.5em}{}
+
+\ifcalli
+\newcommand{\calli}{\calligra}
+\else
+\newcommand{\calli}{\itshape}
+\fi
+
+\let\oldquote\quote
+\let\oldendquote\endquote
+\def\quote{\begingroup \oldquote \flushleft }
+\def\endquote{\endflushleft \oldendquote \endgroup \bigskip}
+
+\makeatletter
+
+\def\initial{\@ifstar\@initial\@@initial}
+\def\@initial#1#2{
+\lettrine[lines=2, loversize=0.3, lraise=0]{``\initfamily #1}{#2}
+}
+\def\@@initial#1#2{
+\lettrine[lines=2, loversize=0.3, lraise=0]{\initfamily #1}{#2}
+}
+
+\makeatother

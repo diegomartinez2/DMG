@@ -1,0 +1,31 @@
+\makeatletter
+\let\Oldpart\part
+\def\part{\@ifstar\@DASTpart\@@DASTpart}
+\def\@DASTpart#1{
+\cleardoublepage
+\phantomsection
+\bookmarksetup{startatroot}% this is it
+\fancyhead[LE,LO]{} %Kapitel
+\Oldpart*{#1}
+\fancyhead[RE,RO]{}
+\fancyhead[LE,LO]{\scriptsize #1}
+}
+\def\@@DASTpart#1{
+\Oldpart{#1}
+\fancyhead[LE,LO]{}
+\fancyhead[RE,RO]{}
+\fancyhead[LE,LO]{ \scriptsize \partname ~ \thepart : ~ #1}
+}
+
+\let\Oldchapter\chapter
+\def\chapter{\@ifstar\@DASTchapter\@@DASTchapter}
+\def\@DASTchapter#1{
+\Oldchapter*{#1}
+\fancyhead[RE,RO]{ \scriptsize #1}
+\addcontentsline{toc}{chapter}{#1}
+}
+\def\@@DASTchapter#1{
+\Oldchapter{#1}
+\fancyhead[RE,CO]{ \scriptsize \chaptername ~ \thechapter : ~ #1}
+}
+\makeatother
