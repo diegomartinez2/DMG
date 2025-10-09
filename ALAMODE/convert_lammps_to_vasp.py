@@ -26,7 +26,7 @@ def lammps_to_vasp_ase(lammps_file_path):
     # Create a temporary file for VASP output
     with NamedTemporaryFile(mode='w', suffix='.vasp', delete=False) as tmp:
         vasp_file = tmp.name
-        write(vasp_file, atoms, format='vasp', vasp5=True, sort=True)
+        write(vasp_file, atoms, format='vasp', vasp5=True, sort=True, direct=True)
 
     # Read and print the content
     with open(vasp_file, 'r') as f:
