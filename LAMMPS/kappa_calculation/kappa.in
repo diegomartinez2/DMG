@@ -1,0 +1,53 @@
+# Ejemplo de Input File de LAMMPS para Green-Kubo
+# Las variables de la simulación se pasan desde el script de Bash
+# Parámetros por defecto para el ejemplo:
+variable T equal 80.0
+variable V_LMP equal 1475.0 # Volumen en A^3 (se calculará más precisamente después del equilibrio)
+variable dt equal 0.001
+variable tau_max_steps equal 50000 # 50 ps con dt=0.001 ps
+variable run_steps equal 1000000
+
+# 1. Inicialización
+units           metal
+atom_style      atomic
+dimension       3
+boundary        p p p
+
+# 2. Definición del sistema (Argón)
+lattice         fcc 5.26
+region          box block 0 10 0 10 0 10
+create_box      1 box
+create_atoms    1 box
+
+# 3. Potencial (Lennard-Jones)
+mass            1 39.948
+pair_style      lj/cut 10.0
+pair_coeff      1 1 0.0103231 3.405
+
+# 4. Equilibrio (NPT)
+velocity        all create ${T} 12345 mom yes rot no
+fix             1 all npt temp ${T} ${T} 0.1 iso 0.0 0.0 1.0
+timestep        ${dt}
+thermo          1000
+run             200000
+
+unfix           1
+reset_timestep  0
+
+# 5. Guardar Parámetros Clave para Python
+# Capturamos el volumen preciso (V) y la temperatura (T)
+variable V_final equal vol
+# Usamos 'print' para escribir directamente los valores en un archivo.
+# V_final y T se pasan como un par clave-valor.
+print "T: ${T}" append params.txt
+print "V: ${V_final}" append params.txt
+print "dt: ${dt}" append params.txt
+
+# 6. Cálculo del Flujo de Calor (NVE)
+fix             2 all nve
+compute         myFlux all heat/flux
+fix             3 all ave/correlate 50 10 200 c_myFlux[1] c_myFlux[2] c_myFlux[3] type auto file J0Jt.dat ave running
+
+thermo_style    custom step temp etotal press vol
+thermo          1000
+run             ${run_steps}
