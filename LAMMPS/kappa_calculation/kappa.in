@@ -2,7 +2,7 @@
 # Las variables de la simulación se pasan desde el script de Bash
 # Parámetros por defecto para el ejemplo:
 variable T equal 80.0
-variable V_LMP equal 1475.0 # Volumen en A^3 (se calculará más precisamente después del equilibrio)
+variable V_LMP equal 145.5 # Volumen en A^3 (se calculará más precisamente después del equilibrio) Vtotal​≈(10⋅a)^3=(10⋅5.26 A˚)^3=(52.6 A˚)^3≈145,537 A˚
 variable dt equal 0.001
 variable tau_max_steps equal 50000 # 50 ps con dt=0.001 ps
 variable run_steps equal 1000000
