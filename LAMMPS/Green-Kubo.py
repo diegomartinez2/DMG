@@ -10,6 +10,7 @@ import os
 T = 80.0          # Temperatura del sistema (K)
 V = 1475.0        # Volumen de la caja de simulación (A^3) - Ejemplo, usar el valor real de su simulación
 dt_lammps = 0.001 # Paso de tiempo de la simulación (ps)
+#dt_lammps = 0.0005
 
 # Constantes Físicas (en unidades de LAMMPS: eV, A, ps)
 # k_B (Constante de Boltzmann) en eV/K
@@ -26,7 +27,7 @@ FACTOR_CONVERSION = 1.5975e+10
 # Tiempo de truncamiento para la integral (en ps).
 # Escoger donde la ACF se acerca a cero o se vuelve ruidosa.
 tau_max = 50.0
-
+#tau_max = 100.0
 # =======================================================
 # 2. Lectura y Ajuste de Datos
 # =======================================================
@@ -133,6 +134,21 @@ plt.axhline(0, color='grey', linestyle='--')
 plt.title('Función de Autocorrelación del Flujo de Calor')
 plt.xlabel('Tiempo (ps)')
 plt.ylabel('ACF del Flujo de Calor [Unidades LAMMPS]')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# **Cambio: Grafica la integral acumulativa para verificar convergencia (plateau)**
+cum_int_x = np.cumsum(acf_x_trunc) * dt_lammps  # Integral acumulativa
+cum_int_y = np.cumsum(acf_y_trunc) * dt_lammps  # Integral acumulativa
+cum_int_z = np.cumsum(acf_z_trunc) * dt_lammps  # Integral acumulativa
+plt.figure(figsize=(10, 6))
+plt.plot(time_trunc, cum_int_x, label='Integral Acumulativa X')
+plt.plot(time_trunc, cum_int_y, label='Integral Acumulativa Y')
+plt.plot(time_trunc, cum_int_z, label='Integral Acumulativa Z')
+plt.title('Integral Acumulativa de ACF para Convergencia')
+plt.xlabel('Tiempo (ps)')
+plt.ylabel('Integral [Unidades LAMMPS]')
 plt.legend()
 plt.grid(True)
 plt.show()
