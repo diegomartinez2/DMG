@@ -2,9 +2,9 @@ import numpy as np
 from scipy.integrate import simps
 import os
 
-def read_lammps_params(filename="params.txt"):
-    """Lee T, V y dt del archivo params.txt generado por LAMMPS."""
-    params = {}
+def read_lammps_params(filename="parametros.txt"):
+    """Lee T, V y dt del archivo parametros.txt generado por LAMMPS."""
+    parametros = {}
     if not os.path.exists(filename):
         raise FileNotFoundError(f"Error: Archivo de parámetros {filename} no encontrado.")
 
@@ -13,16 +13,16 @@ def read_lammps_params(filename="params.txt"):
             if ':' in line:
                 key, value = line.split(':')
                 # Limpiar la cadena y convertir a float
-                params[key.strip()] = float(value.strip())
+                parametros[key.strip()] = float(value.strip())
 
-    return params
+    return parametros
 
-def calculate_kappa(params, input_file='J0Jt.dat'):
+def calculate_kappa(parametros, input_file='J0Jt.dat'):
     """Calcula la conductividad térmica usando el método Green-Kubo."""
 
-    T = params['T']
-    V = params['V']
-    dt_lammps = params['dt']
+    T = parametros['T']
+    V = parametros['V']
+    dt_lammps = parametros['dt']
     tau_max = 50.0 # Tiempo de truncamiento (ps), puede ser fijo o pasado como arg.
 
     # Constantes Físicas y Conversión
