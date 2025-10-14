@@ -3,9 +3,9 @@
 # Parámetros por defecto para el ejemplo:
 variable T equal 80.0
 variable V_LMP equal 145.5 # Volumen en A^3 (se calculará más precisamente después del equilibrio) Vtotal​≈(10⋅a)^3=(10⋅5.26 A˚)^3=(52.6 A˚)^3≈145,537 A˚
-variable dt equal 0.001
-variable tau_max_steps equal 50000 # 50 ps con dt=0.001 ps
-variable run_steps equal 1000000
+variable dt equal 0.001 # tal vez 0.0005
+variable tau_max_steps equal 200000 # 1000000 para 500 ps con dt=0.0005 ps
+variable run_steps equal 1000000 # o tal vez 10000000 # **Cambio: Aumenta de 1000000 (1 ns) a 10000000 (5 ns) para mejor estadística en ACF compleja**
 
 # 1. Inicialización
 units           metal
@@ -25,11 +25,19 @@ pair_style      lj/cut 10.0
 pair_coeff      1 1 0.0103231 3.405
 
 # 4. Equilibrio (NPT)
+# **Cambio: Añade minimización inicial para materiales complejos; aumenta pasos para estabilización más larga**
+minimize       1.0e-4 1.0e-6 100 1000  # **Nuevo: Minimiza energía para relajar estructuras complejas**
 velocity        all create ${T} 12345 mom yes rot no
-fix             1 all npt temp ${T} ${T} 0.1 iso 0.0 0.0 1.0
+# velocity all create ${T} 12345 mom yes rot no  # Corrida 1 semilla 12345
+# velocity all create ${T} 67890 mom yes rot no  # Corrida 2
+# velocity all create ${T} 45678 mom yes rot no  # Corrida 3
+fix             1 all npt temp ${T} ${T} 0.1 iso 0.0 0.0 1.0 # Termostato y barostato
+# fix 1 all npt temp ${T} ${T} 0.1 iso 0.0 0.0 1.0 seed 54321 # Con semilla 54321
+# fix 1 all langevin ${T} ${T} 0.1 98765 # Termostato Langevin con semilla 98765
 timestep        ${dt}
 thermo          1000
-run             200000
+run             ${tau_max_steps}
+# run           1000000 # **Cambio: Aumenta de 200000 (200 ps) a 1000000 (500 ps) o más para estabilización lenta**
 
 unfix           1
 reset_timestep  0
@@ -39,15 +47,43 @@ reset_timestep  0
 variable V_final equal vol
 # Usamos 'print' para escribir directamente los valores en un archivo.
 # V_final y T se pasan como un par clave-valor.
-print "T: ${T}" append params.txt
-print "V: ${V_final}" append params.txt
-print "dt: ${dt}" append params.txt
+print "T: ${T}" append parametros.txt
+print "V: ${V_final}" append parametros.txt
+print "dt: ${dt}" append parametros.txt
 
 # 6. Cálculo del Flujo de Calor (NVE)
+# Cálculo del Flujo de Calor y DM de Equilibrio (NVE)
+# Se usa NVE para DM de Equilibrio para las fluctuaciones del flujo de calor
+
 fix             2 all nve
-compute         myFlux all heat/flux
+compute         myFlux all heat/flux  # Calcula el flujo de calor instantáneo
 fix             3 all ave/correlate 50 10 200 c_myFlux[1] c_myFlux[2] c_myFlux[3] type auto file J0Jt.dat ave running
 
-thermo_style    custom step temp etotal press vol
+variable        Jx equal c_myFlux[1] / vol       # Componente x del flujo (J/V)
+variable        Jy equal c_myFlux[2] / vol       # Componente y del flujo (J/V)
+variable        Jz equal c_myFlux[3] / vol       # Componente z del flujo (J/V)
+variable        J2 equal (v_Jx*v_Jx + v_Jy*v_Jy + v_Jz*v_Jz) # |J|^2
+
+# Función de Autocorrelación del Flujo de Calor (ACF)
+variable p equal 5000
+# variable p equal 10000     # Longitud total de correlación (pasos)
+# $p = 5000 (steps, e.g., 5 ps with dt = 0.001 ps),
+variable s equal 10
+# variable        s equal 5         # Intervalo de muestreo
+# $s = 10 (sample every 10 steps to reduce data size),
+variable d equal 10
+# variable        d equal 5         # Pasos entre correlaciones
+# $d = 10 (correlate over 10-step intervals).
+fix             3 all ave/correlate $p $s $d &
+                c_myFlux[1] c_myFlux[2] c_myFlux[3] type auto file J0Jt_12345.dat ave running
+
+# p: correlación total (pasos), s: intervalo de muestreo, d: pasos de DM
+
+thermo_style    custom step temp etotal press vol v_J2
 thermo          1000
+# timestep        0.001
+# timestep      0.0005
+
+#thermo_style    custom step temp etotal press vol
+#thermo          1000
 run             ${run_steps}
