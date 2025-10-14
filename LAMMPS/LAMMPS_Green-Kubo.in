@@ -39,10 +39,10 @@ variable        J2 equal (v_Jx*v_Jx + v_Jy*v_Jy + v_Jz*v_Jz) # |J|^2
 
 # Función de Autocorrelación del Flujo de Calor (ACF)
 variable p equal 5000
-variable s equal 10
-variable d equal 10
 # $p = 5000 (steps, e.g., 5 ps with dt = 0.001 ps),
+variable s equal 10
 # $s = 10 (sample every 10 steps to reduce data size),
+variable d equal 10
 # $d = 10 (correlate over 10-step intervals).
 fix             3 all ave/correlate $p $s $d &
                 c_myFlux[1] c_myFlux[2] c_myFlux[3] type auto file J0Jt.dat ave running
