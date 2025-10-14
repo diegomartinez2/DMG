@@ -54,7 +54,7 @@ acf_y = data[:, 2]
 acf_z = data[:, 3]
 
 # # Cargar múltiples archivos J0Jt.dat
-# input_files = ['J0Jt_run1.dat', 'J0Jt_run2.dat', 'J0Jt_run3.dat']
+# input_files = ['J0Jt_12345.dat', 'J0Jt_23456.dat', 'J0Jt_34567.dat']
 # acf_x_avg = np.zeros_like(np.loadtxt(input_files[0], skiprows=4)[:, 1])
 # for f in input_files:
 #     data = np.loadtxt(f, skiprows=4)
