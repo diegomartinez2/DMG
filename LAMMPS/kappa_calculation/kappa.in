@@ -57,7 +57,8 @@ print "dt: ${dt}" append parametros.txt
 
 fix             2 all nve
 compute         myFlux all heat/flux  # Calcula el flujo de calor instantáneo
-fix             3 all ave/correlate 50 10 200 c_myFlux[1] c_myFlux[2] c_myFlux[3] type auto file J0Jt.dat ave running
+fix             3 all ave/correlate 50 10 200 &
+                c_myFlux[1] c_myFlux[2] c_myFlux[3] type auto file J0Jt.dat ave running
 
 variable        Jx equal c_myFlux[1] / vol       # Componente x del flujo (J/V)
 variable        Jy equal c_myFlux[2] / vol       # Componente y del flujo (J/V)
@@ -75,7 +76,8 @@ variable d equal 10
 # variable        d equal 5         # Pasos entre correlaciones
 # $d = 10 (correlate over 10-step intervals).
 fix             3 all ave/correlate $p $s $d &
-                c_myFlux[1] c_myFlux[2] c_myFlux[3] type auto file J0Jt_12345.dat ave running
+                Jx Jy Jz J2 type auto file J0Jt_12345.dat ave running
+                # c_myFlux[1] c_myFlux[2] c_myFlux[3] type auto file J0Jt_12345.dat ave running
 
 # p: correlación total (pasos), s: intervalo de muestreo, d: pasos de DM
 
