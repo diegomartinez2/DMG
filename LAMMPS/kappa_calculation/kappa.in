@@ -76,7 +76,7 @@ fix             3 all ave/correlate 50 10 200 &
 # variable        d equal 5         # Pasos entre correlaciones
 # $d = 10 (correlate over 10-step intervals).
 # fix             3 all ave/correlate $p $s $d &
-#                 Jx Jy Jz J2 type auto file J0Jt_12345.dat ave running
+#                 v_Jx v_Jy v_Jz type auto file J0Jt_12345.dat ave running
                 # c_myFlux[1] c_myFlux[2] c_myFlux[3] type auto file J0Jt_12345.dat ave running
 
 # p: correlación total (pasos), s: intervalo de muestreo, d: pasos de DM
