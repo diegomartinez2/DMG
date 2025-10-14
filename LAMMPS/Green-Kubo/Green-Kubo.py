@@ -98,8 +98,8 @@ Int_avg = (Int_x + Int_y + Int_z) / 3.0
 # El output de LAMMPS (J0Jt.dat) tiene unidades de eV^2/(A^2 ps^2) * A^6 = eV^2 A^4 / ps^2
 
 # Calculando el factor (1 / (3 * k_B * T^2))
-#GK_prefactor = 1.0 / (3.0 * kB_eV_K * T**2)
-GK_prefactor = V / (3.0 * kB_eV_K * T**2)
+GK_prefactor = 1.0 / (3.0 * kB_eV_K * T**2) #LAMMPS ya hace la salida de los Jx Jy Jz por volumen (pero hay que revisar esto)
+#GK_prefactor = V / (3.0 * kB_eV_K * T**2)
 
 # Conductividad térmica en las unidades de LAMMPS (eV^2 / (A ps K))
 kappa_x_LAMMPS = GK_prefactor * Int_x
