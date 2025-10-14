@@ -53,6 +53,15 @@ acf_x = data[:, 1]
 acf_y = data[:, 2]
 acf_z = data[:, 3]
 
+# # Cargar múltiples archivos J0Jt.dat
+# input_files = ['J0Jt_run1.dat', 'J0Jt_run2.dat', 'J0Jt_run3.dat']
+# acf_x_avg = np.zeros_like(np.loadtxt(input_files[0], skiprows=4)[:, 1])
+# for f in input_files:
+#     data = np.loadtxt(f, skiprows=4)
+#     acf_x_avg += data[:, 1]
+# acf_x_avg /= len(input_files)
+# # Procede con integración usando acf_x_avg
+
 # Recortar datos hasta el tiempo de truncamiento (tau_max)
 idx_max = np.where(time >= tau_max)[0]
 if len(idx_max) > 0:

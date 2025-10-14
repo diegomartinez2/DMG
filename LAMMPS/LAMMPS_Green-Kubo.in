@@ -22,9 +22,15 @@ pair_coeff      1 1 0.0103231 3.405 # epsilon (eV), sigma (A)
 # **Cambio: Añade minimización inicial para materiales complejos; aumenta pasos para estabilización más larga**
 minimize       1.0e-4 1.0e-6 100 1000  # **Nuevo: Minimiza energía para relajar estructuras complejas**
 velocity        all create 80.0 12345 mom yes rot no  # Inicializar velocidades a 80 K
+# velocity all create 80.0 12345 mom yes rot no  # Corrida 1 semilla 12345
+# velocity all create 80.0 67890 mom yes rot no  # Corrida 2
+# velocity all create 80.0 45678 mom yes rot no  # Corrida 3
 fix             1 all npt temp 80.0 80.0 0.1 iso 0.0 0.0 1.0 # Termostato y barostato
+# fix 1 all npt temp 80.0 80.0 0.1 iso 0.0 0.0 1.0 seed 54321 # Con semilla 54321
+# fix 1 all langevin 80.0 80.0 0.1 98765 # Termostato Langevin con semilla 98765
 timestep        0.001
 # timestep      0.0005  # **Cambio: Reduce timestep para mayor precisión en potenciales complejos**
+# thermo_style custom step temp etotal press vol # Usa thermo_style para monitorear
 thermo          1000
 run             200000
 # run           1000000 # **Cambio: Aumenta de 200000 (200 ps) a 1000000 (500 ps) o más para estabilización lenta**
