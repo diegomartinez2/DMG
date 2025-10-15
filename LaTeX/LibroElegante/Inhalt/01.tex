@@ -13,200 +13,200 @@
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-\chapter{Instrucciones de uso para esta plantilla}
-
-¡Bienvenido a tu plantilla para tu diario de embarazo! Asumo que hasta ahora no has tenido experiencia con el software \LaTeX{} y que tampoco quieres adentrarte en el maravilloso mundo de la programación. Por eso, mi objetivo ha sido diseñar esta plantilla no solo para que el resultado final sea visualmente atractivo, sino también para que el código sea lo más simple posible, de modo que siempre sepas qué hacer.
-
-Por ello, en este punto solo te guiaré de manera muy general a través del documento. Siempre que necesites ayuda, no dudes en enviarme un correo a \href{mailto:mi@historiadenacimiento.es}{mi@historiadenacimiento.es}.
-
-\section{Orientarte en Overleaf}
-
-Normalmente, tu pantalla de Overleaf está dividida en tres partes. A la izquierda ves los archivos del proyecto, en el centro el código y a la derecha el resultado en PDF.
-
-\subsection{Resultado en PDF}
-Para ver cómo se ve el resultado de tu codificación como PDF, simplemente haz clic en el botón verde \emph{Recompile} en la parte superior derecha. Overleaf generará entonces una versión actualizada de tu PDF. Puedes desplazarte hacia arriba y hacia abajo para ver cómo se ven las páginas individuales.
-
-\subsection{Entrada de código}
-En el centro está la entrada de código. Cuando abras este documento por primera vez, deberías ver allí la entrada de código para el documento \emph{main}, es decir, el archivo principal. Si has seleccionado un archivo y reinicias Overleaf más tarde, verás el código del archivo que seleccionaste por última vez en el área de archivos del proyecto a la izquierda.
-
-\subsection{Archivos del proyecto}
-Los archivos del proyecto, en la parte izquierda, puedes imaginarlos como archivos individuales en una carpeta. Solo con la interacción de estos archivos individuales Overleaf puede generar tu PDF. Por lo tanto, no elimines ningún archivo precipitadamente.
-
-La mayoría de los archivos puedes ignorarlos. Contienen código que no querrás modificar. \newline
-\textbf{Archivos que no debes tocar}
-\begin{itemize}
-       \item pgfornament
-    \item tikz
-    \item DASTpackages
-    \item DASTsec
-    \item latexmkrc
-\end{itemize}
-\textbf{Archivos que puedes modificar}
-\begin{itemize}
-    \item Carpeta \textbf{img}: Aquí están las imágenes. He subido algunos ejemplos. La imagen "Strand" es la portada actual.
-    \item Carpeta \textbf{Inhalt}: En esta carpeta están los archivos en los que escribes las entradas individuales del diario.
-    \item \textbf{DASTmeta}: Aquí puedes cambiar los datos del PDF. Cuando guardes tu documento como PDF, estos datos se incluirán en los metadatos.
-    \item \textbf{main}: Aquí puedes eliminar partes del PDF, por ejemplo, si no quieres escribir capítulos sobre el posparto.
-    \item \textbf{DASTmacros}: Aquí puedes cambiar solo una cosa, que es el texto del pie de página.
-    \item \textbf{titlepage}: Aquí hay mucho que editar. Lo veremos en detalle más adelante.
-\end{itemize}
-
-Cuando hagas clic en uno de los archivos correspondientes a la izquierda, se abrirá una nueva ventana central. Es decir, verás el código que está en esa carpeta. Para que tengas que lidiar lo menos posible con el código, he incluido muy poco código en las carpetas que más te interesan. Allí puedes empezar a escribir directamente. ¡Te mostraré cómo hacerlo ahora!
-
-\section{Cambiar tus datos personales y la portada}
-Por supuesto, no quieres un diario de embarazo que simplemente diga "Diario". ¡Quieres que lleve TU nombre! Por eso, debes ingresar tus datos personales correspondientes. \newline
-
-Para que encuentres rápidamente las partes que quieres cambiar en los documentos correspondientes, las he marcado siempre con \emph{XXX}. Puedes usar la función de búsqueda. Importante: Primero haz clic en la parte del código de tu pantalla, de lo contrario, \LaTeX{} no sabrá dónde buscar. Luego presiona CTRL+F al mismo tiempo, es decir, la función de búsqueda normal. Puedes escribir \emph{XXX} en el campo y hacer clic en Buscar. Funciona como en un navegador de internet, Word o Writer. \newline
-
-Hay código negro y código azul. El código negro se lee como código real. El código azul siempre está detrás de un \% y no se lee. Estos son, por tanto, notas, similares a comentarios que no se imprimen al final. Estos comentarios te muestran qué hace un determinado segmento de código.
-
-Puedes hacer lo siguiente en los siguientes documentos:
-
-\begin{itemize}
-\item Titlepage (en inglés, para portada o página de título)
-\begin{description}
-\item[Título de la portada] Puedes elegir tu propio título.
-\item[Título interior] Aquí también puedes cambiar el texto.
-\item[Como parte de la crónica familiar] Puedes eliminarlo o modificarlo.
-\item[Escrito por] Ingresa el o los autores principales.
-\item[Colaboración] Si no incluyes nada, puedes eliminarlo.
-\item[Fotos de] También puedes eliminarlo si no incluyes a nadie.
-\item[Año] Puedes actualizarlo o eliminarlo.
-\end{description}
-    \item IMG: Sube una nueva imagen a la carpeta para usarla como imagen de portada.
-\end{itemize}
-
-\section{Cambiar el texto del pie de página}
-Si quieres cambiar el texto del pie de página, haz clic en el documento \emph{DASTmacros}. En la línea 70 encontrarás el texto del pie de página.
-
-\section{Subir imágenes}
-Si quieres subir una imagen, puedes hacerlo fácilmente a través del botón \emph{Upload} en la esquina superior izquierda. Las imágenes se guardarán en la carpeta \textit{img}. Para insertar una imagen en el documento, ingresa el siguiente código en el lugar correspondiente: \textbackslash includegraphics $\{NombreDeImagen\}$. Aquí reemplazas \emph{NombreDeImagen} por el nombre de tu imagen.
-
-\section{Ajustar los metadatos del PDF}
-En este archivo puedes ajustar qué datos incluirá el PDF como metadatos.
-
-\section{Elegir qué capítulos aparecerán en el PDF}
-En el documento \emph{main} puedes elegir si quieres incluir un índice o no. \newline
-
-Además, puedes seleccionar qué partes del documento aparecerán en el PDF. Para ello, coloca un \% delante de todas las partes que no quieras que aparezcan. Por ejemplo, delante de esta introducción, para que mi texto no aparezca en tu PDF.
-
-\section{Escribir el contenido}
-¡Después de tanta introducción, ahora llegamos al contenido! Para eso estás aquí, después de todo... Escribir el contenido probablemente te parecerá ahora súper fácil. Porque lo es. Solo haz clic en el capítulo deseado en la selección de la izquierda, por ejemplo, el capítulo \emph{Antecedentes}. Una vez que se haya abierto el área de entrada de código, puedes empezar a escribir.
-
-\subsection{Estructura}
-Puedes usar diferentes tipos de encabezados. Los siguientes comandos son necesarios. (Siempre coloca primero el \textbackslash y luego la palabra directamente después, ¡sin espacios! En las llaves, ingresa el texto que debe mostrarse como el encabezado correspondiente).
-\begin{itemize}
-    \item \textbackslash \textit{part}: Estos son los capítulos principales. Los he usado para separar entre Introducción, Embarazo, Parto y Posparto.
-    \item \textbackslash \textit{chapter}: Este es el siguiente nivel de estructura. Por ejemplo, he designado cada mes de embarazo como un capítulo.
-    \item \textbackslash se\textit{}ction: Este es el siguiente nivel de estructura. Ejemplo: El encabezado \emph{Lactancia} en el capítulo \emph{Primeros días}.
-    \item \textbackslash \textit{subsection}: Ejemplo: El encabezado \emph{Abuela y abuelo} en el capítulo \emph{Primeros días}.
-    \item \textbackslash \textit{subsubsection}: Ejemplo: El encabezado \emph{El hermano mayor} en el capítulo \emph{Primeros días}.
-\end{itemize}
-
-\subsubsection{Encabezados de párrafos}
-Con el comando \textbackslash paragraph puedes insertar encabezados de párrafos en negrita dentro de una sección.
-
-\subsubsection{Con o sin numeración}
-Si colocas un asterisco (*) entre el comando y las llaves, como este \*, los capítulos no se numerarán. Sin asterisco, se numerarán.
-
-\subsubsection{Párrafos}
-Si en el código usas simplemente un salto de línea \textit{(tecla ENTER)}, \LaTeX{} comenzará una nueva línea, pero sin espacio en blanco. Si quieres un espacio en blanco entre párrafos, ingresa el comando \textbackslash \textit{newline} al final del párrafo anterior.
-
-\subsection{Caligrafía para el inicio del capítulo}
-
-Si quieres usar letras caligráficas al inicio de un capítulo, necesitas el siguiente código (¡sin salto de línea entre ellos!):
-
-\begin{verbatim}
-    \lettrine[lines=2, loversize=0.3, lraise=0]
-    {\initfamily I}{ch}
-\end{verbatim}
-
-Copia este código en el lugar correspondiente. La primera letra de la palabra la ingresas en lugar de \emph{I}, y las letras siguientes en lugar de \emph{ch}.
-
-\subsection{Texto}
-No en vano se han escrito libros enteros sobre \LaTeX{}. Esta es, por tanto, solo una lista muy breve de los comandos más comunes que necesitarás al escribir:
-
-\paragraph{Texto en negrita} \textbf{Resultado}
-\begin{verbatim}
-    \textbf{Texto} \end{verbatim}
-\paragraph{Texto en cursiva} \textit{Resultado} \begin{verbatim}
-    \textit{Texto} \end{verbatim}
-\paragraph{Listas con viñetas}  \begin{itemize}
-        \item Resultado línea 1
-        \item Resultado línea 2
-    \end{itemize}
-    \begin{verbatim}\begin{itemize}
-\item Aquí ingresas el texto.
-\item Para cada nuevo punto, usas nuevamente "\item"
-\end{itemize}    \end{verbatim}
-\paragraph{Listas numeradas}
-\begin{enumerate}
-        \item Resultado línea 1
-        \item Resultado línea 2
-    \end{enumerate}
-\begin{verbatim}\begin{enumerate}
-\item Aquí ingresas el texto.
-\item Para cada nuevo punto, usas nuevamente "\item"
-\end{enumerate}
-\end{verbatim}
-\paragraph{Saltos de línea} \begin{verbatim}
-    \newline
-\end{verbatim}
-\paragraph{Discurso directo} Para que las comillas se muestren correctamente, no puedes usar simplemente las comillas de la tecla encima del 2 en el teclado. "Esto produce lo siguiente: puntuación inglesa correcta." Pero quieres puntuación española, \glqq como en este ejemplo.\grqq~ Para lograrlo, coloca el siguiente código antes del discurso directo: \textit{\textbackslash glqq} y este después: \textit{\textbackslash grqq}. Un truco mnemotécnico: gl significa \textit{comillas izquierda} y gr significa \textit{comillas derecha}. Los dos q pequeños seguidos se parecen casi a comillas.
-\paragraph{Caligrafía}
-\begin{quote} \calli
-Este es un ejemplo de un párrafo escrito con el comando CALLI. Es algo difícil de leer, pero puede ser útil para secciones cortas.\newline
-
-El comando se usa junto con el comando QUOTE, por lo que el formato también es diferente.
-\end{quote}
-\begin{verbatim}
-\begin{quote}
-\calli
-TEXTO
-\end{quote}
-\end{verbatim}
-
-\paragraph{Enlaces a internet}
-Si insertas un enlace simplemente como texto, puede mostrarse incorrectamente. \href{www.cursosdepreparacionparaelparto.es}{Los enlaces atractivos se ven así}. Y así los consigues:
-
-\begin{verbatim}
-\href{www.ejemplo.es}{El texto que se muestra}
-\end{verbatim}
-
-\section{Solución de errores}
-
-A veces escribes un texto, terminas, haces clic en \emph{recompile} y \LaTeX{} arroja algún error. Esto es frustrante, especialmente porque para principiantes no siempre es fácil corregir el error rápidamente. A veces, simplemente olvidaste una llave; otras veces, el error está más oculto.
-
-Aquí tienes algunas ideas para solucionar errores:
-\begin{enumerate}
-    \item Volver a compilar: Si el error ocurrió debido a una interrupción en el proceso de compilación, puede ayudar simplemente volver a compilar.
-    \item Revisa el mensaje de error. Junto al botón \emph{Recompile}, verás en rojo la cantidad de errores. Si haces clic en ellos, puedes leer dónde \LaTeX{} encontró el error. Indicará en qué subdocumento ocurrió el error (por ejemplo, \textit{Inhalt/01-}) y también en qué línea. Así sabrás dónde buscar.
-    \item Si realmente quieres profundizar en \LaTeX{}, te recomiendo usar uno de los muchos cursos introductorios gratuitos. \begin{itemize}
-        \item En español, encuentro útil esta guía como introducción: \href{https://www.heise.de/download/blog/Einfuehrung-in-LaTeX-3599742}{Introducción a \LaTeX{} en heise.de}
-        \item También hay wikis completos: \href{https://en.wikibooks.org/wiki/LaTeX}{Wiki de \LaTeX{} en inglés}, \href{https://de.wikibooks.org/wiki/LaTeX-Kompendium}{Wiki de \LaTeX{} en alemán}
-        \item En inglés, hay un buen resumen en el blog de Overleaf: \href{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes}{Aprende \LaTeX{} en 30 minutos}
-        \end{itemize}
-        \item Para preguntas y problemas muy específicos, recomiendo el foro especializado en Stackoverflow. Allí, usuarios experimentados te ayudarán. Las reglas del foro son estrictas. Infórmate, usa ejemplos mínimos y prepárate para pensar por ti mismo. Así obtendrás respuestas para todo. Desventaja: El foro está en inglés. \href{https://tex.stackexchange.com/}{Aquí está el foro de \LaTeX{} en Stackoverflow}.
-        \item Pregúntame. En comparación con los expertos de Stackoverflow, todavía estoy verde. Pero quién sabe, tal vez pueda ayudarte. Escríbeme un correo a \href{mailto:mi@historiadenacimiento.es}{mi@historiadenacimiento.es}. Veré qué puedo hacer.
-\end{enumerate}
-
-\section{Guardar e imprimir}
-Encima de la vista previa del PDF encontrarás el botón para descargar tu documento PDF. Luego puedes guardarlo, imprimirlo y enviarlo por correo a todas las personas que quieras.
-
-\section{Si no quieres seguir}
-Tal vez lo intentaste primero, o desde el principio decidiste que \LaTeX{} no es lo tuyo. Prefieres escribir tu diario de otra manera. No te preocupes. A mí me pasó lo mismo. \newline
-
-Piensa cuál es el camino correcto para ti:
-\begin{itemize}
-    \item Tal vez prefieras llevar un diario manuscrito. Te proporciono una plantilla para esto. Solo mira en \href{www.yoparto.com/diariodeembarazo}{Yo Parto} la plantilla para imprimir.
-    \item Tal vez quieras que yo escriba o formatee el libro por ti. En ese caso, contáctame en \href{mailto:mi@historiadenacimiento.es}{mi@historiadenacimiento.es}.
-\end{itemize}
-
-Decidas lo que decidas, el tiempo del embarazo y el parto es único. Te deseo mucha diversión. No dejes que nadie te vuelva loco. Haz lo que te haga sentir bien. Disfruta. \newline
-
-Escucha a tu corazón. \newline
-
-{\LARGE{\calli Tu Katharina}}
+%\chapter{Instrucciones de uso para esta plantilla}
+%
+%¡Bienvenido a tu plantilla para tu diario de embarazo! Asumo que hasta ahora no has tenido experiencia con el software \LaTeX{} y que tampoco quieres adentrarte en el maravilloso mundo de la programación. Por eso, mi objetivo ha sido diseñar esta plantilla no solo para que el resultado final sea visualmente atractivo, sino también para que el código sea lo más simple posible, de modo que siempre sepas qué hacer.
+%
+%Por ello, en este punto solo te guiaré de manera muy general a través del documento. Siempre que necesites ayuda, no dudes en enviarme un correo a \href{mailto:mi@historiadenacimiento.es}{mi@historiadenacimiento.es}.
+%
+%\section{Orientarte en Overleaf}
+%
+%Normalmente, tu pantalla de Overleaf está dividida en tres partes. A la izquierda ves los archivos del proyecto, en el centro el código y a la derecha el resultado en PDF.
+%
+%\subsection{Resultado en PDF}
+%Para ver cómo se ve el resultado de tu codificación como PDF, simplemente haz clic en el botón verde \emph{Recompile} en la parte superior derecha. Overleaf generará entonces una versión actualizada de tu PDF. Puedes desplazarte hacia arriba y hacia abajo para ver cómo se ven las páginas individuales.
+%
+%\subsection{Entrada de código}
+%En el centro está la entrada de código. Cuando abras este documento por primera vez, deberías ver allí la entrada de código para el documento \emph{main}, es decir, el archivo principal. Si has seleccionado un archivo y reinicias Overleaf más tarde, verás el código del archivo que seleccionaste por última vez en el área de archivos del proyecto a la izquierda.
+%
+%\subsection{Archivos del proyecto}
+%Los archivos del proyecto, en la parte izquierda, puedes imaginarlos como archivos individuales en una carpeta. Solo con la interacción de estos archivos individuales Overleaf puede generar tu PDF. Por lo tanto, no elimines ningún archivo precipitadamente.
+%
+%La mayoría de los archivos puedes ignorarlos. Contienen código que no querrás modificar. \newline
+%\textbf{Archivos que no debes tocar}
+%\begin{itemize}
+%       \item pgfornament
+%    \item tikz
+%    \item DASTpackages
+%    \item DASTsec
+%    \item latexmkrc
+%\end{itemize}
+%\textbf{Archivos que puedes modificar}
+%\begin{itemize}
+%    \item Carpeta \textbf{img}: Aquí están las imágenes. He subido algunos ejemplos. La imagen "Strand" es la portada actual.
+%    \item Carpeta \textbf{Inhalt}: En esta carpeta están los archivos en los que escribes las entradas individuales del diario.
+%    \item \textbf{DASTmeta}: Aquí puedes cambiar los datos del PDF. Cuando guardes tu documento como PDF, estos datos se incluirán en los metadatos.
+%    \item \textbf{main}: Aquí puedes eliminar partes del PDF, por ejemplo, si no quieres escribir capítulos sobre el posparto.
+%    \item \textbf{DASTmacros}: Aquí puedes cambiar solo una cosa, que es el texto del pie de página.
+%    \item \textbf{titlepage}: Aquí hay mucho que editar. Lo veremos en detalle más adelante.
+%\end{itemize}
+%
+%Cuando hagas clic en uno de los archivos correspondientes a la izquierda, se abrirá una nueva ventana central. Es decir, verás el código que está en esa carpeta. Para que tengas que lidiar lo menos posible con el código, he incluido muy poco código en las carpetas que más te interesan. Allí puedes empezar a escribir directamente. ¡Te mostraré cómo hacerlo ahora!
+%
+%\section{Cambiar tus datos personales y la portada}
+%Por supuesto, no quieres un diario de embarazo que simplemente diga "Diario". ¡Quieres que lleve TU nombre! Por eso, debes ingresar tus datos personales correspondientes. \newline
+%
+%Para que encuentres rápidamente las partes que quieres cambiar en los documentos correspondientes, las he marcado siempre con \emph{XXX}. Puedes usar la función de búsqueda. Importante: Primero haz clic en la parte del código de tu pantalla, de lo contrario, \LaTeX{} no sabrá dónde buscar. Luego presiona CTRL+F al mismo tiempo, es decir, la función de búsqueda normal. Puedes escribir \emph{XXX} en el campo y hacer clic en Buscar. Funciona como en un navegador de internet, Word o Writer. \newline
+%
+%Hay código negro y código azul. El código negro se lee como código real. El código azul siempre está detrás de un \% y no se lee. Estos son, por tanto, notas, similares a comentarios que no se imprimen al final. Estos comentarios te muestran qué hace un determinado segmento de código.
+%
+%Puedes hacer lo siguiente en los siguientes documentos:
+%
+%\begin{itemize}
+%\item Titlepage (en inglés, para portada o página de título)
+%\begin{description}
+%\item[Título de la portada] Puedes elegir tu propio título.
+%\item[Título interior] Aquí también puedes cambiar el texto.
+%\item[Como parte de la crónica familiar] Puedes eliminarlo o modificarlo.
+%\item[Escrito por] Ingresa el o los autores principales.
+%\item[Colaboración] Si no incluyes nada, puedes eliminarlo.
+%\item[Fotos de] También puedes eliminarlo si no incluyes a nadie.
+%\item[Año] Puedes actualizarlo o eliminarlo.
+%\end{description}
+%    \item IMG: Sube una nueva imagen a la carpeta para usarla como imagen de portada.
+%\end{itemize}
+%
+%\section{Cambiar el texto del pie de página}
+%Si quieres cambiar el texto del pie de página, haz clic en el documento \emph{DASTmacros}. En la línea 70 encontrarás el texto del pie de página.
+%
+%\section{Subir imágenes}
+%Si quieres subir una imagen, puedes hacerlo fácilmente a través del botón \emph{Upload} en la esquina superior izquierda. Las imágenes se guardarán en la carpeta \textit{img}. Para insertar una imagen en el documento, ingresa el siguiente código en el lugar correspondiente: \textbackslash includegraphics $\{NombreDeImagen\}$. Aquí reemplazas \emph{NombreDeImagen} por el nombre de tu imagen.
+%
+%\section{Ajustar los metadatos del PDF}
+%En este archivo puedes ajustar qué datos incluirá el PDF como metadatos.
+%
+%\section{Elegir qué capítulos aparecerán en el PDF}
+%En el documento \emph{main} puedes elegir si quieres incluir un índice o no. \newline
+%
+%Además, puedes seleccionar qué partes del documento aparecerán en el PDF. Para ello, coloca un \% delante de todas las partes que no quieras que aparezcan. Por ejemplo, delante de esta introducción, para que mi texto no aparezca en tu PDF.
+%
+%\section{Escribir el contenido}
+%¡Después de tanta introducción, ahora llegamos al contenido! Para eso estás aquí, después de todo... Escribir el contenido probablemente te parecerá ahora súper fácil. Porque lo es. Solo haz clic en el capítulo deseado en la selección de la izquierda, por ejemplo, el capítulo \emph{Antecedentes}. Una vez que se haya abierto el área de entrada de código, puedes empezar a escribir.
+%
+%\subsection{Estructura}
+%Puedes usar diferentes tipos de encabezados. Los siguientes comandos son necesarios. (Siempre coloca primero el \textbackslash y luego la palabra directamente después, ¡sin espacios! En las llaves, ingresa el texto que debe mostrarse como el encabezado correspondiente).
+%\begin{itemize}
+%    \item \textbackslash \textit{part}: Estos son los capítulos principales. Los he usado para separar entre Introducción, Embarazo, Parto y Posparto.
+%    \item \textbackslash \textit{chapter}: Este es el siguiente nivel de estructura. Por ejemplo, he designado cada mes de embarazo como un capítulo.
+%    \item \textbackslash se\textit{}ction: Este es el siguiente nivel de estructura. Ejemplo: El encabezado \emph{Lactancia} en el capítulo \emph{Primeros días}.
+%    \item \textbackslash \textit{subsection}: Ejemplo: El encabezado \emph{Abuela y abuelo} en el capítulo \emph{Primeros días}.
+%    \item \textbackslash \textit{subsubsection}: Ejemplo: El encabezado \emph{El hermano mayor} en el capítulo \emph{Primeros días}.
+%\end{itemize}
+%
+%\subsubsection{Encabezados de párrafos}
+%Con el comando \textbackslash paragraph puedes insertar encabezados de párrafos en negrita dentro de una sección.
+%
+%\subsubsection{Con o sin numeración}
+%Si colocas un asterisco (*) entre el comando y las llaves, como este \*, los capítulos no se numerarán. Sin asterisco, se numerarán.
+%
+%\subsubsection{Párrafos}
+%Si en el código usas simplemente un salto de línea \textit{(tecla ENTER)}, \LaTeX{} comenzará una nueva línea, pero sin espacio en blanco. Si quieres un espacio en blanco entre párrafos, ingresa el comando \textbackslash \textit{newline} al final del párrafo anterior.
+%
+%\subsection{Caligrafía para el inicio del capítulo}
+%
+%Si quieres usar letras caligráficas al inicio de un capítulo, necesitas el siguiente código (¡sin salto de línea entre ellos!):
+%
+%\begin{verbatim}
+%    \lettrine[lines=2, loversize=0.3, lraise=0]
+%    {\initfamily I}{ch}
+%\end{verbatim}
+%
+%Copia este código en el lugar correspondiente. La primera letra de la palabra la ingresas en lugar de \emph{I}, y las letras siguientes en lugar de \emph{ch}.
+%
+%\subsection{Texto}
+%No en vano se han escrito libros enteros sobre \LaTeX{}. Esta es, por tanto, solo una lista muy breve de los comandos más comunes que necesitarás al escribir:
+%
+%\paragraph{Texto en negrita} \textbf{Resultado}
+%\begin{verbatim}
+%    \textbf{Texto} \end{verbatim}
+%\paragraph{Texto en cursiva} \textit{Resultado} \begin{verbatim}
+%    \textit{Texto} \end{verbatim}
+%\paragraph{Listas con viñetas}  \begin{itemize}
+%        \item Resultado línea 1
+%        \item Resultado línea 2
+%    \end{itemize}
+%    \begin{verbatim}\begin{itemize}
+%\item Aquí ingresas el texto.
+%\item Para cada nuevo punto, usas nuevamente "\item"
+%\end{itemize}    \end{verbatim}
+%\paragraph{Listas numeradas}
+%\begin{enumerate}
+%        \item Resultado línea 1
+%        \item Resultado línea 2
+%    \end{enumerate}
+%\begin{verbatim}\begin{enumerate}
+%\item Aquí ingresas el texto.
+%\item Para cada nuevo punto, usas nuevamente "\item"
+%\end{enumerate}
+%\end{verbatim}
+%\paragraph{Saltos de línea} \begin{verbatim}
+%    \newline
+%\end{verbatim}
+%\paragraph{Discurso directo} Para que las comillas se muestren correctamente, no puedes usar simplemente las comillas de la tecla encima del 2 en el teclado. "Esto produce lo siguiente: puntuación inglesa correcta." Pero quieres puntuación española, \glqq como en este ejemplo.\grqq~ Para lograrlo, coloca el siguiente código antes del discurso directo: \textit{\textbackslash glqq} y este después: \textit{\textbackslash grqq}. Un truco mnemotécnico: gl significa \textit{comillas izquierda} y gr %significa \textit{comillas derecha}. Los dos q pequeños seguidos se parecen casi a comillas.
+%\paragraph{Caligrafía}
+%\begin{quote} \calli
+%Este es un ejemplo de un párrafo escrito con el comando CALLI. Es algo difícil de leer, pero puede ser útil para secciones cortas.\newline
+%
+%El comando se usa junto con el comando QUOTE, por lo que el formato también es diferente.
+%\end{quote}
+%\begin{verbatim}
+%\begin{quote}
+%\calli
+%TEXTO
+%\end{quote}
+%\end{verbatim}
+%
+%\paragraph{Enlaces a internet}
+%Si insertas un enlace simplemente como texto, puede mostrarse incorrectamente. \href{www.cursosdepreparacionparaelparto.es}{Los enlaces atractivos se ven así}. Y así los consigues:
+%
+%\begin{verbatim}
+%\href{www.ejemplo.es}{El texto que se muestra}
+%\end{verbatim}
+%
+%\section{Solución de errores}
+%
+%A veces escribes un texto, terminas, haces clic en \emph{recompile} y \LaTeX{} arroja algún error. Esto es frustrante, especialmente porque para principiantes no siempre es fácil corregir el error rápidamente. A veces, simplemente olvidaste una llave; otras veces, el error está más oculto.
+%
+%Aquí tienes algunas ideas para solucionar errores:
+%\begin{enumerate}
+%    \item Volver a compilar: Si el error ocurrió debido a una interrupción en el proceso de compilación, puede ayudar simplemente volver a compilar.
+%    \item Revisa el mensaje de error. Junto al botón \emph{Recompile}, verás en rojo la cantidad de errores. Si haces clic en ellos, puedes leer dónde \LaTeX{} encontró el error. Indicará en qué subdocumento ocurrió el error (por ejemplo, \textit{Inhalt/01-}) y también en qué línea. Así sabrás dónde buscar.
+%    \item Si realmente quieres profundizar en \LaTeX{}, te recomiendo usar uno de los muchos cursos introductorios gratuitos. \begin{itemize}
+%        \item En español, encuentro útil esta guía como introducción: \href{https://www.heise.de/download/blog/Einfuehrung-in-LaTeX-3599742}{Introducción a \LaTeX{} en heise.de}
+%        \item También hay wikis completos: \href{https://en.wikibooks.org/wiki/LaTeX}{Wiki de \LaTeX{} en inglés}, \href{https://de.wikibooks.org/wiki/LaTeX-Kompendium}{Wiki de \LaTeX{} en alemán}
+%        \item En inglés, hay un buen resumen en el blog de Overleaf: \href{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes}{Aprende \LaTeX{} en 30 minutos}
+%        \end{itemize}
+%        \item Para preguntas y problemas muy específicos, recomiendo el foro especializado en Stackoverflow. Allí, usuarios experimentados te ayudarán. Las reglas del foro son estrictas. Infórmate, usa ejemplos mínimos y prepárate para pensar por ti mismo. Así obtendrás respuestas para todo. Desventaja: El foro está en inglés. \href{https://tex.stackexchange.com/}{Aquí está el foro de \LaTeX{} en Stackoverflow}.
+%        \item Pregúntame. En comparación con los expertos de Stackoverflow, todavía estoy verde. Pero quién sabe, tal vez pueda ayudarte. Escríbeme un correo a \href{mailto:mi@historiadenacimiento.es}{mi@historiadenacimiento.es}. Veré qué puedo hacer.
+%\end{enumerate}
+%
+%\section{Guardar e imprimir}
+%Encima de la vista previa del PDF encontrarás el botón para descargar tu documento PDF. Luego puedes guardarlo, imprimirlo y enviarlo por correo a todas las personas que quieras.
+%
+%\section{Si no quieres seguir}
+%Tal vez lo intentaste primero, o desde el principio decidiste que \LaTeX{} no es lo tuyo. Prefieres escribir tu diario de otra manera. No te preocupes. A mí me pasó lo mismo. \newline
+%
+%Piensa cuál es el camino correcto para ti:
+%\begin{itemize}
+%    \item Tal vez prefieras llevar un diario manuscrito. Te proporciono una plantilla para esto. Solo mira en \href{www.yoparto.com/diariodeembarazo}{Yo Parto} la plantilla para imprimir.
+%    \item Tal vez quieras que yo escriba o formatee el libro por ti. En ese caso, contáctame en \href{mailto:mi@historiadenacimiento.es}{mi@historiadenacimiento.es}.
+%\end{itemize}
+%
+%Decidas lo que decidas, el tiempo del embarazo y el parto es único. Te deseo mucha diversión. No dejes que nadie te vuelva loco. Haz lo que te haga sentir bien. Disfruta. \newline
+%
+%Escucha a tu corazón. \newline
+%
+%{\LARGE{\calli Tu Katharina}}
 
 \chapter*{Dedicatoria}
 
