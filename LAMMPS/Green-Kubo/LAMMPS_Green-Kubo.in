@@ -39,6 +39,14 @@ unfix           1
 reset_timestep  0
 
 # 5. Cálculo del Flujo de Calor y DM de Equilibrio (NVE)
+# Capturamos el volumen preciso (V) y la temperatura (T)
+variable V_final equal vol
+# Usamos 'print' para escribir directamente los valores en un archivo.
+# V_final y T se pasan como un par clave-valor.
+print "T: ${T}" append parametros.txt
+print "V: ${V_final}" append parametros.txt
+print "dt: ${dt}" append parametros.txt
+
 # Se usa NVE para DM de Equilibrio para las fluctuaciones del flujo de calor
 fix             2 all nve
 compute         myFlux all heat/flux              # Calcula el flujo de calor instantáneo
