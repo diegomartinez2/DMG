@@ -1,0 +1,73 @@
+# Ejemplo de Input File de LAMMPS para Green-Kubo (kappa.in)
+# Argón Sólido (Lennard-Jones)
+
+# 0. Definición de Variables (NUEVO)
+variable T equal 80.0
+variable V_LMP equal 145537.0 # Volumen en A^3 (aproximado, (10*5.26 A)^3)
+variable dt equal 0.001       # Timestep en ps (usar 0.0005 para mayor precisión)
+variable tau_max_steps equal 200000 # Pasos de equilibrio (200 ps con dt=0.001 ps)
+variable run_steps equal 1000000    # Pasos de corrida NVE (1 ns con dt=0.001 ps)
+# variable run_steps equal 10000000 # O 10000000 (10 ns) para estadística muy alta
+variable seed equal 12345           # Semilla aleatoria inicial
+
+# 1. Inicialización
+units           metal
+atom_style      atomic
+dimension       3
+boundary        p p p
+
+# 2. Definición del sistema (Ejemplo: Argón con densidad y tamaño)
+lattice         fcc 5.26
+region          box block 0 10 0 10 0 10 # 10x10x10 celdas unitarias
+create_box      1 box
+create_atoms    1 box
+
+# 3. Potencial (Lennard-Jones para Argón)
+mass            1 39.948
+pair_style      lj/cut 10.0
+pair_coeff      1 1 0.0103231 3.405 # epsilon (eV), sigma (A)
+
+# 4. Equilibrio (Relajación a la temperatura deseada, NPT)
+minimize        1.0e-4 1.0e-6 100 1000  # Minimiza energía (opcional pero recomendado)
+velocity        all create ${T} ${seed} mom yes rot no  # Inicializar velocidades usando $T y $seed
+fix             1 all npt temp ${T} ${T} 0.1 iso 0.0 0.0 1.0 # Termostato y barostato NPT
+timestep        ${dt} # Usando la variable $dt
+thermo          1000
+run             ${tau_max_steps} # Usando la variable $tau_max_steps
+
+unfix           1
+reset_timestep  0
+
+# 5. Cálculo del Flujo de Calor y DM de Equilibrio (NVE)
+# Capturamos el volumen preciso (V)
+variable V_final equal vol
+# 'print' para escribir directamente los valores en un archivo.
+print "T: ${T}" append parametros.txt
+print "V: ${V_final}" append parametros.txt
+print "dt: ${dt}" append parametros.txt
+print "tau_max_steps: ${tau_max_steps}" append parametros.txt
+print "run_steps: ${run_steps}" append parametros.txt
+print "seed: ${seed}" append parametros.txt
+
+# Se usa NVE para DM de Equilibrio para las fluctuaciones del flujo de calor
+fix             2 all nve
+compute         myFlux all heat/flux             # Calcula el flujo de calor instantáneo
+variable        Jx equal c_myFlux[1] / vol       # Componente x del flujo (J/V)
+variable        Jy equal c_myFlux[2] / vol       # Componente y del flujo (J/V)
+variable        Jz equal c_myFlux[3] / vol       # Componente z del flujo (J/V)
+variable        J2 equal (v_Jx*v_Jx + v_Jy*v_Jy + v_Jz*v_Jz) # |J|^2
+
+# Función de Autocorrelación del Flujo de Calor (ACF)
+# Se recomienda que p (longitud de correlación) sea 1/100 o menos de run_steps
+variable p equal 5000 # 5 ps de correlación con dt=0.001
+variable s equal 10   # Intervalo de muestreo
+variable d equal 10   # Pasos entre correlaciones
+
+# file: J0Jt_${seed}.dat para distinguir corridas con distintas semillas
+fix             3 all ave/correlate ${p} ${s} ${d} &
+                c_myFlux[1] c_myFlux[2] c_myFlux[3] type auto file J0Jt_${seed}.dat ave running
+
+thermo_style    custom step temp etotal press vol v_J2
+thermo          1000
+timestep        ${dt} # Usando la variable $dt
+run             ${run_steps} # Usando la variable $run_steps
