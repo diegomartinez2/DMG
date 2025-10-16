@@ -66,23 +66,23 @@ compute         myFlux all heat/flux  # Calcula el flujo de calor instantáneo
 fix             3 all ave/correlate 50 10 200 &
                 c_myFlux[1] c_myFlux[2] c_myFlux[3] type auto file J0Jt.dat ave running
 
-variable        Jx equal c_myFlux[1] / vol       # Componente x del flujo (J/V)
-variable        Jy equal c_myFlux[2] / vol       # Componente y del flujo (J/V)
-variable        Jz equal c_myFlux[3] / vol       # Componente z del flujo (J/V)
-variable        J2 equal (v_Jx*v_Jx + v_Jy*v_Jy + v_Jz*v_Jz) # |J|^2
+#variable        Jx equal c_myFlux[1] / vol       # Componente x del flujo (J/V)
+#variable        Jy equal c_myFlux[2] / vol       # Componente y del flujo (J/V)
+#variable        Jz equal c_myFlux[3] / vol       # Componente z del flujo (J/V)
+#variable        J2 equal (v_Jx*v_Jx + v_Jy*v_Jy + v_Jz*v_Jz) # |J|^2
 
 # Función de Autocorrelación del Flujo de Calor (ACF)
 # variable p equal 5000
-variable p equal 10000     # Longitud total de correlación (pasos)
+#variable p equal 10000     # Longitud total de correlación (pasos)
 # $p = 5000 (steps, e.g., 5 ps with dt = 0.001 ps),
 # variable s equal 10
-variable        s equal 5         # Intervalo de muestreo
+#variable        s equal 5         # Intervalo de muestreo
 # $s = 10 (sample every 10 steps to reduce data size),
 # variable d equal 10
-variable        d equal 5         # Pasos entre correlaciones
+#variable        d equal 5         # Pasos entre correlaciones
 # $d = 10 (correlate over 10-step intervals).
-fix             3 all ave/correlate $p $s $d &
-                v_Jx v_Jy v_Jz type auto file J0Jt_12345.dat ave running
+#fix             3 all ave/correlate $p $s $d &
+#                v_Jx v_Jy v_Jz type auto file J0Jt_12345.dat ave running
                 # c_myFlux[1] c_myFlux[2] c_myFlux[3] type auto file J0Jt_12345.dat ave running
 
 # p: correlación total (pasos), s: intervalo de muestreo, d: pasos de DM
