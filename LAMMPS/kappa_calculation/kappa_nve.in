@@ -1,0 +1,43 @@
+# Green-Kubo chimesFF (FIX EXPLOSIÓN NPT)
+variable T equal 80.0
+variable dt equal 0.001
+variable run_steps equal 1000000
+variable semilla equal 12345
+
+units metal
+atom_style atomic
+boundary p p p
+
+read_data AA-supercell-optimized.lmp
+
+# ========== FIX: NSQ + NVE ==========
+neighbor 0.3 nsq
+neigh_modify delay 0 every 1 check yes
+print "FIX: NSQ + NVE (NO EXPLOSIÓN)"
+# ===================================
+
+pair_style chimesFF
+#pair_coeff * * params.txt
+
+# ========== MINIMIZE LARGO + NVE ==========
+minimize 1.0e-6 1.0e-8 5000 50000  # ← ESTRICCÍSIMO
+velocity all create ${T} ${semilla} mom yes rot no
+fix 1 all nve  # ← NVE: VOL CONSTANT!
+timestep ${dt}
+thermo_style custom step temp etotal press vol
+thermo 1000
+# =========================================
+
+# Equilibrio NVE (200k steps)
+run 200000
+
+# Guardar (volumen FIJO)
+variable V_final equal vol
+print "T: ${T}" append parametros.txt
+print "V: ${V_final}" append parametros.txt
+print "dt: ${dt}" append parametros.txt
+
+# Green-Kubo
+compute myFlux all heat/flux
+fix 2 all ave/correlate 50 10 200 c_myFlux[1] c_myFlux[2] c_myFlux[3] type auto file J0Jt.dat ave running
+run ${run_steps}
