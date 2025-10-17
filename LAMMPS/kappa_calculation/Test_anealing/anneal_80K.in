@@ -7,10 +7,11 @@ pair_style chimesFF
 
 # ========== ANNEALING LENTO ==========
 fix 1 all nvt temp 0.1 80.0 0.01  # ← 0.01ps = MUY LENTO!
+#fix 1 all nvt temp 0.1 80.0 0.1  # ← Tdamp=0.1 ps (10x mayor, Tdamp/dt=200)
 timestep 0.0005  # ← 0.5 fs PASOS PEQUEÑOS
 thermo_style custom step temp etotal press vol
-thermo 1000
-
+#thermo 1000
+thermo 500  # Monitoreo más frecuente
 # 0K → 80K en 40ps (80,000 steps)
 run 80000
 

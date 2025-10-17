@@ -1,0 +1,50 @@
+# NIVEL 3: ULTRA-FINA chimesFF (E<10^-12 eV)
+units metal
+atom_style atomic
+boundary p p p
+
+read_data AA-supercell-optimized.lmp
+neighbor 0.3 nsq
+pair_style chimesFF
+pair_coeff * * params.txt
+
+# ========== ULTRA-FINA MULTI-FASE ==========
+print "🚀 ULTRA-FINA: Nivel 3 (10 min)"
+
+# Fase 1: CG grueso
+min_style cg
+minimize 1.0e-8 1.0e-10 10000 100000
+variable E1 equal etotal
+print "Fase 1 CG: E=${E1}"
+
+# Fase 2: CG fino
+minimize 1.0e-10 1.0e-12 100000 1000000
+variable E2 equal etotal
+print "Fase 2 CG fino: E=${E2}"
+
+# Fase 3: FIRE ultra-fino (MEJOR para ML)
+min_style fire
+minimize 1.0e-12 1.0e-14 1000000 10000000
+variable E3 equal etotal
+print "Fase 3 FIRE: E=${E3}"
+
+# Fase 4: HFTN nuclear (MÁS PRECISO)
+min_style hftn
+minimize 1.0e-15 1.0e-18 1000000 10000000
+variable E_final equal etotal
+print "🏆 FINAL ULTRA-FINA: E=${E_final} eV"
+
+# Fase 5: QUICKMIN + HFTN 2x
+min_style quickmin
+minimize 1.0e-16 1.0e-19 5000000 50000000
+min_style hftn
+minimize 1.0e-18 1.0e-20 10000000 100000000
+variable E_nobel equal etotal
+print "🔬 NOBEL: E=${E_nobel}"
+
+# VERIFICAR convergencia
+variable dE equal abs(${E_final}-${E2})
+print "ΔE = ${dE} eV (<10^-12 = PERFECTO)"
+
+write_data ultra_min.lmp
+print "✅ Estructura ULTRA-FINA guardada"
