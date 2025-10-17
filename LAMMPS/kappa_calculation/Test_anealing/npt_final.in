@@ -1,0 +1,23 @@
+# FASE 3: V_eq a P=0 (NPT SEGURO)
+units metal
+atom_style atomic
+read_data annealed_80K.lmp  # ← ANNEALED
+neighbor 0.3 nsq
+pair_style chimesFF
+
+# NPT ULTRA-SEGURO (post-annealing)
+velocity all create 80.0 12345 mom yes rot no
+change_box all x final 0.8 1.2 y final 0.8 1.2 z final 0.8 1.2 units box
+fix 1 all npt temp 80.0 80.0 0.1 iso 0.0 0.0 50.0  # ← 50ps MUY LENTO
+fix_modify 1 press berendsen
+timestep 0.001
+thermo_style custom step temp etotal press vol
+thermo 500
+
+run 5000  # 5ps = SUFICIENTE
+
+variable V_eq equal vol
+variable P_eq equal pxx+pyy+pzz
+print "🏆 V_eq(P=0) = ${V_eq} Å³ | P_eq = ${P_eq} bar"
+print "T:80 V_eq:${V_eq} P_eq:${P_eq}" append v_equilibrio.txt
+write_data equilibrium_80K.lmp  # ← ¡TU ESTRUCTURA FINAL!

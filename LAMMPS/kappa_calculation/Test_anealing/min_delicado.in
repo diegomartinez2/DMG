@@ -1,0 +1,17 @@
+# FASE 1: Minimización ULTRA-FINA
+units metal
+atom_style atomic
+boundary p p p
+
+read_data AA-supercell-optimized.lmp
+neighbor 0.3 nsq
+pair_style chimesFF
+#pair_coeff * * params.txt
+
+# ========== MIN ULTRA-DELICADA ==========
+min_style cg
+minimize 1.0e-10 1.0e-12 100000 1000000  # ← E=10^-10 eV!
+variable E_min equal etotal
+print "E_min delicado: ${E_min}"
+write_data min_delicada.lmp
+# =======================================

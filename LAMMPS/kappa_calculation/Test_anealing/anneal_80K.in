@@ -1,0 +1,20 @@
+# FASE 2: Annealing 0→80K
+units metal
+atom_style atomic
+read_data min_delicada.lmp  # ← Estructura MINIMIZADA
+neighbor 0.3 nsq
+pair_style chimesFF
+
+# ========== ANNEALING LENTO ==========
+fix 1 all nvt temp 0.1 80.0 0.01  # ← 0.01ps = MUY LENTO!
+timestep 0.0005  # ← 0.5 fs PASOS PEQUEÑOS
+thermo_style custom step temp etotal press vol
+thermo 1000
+
+# 0K → 80K en 40ps (80,000 steps)
+run 80000
+
+unfix 1
+print "Annealing COMPLETO: T=80K estable"
+write_data annealed_80K.lmp
+# =====================================
