@@ -1,0 +1,70 @@
+# Script de ejemplo para NEMD directo: conductividad térmica con zonas caliente/fría
+# Basado en docs.lammps.org/Howto_kappa.html (método 1: direct thermostatting)
+
+units           real          # Unidades: metal o real para LJ
+atom_style      atomic
+dimension       3
+boundary        p p p         # Periódico en todas direcciones
+newton          off
+
+# Crear lattice y caja (ejemplo: Ar sólido FCC)
+lattice         fcc 5.26
+region          box block 0 20 0 5 0 5  # ~2500 átomos; ajusta para más slabs
+create_box      1 box
+create_atoms    1 box
+pair_style      lj/cut 2.5
+pair_coeff      1 1 0.238 3.4  # ε=0.238 kcal/mol, σ=3.4 Å para Ar
+mass            1 39.95       # Masa de Ar
+
+# Variables
+variable        Tcold equal 40.0   # Temperatura fría (K)
+variable        Thot  equal 60.0   # Temperatura caliente (K)
+variable        Tave  equal (${Thot}+${Tcold})/2  # T media para equilibración
+variable        seed equal 12345
+variable        Nsteps equal 1e6   # Pasos totales (ajusta)
+
+# Velocidades iniciales
+velocity        all create ${Tave} 12345 dist gaussian
+
+# Fixes iniciales para equilibración (NVT global a T media)
+fix             1 all nvt temp ${Tave} ${Tave} 0.1
+timestep        4.0             # fs
+thermo          1000
+thermo_style    custom step temp pe ke etotal press
+
+# Equilibración
+run             5e4             # 200 ps
+
+# Unfix equilibración
+unfix           1
+
+# Define regiones: zona fría (izquierda, x<2), zona caliente (derecha, x>18)
+region          cold block EDGE 0.0 2.0 INF INF INF INF units box
+region          hot  block EDGE 18.0 20.0 INF INF INF INF units box
+
+# Termostatos locales: NVT para cada región
+fix             2 cold nvt temp ${Tcold} ${Tcold} 0.1
+fix             3 hot  nvt temp ${Thot}  ${Thot}  0.1
+
+# Compute para flujo de calor J (en dirección x)
+compute         flux all heat/flux ke pe stress  # Jx, Jy, Jz
+
+# Outputs: temperaturas por slabs (para ∇T)
+fix_modify      2 press no       # Evita barostato en regiones
+fix_modify      3 press no
+
+# Divide en chunks (slabs) en x para perfiles de T
+fix             Tprofile all ave/chunk 100 10 1000 &
+                x lower 1.0 mode vector v_chunk v_cm &
+                density/number density/mass temp &
+                region box file temp.profile
+
+# Dump para visualización
+dump            1 all atom 1000 dump.lammpstrj
+
+# Correr producción (monitorea steady-state)
+run             ${Nsteps}
+
+# Salida final: imprime J promedio
+variable        Jx equal c_flux[1]/vol  # Flujo en x (ajusta por área si no periódico)
+print           "Heat flux Jx = ${Jx} kcal/(mol*ns*Å^2)" file flux.out
