@@ -1,0 +1,67 @@
+# Input para LAMMPS: Conductividad térmica NEMD con zonas caliente/fría
+# Sistema: Cu-S-C con chimesFF, supercelda 4x4x4
+
+# Unidades: real (recomendado para ChIMES)
+units           real
+atom_style      atomic
+newton          on
+atom_modify     sort 0 0.0
+boundary        p p p
+
+# Leer celda unidad
+read_data       data.unit
+
+# Replicar 4x4x4 (~960 átomos)
+replicate       4 4 4
+
+# Potencial ChIMES
+pair_style      chimesFF
+pair_coeff      * * params.txt
+
+# Timestep (fs)
+timestep        1.0
+
+# Variables
+variable        Tcold equal 250.0   # Temperatura fría (K, ajusta según material)
+variable        Thot  equal 350.0   # Temperatura caliente (K)
+variable        Tave  equal (${Thot}+${Tcold})/2  # T media
+variable        Nsteps equal 1e6    # 1 ns; ajusta según convergencia
+
+# Equilibración inicial (NVT a T media)
+fix             1 all nvt temp ${Tave} ${Tave} 100.0
+thermo          1000
+thermo_style    custom step temp pe ke etotal press vol density
+
+run             50000  # 50 ps para equilibrar
+
+# Desactivar equilibración
+unfix           1
+
+# Definir regiones caliente/fría (en x, ajustado a supercelda: xhi=33.7559 Å)
+region          cold block 0.0 2.0 INF INF INF INF units box
+region          hot  block 31.7559 33.7559 INF INF INF INF units box
+
+# Termostatos locales (NVT)
+fix             2 cold nvt temp ${Tcold} ${Tcold} 100.0
+fix             3 hot  nvt temp ${Thot} ${Thot} 100.0
+fix_modify      2 press no
+fix_modify      3 press no
+
+# Flujo de calor (en x)
+compute         flux all heat/flux ke pe stress
+
+# Perfil de temperatura (slabs en x)
+fix             Tprofile all ave/chunk 100 10 1000 &
+                x 0.0 33.7559 20 mode vector v_chunk v_cm &
+                density/number density/mass temp &
+                file temp.profile
+
+# Dump para visualización
+dump            1 all atom 1000 dump.lammpstrj
+
+# Correr producción
+run             ${Nsteps}
+
+# Calcular y guardar flujo
+variable        Jx equal c_flux[1]/vol
+print           "Heat flux Jx = ${Jx} kcal/(mol*ns*Å^2)" file flux.out
