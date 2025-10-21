@@ -1,0 +1,46 @@
+# Input básico para LAMMPS con celda replicada y potencial chimesFF
+# Unidades: real (recomendado para ChIMES)
+units           real
+
+# Estilo de átomos: atomic (sin cargas, como en tu data)
+atom_style      atomic
+
+# Modificaciones requeridas para ChIMES
+newton          on
+atom_modify     sort 0 0.0
+
+# Límites periódicos (asumiendo tu sistema es periódico)
+boundary        p p p
+
+# Leer la celda unidad
+read_data       data.unit
+
+# Replicar para supercelda 4x4x4 (ajusta nx ny nz si necesitas más/menos)
+replicate       4 4 4
+
+# Potencial ChIMES (asumiendo params.txt define los tipos por masas)
+pair_style      chimesFF
+pair_coeff      * * params.txt
+
+# Timestep razonable para MD (fs)
+timestep        1.0
+
+# Thermo output: cada 1000 pasos
+thermo          1000
+thermo_style    custom step temp pe ke etotal press vol density
+
+# Dump para trayectoria (visualiza con VMD/OVITO)
+dump            1 all atom 1000 dump.lammpstrj
+
+# Minimización inicial (relaja la estructura)
+fix             1 all nvt temp 0.0 0.0 100.0  # Temporal para min
+minimize       1.0e-4 1.0e-6 1000 10000
+unfix           1
+
+# MD en NVT a 300 K (equilibración; ajusta T si necesitas)
+fix             2 all nvt temp 300.0 300.0 100.0
+run             100000  # 100 ps; ajusta para más tiempo
+
+# Opcional: si quieres NPT (presión atmosférica), descomenta
+# fix             3 all npt temp 300.0 300.0 100.0 iso 1.0 1.0 1000.0
+# run             100000
