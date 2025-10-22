@@ -18,6 +18,6 @@ run 5000  # 5ps = SUFICIENTE
 
 variable V_eq equal vol
 variable P_eq equal pxx+pyy+pzz
+write_data equilibrium_80K.lmp  # ← ¡TU ESTRUCTURA FINAL!
 print "🏆 V_eq(P=0) = ${V_eq} Å³ | P_eq = ${P_eq} bar"
 print "T:80 V_eq:${V_eq} P_eq:${P_eq}" append v_equilibrio.txt
-write_data equilibrium_80K.lmp  # ← ¡TU ESTRUCTURA FINAL!
