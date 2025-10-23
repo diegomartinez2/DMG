@@ -29,6 +29,6 @@ pause -1
 set print "kbarr.dat"
 # Modificar los valores ya que he pasado de 'metal' a 'real' en LAMMPS
 print "kbarr ",(K2*1e-5*3*1600*1.38*1e-23)/((5.431*50)*(2*5.431)*(2*5.431)*1e-30)
-# seguramente hay que cambiar el 1e-5 por 1.88046e-8 para pasar de 'metal' a 'real' en LAMMPS
-# 1.38*1e-23 es la constante de Boltzmann; 1600 parace estar relacionado con la temperatura de equilibrio (y 3 porque es 3D).
+# No hay que cambiar el 1e-5 para pasar de 'metal' a 'real' en LAMMPS, ya que A˚2/fs→m2/s: $C = \frac{(1 \r{A})^2}{1 \text{ fs}} = \frac{(10^{-10} \text{ m})^2}{10^{-15} \text{ s}} = \frac{10^{-20} \text{ m}^2}{10^{-15} \text{ s}} = \textbf{10^{-5} m^2/s}$
+# 1.38*1e-23 es la constante de Boltzmann; 1600 es el número de partículas (y 3 porque es 3D).
 #(5.431*50)*(2*5.431)*(2*5.431)*1e-30 es el volumen (con el factor 1e-30 para pasarlo a metros)
