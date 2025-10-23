@@ -39,8 +39,12 @@ run             5e4             # 200 ps
 unfix           1
 
 # Define regiones: zona fría (izquierda, x<2), zona caliente (derecha, x>18)
-region          cold block EDGE 0.0 2.0 INF INF INF INF units box
-region          hot  block EDGE 18.0 20.0 INF INF INF INF units box
+region          cold_reg block EDGE 0.0 2.0 INF INF INF INF units box
+region          hot_reg  block EDGE 18.0 20.0 INF INF INF INF units box
+
+# Los nombres 'cold' y 'hot' que usó en los fix deben ser grupos de átomos.
+group cold region cold_reg
+group hot region hot_reg
 
 # Termostatos locales: NVT para cada región
 fix             2 cold nvt temp ${Tcold} ${Tcold} 0.1
