@@ -21,15 +21,22 @@ replicate       20 2 2
 variable lx_total equal xhi-xlo
 
 # 2. Definir el punto medio de la caja
-variable x_mid equal ${lx_total}/2.0
+variable x_mid equal v_lx_total/2.0
 
 # 3. Definir las regiones usando el punto medio
 # Creamos un gap de 0.001 unidades (o un valor definido por otra variable)
 
 variable gap_half equal 0.0005 # 0.001 / 2
 
-region left block EDGE v_x_mid-${gap_half} EDGE EDGE EDGE EDGE units box
-region right block v_x_mid+${gap_half} EDGE EDGE EDGE EDGE EDGE units box
+# **CORRECCIÓN para el error 'Expected floating point parameter'**
+# Debemos pre-calcular los límites de las regiones con variables 'equal'
+# NOTA: Usamos 'v_' para referenciar otras variables dentro de una variable 'equal'
+variable x_limit_left equal v_x_mid-v_gap_half
+variable x_limit_right equal v_x_mid+v_gap_half
+
+# Al usar variables en comandos (como 'region'), la sustitución '${}' es OBLIGATORIA.
+region left block EDGE ${x_limit_left} EDGE EDGE EDGE EDGE units box
+region right block ${x_limit_right} EDGE EDGE EDGE EDGE EDGE units box
 
 # NOTA: Asegúrese de que la unidad del gap sea la misma que la unidad box.
 #region left block EDGE   135.775 EDGE EDGE EDGE EDGE units box
