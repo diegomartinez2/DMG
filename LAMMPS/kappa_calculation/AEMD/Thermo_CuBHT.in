@@ -1,0 +1,85 @@
+####################################################################################################################
+####################################################################################################################
+
+#Defining the units
+#------------------real, así que hay que cambiar las Constantes luego
+units	real
+
+#Defining atom stle and boundary conditions
+#------------------------------------------
+atom_style		atomic
+boundary		p p p
+newton          on
+atom_modify     sort 0 0.0
+#read-data
+#----------------------------
+# Leer la celda unidad
+read_data       data.unit
+replicate       20 2 2
+
+
+region left block EDGE   135.775 EDGE EDGE EDGE EDGE units box
+region right block   135.776 EDGE EDGE EDGE EDGE EDGE units box
+
+# Defining groups
+#----------------
+group lr region left
+group rr region right
+
+#----------------------
+# mass	1  28.06
+
+#Defining interaction potential
+#------------------------------
+#pair_style     sw
+#pair_coeff * * Si.sw Si
+# Potencial ChIMES
+pair_style      chimesFF
+pair_coeff      * * params.txt
+
+# Defining simulation parameters
+#-------------------------------
+#
+variable    dt equal 1e-3
+timestep    ${dt}
+
+
+
+# Defining the output format
+#----------------
+compute tl lr temp
+compute tr rr temp
+variable diff equal (c_tl-c_tr)
+thermo_style custom step c_tl c_tr v_diff
+
+
+# PART ONE: thermalization by velocity rescaling
+#-----------------------------------------------
+velocity lr create 400.0 3452 dist gaussian
+fix    VR1   lr temp/rescale 1 400.0 400.0 1.0 1.0
+fix FR2 rr setforce  0.0 0.0 0.0
+fix    RUN1 lr nve
+thermo 100
+run    10000
+unfix  VR1
+unfix  FR2
+unfix  RUN1
+################################
+velocity rr create 200.0 7654 dist gaussian
+fix    VR2   rr temp/rescale 1 200.0 200.0 1.0 1.0
+fix    FR1   lr setforce  0.0 0.0 0.0
+fix    RUN2 rr nve
+thermo 100
+run    10000
+unfix  VR2
+unfix  FR1
+unfix  RUN2
+###########################
+#-----------------------------------
+
+fix    RUN3 all nve
+thermo 100
+run    30000
+unfix  RUN3
+#
+# END
