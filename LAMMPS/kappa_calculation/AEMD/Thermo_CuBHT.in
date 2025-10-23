@@ -17,9 +17,23 @@ atom_modify     sort 0 0.0
 read_data       data.unit
 replicate       20 2 2
 
+# 1. Definir la longitud total del eje X (variable lx_total)
+variable lx_total equal xhi-xlo
 
-region left block EDGE   135.775 EDGE EDGE EDGE EDGE units box
-region right block   135.776 EDGE EDGE EDGE EDGE EDGE units box
+# 2. Definir el punto medio de la caja
+variable x_mid equal ${lx_total}/2.0
+
+# 3. Definir las regiones usando el punto medio
+# Creamos un gap de 0.001 unidades (o un valor definido por otra variable)
+
+variable gap_half equal 0.0005 # 0.001 / 2
+
+region left block EDGE v_x_mid-${gap_half} EDGE EDGE EDGE EDGE units box
+region right block v_x_mid+${gap_half} EDGE EDGE EDGE EDGE EDGE units box
+
+# NOTA: Asegúrese de que la unidad del gap sea la misma que la unidad box.
+#region left block EDGE   135.775 EDGE EDGE EDGE EDGE units box
+#region right block   135.776 EDGE EDGE EDGE EDGE EDGE units box
 
 # Defining groups
 #----------------
