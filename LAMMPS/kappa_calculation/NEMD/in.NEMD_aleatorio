@@ -7,13 +7,14 @@ atom_style      atomic
 newton          on
 atom_modify     sort 0 0.0
 boundary        p p p
-
+box tilt large
 # Leer celda unidad
-read_data       data.unit
+read_data       equilibrium_300K.lmp
 
 # Replicar 4x4x4 (~960 átomos)
-replicate       4 4 4
-
+#replicate       4 4 4
+# Replicar 2x2x2 * 2
+replicate	2 2 2
 # Potencial ChIMES
 pair_style      chimesFF
 pair_coeff      * * params.txt
@@ -27,7 +28,7 @@ variable        Thot  equal 350.0   # Temperatura caliente (K)
 variable        Tave  equal (${Thot}+${Tcold})/2  # T media
 variable        Nsteps equal 1e6    # 1 ns; ajusta según convergencia
 #Aleatoriodad
-#velocity all create ${Tave} 44444 dist gaussian
+velocity all create ${Tave} 11111 dist gaussian
 
 # Equilibración inicial (NVT a T media)
 fix             1 all nvt temp ${Tave} ${Tave} 100.0
@@ -40,8 +41,12 @@ run             50000  # 50 ps para equilibrar
 unfix           1
 
 # Definir regiones caliente/fría (en x, ajustado a supercelda: xhi=33.7559 Å)
-region          cold block 0.0 2.0 INF INF INF INF units box
-region          hot  block 31.7559 33.7559 INF INF INF INF units box
+region          cold_reg block 0.0 2.0 INF INF INF INF units box
+region          hot_reg  block 31.7559 33.7559 INF INF INF INF units box
+
+# Los nombres 'cold' y 'hot' que usó en los fix deben ser grupos de átomos.
+group cold region cold_reg
+group hot region hot_reg
 
 # Termostatos locales (NVT)
 fix             2 cold nvt temp ${Tcold} ${Tcold} 100.0
