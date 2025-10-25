@@ -1,13 +1,13 @@
 import curses
 import random
 import time
+import heapq
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Optional, Callable
+from typing import List, Optional, Callable, Tuple
 from enum import Enum
-import queue
 
-# Enumeraciones extendidas
+# Enumeraciones sin cambios
 class PersonState(Enum):
     WAITING = "Esperando"
     IN_ELEVATOR = "En ascensor"
@@ -26,7 +26,7 @@ class ActivityType(Enum):
     ENTERTAIN = "Entretenerse"
     PARTY = "Fiesta"
 
-# Clase Person actualizada
+# Clase Person sin cambios significativos
 @dataclass
 class Person:
     """Clase que representa a una persona con un comportamiento aleatorio."""
@@ -44,7 +44,7 @@ class Person:
         rand = random.random()
         if rand < 0.01:  # 1% probabilidad de fiesta
             dest_floor = random.randint(0, total_floors - 1)
-            self.activity_time = random.uniform(30, 120)  # Fiesta dura 30-120s
+            self.activity_time = random.uniform(30, 120)
             return True, dest_floor, ActivityType.PARTY
         elif rand < 0.06:  # 5% probabilidad de trabajo o compras
             self.activity_time = random.uniform(10, 60)
@@ -57,11 +57,11 @@ class Person:
         if self.state != PersonState.OUT or not self.activity_time or time.time() < self.activity_time:
             return False, -1, None
         self.state = PersonState.WAITING
-        self.activity_time = random.uniform(10, 60)  # Tiempo en casa
+        self.activity_time = random.uniform(10, 60)
         activity = random.choice([ActivityType.EAT, ActivityType.SLEEP, ActivityType.ENTERTAIN])
         return True, self.home_floor, activity
 
-# Clase Elevator modificada para mostrar movimiento intermedio
+# Clase Elevator con cola de prioridad
 class Elevator:
     """Clase que simula un ascensor con capacidad limitada y movimiento realista."""
     def __init__(self, max_capacity: int = 4, total_floors: int = 5):
@@ -71,7 +71,18 @@ class Elevator:
         self.passengers: List[Person] = []
         self.max_capacity = max_capacity
         self.total_floors = total_floors
-        self.requests: queue.Queue = queue.Queue()
+        self.requests: List[Tuple[float, Person, int, ActivityType]] = []  # Cola de prioridad: (prioridad, persona, destino, actividad)
+
+    def add_request(self, person: Person, destination: int, activity: ActivityType, priority: float):
+        """Añade una solicitud a la cola de prioridad."""
+        heapq.heappush(self.requests, (priority, person, destination, activity))
+
+    def get_next_request(self) -> Optional[Tuple[Person, int, ActivityType]]:
+        """Obtiene la solicitud con mayor prioridad."""
+        if not self.requests:
+            return None
+        _, person, destination, activity = heapq.heappop(self.requests)
+        return person, destination, activity
 
     def add_passenger(self, person: Person, destination: int, activity: ActivityType) -> float:
         """Añade un pasajero al ascensor, simulando tiempo de entrada (0.5s)."""
@@ -107,7 +118,7 @@ class Elevator:
                 self.current_floor += step
                 self.direction = ElevatorDirection.UP if step > 0 else ElevatorDirection.DOWN
                 new_events.append(f"Ascensor en piso {self.current_floor}")
-                update_callback(self, new_events)  # Actualizar interfaz
+                update_callback(self, new_events)
                 time.sleep(2.0)
                 total_time += 2.0
             time.sleep(2.0)
@@ -147,11 +158,11 @@ class CursesDisplay(Display):
         for i, event in enumerate(events[-5:]):
             if event_start + i + 1 < height:
                 self.stdscr.addstr(event_start + i + 1, 0, event[:width - 1])
-        queue_status = f"Cola: {[(p.id, d, a.value) for p, d, a in elevator.requests.queue]}"
+        queue_status = f"Cola: {[(p, d, a.value) for _, p, d, a in elevator.requests]}"
         self.stdscr.addstr(event_start + 6, 0, queue_status[:width - 1])
         self.stdscr.refresh()
 
-# Clase Building actualizada
+# Clase Building con prioridad
 class Building:
     """Clase que representa el edificio y gestiona la simulación."""
     def __init__(self, total_floors: int = 5, display: Display = None):
@@ -168,6 +179,20 @@ class Building:
             for _ in range(num_people):
                 self.floors[floor].append(Person(id=self.person_id, home_floor=floor))
                 self.person_id += 1
+
+    def calculate_priority(self, person: Person, destination: int, activity: ActivityType) -> float:
+        """Calcula la prioridad de una solicitud basada en distancia y actividad."""
+        distance = abs(self.elevator.current_floor - person.home_floor)
+        activity_weights = {
+            ActivityType.WORK: 1,
+            ActivityType.SHOPPING: 2,
+            ActivityType.PARTY: 3,
+            ActivityType.EAT: 4,
+            ActivityType.SLEEP: 4,
+            ActivityType.ENTERTAIN: 4
+        }
+        activity_priority = activity_weights.get(activity, 4)
+        return distance * 10 + activity_priority  # Multiplicar distancia para priorizar cercanía
 
     def update_display(self, elevator: Elevator, events: List[str]):
         """Función de devolución para actualizar la interfaz."""
@@ -186,19 +211,23 @@ class Building:
                     if person.state == PersonState.WAITING:
                         should_leave, dest_floor, activity = person.decide_activity(self.total_floors)
                         if should_leave:
-                            new_events.append(f"Persona {person.id} en piso {floor} solicita ascensor a piso {dest_floor} ({activity.value})")
-                            self.elevator.requests.put((person, dest_floor, activity))
+                            priority = self.calculate_priority(person, dest_floor, activity)
+                            new_events.append(f"Persona {person.id} en piso {floor} solicita ascensor a piso {dest_floor} ({activity.value}, prioridad {priority:.1f})")
+                            self.elevator.add_request(person, dest_floor, activity, priority)
                     elif person.state == PersonState.OUT:
                         should_return, dest_floor, activity = person.decide_return_activity(self.total_floors)
                         if should_return:
-                            new_events.append(f"Persona {person.id} regresa al piso {dest_floor} para {activity.value}")
-                            self.elevator.requests.put((person, dest_floor, activity))
+                            priority = self.calculate_priority(person, dest_floor, activity)
+                            new_events.append(f"Persona {person.id} regresa al piso {dest_floor} para {activity.value} (prioridad {priority:.1f})")
+                            self.elevator.add_request(person, dest_floor, activity, priority)
 
             # Procesar solicitudes del ascensor
-            if not self.elevator.requests.empty():
-                person, dest_floor, activity = self.elevator.requests.get()
+            request = self.elevator.get_next_request()
+            if request:
+                person, dest_floor, activity = request
                 if person.state == PersonState.WAITING and person in self.floors[person.home_floor]:
-                    new_events.append(f"Ascensor se mueve al piso {person.home_floor}")
+                    priority = self.calculate_priority(person, dest_floor, activity)  # Recalcular prioridad
+                    new_events.append(f"Ascensor atiende a persona {person.id} en piso {person.home_floor} ({activity.value}, prioridad {priority:.1f})")
                     self.elevator.move_to(person.home_floor, self.update_display)
                     entry_time = self.elevator.add_passenger(person, dest_floor, activity)
                     if entry_time > 0:
@@ -206,7 +235,7 @@ class Building:
                         self.floors[person.home_floor].remove(person)
                     else:
                         new_events.append(f"Ascensor lleno, persona {person.id} espera")
-                        self.elevator.requests.put((person, dest_floor, activity))
+                        self.elevator.add_request(person, dest_floor, activity, priority)
                     self.elevator.move_to(dest_floor, self.update_display)
                     exit_time = self.elevator.remove_passenger(person)
                     if exit_time > 0:
