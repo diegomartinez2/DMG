@@ -1,8 +1,13 @@
+#!/usr/bin/env python
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os # Importar para manejar rutas de archivos
-
+'''
+Este script python es un pequeño ejercicio del análisis de datos de un sensor TEM
+para el estudio de estructuras ocultas mediante el uso de campos magnéticos mediante
+resonancia magnética.
+'''
 # --- Parámetros de la medición (DEBES MODIFICAR ESTOS VALORES) ---
 # Diámetro del bucle transmisor (en metros)
 DIAMETRO_LOOP = 40.0
