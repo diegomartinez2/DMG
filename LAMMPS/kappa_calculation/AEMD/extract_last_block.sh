@@ -46,4 +46,21 @@ else
     echo "❌ No se pudo encontrar el bloque de datos o el archivo de entrada está vacío."
 fi
 
+# Ejecutar gnuplot y capturar toda la salida (stdout + stderr)
+echo "Ejecutando gnuplot series.gp..."
+gnuplot series.gp > gnuplot.out 2>&1
+
+# Verificar si gnuplot falló
+if [[ $? -ne 0 ]]; then
+    echo "Error: gnuplot falló. Revisa 'gnuplot.out' para más detalles." >&2
+    exit 1
+fi
+
+echo "Gnuplot ejecutado correctamente. Salida guardada en 'gnuplot.out'"
+
+# Opcional: mostrar resumen
+lines_in_data=$(wc -l < out1)
+echo "Resumen: $lines_in_data líneas de datos extraídas."
+cat gnuplot.out
+
 exit 0
