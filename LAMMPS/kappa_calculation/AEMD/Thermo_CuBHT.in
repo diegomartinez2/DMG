@@ -68,6 +68,7 @@ timestep    ${dt}
 #fix 1 all box/relax iso 0.0 vmax 0.001
 #minimize 1.0e-4 1.0e-6 100 1000
 ##minimize 0.0 1.0e-8 1000 100000
+#unfix 1
 
 # Defining the output format
 #----------------
