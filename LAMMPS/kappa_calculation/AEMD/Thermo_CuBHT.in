@@ -64,7 +64,10 @@ pair_coeff      * * params.txt
 variable    dt equal 1e-3
 timestep    ${dt}
 
-
+#option to relax the system previous go the main calculations
+#fix 1 all box/relax iso 0.0 vmax 0.001
+#minimize 1.0e-4 1.0e-6 100 1000
+##minimize 0.0 1.0e-8 1000 100000
 
 # Defining the output format
 #----------------
