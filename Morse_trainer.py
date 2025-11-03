@@ -7,9 +7,9 @@ import time
 # proporcionar métodos para traducir en ambas direcciones.
 
 class MorseTranslator:
-    """
-    Traduce cadenas de texto de/hacia el código Morse Internacional.
-    """
+#    """
+#    Traduce cadenas de texto de/hacia el código Morse Internacional.
+#    """
 
     # Diccionario principal (Texto -> Morse)
     MORSE_CODE_DICT = {
@@ -31,16 +31,18 @@ class MorseTranslator:
         self._generate_reverse_dict()
 
     def _generate_reverse_dict(self):
-        """
-        Función interna (SRP) para crear el diccionario de
-        traducción inversa (Morse -> Texto).
-        """
+#        """
+#        Función interna (SRP) para crear el diccionario de
+#        traducción inversa (Morse -> Texto).
+#        """
         self.REVERSE_MORSE_DICT = {}
         for char, code in self.MORSE_CODE_DICT.items():
             self.REVERSE_MORSE_DICT[code] = char
 
     def get_static_display(self, text: str) -> str:
-        """Traduce texto a una cadena estática de Morse (para el script anterior)."""
+#        """
+#        Traduce texto a una cadena estática de Morse (para el script anterior).
+#        """
         morse_text = ""
         for char in text.upper():
             morse_char = self.MORSE_CODE_DICT.get(char, ' ')
@@ -51,15 +53,17 @@ class MorseTranslator:
         return morse_text.strip()
 
     def translate_morse_char(self, morse_code: str) -> str:
-        """
-        Traduce una cadena de morse (ej. '.-') a su letra (ej. 'A').
 
-        Args:
-            morse_code (str): La cadena de puntos y rayas.
+#"""
+#        Traduce una cadena de morse (ej. '.-') a su letra (ej. 'A').
+#
+#        Args:
+#            morse_code (str): La cadena de puntos y rayas.
+#
+#        Returns:
+#            str: La letra correspondiente, o '?' si no se encuentra.
+#"""
 
-        Returns:
-            str: La letra correspondiente, o '?' si no se encuentra.
-        """
         return self.REVERSE_MORSE_DICT.get(morse_code, '?')
 
 
@@ -68,19 +72,19 @@ class MorseTranslator:
 # No sabe nada del alfabeto, solo usa el traductor.
 
 class MorseTrainer:
-    """
-    Maneja la interfaz de Curses para la práctica interactiva de Morse.
-    Aplica SRP: Su única responsabilidad es la UI y el manejo de estado.
-    """
+#    """
+#    Maneja la interfaz de Curses para la práctica interactiva de Morse.
+#    Aplica SRP: Su única responsabilidad es la UI y el manejo de estado.
+#    """
 
     def __init__(self, stdscr, translator: MorseTranslator):
-        """
-        Inicializa el entrenador.
-
-        Args:
-            stdscr: La ventana principal de curses.
-            translator (MorseTranslator): El objeto traductor (DIP).
-        """
+#        """
+#        Inicializa el entrenador.
+#
+#        Args:
+#            stdscr: La ventana principal de curses.
+#            translator (MorseTranslator): El objeto traductor (DIP).
+#        """
         self.stdscr = stdscr
         self.translator = translator # Inyección de dependencias
 
@@ -95,10 +99,10 @@ class MorseTrainer:
         self.stdscr.timeout(50)   # Revisar entrada rápidamente
 
     def _draw_ui(self):
-        """
-        (SRP) Única función responsable de dibujar la pantalla completa.
-        (KISS) Mantiene la lógica de dibujo en un solo lugar.
-        """
+#        """
+#        (SRP) Única función responsable de dibujar la pantalla completa.
+#        (KISS) Mantiene la lógica de dibujo en un solo lugar.
+#        """
         self.stdscr.clear()
         max_y, max_x = self.stdscr.getmaxyx()
 
@@ -131,7 +135,7 @@ class MorseTrainer:
         self.stdscr.refresh()
 
     def _handle_input(self, key: int):
-        """(SRP) Única función responsable de manejar la lógica de entrada."""
+#        """(SRP) Única función responsable de manejar la lógica de entrada."""
 
         # A. Añadir a búfer (Punto o Raya)
         if key == ord('.') or key == ord('-'):
@@ -154,7 +158,7 @@ class MorseTrainer:
             self.current_morse_buffer = ""
 
     def run_loop(self):
-        """Bucle principal de la aplicación."""
+#        """Bucle principal de la aplicación."""
         while True:
             # 1. Dibujar la UI en cada fotograma
             self._draw_ui()
@@ -175,10 +179,10 @@ class MorseTrainer:
 
 # --- Módulo 3: Aplicación Principal (OCP/DIP) ---
 def main_app(stdscr):
-    """
-    Función principal envuelta por curses.wrapper.
-    Configura e inyecta las dependencias.
-    """
+#    """
+#    Función principal envuelta por curses.wrapper.
+#    Configura e inyecta las dependencias.
+#    """
     try:
         # --- Inyección de Dependencias (DIP) ---
         translator = MorseTranslator()
@@ -202,11 +206,13 @@ if __name__ == "__main__":
     # de la terminal de forma segura.
     curses.wrapper(main_app)
     print("Entrenador detenido. Terminal restaurada.")
-```
 
-### Cómo usar el script
-
-1.  **Guardar:** Guarda el código como `morse_trainer.py`.
-2.  **Ejecutar:**
-    ```bash
-    python3 morse_trainer.py
+#```
+#
+# ### Cómo usar el script
+#
+# 1.  **Guardar:** Guarda el código como `morse_trainer.py`.
+# 2.  **Ejecutar:**
+#    ```bash
+#    python3 morse_trainer.py
+#'''
