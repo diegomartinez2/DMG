@@ -40,14 +40,14 @@ run             50000  # 50 ps para equilibrar
 unfix           1
 
 # Definir regiones caliente/fría (en x, ajustado a supercelda: xhi=33.7559 Å)
-region          cold block 0.0 2.0 INF INF INF INF units box
-region          hot  block 31.7559 33.7559 INF INF INF INF units box
+region          cold block 0.0 5.0 INF INF INF INF units box
+region          hot  block 28.7559 33.7559 INF INF INF INF units box
 
 # Termostatos locales (NVT)
 fix             2 cold nvt temp ${Tcold} ${Tcold} 100.0
 fix             3 hot  nvt temp ${Thot} ${Thot} 100.0
-fix_modify      2 press no
-fix_modify      3 press no
+#fix_modify      2 press no
+#fix_modify      3 press no
 
 # Flujo de calor (en x)
 compute         flux all heat/flux ke pe stress
@@ -65,5 +65,8 @@ dump            1 all atom 1000 dump.lammpstrj
 run             ${Nsteps}
 
 # Calcular y guardar flujo
-variable        Jx equal c_flux[1]/vol
-print           "Heat flux Jx = ${Jx} kcal/(mol*ns*Å^2)" file flux.out
+#variable        Jx equal c_flux[1]/vol
+#print           "Heat flux Jx = ${Jx} kcal/(mol*ns*Å^2)" file flux.out
+variable Jx equal c_flux[1]/vol
+variable Jx_ns equal ${Jx}*1000  # convertir fs → ns
+print "Heat flux Jx = ${Jx_ns} kcal/(mol*ns*Å^2)" file flux.out
