@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -31,7 +32,7 @@ plt.legend(fontsize=11)
 plt.grid(True, alpha=0.3)
 plt.yscale('log')
 plt.xscale('log')
-plt.xticks([1, 100, 1000, 10000, 100000, 300000, 500000], 
+plt.xticks([1, 100, 1000, 10000, 100000, 300000, 500000],
            ['1', '100', '1k', '10k', '100k', '300k', '500k'])
 plt.ylim(0.001, 1000)
 plt.tight_layout()
