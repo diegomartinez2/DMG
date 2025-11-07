@@ -1,5 +1,5 @@
 # -------------------------------------------------
-# file: board.py
+# file: board.py  (actualizado)
 # -------------------------------------------------
 from __future__ import annotations
 from typing import Protocol, List, Tuple
@@ -8,13 +8,14 @@ import string
 
 
 class IBoard(Protocol):
-    """Interfaz mínima de una cuadrícula de juego."""
-
     def size(self) -> Tuple[int, int]:
         """(filas, columnas)"""
 
     def get(self, row: int, col: int) -> str:
         """Letra en la posición dada."""
+
+    def regenerate(self) -> None:
+        """Genera una nueva cuadrícula aleatoria."""
 
     def __str__(self) -> str:
         """Representación textual completa."""
@@ -22,12 +23,12 @@ class IBoard(Protocol):
 
 class Board:
     """
-    Implementación concreta de IBoard.
-    - Genera una cuadrícula de letras aleatorias.
-    - Permite acceso de solo lectura.
+    Implementación de IBoard con regeneración.
+    - Mantiene dimensiones y alfabeto.
+    - Permite regenerar el contenido sin crear nueva instancia.
     """
 
-    def __init__(self, rows: int = 6, cols: int = 8, alphabet: str = string.ascii_uppercase):
+    def __init__(self, rows: int = 6, cols: int = 10, alphabet: str = string.ascii_uppercase):
         if rows < 1 or cols < 1:
             raise ValueError("Dimensiones deben ser positivas")
         self._rows = rows
@@ -54,6 +55,10 @@ class Board:
         if not (0 <= row < self._rows and 0 <= col < self._cols):
             raise IndexError("Posición fuera de rango")
         return self._grid[row][col]
+
+    def regenerate(self) -> None:
+        """Regenera toda la cuadrícula con nuevas letras aleatorias."""
+        self._grid = self._generate_grid()
 
     def __str__(self) -> str:
         lines = []

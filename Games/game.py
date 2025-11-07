@@ -1,8 +1,8 @@
 # -------------------------------------------------
-# file: game.py  (versión actualizada)
+# file: game.py  (actualizado)
 # -------------------------------------------------
 from typing import List, Tuple
-from board import IBoard, Board
+from board import IBoard
 from selector import ISelector, CursorSelector
 from scorer import IScorer, LengthScorer
 import curses
@@ -23,15 +23,12 @@ class Game:
             letters = ' → '.join(self._board.get(r, c) for r, c in chain)
             stdscr.addstr(y, 0, f"Cadena: {letters}")
             stdscr.addstr(y + 1, 0, f"Puntos: {points}   Total: {self._total}")
-            stdscr.addstr(y + 3, 0, "SPACE: nueva cadena  q: salir")
+            stdscr.addstr(y + 3, 0, "Generando nuevo tablero... SPACE para continuar")
             stdscr.refresh()
-            # Espera confirmación antes de limpiar
-            while True:
-                k = stdscr.getch()
-                if k == ord(' '):
-                    break
-                if k == ord('q'):
-                    raise KeyboardInterrupt  # forzar salida
+            # Pausa breve para leer
+            curses.napms(800)
+            # Regenerar tablero
+            self._board.regenerate()
 
     def run(self):
         stdscr = curses.initscr()
@@ -39,7 +36,6 @@ class Game:
         curses.cbreak()
         stdscr.keypad(True)
 
-        # Inyectamos stdscr
         selector = CursorSelector(self._board, stdscr)
         self._selector = selector
 
@@ -51,7 +47,7 @@ class Game:
                 points = self._scorer.score(chain)
                 self._total += points
                 self._print_result(chain, points)
-                # El tablero ya se limpia en CursorSelector al confirmar
+                # El selector ya limpió la selección
         except KeyboardInterrupt:
             pass
         finally:
