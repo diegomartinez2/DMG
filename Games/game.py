@@ -2,7 +2,7 @@
 # file: game.py  (versión actualizada)
 # -------------------------------------------------
 from typing import List, Tuple
-from board import IBoard
+from board import IBoard, Board
 from selector import ISelector, CursorSelector
 from scorer import IScorer, LengthScorer
 import curses
