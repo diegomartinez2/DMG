@@ -11,6 +11,7 @@ class ISelector(Protocol):
 
     def run(self) -> List[Tuple[int, int]]:
         """Devuelve lista de (row, col) seleccionados o [] si se cancela."""
+"""Devuelve lista de posiciones. [] = abortar, no vacío = confirmar cadena."""
 
 
 class CursorSelector:
@@ -91,6 +92,13 @@ class CursorSelector:
             elif key == curses.KEY_BACKSPACE or key == 127:
                 if self._selected:
                     self._selected.pop()
+            elif key == ord(' '):  # <--- NUEVO: SPACE confirma la cadena
+                if len(self._selected) >= 2:
+                    result = self._selected.copy()
+                    self._selected.clear()
+                    self._draw()
+                    return result
+                # Si menos de 2, ignora (o podrías mostrar mensaje)
             elif key == ord('q'):
                 return []                # abortar
             self._draw()
