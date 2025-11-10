@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import numpy as np
 from collections import OrderedDict
 
@@ -120,10 +121,10 @@ def convert_poscar_to_lammps(poscar_file, lammps_file):
     try:
         # Read POSCAR
         title, lattice_vectors, atom_symbols, atom_counts, coord_type, coords, atom_types = read_poscar(poscar_file)
-        
+
         # Write LAMMPS data file
         write_lammps_data(lammps_file, title, lattice_vectors, atom_symbols, atom_counts, coord_type, coords, atom_types)
-        
+
         print(f"Successfully converted {poscar_file} to {lammps_file}")
     except Exception as e:
         print(f"Error: {str(e)}")
