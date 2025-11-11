@@ -48,7 +48,7 @@ class Evolution:
         new_value = np.random.normal(0, sigma)
         return np.clip(new_value, -1, 1)
 
-    def evolve(self, grid, steps=100, equilibrium_threshold=0.01):
+    def evolve(self, grid, steps=100, equilibrium_threshold=0.01, entropy_threshold=0.001):
         mean_history = []
         entropy_history = []
         for step in range(steps):
@@ -60,16 +60,17 @@ class Evolution:
             entropy = self.entropy_calculator.calculate(grid)
             mean_history.append(mean_abs_value)
             entropy_history.append(entropy)
-#            if step > 0 and abs(mean_history[-1] - mean_history[-2]) < equilibrium_threshold:
-#                print(f"Equilibrio alcanzado en el paso {step+1}")
-#                break
             if step > 0:
                 mean_change = abs(mean_history[-1] - mean_history[-2])
                 entropy_change = abs(entropy_history[-1] - entropy_history[-2])
-                if mean_change < equilibrium_threshold or entropy_change < entropy_threshold:
-                    print(f"Equilibrio alcanzado en el paso {step+1} (mean_change={mean_change:.4f}, entropy_change={entropy_change:.4f})")
+                if mean_change < equilibrium_threshold:
+                    print(f"Equilibrio alcanzado en el paso {step+1} (cambio en valor medio: {mean_change:.4f})")
                     break
-
+                if entropy_change < entropy_threshold:
+                    print(f"Equilibrio alcanzado en el paso {step+1} (cambio en entropía: {entropy_change:.4f})")
+                    break
+        else:
+            print(f"Simulación detenida tras alcanzar el máximo de {steps} pasos")
         return mean_history, entropy_history
 
 class Visualizer:
@@ -100,7 +101,7 @@ def main():
     visualizer = Visualizer(graphical=False)
 
     visualizer.display(grid, 0)
-    mean_history, entropy_history = evolution.evolve(grid, steps)
+    mean_history, entropy_history = evolution.evolve(grid, steps=50, equilibrium_threshold=0.01, entropy_threshold=0.001)
     for step in range(1, len(mean_history) + 1):
         visualizer.display(grid, step)
 
