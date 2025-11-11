@@ -60,9 +60,16 @@ class Evolution:
             entropy = self.entropy_calculator.calculate(grid)
             mean_history.append(mean_abs_value)
             entropy_history.append(entropy)
-            if step > 0 and abs(mean_history[-1] - mean_history[-2]) < equilibrium_threshold:
-                print(f"Equilibrio alcanzado en el paso {step+1}")
-                break
+#            if step > 0 and abs(mean_history[-1] - mean_history[-2]) < equilibrium_threshold:
+#                print(f"Equilibrio alcanzado en el paso {step+1}")
+#                break
+            if step > 0:
+                mean_change = abs(mean_history[-1] - mean_history[-2])
+                entropy_change = abs(entropy_history[-1] - entropy_history[-2])
+                if mean_change < equilibrium_threshold or entropy_change < entropy_threshold:
+                    print(f"Equilibrio alcanzado en el paso {step+1} (mean_change={mean_change:.4f}, entropy_change={entropy_change:.4f})")
+                    break
+
         return mean_history, entropy_history
 
 class Visualizer:
