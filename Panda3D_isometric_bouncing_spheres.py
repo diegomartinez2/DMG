@@ -1,4 +1,8 @@
-
+#!/usr/bin/env python
+'''
+Test of Panda3D with simple bouncing spheres
+Prueba de programación de animaciones 3D con Panda3D; bolas rebotando en un entorno isométrico.
+'''
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import NodePath, CollisionNode, CollisionSphere, CollisionPlane, Plane, Vec3
 from panda3d.core import Point3, LVector3
