@@ -117,29 +117,89 @@ class Visualizer:
                 print(" ".join(f"{x:.2f}" for x in row))
             time.sleep(0.1)  # Pausa para visualización en terminal
 
+class Evolution:
+    def __init__(self, base_sigma=0.5, neighbor_weight=0.5):
+        self.base_sigma = base_sigma
+        self.neighbor_weight = neighbor_weight
+        self.entropy_calculator = EntropyCalculator(num_bins=20)  # Añadimos el calculador
+
+    def evolve(self, grid, steps=100, equilibrium_threshold=0.01):
+        """
+        Evoluciona la cuadrícula y calcula métricas (valor medio absoluto y entropía).
+        Returns:
+            tuple: (historia de valores medios absolutos, historia de entropía)
+        """
+        mean_history = []
+        entropy_history = []
+        for step in range(steps):
+            old_values = grid.values.copy()
+            for i in range(grid.size):
+                for j in range(grid.size):
+                    grid.values[i, j] = self.update_cell(grid, i, j)
+            mean_abs_value = np.mean(np.abs(grid.values))
+            entropy = self.entropy_calculator.calculate(grid)
+            mean_history.append(mean_abs_value)
+            entropy_history.append(entropy)
+            # Criterio de equilibrio
+            if step > 0 and abs(mean_history[-1] - mean_history[-2]) < equilibrium_threshold:
+                print(f"Equilibrio alcanzado en el paso {step+1}")
+                break
+        return mean_history, entropy_history
+
+class EntropyCalculator:
+    """Calcula la entropía de Shannon de la cuadrícula. Cumple SRP al manejar solo el cálculo de entropía."""
+    def __init__(self, num_bins=20):
+        """
+        Inicializa el calculador de entropía.
+        Args:
+            num_bins (int): Número de bins para discretizar los valores entre -1 y 1.
+        """
+        self.num_bins = num_bins
+
+    def calculate(self, grid):
+        """
+        Calcula la entropía de Shannon de los valores de la cuadrícula.
+        Args:
+            grid (Grid): Cuadrícula con los valores.
+        Returns:
+            float: Entropía en bits (usando log base 2).
+        """
+        # Discretizar valores en bins
+        values = grid.values.flatten()
+        hist, bin_edges = np.histogram(values, bins=self.num_bins, range=(-1, 1), density=True)
+        # Calcular probabilidades (normalizadas)
+        probs = hist / np.sum(hist)
+        # Evitar log(0) filtrando probabilidades nulas
+        probs = probs[probs > 0]
+        # Entropía de Shannon: -sum(p * log2(p))
+        entropy = -np.sum(probs * np.log2(probs)) if probs.size > 0 else 0
+        return entropy
+
+
 def main():
-    """Función principal para ejecutar la simulación."""
-    size = 10  # Tamaño de la cuadrícula
-    steps = 50  # Número máximo de pasos
-    grid = Grid(size, seed=42)  # Cuadrícula inicial
-    evolution = Evolution(base_sigma=0.5, neighbor_weight=0.5)  # Evolución
-    visualizer = Visualizer(graphical=False)  # Visualización en terminal (cambiar a True para gráfica)
+    size = 10
+    steps = 50
+    grid = Grid(size, seed=42)
+    evolution = Evolution(base_sigma=0.5, neighbor_weight=0.5)
+    visualizer = Visualizer(graphical=False)
 
-    # Visualizar estado inicial
     visualizer.display(grid, 0)
-
-    # Evolucionar y visualizar
-    history = evolution.evolve(grid, steps)
-    for step in range(1, len(history) + 1):
+    mean_history, entropy_history = evolution.evolve(grid, steps)
+    for step in range(1, len(mean_history) + 1):
         visualizer.display(grid, step)
 
-    # Mostrar evolución del valor medio absoluto
+    # Graficar evolución
     plt.ioff()
-    plt.figure()
-    plt.plot(history)
-    plt.xlabel('Paso')
-    plt.ylabel('Valor medio absoluto')
-    plt.title('Evolución de la entropía aproximada')
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 6))
+    ax1.plot(mean_history)
+    ax1.set_xlabel('Paso')
+    ax1.set_ylabel('Valor medio absoluto')
+    ax1.set_title('Evolución del valor medio absoluto')
+    ax2.plot(entropy_history)
+    ax2.set_xlabel('Paso')
+    ax2.set_ylabel('Entropía (bits)')
+    ax2.set_title('Evolución de la entropía de Shannon')
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":
