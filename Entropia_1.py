@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+#This script doesn't work, need fix
 import numpy as np
 import matplotlib.pyplot as plt
 import time
