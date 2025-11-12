@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+'''
+Test of entropy simulation, very simple, probably don't make sense...
+'''
 import numpy as np
 import matplotlib.pyplot as plt
 import time
