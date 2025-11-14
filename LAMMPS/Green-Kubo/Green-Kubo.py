@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import numpy as np
 from scipy.integrate import simps # o trapz para integración
 import os
