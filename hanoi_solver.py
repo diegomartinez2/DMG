@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 class HanoiSolver:
     """
     Resuelve el puzle de las Torres de Hanoi para un número dado de discos.
