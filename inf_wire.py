@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import numpy as np
 from scipy.linalg import eig
 import os
