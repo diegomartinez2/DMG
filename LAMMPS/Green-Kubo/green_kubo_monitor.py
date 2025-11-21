@@ -17,7 +17,7 @@ import random
 class GreenKuboModel:
     """
     Maneja la lectura de datos y el cálculo físico de la conductividad.
-    Basado en el script 'Green-Kubo.py' proporcionado.
+    Basado en el script 'Green-Kubo.py'.
     """
     def __init__(self):
         # Constantes Físicas y Factores (Valores por defecto)
