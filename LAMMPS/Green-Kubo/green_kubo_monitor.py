@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+"""
+Este script permite seguir la evolución de un cálculo Green-Kubo LAMMPS
+visualizando los datos a medida que se calculan.
+"""
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 import numpy as np
