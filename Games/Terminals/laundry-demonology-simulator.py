@@ -267,7 +267,8 @@ def main(stdscr):
                     ]
 
                 for phase in range(1, 9):
-                    log_lines.append(f"    Phase {phase}/8: Necromantic convergence in progress...")
+#                    log_lines.append(f"    Phase {phase}/8: Necromantic convergence in progress...")
+                    log_lines.append(f"    Phase {phase}/8: {op[2]} in progress...")
                     print_log(left_log, log_lines)
                     time.sleep(0.5)
 
