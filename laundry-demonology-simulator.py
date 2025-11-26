@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # laundry-demonology-terminal.py
-# VERSIÓN FINAL INDESTRUCTIBLE - Funciona en cualquier terminal
+# VERSIÓN DEFINITIVA - Panel izquierdo (log) + derecho (ruido)
 
 import curses
 import time
@@ -30,12 +30,13 @@ current_clearance = 2
 
 def safe_addstr(win, y, x, text, attr=0):
     try:
-        win.addstr(y, x, text[:win.getmaxyx()[1]-x-1], attr)
+        h, w = win.getmaxyx()
+        win.addstr(y, x, str(text)[:w-x-1], attr)
     except:
         pass
 
-def draw_symbols(win):
-    chars = ".-:=+*#%&@"
+def draw_noise(win):
+    chars = ".-:=+*#%&@$∞λΔΘΨΩ∮∯∰∇∂ℏ∫∬∭"
     while not stop_symbols.is_set():
         try:
             h, w = win.getmaxyx()
@@ -43,29 +44,26 @@ def draw_symbols(win):
                 time.sleep(0.5); continue
             for y in range(h):
                 line = "".join(random.choice(chars) for _ in range(w))
-                safe_addstr(win, y, 0, line)
+                safe_addstr(win, y, 0, line, curses.A_DIM)
             win.refresh()
         except:
             pass
-        time.sleep(0.35)
+        time.sleep(0.3)
 
 def print_log(win, lines):
-    try:
-        win.erase()
-        h, w = win.getmaxyx()
-        for i, line in enumerate(lines[-(h-1):]):
-            if i >= h-1: break
-            text = str(line)[:w-1].ljust(w-1)
-            if any(x in text.upper() for x in ["ERROR","BREACH","SLEEPER","EVACUATE"]):
-                attr = curses.A_BOLD | curses.color_pair(3)
-            elif "SUCCESS" in text.upper():
-                attr = curses.A_BOLD | curses.color_pair(2)
-            else:
-                attr = curses.A_NORMAL
-            safe_addstr(win, i, 0, text, attr)
-        win.refresh()
-    except:
-        pass
+    win.erase()
+    h, w = win.getmaxyx()
+    for i, line in enumerate(lines[-(h-1):]):
+        if i >= h-1: break
+        text = str(line)[:w-1]
+        if any(x in text.upper() for x in ["ERROR","BREACH","SLEEPER"]):
+            attr = curses.A_BOLD | curses.color_pair(3)
+        elif "SUCCESS" in text.upper():
+            attr = curses.A_BOLD | curses.color_pair(2)
+        else:
+            attr = curses.A_NORMAL
+        safe_addstr(win, i, 0, text, attr)
+    win.refresh()
 
 def login_screen(stdscr):
     global current_user, current_clearance
@@ -73,7 +71,6 @@ def login_screen(stdscr):
     curses.curs_set(1)
     stdscr.nodelay(False)
 
-    # Líneas del banner
     banner = [
         "    ==========================================",
         "    ==   THE LAUNDRY - OCCULT COMPUTING     ==",
@@ -81,31 +78,22 @@ def login_screen(stdscr):
         "    ==========================================",
         "    CLASSIFIED LEVEL 3 AND ABOVE ONLY",
         "",
-        "    Username:                                      ",  # línea 9
-        "    Clearance (2-4):                              ",  # línea 10
+        "    Username:                                      ",
+        "    Clearance (2-4):                              ",
     ]
     for i, line in enumerate(banner):
         safe_addstr(stdscr, 3+i, 5, line, curses.A_BOLD | curses.color_pair(1))
 
-    # ← Aquí está la clave: posicionamos el cursor exactamente donde va el input
     curses.echo()
-    stdscr.move(9, 18)                                   # ← cursor justo después de "Username: "
-    user_input = stdscr.getstr(9, 18, 20).decode(errors='ignore').strip()
-
-    stdscr.move(10, 25)                                  # ← cursor justo después de "Clearance (2-4): "
-    cl_input = stdscr.getstr(10, 25, 1).decode(errors='ignore').strip()
+    stdscr.move(9, 18); user_input = stdscr.getstr(9, 18, 20).decode(errors='ignore').strip()
+    stdscr.move(10, 25); cl_input = stdscr.getstr(10, 25, 1).decode(errors='ignore').strip()
     curses.noecho()
     curses.curs_set(0)
 
     current_user = (user_input or "guest").upper()[:12]
-    try:
-        current_clearance = int(cl_input)
-        if current_clearance not in (2,3,4):
-            raise ValueError
-    except:
-        current_clearance = 2
+    current_clearance = int(cl_input) if cl_input.isdigit() and 2 <= int(cl_input) <= 4 else 2
 
-    safe_addstr(stdscr, 13, 5, "Authentication successful. Loading terminal...", curses.color_pair(2))
+    safe_addstr(stdscr, 13, 5, "Authentication successful. Loading...", curses.color_pair(2))
     stdscr.refresh()
     time.sleep(1.5)
 
@@ -130,48 +118,55 @@ def main(stdscr):
     while True:
         try:
             h, w = stdscr.getmaxyx()
-            if h < 24 or w < 70:
+            if h < 26 or w < 80:
                 stdscr.erase()
-                safe_addstr(stdscr, 0, 0, "TERMINAL TOO SMALL - RESIZE (70x24 min)", curses.A_BOLD)
+                safe_addstr(stdscr, 0, 0, "TERMINAL TOO SMALL (min 80x26)", curses.A_BOLD|curses.color_pair(3))
                 stdscr.refresh()
                 time.sleep(1)
                 continue
 
-            # Crear ventanas solo si hay espacio
-            header = stdscr.derwin(1, w, 0, 0)
-            menu   = stdscr.derwin(14, w, 1, 0)
-            sep1   = stdscr.derwin(1, w, 15, 0)
-            logwin = stdscr.derwin(h-19, w, 16, 0)
-            sep2   = stdscr.derwin(1, w, h-3, 0)
-            warn   = stdscr.derwin(1, w, h-2, 0)
-            status = stdscr.derwin(1, w, h-1, 0)
+            # === DISTRIBUCIÓN DE VENTANAS ===
+            header   = stdscr.derwin(1, w, 0, 0)        # línea 0
+            menu     = stdscr.derwin(14, w, 1, 0)       # líneas 1-14
+            sep1     = stdscr.derwin(1, w, 15, 0)       # línea 15
+            left_log = stdscr.derwin(h-19, w//2, 16, 0)     # ← IZQUIERDA: log
+            right_noise = stdscr.derwin(h-19, w-w//2, 16, w//2)  # ← DERECHA: ruido
+            sep2     = stdscr.derwin(1, w, h-3, 0)
+            warn     = stdscr.derwin(1, w, h-2, 0)
+            status   = stdscr.derwin(1, w, h-1, 0)
 
-            # Dibujar todo de forma segura
-            safe_addstr(header, 0, 0, "="*w, curses.A_REVERSE | curses.color_pair(1))
+            # Header
+            safe_addstr(header, 0, 0, "═"*w, curses.A_REVERSE | curses.color_pair(1))
             header.refresh()
 
+            # Menú
             menu.erase()
             safe_addstr(menu, 0, 2, "LAUNDRY DEMONOLOGY TERMINAL v10", curses.A_BOLD|curses.color_pair(1))
             case = random.choices(["YELLOW/AMBER","RED/VERMILLION"],[94,6])[0]
             safe_addstr(menu, 2, 2, f"CASE NIGHTMARE GREEN: {case}",
                        curses.color_pair(3)|curses.A_BOLD if "RED" in case else curses.color_pair(4))
             safe_addstr(menu, 4, 2, "Select operation:", curses.A_BOLD)
-            for i, (k, (name, algo, _)) in enumerate(OPTIONS.items(), 6):
+            for i,(k,(name,algo,_)) in enumerate(OPTIONS.items(),6):
                 col = curses.color_pair(3)|curses.A_BOLD if k=="4" else curses.color_pair(2)
-                safe_addstr(menu, i, 4, f"[{k}] {name:<12} -> {algo}", col)
+                safe_addstr(menu, i, 4, f"[{k}] {name:<12} → {algo}", col)
             safe_addstr(menu, 12, 4, "[Q] Logout & destroy evidence", curses.color_pair(1))
             menu.refresh()
 
-            safe_addstr(sep1, 0, 0, "-"*w, curses.A_DIM); sep1.refresh()
-            safe_addstr(sep2, 0, 0, "-"*w, curses.A_DIM); sep2.refresh()
+            # Separadores
+            safe_addstr(sep1, 0, 0, "─"*w, curses.A_DIM); sep1.refresh()
+            safe_addstr(sep2, 0, 0, "─"*w, curses.A_DIM); sep2.refresh()
+
+            # Warnings y status
             safe_addstr(warn, 0, 0, random.choice(WARNINGS), curses.color_pair(4)|curses.A_BOLD); warn.refresh()
             safe_addstr(status, 0, 0,
                 f"User: {current_user} | Level: {current_clearance} | Entropy: {random.randint(42,97)}%")
             status.refresh()
 
-            if threading.active_count() < 6:
-                threading.Thread(target=draw_symbols, args=(logwin,), daemon=True).start()
-            print_log(logwin, log_lines)
+            # Iniciar ruido solo una vez
+            if threading.active_count() < 5:
+                threading.Thread(target=draw_noise, args=(right_noise,), daemon=True).start()
+
+            print_log(left_log, log_lines)
 
             key = stdscr.getch()
             if key == -1: continue
@@ -191,11 +186,11 @@ def main(stdscr):
 
             if ch in OPTIONS:
                 op = OPTIONS[ch]
-                log_lines += ["", f">>> {op[0].upper()} ACTIVE", f"    {op[1]}", ""]
+                log_lines += ["", f">>> EXECUTING {op[0].upper()}", f"    {op[1]}", ""]
                 for phase in range(1,9):
-                    log_lines.append(f"    Phase {phase}/8 processing...")
-                    print_log(logwin, log_lines)
-                    time.sleep(0.4)
+                    log_lines.append(f"    Phase {phase}/8: Processing necromantic tensors...")
+                    print_log(left_log, log_lines)
+                    time.sleep(0.45)
                 result = random.choice([
                     "SUCCESS: Reality stabilized",
                     "MINOR BREACH: Soul contested",
@@ -205,7 +200,7 @@ def main(stdscr):
                     "Physics now optional",
                 ])
                 log_lines += ["", result]
-                print_log(logwin, log_lines)
+                print_log(left_log, log_lines)
                 time.sleep(3)
 
         except:
@@ -213,7 +208,4 @@ def main(stdscr):
             continue
 
 if __name__ == "__main__":
-    try:
-        curses.wrapper(main)
-    except:
-        print("\nTerminal destroyed. No evidence remains.")
+    curses.wrapper(main)
