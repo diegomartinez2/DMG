@@ -1,135 +1,157 @@
 #!/usr/bin/env python3
-# laundry-demonology-simulator.py
-# Versión corregida – funciona en Linux, macOS y Windows (con windows-curses si hace falta)
+# laundry-demonology-terminal-v10.py
+# Terminal oficial de Computational Demonology - The Laundry
+# Ahora con layout profesional de 4 zonas
 
 import curses
 import time
 import random
 import threading
 from itertools import cycle
-import sys
 
 OPTIONS = {
     "1": ("Protection", "Rosencraft toroidal sequence", "Slow ectastic entity advance"),
     "2": ("Summon", "Level-7 imaginary prime series", "Attract mesonic-energy entities"),
     "3": ("Cast", "nth-cardinality polynomial set", "Disturb JKR boson fields"),
-    "4": ("Ftaghu", "Quintic reciprocal convergence", "Tune Planck constant (DANGEROUS)"),
+    "4": ("Ftaghu", "Quintic reciprocal convergence", "Observe The Sleeper (EXTREME RISK)"),
     "5": ("Expel", "Golberg entirion matrices", "Repel boundary anomalies"),
 }
 
-def fake_progress(stdscr, y, x, length=40):
-    chars = cycle("░▒▓█▓▒░")
-    for _ in range(random.randint(20, 70)):
-        bar = "".join(next(chars) for _ in range(random.randint(1, length)))
-        stdscr.addstr(y, x, f"[{bar.ljust(length)}] {random.randint(1, 100)}%")
-        stdscr.refresh()
-        time.sleep(0.07)
+# Colores
+PAIR_TITLE   = 1  # cyan
+PAIR_GOOD    = 2  # green
+PAIR_DANGER  = 3  # red
+PAIR_WARN    = 4  # yellow
+PAIR_DIM     = 5  # gris
 
-def scrolling_garbage(stop_event, stdscr, start_row):
-    while not stop_event.is_set():
-        line = ''.join(random.choice("01∞ΣλΔψΩΘΞΦΨϑϒϖℏ∂∇∮∫∰∯∮∬∭∮∯∫∲∳") for _ in range(200))
-        try:
-            stdscr.addstr(start_row, 0, line[:curses.COLS-1].ljust(curses.COLS-1), curses.A_DIM)
-        except curses.error:
-            pass
-        stdscr.refresh()
-        time.sleep(0.18)
-        start_row += 1
-        if start_row >= curses.LINES - 12:
-            start_row = 10
+warnings = [
+    "WARNING: Unauthorized observation may violate the Kibble Protocol",
+    "ALERT: Minor thaumic turbulence detected in sector 7G",
+    "NOTICE: Mahogany Row requests immediate status report",
+    "Residual Human Resources reminds you: no soul transfers without Form 27B/6",
+    "CASE NIGHTMARE GREEN readiness: 73% (and falling)",
+    "The Auditors are performing a surprise inspection in 00:03:14",
+]
+
+def scrolling_symbols(win):
+    symbols = "ΔΘΞΛΨΩ∇∂∮∯∰∭∫∬ℏλ∞∑∝∴∵"
+    while not win.stop_event.is_set():
+        line = ''.join(random.choice(symbols) for _ in range(200))
+        for row in range(win.height):
+            win.addstr(row, 0, line[row:row+win.width-1].ljust(win.width-1), curses.A_DIM)
+        win.refresh()
+        time.sleep(0.25)
+
+def computation_output(win, text_lines):
+    win.clear()
+    max_lines = win.height - 1
+    for i, line in enumerate(text_lines[-max_lines:]):
+        color = curses.color_pair(PAIR_GOOD) if any(x in line.lower() for x in ["success","converged","stable"]) else curses.color_pair(PAIR_DIM)
+        if "ERROR" in line or "BREACH" in line:
+            color = curses.color_pair(PAIR_DANGER)
+        win.addstr(i, 0, line[:win.width-1].ljust(win.width-1), color)
+    win.refresh()
 
 def main(stdscr):
-    curses.curs_set(0)           # Oculta el cursor
+    curses.curs_set(0)
     curses.start_color()
-    curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
-    curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
-    curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)
-    curses.init_pair(4, curses.COLOR_YELLOW, curses.COLOR_BLACK)
-    stdscr.timeout(100)          # getch() no bloqueante
+    curses.init_pair(PAIR_TITLE,   curses.COLOR_CYAN,    curses.COLOR_BLACK)
+    curses.init_pair(PAIR_GOOD,    curses.COLOR_GREEN,   curses.COLOR_BLACK)
+    curses.init_pair(PAIR_DANGER, curses.COLOR_RED,     curses.COLOR_BLACK)
+    curses.init_pair(PAIR_WARN,    curses.COLOR_YELLOW, curses.COLOR_BLACK)
+    curses.init_pair(PAIR_DIM,     curses.COLOR_WHITE,  curses.COLOR_BLACK)
+    stdscr.timeout(100)
 
-    stop_event = threading.Event()
-    garbage_thread = threading.Thread(target=scrolling_garbage, args=(stop_event, stdscr, 10), daemon=True)
-    garbage_thread.start()
+    h, w = stdscr.getmaxyx()
+
+    # Definición de ventanas
+    header_win     = stdscr.derwin(1, w, 0, 0)           # línea 0
+    menu_win       = stdscr.derwin(14, w, 1, 0)          # zona mensajes + menú
+    separator1     = stdscr.derwin(1, w, 15, 0)
+    compute_win    = stdscr.derwin(h-19, w, 16, 0)       # zona cálculo
+    separator2     = stdscr.derwin(1, w, h-3, 0)
+    warning_win    = stdscr.derwin(1, w, h-2, 0)         # línea de warnings
+    status_win     = stdscr.derwin(1, w, h-1, 0)         # línea de estado
+
+    compute_win.stop_event = threading.Event()
+    symbol_thread = threading.Thread(target=scrolling_symbols, args=(compute_win,), daemon=True)
+    symbol_thread.start()
+
+    log_lines = ["=== SYSTEM ONLINE ===", "All wards nominal.", "Awaiting operator input..."]
 
     while True:
-        stdscr.clear()
-        h, w = stdscr.getmaxyx()
+        # Header con símbolos flotantes
+        header_win.clear()
+        header_win.addstr(0, 0, "▓" * w, curses.A_REVERSE | curses.color_pair(PAIR_TITLE))
+        header_win.refresh()
 
-        title = " LAUNDRY COMPUTATIONAL DEMONOLOGY TERMINAL v9.3 (CLASS IV) "
-        stdscr.addstr(1, max(0, (w-len(title))//2), title, curses.A_BOLD | curses.color_pair(1))
+        # Menú principal
+        menu_win.clear()
+        menu_win.addstr(0, 2, "LAUNDRY - Computational Demonology Terminal v10.0", curses.A_BOLD | curses.color_pair(PAIR_TITLE))
+        menu_win.addstr(2, 2, "CASE NIGHTMARE GREEN status:", curses.color_pair(PAIR_WARN))
+        status = random.choices(["YELLOW/AMBER", "RED/VERMILLION – EVACUATE"], weights=[90,10])[0]
+        menu_win.addstr(2, 31, status, curses.A_BOLD | (curses.color_pair(PAIR_DANGER) if "RED" in status else curses.color_pair(PAIR_GOOD)))
 
-        stdscr.addstr(3, 2, "CASE NIGHTMARE GREEN status: ", curses.color_pair(4))
-        status = "YELLOW/AMBER" if random.random() > 0.15 else "RED/VERMILLION – EVACUATE"
-        stdscr.addstr(3, 32, status, curses.A_BOLD | (curses.color_pair(3) if "RED" in status else curses.color_pair(2)))
+        menu_win.addstr(4, 2, "Select operation:", curses.A_BOLD)
+        for i, (k, (name, algo, _)) in enumerate(OPTIONS.items(), start=6):
+            color = curses.color_pair(PAIR_DANGER) if k == "4" else curses.color_pair(PAIR_GOOD)
+            menu_win.addstr(i, 4, f"[{k}] {name:<12} → {algo}", color)
 
-        stdscr.addstr(5, 2, "Select operation:", curses.A_BOLD)
-        for i, (key, (name, algo, purpose)) in enumerate(OPTIONS.items(), 7):
-            color = curses.color_pair(2) if key != "4" else curses.color_pair(3)
-            stdscr.addstr(i, 4, f"[{key}] {name:<12} → {algo}", color)
-            stdscr.addstr(i+1, 8, f"    └─ {purpose}", curses.A_DIM)
+        menu_win.addstr(12, 4, "[Q] Exit and initiate thermite self-destruct sequence", curses.color_pair(PAIR_TITLE))
+        menu_win.refresh()
 
-        stdscr.addstr(h-5, 4, "[Q] Exit and wipe RAM cache", curses.color_pair(1))
-        stdscr.addstr(h-3, 2, "WARNING: This terminal may be monitored by Residual Human Resources.", curses.color_pair(3))
-        stdscr.addstr(h-2, 2, f"User: {random.choice(['boble','mo','angleton','harry','guest'])} | Clearance: LEVEL {random.randint(2,4)}", curses.A_DIM)
+        # Separadores
+        separator1.addstr(0, 0, "─" * (w-1), curses.color_pair(PAIR_DIM))
+        separator2.addstr(0, 0, "─" * (w-1), curses.color_pair(PAIR_DIM))
+        separator1.refresh(); separator2.refresh()
 
-        stdscr.refresh()
+        # Warning aleatorio
+        warning_win.clear()
+        warning_win.addstr(0, 0, random.choice(warnings), curses.color_pair(PAIR_WARN) | curses.A_BOLD)
+        warning_win.refresh()
 
+        # Línea de estado
+        status_win.clear()
+        user = random.choice(["boble", "mo", "angleton", "harriet", "derek"])
+        status_win.addstr(0, 0, f"User: {user.upper()} | Clearance: LEVEL {random.randint(2,4)} | Entropy: {random.randint(38,97)}% ", curses.color_pair(PAIR_DIM))
+        status_win.refresh()
+
+        # Entrada
         key = stdscr.getch()
-
-        # Protección contra teclas raras
-        if key == -1:                    # timeout, nada pulsado
+        if key in (-1, curses.KEY_RESIZE):
             continue
-        if key in (curses.KEY_RESIZE,):  # redimensionar ventana
-            continue
-        if key >= 0x110000:              # valores fuera de rango
-            continue
-
         try:
-            char = chr(key).upper()
-        except ValueError:
+            ch = chr(key).upper()
+        except:
             continue
 
-        if char == 'Q':
-            stop_event.set()
-            return
+        if ch == 'Q':
+            compute_win.stop_event.set()
+            break
 
-        if char in OPTIONS:
-            operation = OPTIONS[char]
-            stdscr.clear()
-            stdscr.addstr(2, 2, f"INITIALIZING {operation[0].upper()}...", curses.A_BOLD | curses.color_pair(3))
-            stdscr.addstr(4, 2, f"Algorithm: {operation[1]}")
-            stdscr.addstr(5, 2, f"Purpose:   {operation[2]}")
-            stdscr.refresh()
-            time.sleep(1.8)
+        if ch in OPTIONS:
+            op = OPTIONS[ch]
+            log_lines.append(f"> Initiating {op[0]}...")
+            log_lines.append(f"  Algorithm: {op[1]}")
+            computation_output(compute_win, log_lines)
 
             for phase in range(1, 9):
-                stdscr.addstr(7+phase, 4, f"Phase {phase}: Computing {random.choice(['transfinite','hyperelliptic','necromantic','non-commutative'])} coefficients...")
-                fake_progress(stdscr, 7+phase, 50)
-                time.sleep(0.25)
+                log_lines.append(f"  Phase {phase}/8: Resolving {random.choice(['transfinite','non-Euclidean','necromantic','hypergeometric'])} tensors...")
+                computation_output(compute_win, log_lines)
+                time.sleep(0.35 + random.uniform(0, 0.4))
 
-            results = [
-                "Local reality gradient stabilized (±0.0002%). Well done, agent.",
-                "Minor thaumic leakage contained. Your soul is slightly singed.",
-                "Entity acknowledged presence. It is… curious.",
-                "Planck constant jitter: 0.0000000007%. Cats are both alive and annoyed.",
-                "JKR field successfully inverted. You just won tomorrow’s lottery (don’t tell anyone).",
-                "Class-3 breach averted. Angleton sends his regards.",
-                "The stars are almost right… wait, no, false alarm. Phew.",
-                "Fhtagn-level resonance detected. Rebooting in 3… 2…",
-            ]
-            result = random.choice(results)
-            color = curses.color_pair(2) if any(x in result for x in ["stabilized","contained","inverted","averted"]) else curses.color_pair(3)
-            stdscr.addstr(20, 2, result, curses.A_BOLD | color)
-            stdscr.addstr(22, 2, "Press any key to return to menu...", curses.color_pair(1))
-            stdscr.nodelay(False)
-            stdscr.getch()
-            stdscr.nodelay(True)
+            result = random.choice([
+                "SUCCESS: Local reality gradient stabilized.",
+                "MINOR BREACH: Your soul is now 3.7% property of Nyarlathotep.",
+                "ERROR: The Sleeper stirs. Run.",
+                "JKR field inverted. You just changed tomorrow.",
+                "Class-4 entity repelled. Angleton owes you a pint.",
+                "Planck constant tuned. Schrödinger's cat just filed a complaint.",
+            ])
+            log_lines.append(result)
+            computation_output(compute_win, log_lines)
+            time.sleep(2.5)
 
-    stop_event.set()
-
-if __name__ == "__main__":
-    try:
-        curses.wrapper(main)
-    except KeyboardInterrupt:
-        print("\nSession terminated by user. Remember to wipe the SSD with a Class-3 exorcism.")
-        sys.exit(0)
+    # Mensaje final
+    stdscr.clear()
+    stdscr.addstr(h//
