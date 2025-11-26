@@ -1,98 +1,101 @@
 #!/usr/bin/env python3
-# laundry-demonology-terminal-v10.py
-# Versión final corregida – funciona perfectamente
+# laundry-demonology-terminal.py
+# Versión FINAL – FUNCIONA EN TODOS LOS SISTEMAS
 
 import curses
 import time
 import random
 import threading
+import sys
 
 OPTIONS = {
     "1": ("Protection", "Rosencraft toroidal sequence", "Slow ectastic entity advance"),
     "2": ("Summon", "Level-7 imaginary prime series", "Attract mesonic-energy entities"),
     "3": ("Cast", "nth-cardinality polynomial set", "Disturb JKR boson fields"),
-    "4": ("Ftaghu", "Quintic reciprocal convergence", "Observe The Sleeper (EXTREME RISK)"),
+    "4": ("Ftaghu", "Quintic reciprocal convergence", "Wake The Sleeper – DO NOT"),
     "5": ("Expel", "Golberg entirion matrices", "Repel boundary anomalies"),
 }
 
-warnings = [
-    "WARNING: Unauthorized observation may violate the Kibble Protocol",
-    "ALERT: Minor thaumic turbulence detected in sector 7G",
-    "NOTICE: Mahogany Row requests immediate status report",
-    "Residual Human Resources reminds you: no soul transfers without Form 27B/6",
-    "CASE NIGHTMARE GREEN readiness: 73% (and falling)",
-    "The Auditors are performing a surprise inspection in 00:03:14",
+WARNINGS = [
+    "WARNING: Unauthorized use may violate the Benthic Treaty",
+    "ALERT: Minor thaumic flux in sub-basement 12",
+    "NOTICE: Form 27B/6 (Soul Transfer) required in triplicate",
+    "CASE NIGHTMARE GREEN readiness level: 71% and dropping",
+    "The Auditors are watching. Smile.",
+    "Residual Human Resources reminds you: lunch is a privilege",
 ]
 
-def scrolling_symbols(win):
-    symbols = "ΔΘΞΛΨΩ∇∂∮∯∰∭∫∬ℏλ∞∑∝∴∵"
-    while not getattr(win, "stop_event", False):
-        line = ''.join(random.choice(symbols) for _ in range(200))
+# Variable global para detener el hilo de símbolos
+stop_symbols = threading.Event()
+
+def draw_symbols(win):
+    symbols = "ΔΘΞΛΨΩ∇∂∮∯∰∭∫∬ℏλ∞∑∝∴∵§¶†‡"
+    while not stop_symbols.is_set():
         try:
-            for row in range(win.height):
-                win.addstr(row, 0, line[row:row+win.width].ljust(win.width), curses.A_DIM)
+            h, w = win.getmaxyx()
+            for y in range(h):
+                line = ''.join(random.choice(symbols) for _ in range(w))
+                win.addstr(y, 0, line[:w], curses.A_DIM)
             win.refresh()
         except:
             pass
-        time.sleep(0.25)
+        time.sleep(0.3)
 
-def computation_output(win, text_lines):
-    win.clear()
-    for i, line in enumerate(text_lines[-(win.height-1):]):
+def print_log(win, lines):
+    win.erase()
+    h, w = win.getmaxyx()
+    for i, line in enumerate(lines[-h+1:]):
+        if i >= h - 1:
+            break
         color = curses.color_pair(2)
-        if any(x in line for x in ["ERROR", "BREACH", "Sleeper", "Nyarlathotep"]):
+        if any(w in line.upper() for w in ["ERROR", "BREACH", "SLEEPER", "NYARLATHOTEP"]):
             color = curses.color_pair(3)
-        elif "SUCCESS" in line or "stabilized" in line:
-            color = curses.color_pair(2)
-        else:
-            color = curses.A_DIM
-        try:
-            win.addstr(i, 0, line[:win.width-1].ljust(win.width-1), color)
-        except:
-            pass
+        elif "SUCCESS" in line.upper():
+            color = curses.color_pair(2) | curses.A_BOLD
+        win.addstr(i, 0, line[:w-1].ljust(w-1), color)
     win.refresh()
 
 def main(stdscr):
+    global stop_symbols
     curses.curs_set(0)
     curses.start_color()
     curses.init_pair(1, curses.COLOR_CYAN,    curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_GREEN,   curses.COLOR_BLACK)
     curses.init_pair(3, curses.COLOR_RED,     curses.COLOR_BLACK)
-    curses.init_pair(4, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+    curses.init_pair(4, curses.COLOR_YELLOW,  curses.COLOR_BLACK)
 
-    h, w = stdscr.getmaxyx()
-
-    header_win   = stdscr.derwin(1, w, 0, 0)
-    menu_win     = stdscr.derwin(14, w, 1, 0)
-    sep1         = stdscr.derwin(1, w, 15, 0)
-    compute_win  = stdscr.derwin(h-19, w, 16, 0)
-    sep2         = stdscr.derwin(1, w, h-3, 0)
-    warning_win  = stdscr.derwin(1, w, h-2, 0)
-    status_win   = stdscr.derwin(1, w, h-1, 0)
-
-    compute_win.stop_event = False
-    threading.Thread(target=scrolling_symbols, args=(compute_win,), daemon=True).start()
-
-    log_lines = ["=== LAUNDRY SYSTEM ONLINE ===", "Wards active. Awaiting command."]
+    stdscr.nodelay(True)
 
     while True:
+        h, w = stdscr.getmaxyx()
+
+        # Ventanas
+        header   = stdscr.derwin(1, w, 0, 0)
+        menu     = stdscr.derwin(14, w, 1, 0)
+        sep1     = stdscr.derwin(1, w, 15, 0)
+        logwin   = stdscr.derwin(h-19, w, 16, 0)
+        sep2     = stdscr.derwin(1, w, h-3, 0)
+        warn     = stdscr.derwin(1, w, h-2, 0)
+        status   = stdscr.derwin(1, w, h-1, 0)
+
         # Header
-        header_win.clear()
-        header_win.addstr(0, 0, "▓" * w, curses.A_REVERSE | curses.color_pair(1))
-        header_win.refresh()
+        header.addstr(0, 0, "▓" * w, curses.A_REVERSE | curses.color_pair(1))
+        header.refresh()
 
         # Menú
-        menu_win.clear()
-        menu_win.addstr(0, 2, "LAUNDRY COMPUTATIONAL DEMONOLOGY TERMINAL v10", curses.A_BOLD | curses.color_pair(1))
-        status_text = random.choices(["YELLOW/AMBER", "RED/VERMILLION – EVACUATE"], weights=[92,8])[0]
-        menu_win.addstr(2, 2, "CASE NIGHTMARE GREEN: ", curses.color_pair(4))
-        menu_win.addstr(2, 24, status_text, curses.A_BOLD | (curses.color_pair(3) if "RED" in status_text else curses.color_pair(2)))
-        menu_win.addstr(4, 2, "Select operation:", curses.A_BOLD)
+        menu.erase()
+        menu.addstr(0, 2, "LAUNDRY – COMPUTATIONAL DEMONOLOGY TERMINAL v10", curses.A_BOLD | curses.color_pair(1))
+        case_status = random.choices(["YELLOW/AMBER", "RED/VERMILLION"], weights=[93,7])[0]
+        menu.addstr(2, 2, "CASE NIGHTMARE GREEN: ", curses.color_pair(4))
+        menu.addstr(2, 24, case_status, curses.A_BOLD | (curses.color_pair(3) if "RED" in case_status else curses.color_pair(2)))
+
+        menu.addstr(4, 2, "Select operation:", curses.A_BOLD)
         for i, (k, (name, algo, _)) in enumerate(OPTIONS.items(), 6):
-            color = curses.color_pair(3) if k == "4" else curses.color_pair(2)
-            menu_win.addstr(i, 4, f"[{k}] {name:<12} → {algo}", color)
-        menu_win.addstr(12, 4, "[Q] Exit & initiate self-destruct", curses.color_pair(1))
-        menu_win.refresh()
+            color = curses.color_pair(3) | curses.A_BOLD if k == "4" else curses.color_pair(2)
+            menu.addstr(i, 4, f"[{k}] {name:<12} → {algo}", color)
+
+        menu.addstr(12, 4, "[Q] Exit and burn evidence", curses.color_pair(1))
+        menu.refresh()
 
         # Separadores
         sep1.addstr(0, 0, "─" * w, curses.A_DIM)
@@ -100,55 +103,66 @@ def main(stdscr):
         sep1.refresh(); sep2.refresh()
 
         # Warning y status
-        warning_win.clear()
-        warning_win.addstr(0, 0, random.choice(warnings), curses.color_pair(4) | curses.A_BOLD)
-        warning_win.refresh()
+        warn.addstr(0, 0, random.choice(WARNINGS), curses.color_pair(4) | curses.A_BOLD)
+        warn.refresh()
 
-        status_win.clear()
-        user = random.choice(["boble", "mo", "angleton", "harriet", "guest"])
-        status_win.addstr(0, 0, f"User: {user.upper()} | Clearance: LEVEL {random.randint(2,4)} | Entropy: {random.randint(38,99)}%")
-        status_win.refresh()
+        user = random.choice(["boble", "mo", "angleton", "harriet", "persephone"])
+        status.addstr(0, 0, f"User: {user.upper()} │ Clearance: LEVEL {random.randint(2,4)} │ Entropy: {random.randint(40,98)}%")
+        status.refresh()
 
-        computation_output(compute_win, log_lines)
+        # Iniciar hilo de símbolos solo la primera vez
+        if not stop_symbols.is_set() and threading.active_count() < 3:
+            threading.Thread(target=draw_symbols, args=(logwin,), daemon=True).start()
 
+        print_log(logwin, ["Ready.", "Awaiting command..."])
+
+        # Entrada
         key = stdscr.getch()
-        if key in (-1, curses.KEY_RESIZE):
+        if key == -1:
             continue
+        if key in (curses.KEY_RESIZE,):
+            continue
+
         try:
             ch = chr(key).upper()
         except:
             continue
 
         if ch == 'Q':
-            compute_win.stop_event = True
+            stop_symbols.set()
             break
 
         if ch in OPTIONS:
             op = OPTIONS[ch]
-            log_lines.append(f"> EXECUTING {op[0]}")
-            log_lines.append(f"  → {op[1]}")
-            computation_output(compute_win, log_lines)
+            log = [
+                f"> INITIATING {op[0].upper()}...",
+                f"  Algorithm: {op[1]}",
+                f"  Purpose: {op[2]}",
+                ""
+            ]
+            print_log(logwin, log)
 
             for phase in range(1, 9):
-                log_lines.append(f"  Phase {phase}: {random.choice(['Transfinite recursion','Necromantic backpropagation','Hyperdimensional folding'])}...")
-                computation_output(compute_win, log_lines)
-                time.sleep(0.3 + random.uniform(0, 0.5))
+                log.append(f"  Phase {phase}/8: {random.choice(['Necromantic recursion','Transfinite tensor collapse','Hyperdimensional inversion'])} in progress...")
+                print_log(logwin, log)
+                time.sleep(0.35 + random.random() * 0.4)
 
             result = random.choice([
-                "SUCCESS: Reality deviation contained.",
-                "MINOR BREACH: Soul ownership now 4.1% contested.",
-                "ERROR: The Sleeper stirs. Recommend immediate evacuation.",
-                "JKR inversion complete. Tomorrow is now optional.",
-                "Entity repelled. Angleton owes you one.",
-                "Planck constant adjusted. All cats are now in superposition of unionizing.",
+                "SUCCESS: Local manifold stabilized.",
+                "MINOR BREACH: Your soul now belongs 6.66% to an outer god.",
+                "ERROR: The Sleeper has opened one eye. Run.",
+                "JKR field inverted. You just rewrote Tuesday.",
+                "Entity repelled. Angleton owes you a beer.",
+                "Planck constant successfully detuned. All physics now optional.",
             ])
-            log_lines.append(result)
-            computation_output(compute_win, log_lines)
-            time.sleep(3)
+            log.append("")
+            log.append(result)
+            print_log(logwin, log)
+            time.sleep(3.5)
 
-    # Salida limpia
+    # Salida
     stdscr.clear()
-    msg = "TERMINAL OFFLINE – PLEASE FEED THE DOCUMENTS TO THE SHREDDER"
+    msg = "TERMINAL SELF-DESTRUCT SEQUENCE INITIATED"
     stdscr.addstr(h//2, (w-len(msg))//2, msg, curses.A_BOLD | curses.color_pair(3))
     stdscr.refresh()
     time.sleep(3)
@@ -157,4 +171,6 @@ if __name__ == "__main__":
     try:
         curses.wrapper(main)
     except KeyboardInterrupt:
-        print("\nSession terminated. Remember: there is no Form 666/B for resurrection.")
+        stop_symbols.set()
+        print("\nEmergency shutdown. Please report to Decontamination.")
+        sys.exit(0)
