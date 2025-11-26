@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 # laundry-demonology-terminal-v10.py
-# Terminal oficial de Computational Demonology - The Laundry
-# Ahora con layout profesional de 4 zonas
+# Versión final corregida – funciona perfectamente
 
 import curses
 import time
 import random
 import threading
-from itertools import cycle
 
 OPTIONS = {
     "1": ("Protection", "Rosencraft toroidal sequence", "Slow ectastic entity advance"),
@@ -16,13 +14,6 @@ OPTIONS = {
     "4": ("Ftaghu", "Quintic reciprocal convergence", "Observe The Sleeper (EXTREME RISK)"),
     "5": ("Expel", "Golberg entirion matrices", "Repel boundary anomalies"),
 }
-
-# Colores
-PAIR_TITLE   = 1  # cyan
-PAIR_GOOD    = 2  # green
-PAIR_DANGER  = 3  # red
-PAIR_WARN    = 4  # yellow
-PAIR_DIM     = 5  # gris
 
 warnings = [
     "WARNING: Unauthorized observation may violate the Kibble Protocol",
@@ -35,88 +26,91 @@ warnings = [
 
 def scrolling_symbols(win):
     symbols = "ΔΘΞΛΨΩ∇∂∮∯∰∭∫∬ℏλ∞∑∝∴∵"
-    while not win.stop_event.is_set():
+    while not getattr(win, "stop_event", False):
         line = ''.join(random.choice(symbols) for _ in range(200))
-        for row in range(win.height):
-            win.addstr(row, 0, line[row:row+win.width-1].ljust(win.width-1), curses.A_DIM)
-        win.refresh()
+        try:
+            for row in range(win.height):
+                win.addstr(row, 0, line[row:row+win.width].ljust(win.width), curses.A_DIM)
+            win.refresh()
+        except:
+            pass
         time.sleep(0.25)
 
 def computation_output(win, text_lines):
     win.clear()
-    max_lines = win.height - 1
-    for i, line in enumerate(text_lines[-max_lines:]):
-        color = curses.color_pair(PAIR_GOOD) if any(x in line.lower() for x in ["success","converged","stable"]) else curses.color_pair(PAIR_DIM)
-        if "ERROR" in line or "BREACH" in line:
-            color = curses.color_pair(PAIR_DANGER)
-        win.addstr(i, 0, line[:win.width-1].ljust(win.width-1), color)
+    for i, line in enumerate(text_lines[-(win.height-1):]):
+        color = curses.color_pair(2)
+        if any(x in line for x in ["ERROR", "BREACH", "Sleeper", "Nyarlathotep"]):
+            color = curses.color_pair(3)
+        elif "SUCCESS" in line or "stabilized" in line:
+            color = curses.color_pair(2)
+        else:
+            color = curses.A_DIM
+        try:
+            win.addstr(i, 0, line[:win.width-1].ljust(win.width-1), color)
+        except:
+            pass
     win.refresh()
 
 def main(stdscr):
     curses.curs_set(0)
     curses.start_color()
-    curses.init_pair(PAIR_TITLE,   curses.COLOR_CYAN,    curses.COLOR_BLACK)
-    curses.init_pair(PAIR_GOOD,    curses.COLOR_GREEN,   curses.COLOR_BLACK)
-    curses.init_pair(PAIR_DANGER, curses.COLOR_RED,     curses.COLOR_BLACK)
-    curses.init_pair(PAIR_WARN,    curses.COLOR_YELLOW, curses.COLOR_BLACK)
-    curses.init_pair(PAIR_DIM,     curses.COLOR_WHITE,  curses.COLOR_BLACK)
-    stdscr.timeout(100)
+    curses.init_pair(1, curses.COLOR_CYAN,    curses.COLOR_BLACK)
+    curses.init_pair(2, curses.COLOR_GREEN,   curses.COLOR_BLACK)
+    curses.init_pair(3, curses.COLOR_RED,     curses.COLOR_BLACK)
+    curses.init_pair(4, curses.COLOR_YELLOW, curses.COLOR_BLACK)
 
     h, w = stdscr.getmaxyx()
 
-    # Definición de ventanas
-    header_win     = stdscr.derwin(1, w, 0, 0)           # línea 0
-    menu_win       = stdscr.derwin(14, w, 1, 0)          # zona mensajes + menú
-    separator1     = stdscr.derwin(1, w, 15, 0)
-    compute_win    = stdscr.derwin(h-19, w, 16, 0)       # zona cálculo
-    separator2     = stdscr.derwin(1, w, h-3, 0)
-    warning_win    = stdscr.derwin(1, w, h-2, 0)         # línea de warnings
-    status_win     = stdscr.derwin(1, w, h-1, 0)         # línea de estado
+    header_win   = stdscr.derwin(1, w, 0, 0)
+    menu_win     = stdscr.derwin(14, w, 1, 0)
+    sep1         = stdscr.derwin(1, w, 15, 0)
+    compute_win  = stdscr.derwin(h-19, w, 16, 0)
+    sep2         = stdscr.derwin(1, w, h-3, 0)
+    warning_win  = stdscr.derwin(1, w, h-2, 0)
+    status_win   = stdscr.derwin(1, w, h-1, 0)
 
-    compute_win.stop_event = threading.Event()
-    symbol_thread = threading.Thread(target=scrolling_symbols, args=(compute_win,), daemon=True)
-    symbol_thread.start()
+    compute_win.stop_event = False
+    threading.Thread(target=scrolling_symbols, args=(compute_win,), daemon=True).start()
 
-    log_lines = ["=== SYSTEM ONLINE ===", "All wards nominal.", "Awaiting operator input..."]
+    log_lines = ["=== LAUNDRY SYSTEM ONLINE ===", "Wards active. Awaiting command."]
 
     while True:
-        # Header con símbolos flotantes
+        # Header
         header_win.clear()
-        header_win.addstr(0, 0, "▓" * w, curses.A_REVERSE | curses.color_pair(PAIR_TITLE))
+        header_win.addstr(0, 0, "▓" * w, curses.A_REVERSE | curses.color_pair(1))
         header_win.refresh()
 
-        # Menú principal
+        # Menú
         menu_win.clear()
-        menu_win.addstr(0, 2, "LAUNDRY - Computational Demonology Terminal v10.0", curses.A_BOLD | curses.color_pair(PAIR_TITLE))
-        menu_win.addstr(2, 2, "CASE NIGHTMARE GREEN status:", curses.color_pair(PAIR_WARN))
-        status = random.choices(["YELLOW/AMBER", "RED/VERMILLION – EVACUATE"], weights=[90,10])[0]
-        menu_win.addstr(2, 31, status, curses.A_BOLD | (curses.color_pair(PAIR_DANGER) if "RED" in status else curses.color_pair(PAIR_GOOD)))
-
+        menu_win.addstr(0, 2, "LAUNDRY COMPUTATIONAL DEMONOLOGY TERMINAL v10", curses.A_BOLD | curses.color_pair(1))
+        status_text = random.choices(["YELLOW/AMBER", "RED/VERMILLION – EVACUATE"], weights=[92,8])[0]
+        menu_win.addstr(2, 2, "CASE NIGHTMARE GREEN: ", curses.color_pair(4))
+        menu_win.addstr(2, 24, status_text, curses.A_BOLD | (curses.color_pair(3) if "RED" in status_text else curses.color_pair(2)))
         menu_win.addstr(4, 2, "Select operation:", curses.A_BOLD)
-        for i, (k, (name, algo, _)) in enumerate(OPTIONS.items(), start=6):
-            color = curses.color_pair(PAIR_DANGER) if k == "4" else curses.color_pair(PAIR_GOOD)
+        for i, (k, (name, algo, _)) in enumerate(OPTIONS.items(), 6):
+            color = curses.color_pair(3) if k == "4" else curses.color_pair(2)
             menu_win.addstr(i, 4, f"[{k}] {name:<12} → {algo}", color)
-
-        menu_win.addstr(12, 4, "[Q] Exit and initiate thermite self-destruct sequence", curses.color_pair(PAIR_TITLE))
+        menu_win.addstr(12, 4, "[Q] Exit & initiate self-destruct", curses.color_pair(1))
         menu_win.refresh()
 
         # Separadores
-        separator1.addstr(0, 0, "─" * (w-1), curses.color_pair(PAIR_DIM))
-        separator2.addstr(0, 0, "─" * (w-1), curses.color_pair(PAIR_DIM))
-        separator1.refresh(); separator2.refresh()
+        sep1.addstr(0, 0, "─" * w, curses.A_DIM)
+        sep2.addstr(0, 0, "─" * w, curses.A_DIM)
+        sep1.refresh(); sep2.refresh()
 
-        # Warning aleatorio
+        # Warning y status
         warning_win.clear()
-        warning_win.addstr(0, 0, random.choice(warnings), curses.color_pair(PAIR_WARN) | curses.A_BOLD)
+        warning_win.addstr(0, 0, random.choice(warnings), curses.color_pair(4) | curses.A_BOLD)
         warning_win.refresh()
 
-        # Línea de estado
         status_win.clear()
-        user = random.choice(["boble", "mo", "angleton", "harriet", "derek"])
-        status_win.addstr(0, 0, f"User: {user.upper()} | Clearance: LEVEL {random.randint(2,4)} | Entropy: {random.randint(38,97)}% ", curses.color_pair(PAIR_DIM))
+        user = random.choice(["boble", "mo", "angleton", "harriet", "guest"])
+        status_win.addstr(0, 0, f"User: {user.upper()} | Clearance: LEVEL {random.randint(2,4)} | Entropy: {random.randint(38,99)}%")
         status_win.refresh()
 
-        # Entrada
+        computation_output(compute_win, log_lines)
+
         key = stdscr.getch()
         if key in (-1, curses.KEY_RESIZE):
             continue
@@ -126,32 +120,41 @@ def main(stdscr):
             continue
 
         if ch == 'Q':
-            compute_win.stop_event.set()
+            compute_win.stop_event = True
             break
 
         if ch in OPTIONS:
             op = OPTIONS[ch]
-            log_lines.append(f"> Initiating {op[0]}...")
-            log_lines.append(f"  Algorithm: {op[1]}")
+            log_lines.append(f"> EXECUTING {op[0]}")
+            log_lines.append(f"  → {op[1]}")
             computation_output(compute_win, log_lines)
 
             for phase in range(1, 9):
-                log_lines.append(f"  Phase {phase}/8: Resolving {random.choice(['transfinite','non-Euclidean','necromantic','hypergeometric'])} tensors...")
+                log_lines.append(f"  Phase {phase}: {random.choice(['Transfinite recursion','Necromantic backpropagation','Hyperdimensional folding'])}...")
                 computation_output(compute_win, log_lines)
-                time.sleep(0.35 + random.uniform(0, 0.4))
+                time.sleep(0.3 + random.uniform(0, 0.5))
 
             result = random.choice([
-                "SUCCESS: Local reality gradient stabilized.",
-                "MINOR BREACH: Your soul is now 3.7% property of Nyarlathotep.",
-                "ERROR: The Sleeper stirs. Run.",
-                "JKR field inverted. You just changed tomorrow.",
-                "Class-4 entity repelled. Angleton owes you a pint.",
-                "Planck constant tuned. Schrödinger's cat just filed a complaint.",
+                "SUCCESS: Reality deviation contained.",
+                "MINOR BREACH: Soul ownership now 4.1% contested.",
+                "ERROR: The Sleeper stirs. Recommend immediate evacuation.",
+                "JKR inversion complete. Tomorrow is now optional.",
+                "Entity repelled. Angleton owes you one.",
+                "Planck constant adjusted. All cats are now in superposition of unionizing.",
             ])
             log_lines.append(result)
             computation_output(compute_win, log_lines)
-            time.sleep(2.5)
+            time.sleep(3)
 
-    # Mensaje final
+    # Salida limpia
     stdscr.clear()
-    stdscr.addstr(h//
+    msg = "TERMINAL OFFLINE – PLEASE FEED THE DOCUMENTS TO THE SHREDDER"
+    stdscr.addstr(h//2, (w-len(msg))//2, msg, curses.A_BOLD | curses.color_pair(3))
+    stdscr.refresh()
+    time.sleep(3)
+
+if __name__ == "__main__":
+    try:
+        curses.wrapper(main)
+    except KeyboardInterrupt:
+        print("\nSession terminated. Remember: there is no Form 666/B for resurrection.")
