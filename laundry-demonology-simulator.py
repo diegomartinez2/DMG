@@ -73,22 +73,26 @@ def login_screen(stdscr):
     curses.curs_set(1)
     stdscr.nodelay(False)
 
-    lines = [
-        "",
-        "    =========================================",
-        "    ==   THE LAUNDRY - OCCULT COMPUTING    ==",
-        "    ==   COMPUTATIONAL DEMONOLOGY TERMINAL ==",
-        "    =========================================",
+    # Líneas del banner
+    banner = [
+        "    ==========================================",
+        "    ==   THE LAUNDRY - OCCULT COMPUTING     ==",
+        "    ==   COMPUTATIONAL DEMONOLOGY TERMINAL  ==",
+        "    ==========================================",
         "    CLASSIFIED LEVEL 3 AND ABOVE ONLY",
         "",
-        "    Username: ",
-        "    Clearance (2-4): ",
+        "    Username:                                      ",  # línea 9
+        "    Clearance (2-4):                              ",  # línea 10
     ]
-    for i, line in enumerate(lines):
+    for i, line in enumerate(banner):
         safe_addstr(stdscr, 3+i, 5, line, curses.A_BOLD | curses.color_pair(1))
 
+    # ← Aquí está la clave: posicionamos el cursor exactamente donde va el input
     curses.echo()
+    stdscr.move(9, 18)                                   # ← cursor justo después de "Username: "
     user_input = stdscr.getstr(9, 18, 20).decode(errors='ignore').strip()
+
+    stdscr.move(10, 25)                                  # ← cursor justo después de "Clearance (2-4): "
     cl_input = stdscr.getstr(10, 25, 1).decode(errors='ignore').strip()
     curses.noecho()
     curses.curs_set(0)
@@ -96,11 +100,12 @@ def login_screen(stdscr):
     current_user = (user_input or "guest").upper()[:12]
     try:
         current_clearance = int(cl_input)
-        if current_clearance not in (2,3,4): raise ValueError
+        if current_clearance not in (2,3,4):
+            raise ValueError
     except:
         current_clearance = 2
 
-    safe_addstr(stdscr, 13, 5, "Authentication successful. Loading...", curses.color_pair(2))
+    safe_addstr(stdscr, 13, 5, "Authentication successful. Loading terminal...", curses.color_pair(2))
     stdscr.refresh()
     time.sleep(1.5)
 
