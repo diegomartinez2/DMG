@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # laundry-demonology-terminal.py
-# VERSIÓN DEFINITIVA - Panel izquierdo (log) + derecho (ruido)
+# VERSIÓN FINAL CORREGIDA - Panel derecho visible + Ftaghu rojo
 
 import curses
 import time
@@ -11,7 +11,7 @@ OPTIONS = {
     "1": ("Protection", "Rosencraft toroidal sequence", "Slow ectastic entity advance"),
     "2": ("Summon", "Level-7 imaginary prime series", "Attract mesonic-energy entities"),
     "3": ("Cast", "nth-cardinality polynomial set", "Disturb JKR boson fields"),
-    "4": ("Ftaghu", "Quintic reciprocal convergence", "DO NOT RUN ON FRIDAY"),
+    "4": ("Ftaghu", "Quintic reciprocal convergence", "WAKE THE SLEEPER – DO NOT"),
     "5": ("Expel", "Golberg entirion matrices", "Repel boundary anomalies"),
 }
 
@@ -21,42 +21,65 @@ WARNINGS = [
     "Form 27B/6 required for soul transfers",
     "CASE NIGHTMARE GREEN readiness dropping",
     "The Auditors are watching",
-    "R.H.R.: coffee is not a food group",
+    "DO NOT RUN FTAGHU ON FRIDAY",
 ]
 
 stop_symbols = threading.Event()
-current_user = "GUEST"
-current_clearance = 2
+noise_window = None           # ← Ventana que usará el hilo
+ftaghu_active = False
+ftaghu_end_time = 0
 
 def safe_addstr(win, y, x, text, attr=0):
+    if win is None: return
     try:
         h, w = win.getmaxyx()
         win.addstr(y, x, str(text)[:w-x-1], attr)
     except:
         pass
 
-def draw_noise(win):
-    chars = ".-:=+*#%&@$∞λΔΘΨΩ∮∯∰∇∂ℏ∫∬∭"
+def draw_noise():
+    normal_chars = ".-:=+*#%&@$∞λΔΘΨΩ∮∯∰∇∂ℏ∫∬∭"
+    ftaghu_chars = "ΦΨΩΞϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴϴ"
+
     while not stop_symbols.is_set():
+        win = noise_window
+        if win is None:
+            time.sleep(0.5)
+            continue
+
         try:
             h, w = win.getmaxyx()
             if h < 3 or w < 10:
                 time.sleep(0.5); continue
+
+            if ftaghu_active and time.time() < ftaghu_end_time:
+                chars = ftaghu_chars
+                attr = curses.color_pair(3) | curses.A_BOLD
+                speed = 0.08
+            else:
+                chars = normal_chars
+                attr = curses.A_DIM
+                speed = 0.35
+
+            win.erase()
             for y in range(h):
                 line = "".join(random.choice(chars) for _ in range(w))
-                safe_addstr(win, y, 0, line, curses.A_DIM)
+                safe_addstr(win, y, 0, line, attr)
             win.refresh()
         except:
             pass
-        time.sleep(0.3)
+        time.sleep(speed)
 
 def print_log(win, lines):
+    if win is None: return
     win.erase()
     h, w = win.getmaxyx()
     for i, line in enumerate(lines[-(h-1):]):
         if i >= h-1: break
         text = str(line)[:w-1]
-        if any(x in text.upper() for x in ["ERROR","BREACH","SLEEPER"]):
+        if "FTAGHU" in text or "SLEEPER" in text:
+            attr = curses.A_BOLD | curses.color_pair(3)
+        elif any(x in text.upper() for x in ["ERROR","BREACH"]):
             attr = curses.A_BOLD | curses.color_pair(3)
         elif "SUCCESS" in text.upper():
             attr = curses.A_BOLD | curses.color_pair(2)
@@ -98,7 +121,7 @@ def login_screen(stdscr):
     time.sleep(1.5)
 
 def main(stdscr):
-    global stop_symbols
+    global noise_window, stop_symbols, ftaghu_active, ftaghu_end_time
 
     curses.start_color()
     curses.init_pair(1, curses.COLOR_CYAN,    curses.COLOR_BLACK)
@@ -115,6 +138,9 @@ def main(stdscr):
         "Wards active. Ready.",
     ]
 
+    # Iniciar el hilo del ruido UNA SOLA VEZ
+    threading.Thread(target=draw_noise, daemon=True).start()
+
     while True:
         try:
             h, w = stdscr.getmaxyx()
@@ -125,21 +151,23 @@ def main(stdscr):
                 time.sleep(1)
                 continue
 
-            # === DISTRIBUCIÓN DE VENTANAS ===
-            header   = stdscr.derwin(1, w, 0, 0)        # línea 0
-            menu     = stdscr.derwin(14, w, 1, 0)       # líneas 1-14
-            sep1     = stdscr.derwin(1, w, 15, 0)       # línea 15
-            left_log = stdscr.derwin(h-19, w//2, 16, 0)     # ← IZQUIERDA: log
-            right_noise = stdscr.derwin(h-19, w-w//2, 16, w//2)  # ← DERECHA: ruido
-            sep2     = stdscr.derwin(1, w, h-3, 0)
-            warn     = stdscr.derwin(1, w, h-2, 0)
-            status   = stdscr.derwin(1, w, h-1, 0)
+            # === VENTANAS ===
+            header      = stdscr.derwin(1, w, 0, 0)
+            menu        = stdscr.derwin(14, w, 1, 0)
+            sep1        = stdscr.derwin(1, w, 15, 0)
+            left_log    = stdscr.derwin(h-19, w//2, 16, 0)
+            right_noise = stdscr.derwin(h-19, w-w//2, 16, w//2)   # ← esta es la buena
+            sep2        = stdscr.derwin(1, w, h-3, 0)
+            warn        = stdscr.derwin(1, w, h-2, 0)
+            status      = stdscr.derwin(1, w, h-1, 0)
 
-            # Header
+            # ACTUALIZAR LA VENTANA QUE USA EL HILO
+            noise_window = right_noise
+
+            # Dibujar interfaz
             safe_addstr(header, 0, 0, "═"*w, curses.A_REVERSE | curses.color_pair(1))
             header.refresh()
 
-            # Menú
             menu.erase()
             safe_addstr(menu, 0, 2, "LAUNDRY DEMONOLOGY TERMINAL v10", curses.A_BOLD|curses.color_pair(1))
             case = random.choices(["YELLOW/AMBER","RED/VERMILLION"],[94,6])[0]
@@ -152,19 +180,12 @@ def main(stdscr):
             safe_addstr(menu, 12, 4, "[Q] Logout & destroy evidence", curses.color_pair(1))
             menu.refresh()
 
-            # Separadores
             safe_addstr(sep1, 0, 0, "─"*w, curses.A_DIM); sep1.refresh()
             safe_addstr(sep2, 0, 0, "─"*w, curses.A_DIM); sep2.refresh()
-
-            # Warnings y status
             safe_addstr(warn, 0, 0, random.choice(WARNINGS), curses.color_pair(4)|curses.A_BOLD); warn.refresh()
             safe_addstr(status, 0, 0,
                 f"User: {current_user} | Level: {current_clearance} | Entropy: {random.randint(42,97)}%")
             status.refresh()
-
-            # Iniciar ruido solo una vez
-            if threading.active_count() < 5:
-                threading.Thread(target=draw_noise, args=(right_noise,), daemon=True).start()
 
             print_log(left_log, log_lines)
 
@@ -187,21 +208,37 @@ def main(stdscr):
             if ch in OPTIONS:
                 op = OPTIONS[ch]
                 log_lines += ["", f">>> EXECUTING {op[0].upper()}", f"    {op[1]}", ""]
+
+                if ch == "4":
+                    ftaghu_active = True
+                    ftaghu_end_time = time.time() + 15
+                    log_lines += ["WARNING: FTAGHU SEQUENCE INITIATED",
+                                  "THE SLEEPER STIRS...",
+                                  "REALITY INTEGRITY: CRITICAL"]
+
                 for phase in range(1,9):
-                    log_lines.append(f"    Phase {phase}/8: Processing necromantic tensors...")
+                    log_lines.append(f"    Phase {phase}/8: Necromantic convergence...")
                     print_log(left_log, log_lines)
-                    time.sleep(0.45)
-                result = random.choice([
-                    "SUCCESS: Reality stabilized",
-                    "MINOR BREACH: Soul contested",
-                    "ERROR: The Sleeper stirs",
-                    "Timeline altered",
-                    "Entity repelled",
-                    "Physics now optional",
-                ])
+                    time.sleep(0.5)
+
+                if ch == "4":
+                    result = random.choice([
+                        "THE SLEEPER HAS OPENED ONE EYE",
+                        "REALITY BREACH - EVACUATE LONDON",
+                        "NYARLATHOTEP SMILES UPON YOU",
+                        "ERROR 0xDEADBEEF: SOUL NOT FOUND",
+                    ])
+                else:
+                    result = random.choice([
+                        "SUCCESS: Reality stabilized",
+                        "MINOR BREACH: Soul contested",
+                        "Timeline altered",
+                        "Entity repelled",
+                        "Physics now optional",
+                    ])
                 log_lines += ["", result]
                 print_log(left_log, log_lines)
-                time.sleep(3)
+                time.sleep(4 if ch != "4" else 6)
 
         except:
             time.sleep(0.1)
