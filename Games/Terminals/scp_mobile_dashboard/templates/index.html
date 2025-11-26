@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCP Mobile Command</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="manifest" href="data:application/manifest+json,{
+        \"name\":\"SCP Mobile\",
+        \"short_name\":\"SCP\",
+        \"start_url\":\"/\",
+        \"display\":\"standalone\",
+        \"background_color\":\"#0d1117\",
+        \"theme_color\":\"#ff0000\",
+        \"icons\":[{\"src\":\"/static/scp.png\",\"sizes\":\"192x192\",\"type\":\"image/png\"}]
+    }">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">SCP</div>
+            <div class="slogan">SECURE · CONTAIN · PROTECT</div>
+            <div class="site">Site-19</div>
+        </header>
+
+        <!-- Nivel de alerta -->
+        <div id="alert-level" class="alert-level blue">
+            ALERT LEVEL: <span id="alert-name">BLUE</span>
+        </div>
+
+        <!-- Lista de SCP -->
+        <div class="scp-grid">
+            <button class="scp-btn" data-scp="SCP-096">SCP-096<br><small>Shy Guy</small></button>
+            <button class="scp-btn" data-scp="SCP-173">SCP-173<br><small>The Sculpture</small></button>
+            <button class="scp-btn" data-scp="SCP-049">SCP-049<br><small>Plague Doctor</small></button>
+            <button class="scp-btn" data-scp="SCP-106">SCP-106<br><small>The Old Man</small></button>
+            <button class="scp-btn" data-scp="SCP-682">SCP-682<br><small>Hard-to-Destroy</small></button>
+            <button class="scp-btn keter" data-scp="SCP-001">SCP-001<br><small>[REDACTED]</small></button>
+        </div>
+
+        <!-- Log en tiempo real -->
+        <div class="log-container">
+            <h3>Event Log</h3>
+            <div id="log" class="log"></div>
+        </div>
+    </div>
+
+    <audio id="alarm" src="/static/sound/alarm.mp3" preload="auto"></audio>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+        const alarm = document.getElementById('alarm');
+        const logDiv = document.getElementById('log');
+        const alertDiv = document.getElementById('alert-level');
+        const alertName = document.getElementById('alert-name');
+
+        function addLog(message, level = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${level}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        socket.on('connect', () => addLog('Connected to Site-19', 'success'));
+        socket.on('status', data => {
+            alertName.textContent = data.alert;
+            alertDiv.className = `alert-level ${data.alert.toLowerCase()}`;
+        });
+
+        socket.on('alert_change', data => {
+            alertName.textContent = data.name;
+            alertDiv.className = `alert-level ${data.name.toLowerCase()}`;
+        });
+
+        socket.on('anomaly', data => {
+            addLog(`${data.scp}: ${data.message}`, 'critical');
+            if (data.level === 'CRITICAL') alarm.play();
+        });
+
+        socket.on('log', data => {
+            addLog(`${data.scp}: ${data.message}`, data.level.toLowerCase());
+        });
+
+        socket.on('keter_activated', () => {
+            document.body.classList.add('keter');
+            alertDiv.className = 'alert-level keter';
+            alertName.textContent = 'KETER';
+            alarm.loop = true;
+            alarm.play();
+        });
+
+        document.querySelectorAll('.scp-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const scp = btn.dataset.scp;
+                socket.emit('execute_scp', { scp });
+                addLog(`Executing ${scp} protocol...`, 'info');
+            });
+        });
+    </script>
+</body>
+</html>

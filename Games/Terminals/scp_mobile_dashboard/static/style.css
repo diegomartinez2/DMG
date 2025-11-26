@@ -1,0 +1,99 @@
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: 'Courier New', monospace;
+    min-height: 100vh;
+}
+.container { padding: 10px; }
+
+.header {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 2px solid #30363d;
+}
+.logo {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #58a6ff;
+    text-shadow: 0 0 10px #58a6ff;
+}
+.slogan {
+    font-size: 1rem;
+    color: #8b949e;
+    letter-spacing: 3px;
+    margin-top: 5px;
+}
+.site { margin-top: 10px; font-size: 1.2rem; color: #8b949e; }
+
+.alert-level {
+    text-align: center;
+    padding: 15px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 15px 0;
+    border-radius: 10px;
+    transition: all 0.5s;
+}
+.blue { background: #1f6feb; }
+.amber { background: #f0883e; color: black; }
+.red { background: #da3633; animation: pulse 2s infinite; }
+.keter { background: #ff0000; animation: flash 0.5s infinite; color: white; }
+
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
+@keyframes flash { 0%,100% { background:#ff0000; } 50% { background:#660000; } }
+
+.scp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+}
+.scp-btn {
+    padding: 18px 8px;
+    background: #161b22;
+    border: 2px solid #30363d;
+    border-radius: 10px;
+    color: #c9d1d9;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+.scp-btn:hover {
+    border-color: #58a6ff;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(88,166,255,0.3);
+}
+.keter {
+    border-color: #ff0000;
+    color: #ff6666;
+}
+.keter:hover {
+    background: #440000;
+    color: white;
+}
+
+.log-container {
+    background: #161b22;
+    border-radius: 10px;
+    padding: 15px;
+    height: 300px;
+    overflow: hidden;
+}
+.log {
+    height: 100%;
+    overflow-y: auto;
+    font-size: 0.9rem;
+}
+.log-entry {
+    padding: 4px 0;
+    border-bottom: 1px solid #30363d;
+}
+.critical { color: #ff4444; font-weight: bold; }
+.success { color: #00ff44; }
+
+body.keter { background: #220000; animation: shake 0.5s infinite; }
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
