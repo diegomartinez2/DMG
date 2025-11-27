@@ -6,6 +6,7 @@
 """
 Este programa simula una terminal de "The Laundry", la oficina del MI6 que mantiene
 a raya a los entes sobrenaturales y trata de evitar el fin del mundo...
+Simula una terminal de un ordenador de los '90.
 """
 import curses
 import time
