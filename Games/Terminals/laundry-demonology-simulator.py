@@ -3,7 +3,10 @@
 # VERSIÓN OFICIAL - THE LAUNDRY COMPUTATIONAL DEMONOLOGY TERMINAL
 # Con login, panel dividido, efecto FTAGHU apocalíptico + BEEP en Linux/macOS
 # ¡NO EJECUTES EL 4 UN VIERNES!
-
+"""
+Este programa simula una terminal de "The Laundry", la oficina del MI6 que mantiene
+a raya a los entes sobrenaturales y trata de evitar el fin del mundo...
+"""
 import curses
 import time
 import random
