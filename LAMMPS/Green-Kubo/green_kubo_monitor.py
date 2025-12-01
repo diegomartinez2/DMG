@@ -20,7 +20,7 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
-#"""
+"""
 Este script permite seguir la evolución de un cálculo Green-Kubo LAMMPS
 visualizando los datos a medida que se calculan.
 """
