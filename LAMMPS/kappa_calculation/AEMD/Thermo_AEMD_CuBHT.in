@@ -1,0 +1,102 @@
+#####################################################################
+# LAMMPS Input Script - Approach-to-Equilibrium MD (AEMD)
+# Cálculo de conductividad térmica por relajación del pulso de calor
+#####################################################################
+
+# 1. DEFINICIONES INICIALES
+# -------------------------------------------------------------------
+units real           # Angstroms, femtosegundos, Kelvin, kcal/mol
+atom_style atomic
+boundary p p p       # **CRÍTICO para AEMD:** Periódica en todas las direcciones.
+newton on
+atom_modify sort 0 0.0
+
+# 2. LECTURA Y RÉPLICA DE DATOS
+# -------------------------------------------------------------------
+read_data AA-optimized.lmp
+replicate 35 2 2     # Réplica del sistema (Largo en X, 2x2 en YZ)
+
+# 3. POTENCIAL DE INTERACCIÓN
+# -------------------------------------------------------------------
+pair_style chimesFF
+pair_coeff * * params.txt
+
+# 4. PARÁMETROS DE SIMULACIÓN Y TERMODINÁMICA
+# -------------------------------------------------------------------
+variable dt equal 1.0e-3
+timestep ${dt}
+
+variable T_eq equal 300.0 # Temperatura de equilibrio (Ej: (310K + 290K) / 2)
+thermo 1000
+thermo_style custom step temp press etotal ke pe enthalpy
+
+# 5. FASE I: EQUILIBRIO NVT (PREPARACIÓN) 🌡️
+# -------------------------------------------------------------------
+print "--- FASE I: EQUILIBRIO NVT (TODO EL SISTEMA) ---"
+
+# 5.1. Inicializar velocidades
+velocity all create ${T_eq} 42 dist gaussian
+
+# 5.2. Equilibrar todo el sistema a la temperatura media
+fix NVT_eq all nvt temp ${T_eq} ${T_eq} 0.1
+run 500000 # Un run largo para estabilizar la energía y la presión
+
+unfix NVT_eq
+reset_timestep 0
+
+# 6. FASE II: CREACIÓN DEL PULSO DE CALOR (KICK) 💥
+# -------------------------------------------------------------------
+print "--- FASE II: CREACION DEL PULSO DE CALOR (T0) ---"
+
+# 6.1. Definición de las dos mitades (Hot/Cold)
+variable lx_aemd equal xhi-xlo
+# Mitad izquierda (Cold)
+region left_half block EDGE ${lx_aemd}/2.0 EDGE EDGE EDGE EDGE units box
+# Mitad derecha (Hot)
+region right_half block ${lx_aemd}/2.0 EDGE EDGE EDGE EDGE EDGE units box
+
+group cold region left_half
+group hot region right_half
+
+# 6.2. Asignar las temperaturas del pulso de calor (Tf ± Delta_T)
+variable T_hot_pulse equal 310.0
+variable T_cold_pulse equal 290.0
+
+# **IMPORTANTE:** Reemplazar las velocidades con el pulso
+velocity hot create ${T_hot_pulse} 123 dist gaussian
+velocity cold create ${T_cold_pulse} 456 dist gaussian
+
+# Ejecutar 1 paso para aplicar el cambio y luego resetear.
+run 1
+reset_timestep 0
+
+# 7. FASE III: RELAJACIÓN Y MEDICIÓN (NVE) 📉
+# -------------------------------------------------------------------
+print "--- FASE III: RELAJACION NVE Y MEDICION ---"
+
+# 7.1. Integración NVE (conservación de energía)
+# El calor fluye libremente hasta el equilibrio
+fix NVE_relax all nve
+
+# 7.2. Cálculo de la diferencia de temperatura a lo largo del tiempo
+compute tc cold temp
+compute th hot temp
+variable delta_T equal c_th-c_tc # La magnitud que decae exponencialmente
+
+# 7.3. Salida de datos para el post-procesamiento
+# Guardar la diferencia de temperatura cada 1000 pasos (para un mejor análisis)
+fix output all ave/time 1 1000 1000 v_delta_T file delta_T_AEMD.dat
+
+# Salida termodinámica para monitoreo
+thermo_style custom step temp c_tc c_th v_delta_T
+thermo 10000
+
+# 7.4. Ejecutar la simulación AEMD
+# Debe ser un run largo para capturar el decaimiento completo
+run 2000000
+
+unfix NVE_relax
+unfix output
+
+print "--- AEMD TERMINADA. ANALICE delta_T_AEMD.dat ---"
+# END
