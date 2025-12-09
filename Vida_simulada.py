@@ -242,8 +242,13 @@ class AppGrafica:
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
-        # Usar matplotlib.colormaps o pyplot.get_cmap como se sugiere en el warning
-        self.colores = plt.colormaps.get_cmap('hsv', 20) # Mapa de colores para las especies
+        # Usar matplotlib.colormaps.get_cmap('hsv') para obtener el Colormap,
+        # y luego usarlo como una función de mapeo (sintaxis corregida)
+        # LÍNEA CORREGIDA
+        hsv_cmap = plt.colormaps.get_cmap('hsv')
+        self.colores = lambda idx: hsv_cmap(idx / 20.0) # Normalizar el índice por el número de colores
+        # FIN LÍNEA CORREGIDA
+
         self.lineas: Dict[int, plt.Line2D] = {} # Almacena las líneas de la gráfica
 
         # Inicialización de la UI
@@ -320,15 +325,13 @@ class AppGrafica:
 
             pops = self.simulacion.poblaciones_por_tipo.get(tipo_id, [])
 
-            # --- CORRECCIÓN CRÍTICA ---
             # Asegurar que pops_data tiene la misma longitud que ciclos
             longitud_necesaria = len(ciclos)
             pops_data = pops + [0] * (longitud_necesaria - len(pops))
-            # --------------------------
 
             if tipo_id not in self.lineas:
                 # Nuevo tipo de elemento (Mutación)
-                color = self.colores(tipo_id % 20)
+                color = self.colores(tipo_id % 20) # Usar la función lambda corregida
                 elemento = self.simulacion.tipos_elementos[tipo_id]
                 etiqueta = f"E{tipo_id} (G{elemento.generacion})"
 
