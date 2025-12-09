@@ -104,12 +104,10 @@ class Simulacion:
         self.tipos_elementos[nuevo_elemento.id] = nuevo_elemento
         self.poblacion_actual[nuevo_elemento.id] = 1
 
-        # INICIALIZACIÓN CORRECTA:
-        # La lista debe tener ceros para los ciclos 0 hasta (ciclo_actual - 1),
-        # y luego 1 para el ciclo_actual.
-        # self.ciclo_actual ya fue incrementado en ejecutar_ciclo antes de esta llamada.
-        # Por ejemplo: Si muta en ciclo 5, la lista debe ser [0, 0, 0, 0, 0, 1] (longitud 6)
-        self.poblaciones_por_tipo[nuevo_elemento.id] = [0] * self.ciclo_actual + [1]
+        # CORRECCIÓN DE LA LÓGICA DE HISTORIAL:
+        # El historial solo debe contener ceros para los ciclos 0 hasta (ciclo_actual - 1).
+        # El '1' de la mutación se añadirá inmediatamente después en el paso 6 de ejecutar_ciclo.
+        self.poblaciones_por_tipo[nuevo_elemento.id] = [0] * self.ciclo_actual
 
         return nuevo_elemento
 
@@ -209,14 +207,14 @@ class Simulacion:
 
         for tipo_id in tipos_existentes:
             if tipo_id not in self.poblaciones_por_tipo:
-                # Esto no debería pasar con la lógica _crear_mutacion, pero es un buen control
+                # Esto es un control de seguridad: si un tipo existe, debe tener historial
                 continue
 
             # Obtener la población actual o 0 si se extinguió
             pop_actual_tipo = self.poblacion_actual.get(tipo_id, 0)
 
-            # Añadir la población del ciclo actual (Efecto Inmediato)
-            # Ya sea que el tipo haya existido siempre, haya mutado en este ciclo, o se haya extinguido
+            # Añadir la población del ciclo actual.
+            # Si el tipo se extinguió, se añade un 0. Si acaba de mutar, se añade su 1.
             self.poblaciones_por_tipo[tipo_id].append(pop_actual_tipo)
 
         return (True, poblacion_anterior, mensaje)
@@ -243,11 +241,9 @@ class AppGrafica:
         self.canvas_widget.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
         # Usar matplotlib.colormaps.get_cmap('hsv') para obtener el Colormap,
-        # y luego usarlo como una función de mapeo (sintaxis corregida)
-        # LÍNEA CORREGIDA
+        # y luego usarlo como una función de mapeo (sintaxis corregida en el commit anterior)
         hsv_cmap = plt.colormaps.get_cmap('hsv')
-        self.colores = lambda idx: hsv_cmap(idx / 20.0) # Normalizar el índice por el número de colores
-        # FIN LÍNEA CORREGIDA
+        self.colores = lambda idx: hsv_cmap(idx % 20 / 20.0) # Normalizar el índice por el número de colores
 
         self.lineas: Dict[int, plt.Line2D] = {} # Almacena las líneas de la gráfica
 
@@ -314,7 +310,7 @@ class AppGrafica:
         self.estado_var.set(f"Ciclo: {self.ciclo_actual}/{NUMERO_CICLOS} | Total: {sum(self.simulacion.poblacion_actual.values()):,}")
 
         # La lista de ciclos debe tener longitud (ciclo_actual + 1)
-        # Si ciclo_actual es 5, queremos ciclos [0, 1, 2, 3, 4, 5] (longitud 6)
+        # Por ejemplo: Ciclo 1 -> [0, 1] (Longitud 2)
         ciclos = list(range(self.ciclo_actual + 1))
 
         # Crear o actualizar líneas
@@ -325,9 +321,15 @@ class AppGrafica:
 
             pops = self.simulacion.poblaciones_por_tipo.get(tipo_id, [])
 
-            # Asegurar que pops_data tiene la misma longitud que ciclos
+            # Asegurar que pops_data tiene la misma longitud que ciclos (deberían ser iguales ahora)
             longitud_necesaria = len(ciclos)
-            pops_data = pops + [0] * (longitud_necesaria - len(pops))
+
+            # Solo si el historial es más corto, añadimos ceros (aunque no debería pasar con el fix)
+            if len(pops) < longitud_necesaria:
+                pops_data = pops + [0] * (longitud_necesaria - len(pops))
+            # Si el historial es más largo, usamos solo la parte necesaria (lo que causaba el error)
+            else:
+                 pops_data = pops[:longitud_necesaria]
 
             if tipo_id not in self.lineas:
                 # Nuevo tipo de elemento (Mutación)
