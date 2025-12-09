@@ -7,6 +7,7 @@ import tkinter as tk
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.cm as cm
+import matplotlib.pyplot as plt # Necesario para plt.Line2D o Line2D
 
 # --- Parámetros de la Simulación ---
 TASA_BASE_REPLICACION = 0.04  # Probabilidad base de que un individuo se replique
@@ -75,11 +76,10 @@ class Simulacion:
         )
         self.tipos_elementos[self.elemento_base.id] = self.elemento_base
         self.poblacion_actual[self.elemento_base.id] = poblacion_inicial
+
+        # El historial del Elemento 0 incluye su población inicial (ciclo 0)
         self.poblaciones_por_tipo[self.elemento_base.id] = [poblacion_inicial]
         self.total_poblacion_historico.append(poblacion_inicial)
-
-    # [Métodos _mutar_tasa, _crear_mutacion, _procesar_poblacion, _creacion_espontanea, _aplicar_cambios]
-    # Se mantienen igual que en la versión anterior (omitiendo por brevedad, pero están incluidos abajo)
 
     def _mutar_tasa(self, tasa_original: float) -> float:
         """Calcula una nueva tasa mutada, ligeramente aleatoria."""
@@ -103,7 +103,14 @@ class Simulacion:
 
         self.tipos_elementos[nuevo_elemento.id] = nuevo_elemento
         self.poblacion_actual[nuevo_elemento.id] = 1
+
+        # INICIALIZACIÓN CORRECTA:
+        # La lista debe tener ceros para los ciclos 0 hasta (ciclo_actual - 1),
+        # y luego 1 para el ciclo_actual.
+        # self.ciclo_actual ya fue incrementado en ejecutar_ciclo antes de esta llamada.
+        # Por ejemplo: Si muta en ciclo 5, la lista debe ser [0, 0, 0, 0, 0, 1] (longitud 6)
         self.poblaciones_por_tipo[nuevo_elemento.id] = [0] * self.ciclo_actual + [1]
+
         return nuevo_elemento
 
     def _procesar_poblacion(self, id_tipo: int, poblacion: int, factor_densidad: float) -> Dict[int, int]:
@@ -145,14 +152,16 @@ class Simulacion:
             self.poblacion_actual[id_tipo] += delta
 
             if self.poblacion_actual[id_tipo] <= 0:
+                # El elemento se extingue
                 del self.poblacion_actual[id_tipo]
 
-    # --- NUEVA LÓGICA DE CICLO ---
+
     def ejecutar_ciclo(self) -> Tuple[bool, int, str]:
         """
         Ejecuta un único ciclo de la simulación.
         Retorna (continuar_simulacion, población_total_anterior, mensaje_de_log).
         """
+        # 1. Preparación
         self.ciclo_actual += 1
         cambios_totales = {}
         poblacion_anterior = sum(self.poblacion_actual.values())
@@ -161,27 +170,26 @@ class Simulacion:
         if self.ciclo_actual > NUMERO_CICLOS or poblacion_anterior == 0:
             return (False, poblacion_anterior, f"Simulación finalizada en ciclo {self.ciclo_actual - 1} o Extinción total.")
 
-        # 1. Cálculo del Factor de Densidad (1 - N/C)
+        # 2. Factor de Densidad
         factor_densidad = max(0.0, 1.0 - (poblacion_anterior / MAX_POBLACION_TOTAL))
 
         if factor_densidad == 0.0:
             mensaje += f"Ciclo {self.ciclo_actual}: Capacidad Límite (K) alcanzada.\n"
 
-        # A. Creación Espontánea
+        # 3. Procesar Cambios
         cambios_esp = self._creacion_espontanea(factor_densidad)
         cambios_totales.update(cambios_esp)
 
-        # B. Procesar Vida (Mortalidad, Replicación, Mutación)
         for id_tipo, poblacion in list(self.poblacion_actual.items()):
             cambios_vida = self._procesar_poblacion(id_tipo, poblacion, factor_densidad)
 
             for k, v in cambios_vida.items():
                 cambios_totales[k] = cambios_totales.get(k, 0) + v
 
-        # C. Aplicar todos los cambios
+        # 4. Aplicar Cambios
         self._aplicar_cambios(cambios_totales)
 
-        # D. Registrar y Mostrar Resultados
+        # 5. Registro de Resultados
         total_poblacion = sum(self.poblacion_actual.values())
         diferencia = total_poblacion - poblacion_anterior
 
@@ -192,24 +200,24 @@ class Simulacion:
             for nt in nuevos_tipos:
                  mensaje += f"  + E{nt.id} (R={nt.tasa_replicacion:.3f}, M={nt.tasa_mortalidad:.3f})\n"
 
-        # Actualizar historial de poblaciones para la gráfica
+        mensaje += f"Ciclo {self.ciclo_actual:03d} | Pop Total: {total_poblacion:,} | Cambio: {diferencia:+}"
+
+        # 6. Actualizar historial de poblaciones (para la gráfica)
         self.total_poblacion_historico.append(total_poblacion)
 
-        # Rellenar y añadir datos de especies para la gráfica
-        tipos_en_ciclo = set(self.poblacion_actual.keys())
+        tipos_existentes = set(self.tipos_elementos.keys())
 
-        for tipo_id in self.tipos_elementos.keys():
-            if tipo_id in tipos_en_ciclo:
-                # El tipo existe, añade la población actual
-                self.poblaciones_por_tipo[tipo_id].append(self.poblacion_actual[tipo_id])
-            elif tipo_id in self.poblaciones_por_tipo:
-                # El tipo existió, pero se extinguió, añade 0
-                self.poblaciones_por_tipo[tipo_id].append(0)
-            elif tipo_id in self.poblacion_actual:
-                 # Nuevo mutante, ya se inicializó con 1 en _crear_mutacion
-                 pass
+        for tipo_id in tipos_existentes:
+            if tipo_id not in self.poblaciones_por_tipo:
+                # Esto no debería pasar con la lógica _crear_mutacion, pero es un buen control
+                continue
 
-        mensaje += f"Ciclo {self.ciclo_actual:03d} | Pop Total: {total_poblacion:,} | Cambio: {diferencia:+}"
+            # Obtener la población actual o 0 si se extinguió
+            pop_actual_tipo = self.poblacion_actual.get(tipo_id, 0)
+
+            # Añadir la población del ciclo actual (Efecto Inmediato)
+            # Ya sea que el tipo haya existido siempre, haya mutado en este ciclo, o se haya extinguido
+            self.poblaciones_por_tipo[tipo_id].append(pop_actual_tipo)
 
         return (True, poblacion_anterior, mensaje)
 
@@ -227,14 +235,15 @@ class AppGrafica:
         self.corriendo = False
         self.ciclo_actual = 0
 
-        # Configuración de la gráfica
+        # Configuración de la gráfica (Actualizado para compatibilidad con Matplotlib 3.8+)
         self.fig = Figure(figsize=(8, 6), dpi=100)
         self.ax = self.fig.add_subplot(111)
         self.canvas = FigureCanvasTkAgg(self.fig, master=master)
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
-        self.colores = cm.get_cmap('hsv', 20) # Mapa de colores para las especies
+        # Usar matplotlib.colormaps o pyplot.get_cmap como se sugiere en el warning
+        self.colores = plt.colormaps.get_cmap('hsv', 20) # Mapa de colores para las especies
         self.lineas: Dict[int, plt.Line2D] = {} # Almacena las líneas de la gráfica
 
         # Inicialización de la UI
@@ -284,6 +293,7 @@ class AppGrafica:
         self.corriendo = not self.corriendo
         if self.corriendo:
             self.start_button.config(text="Pausar Simulación")
+            # Iniciar la primera ejecución después de un breve retraso
             self.master.after(INTERVALO_MS, self.ejecutar_y_actualizar)
         else:
             self.start_button.config(text="Reanudar Simulación")
@@ -298,29 +308,35 @@ class AppGrafica:
         self.log_mensaje(mensaje_log)
         self.estado_var.set(f"Ciclo: {self.ciclo_actual}/{NUMERO_CICLOS} | Total: {sum(self.simulacion.poblacion_actual.values()):,}")
 
-        # 1. Actualizar las líneas de población de especies
+        # La lista de ciclos debe tener longitud (ciclo_actual + 1)
+        # Si ciclo_actual es 5, queremos ciclos [0, 1, 2, 3, 4, 5] (longitud 6)
         ciclos = list(range(self.ciclo_actual + 1))
 
-        tipos_actuales = set(self.simulacion.poblacion_actual.keys())
-
-        # Eliminar las líneas de las especies extintas
-        for tipo_id in list(self.lineas.keys()):
-            if tipo_id not in tipos_actuales and self.simulacion.poblaciones_por_tipo[tipo_id][-1] == 0:
-                 # Mantenemos la línea dibujada hasta el final, no la borramos, pero la quitamos del listado de actualización
-                 pass
-
         # Crear o actualizar líneas
-        for tipo_id, pops in self.simulacion.poblaciones_por_tipo.items():
+        tipos_a_mostrar = list(self.simulacion.tipos_elementos.keys())
 
-            # Ajustar la longitud de pops al ciclo actual (importante para nuevos mutantes)
-            pops_data = pops + [0] * (self.ciclo_actual - len(pops) + 1)
+        # Iterar sobre todos los tipos de elementos que han existido
+        for tipo_id in tipos_a_mostrar:
+
+            pops = self.simulacion.poblaciones_por_tipo.get(tipo_id, [])
+
+            # --- CORRECCIÓN CRÍTICA ---
+            # Asegurar que pops_data tiene la misma longitud que ciclos
+            longitud_necesaria = len(ciclos)
+            pops_data = pops + [0] * (longitud_necesaria - len(pops))
+            # --------------------------
 
             if tipo_id not in self.lineas:
                 # Nuevo tipo de elemento (Mutación)
                 color = self.colores(tipo_id % 20)
-                etiqueta = f"E{tipo_id} (G{self.simulacion.tipos_elementos[tipo_id].generacion})"
+                elemento = self.simulacion.tipos_elementos[tipo_id]
+                etiqueta = f"E{tipo_id} (G{elemento.generacion})"
+
+                # Usar plt.Line2D directamente como tipo de objeto
                 linea, = self.ax.plot(ciclos, pops_data, label=etiqueta, color=color, linewidth=1.5, alpha=0.8)
                 self.lineas[tipo_id] = linea
+                # Forzar la actualización de la leyenda para que aparezca el nuevo elemento
+                self.ax.legend(loc='upper left')
             else:
                 # Tipo ya existente, solo actualizar datos
                 self.lineas[tipo_id].set_data(ciclos, pops_data)
@@ -338,15 +354,11 @@ class AppGrafica:
         else:
             self.start_button.config(text="Simulación Finalizada", state=tk.DISABLED)
             self.log_mensaje("\n--- Resumen Final ---")
-            # Podríamos añadir más detalles del resumen aquí si fuera necesario
 
 # --- Punto de Entrada de la Aplicación ---
 if __name__ == "__main__":
     # Inicializar la aplicación Tkinter
     root = tk.Tk()
-
-    # Asegurarse de que matplotlib.pyplot se importa para evitar problemas de dependencia
-    import matplotlib.pyplot as plt
 
     # Crear y correr la aplicación
     app = AppGrafica(root)
