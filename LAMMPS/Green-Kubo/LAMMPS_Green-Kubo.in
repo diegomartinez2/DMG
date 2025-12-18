@@ -43,9 +43,14 @@ reset_timestep  0
 variable V_final equal vol
 # Usamos 'print' para escribir directamente los valores en un archivo.
 # V_final y T se pasan como un par clave-valor.
-print "T: ${T}" append parametros.txt
-print "V: ${V_final}" append parametros.txt
-print "dt: ${dt}" append parametros.txt
+#print "T: ${T}" append parametros.txt
+#print "V: ${V_final}" append parametros.txt
+#print "dt: ${dt}" append parametros.txt
+# Definir una variable de texto con todo el contenido
+variable info string "T: ${T} V: ${V_final} dt: ${dt}"
+
+# Imprimirlo de una sola vez
+print "${info}" append parametros.txt
 
 # Se usa NVE para DM de Equilibrio para las fluctuaciones del flujo de calor
 fix             2 all nve
