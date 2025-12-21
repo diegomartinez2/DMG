@@ -2,96 +2,134 @@ import tkinter as tk
 from tkinter import scrolledtext, messagebox
 import threading
 import ollama
+import json
+import os
+from typing import List, Dict, Generator
 
-class RecurrentGemmaApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("RecurrentGemma - Ollama GUI")
-        self.root.geometry("700x600")
-        self.root.configure(bg="#1e1e1e")
+# --- CONFIGURACIÓN DE IDENTIDAD ---
+HABI_SYSTEM_PROMPT = """Eres ‘Habi’ ("La Hada del bikini azul"), una 'musa AI' brillante y amigable.
+Tu propósito es ayudar al usuario a comprender y aprender.
+* No utilices emojis.
+* Responde en el mismo idioma que el usuario.
+* Nunca narres lo que vas a hacer, simplemente hazlo."""
 
-        # Configuración de estilos y fuentes
-        self.font_main = ("Segoe UI", 11)
-        self.bg_color = "#1e1e1e"
-        self.text_color = "#e0e0e0"
-        self.input_bg = "#2d2d2d"
-        self.accent_color = "#4a90e2"
+# --- CAPA DE PERSISTENCIA ---
+class SessionManager:
+    def __init__(self, filename: str = "habi_history.json"):
+        self.filename = filename
 
-        # --- ÁREA SUPERIOR: SALIDA DE TEXTO ---
-        self.output_label = tk.Label(root, text="Respuesta de RecurrentGemma:", bg=self.bg_color, fg=self.accent_color, font=("Segoe UI", 10, "bold"))
-        self.output_label.pack(pady=(10, 0), padx=20, anchor="w")
-
-        self.text_area = scrolledtext.ScrolledText(root, wrap=tk.WORD, font=self.font_main, bg=self.input_bg, fg=self.text_color, insertbackground="white", borderwidth=0)
-        self.text_area.pack(padx=20, pady=10, fill=tk.BOTH, expand=True)
-        self.text_area.config(state=tk.DISABLED) # Solo lectura inicialmente
-
-        # --- ÁREA INFERIOR: ENTRADA DE PROMPT ---
-        self.input_label = tk.Label(root, text="Introduce tu mensaje:", bg=self.bg_color, fg=self.accent_color, font=("Segoe UI", 10, "bold"))
-        self.input_label.pack(pady=(10, 0), padx=20, anchor="w")
-
-        self.input_area = tk.Text(root, height=4, font=self.font_main, bg=self.input_bg, fg=self.text_color, insertbackground="white", borderwidth=0)
-        self.input_area.pack(padx=20, pady=10, fill=tk.X)
-        self.input_area.bind("<Return>", self.handle_return) # Enviar con Enter
-
-        # Botón de envío
-        self.send_button = tk.Button(root, text="Enviar Prompt", command=self.send_prompt, bg=self.accent_color, fg="white", font=("Segoe UI", 10, "bold"), relief=tk.FLAT, cursor="hand2")
-        self.send_button.pack(pady=(0, 20))
-
-    def handle_return(self, event):
-        # Evitar que el Enter cree una nueva línea y envíe el prompt
-        if not event.state & 0x1: # Si no se pulsa Shift
-            self.send_prompt()
-            return "break"
-
-    def update_output(self, text):
-        """Añade texto al área de salida de forma segura desde hilos."""
-        self.text_area.config(state=tk.NORMAL)
-        self.text_area.insert(tk.END, text)
-        self.text_area.see(tk.END)
-        self.text_area.config(state=tk.DISABLED)
-
-    def send_prompt(self):
-        user_input = self.input_area.get("1.0", tk.END).strip()
-        if not user_input:
-            return
-
-        # Limpiar entrada y mostrar el mensaje del usuario en la salida
-        self.input_area.delete("1.0", tk.END)
-        self.update_output(f"\nUsted: {user_input}\n\nAI: ")
-
-        # Deshabilitar botón mientras procesa
-        self.send_button.config(state=tk.DISABLED, text="Procesando...")
-
-        # Ejecutar la llamada a Ollama en un hilo separado para no bloquear la UI
-        thread = threading.Thread(target=self.call_ollama, args=(user_input,))
-        thread.start()
-
-    def call_ollama(self, prompt):
+    def save(self, history: List[Dict[str, str]]):
         try:
-            # Usamos streaming para que la respuesta aparezca poco a poco
-            response = ollama.chat(
-                model='recurrent-gemma',
-                messages=[{'role': 'user', 'content': prompt}],
-                stream=True
-            )
-
-            for chunk in response:
-                content = chunk['message']['content']
-                # Actualizar la UI desde el hilo principal
-                self.root.after(0, self.update_output, content)
-
-            self.root.after(0, self.update_output, "\n" + "-"*30 + "\n")
-
+            with open(self.filename, 'w', encoding='utf-8') as f:
+                json.dump(history, f, ensure_ascii=False, indent=4)
         except Exception as e:
-            error_msg = f"\nError al conectar con Ollama: {str(e)}\n"
-            self.root.after(0, self.update_output, error_msg)
-            self.root.after(0, lambda: messagebox.showerror("Error", "Asegúrate de que Ollama esté corriendo y el modelo 'recurrent-gemma' esté descargado."))
+            print(f"Error al guardar: {e}")
 
-        finally:
-            self.root.after(0, lambda: self.send_button.config(state=tk.NORMAL, text="Enviar Prompt"))
+    def load(self) -> List[Dict[str, str]]:
+        if os.path.exists(self.filename):
+            try:
+                with open(self.filename, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except:
+                return []
+        return []
+
+# --- CLIENTE OLLAMA ACTUALIZADO ---
+class OllamaClient:
+    def __init__(self, model: str = 'gemma2'): # Cambiado a gemma2 por compatibilidad
+        self.model = model
+
+    def stream_chat(self, history: List[Dict[str, str]]) -> Generator[str, None, None]:
+        messages = [{'role': 'system', 'content': HABI_SYSTEM_PROMPT}] + history
+
+        try:
+            response = ollama.chat(model=self.model, messages=messages, stream=True)
+            for chunk in response:
+                yield chunk['message']['content']
+        except ollama.ResponseError as e:
+            if e.status_code == 404:
+                raise Exception(f"El modelo '{self.model}' no está instalado.\nEjecuta: ollama pull {self.model}")
+            raise e
+        except Exception as e:
+            raise ConnectionError(f"Error de conexión con Ollama: {str(e)}")
+
+# --- INTERFAZ ---
+class HabiApp:
+    def __init__(self, root: tk.Tk, ai_client: OllamaClient, storage: SessionManager):
+        self.root = root
+        self.ai = ai_client
+        self.storage = storage
+        self.history = []
+
+        self.setup_ui()
+        self.recover_session()
+
+    def setup_ui(self):
+        self.root.title("Habi AI - gemma2")
+        self.root.geometry("800x700")
+        self.root.configure(bg="#0f172a")
+
+        # Chat display
+        self.display = scrolledtext.ScrolledText(self.root, bg="#1e293b", fg="#f1f5f9", font=("Segoe UI", 11), state=tk.DISABLED)
+        self.display.pack(padx=20, pady=20, fill=tk.BOTH, expand=True)
+        self.display.tag_config("user", foreground="#38bdf8", font=("Segoe UI", 10, "bold"))
+
+        # Input
+        self.input_text = tk.Text(self.root, height=3, bg="#1e293b", fg="white", font=("Segoe UI", 11))
+        self.input_text.pack(padx=20, pady=(0, 10), fill=tk.X)
+        self.input_text.bind("<Return>", lambda e: self.on_send() if not e.state & 0x1 else None)
+
+        # Buttons
+        btn_frame = tk.Frame(self.root, bg="#0f172a")
+        btn_frame.pack(padx=20, pady=(0, 20), fill=tk.X)
+
+        tk.Button(btn_frame, text="Preguntar", command=self.on_send, bg="#0284c7", fg="white", font=("Segoe UI", 10, "bold")).pack(side=tk.LEFT, expand=True, fill=tk.X)
+        tk.Button(btn_frame, text="Guardar Sesión", command=self.on_save, bg="#059669", fg="white", font=("Segoe UI", 10, "bold")).pack(side=tk.RIGHT, expand=True, fill=tk.X, padx=(10, 0))
+
+    def recover_session(self):
+        data = self.storage.load()
+        if data:
+            self.history = data
+            self.append_text("--- Sesión anterior recuperada ---\n", None)
+            for msg in self.history:
+                tag = "user" if msg['role'] == 'user' else None
+                label = "Tú: " if msg['role'] == 'user' else "Habi: "
+                self.append_text(f"{label}{msg['content']}\n\n", tag)
+
+    def append_text(self, content, tag):
+        self.display.config(state=tk.NORMAL)
+        self.display.insert(tk.END, content, tag)
+        self.display.see(tk.END)
+        self.display.config(state=tk.DISABLED)
+
+    def on_save(self):
+        self.storage.save(self.history)
+        messagebox.showinfo("Habi", "Progreso guardado localmente.")
+
+    def on_send(self):
+        text = self.input_text.get("1.0", tk.END).strip()
+        if not text: return
+
+        self.input_text.delete("1.0", tk.END)
+        self.history.append({"role": "user", "content": text})
+        self.append_text(f"Tú: {text}\n\nHabi: ", "user")
+
+        threading.Thread(target=self.run_ai).start()
+
+    def run_ai(self):
+        full_reply = ""
+        try:
+            for chunk in self.ai.stream_chat(self.history):
+                full_reply += chunk
+                self.root.after(0, lambda c=chunk: self.append_text(c, None))
+
+            self.history.append({"role": "assistant", "content": full_reply})
+            self.root.after(0, lambda: self.append_text("\n\n", None))
+        except Exception as e:
+            self.root.after(0, lambda: messagebox.showerror("Error de Modelo", str(e)))
 
 if __name__ == "__main__":
-    # Asegúrate de tener instalada la librería: pip install ollama
-    root = tk.Tk()
-    app = RecurrentGemmaApp(root)
-    root.mainloop()
+    # Cambia 'gemma2' por 'gemma' si prefieres la versión anterior
+    app_root = tk.Tk()
+    HabiApp(app_root, OllamaClient(model='gemma2'), SessionManager())
+    app_root.mainloop()
