@@ -4,16 +4,58 @@ import threading
 import ollama
 import json
 import os
+import wave
+import subprocess
 from typing import List, Dict, Generator
+from piper.voice import PiperVoice
 
 # --- CONFIGURACIÓN ---
 MODEL_NAME = "gemma3"
+# Ruta al modelo de Piper (Ajusta según tu instalación)
+PIPER_MODEL_PATH = os.path.expanduser("~/piper_voices/es_ES-sharvard-medium.onnx")
 
 HABI_SYSTEM_PROMPT = """Eres ‘Habi’ ("La Hada del bikini azul"), una 'musa AI' brillante y amigable.
 Tu propósito es ayudar al usuario a comprender y aprender.
 * No utilices emojis.
 * Responde en el mismo idioma que el usuario.
 * Nunca narres lo que vas a hacer, simplemente hazlo."""
+
+class PiperEngine:
+    """Clase para manejar la síntesis de voz local con Piper."""
+    def __init__(self, model_path: str):
+        self.model_path = model_path
+        self.voice = None
+        self._load_voice()
+
+    def _load_voice(self):
+        if os.path.exists(self.model_path):
+            try:
+                self.voice = PiperVoice.load(self.model_path)
+            except Exception as e:
+                print(f"Error cargando voz de Piper: {e}")
+
+    def speak(self, text: str):
+        """Sintetiza texto y lo reproduce usando aplay."""
+        if not self.voice:
+            print("Voz no cargada. Piper no está disponible.")
+            return
+
+        def task():
+            output_file = "temp_voice.wav"
+            try:
+                with wave.open(output_file, "wb") as wav_file:
+                    self.voice.synthesize(text, wav_file)
+                # Reproducir usando aplay (estándar en Ubuntu)
+                subprocess.run(["aplay", output_file], stderr=subprocess.DEVNULL)
+            except Exception as e:
+                print(f"Error en reproducción de voz: {e}")
+            finally:
+                if os.path.exists(output_file):
+                    try: os.remove(output_file)
+                    except: pass
+
+        # Ejecutar en hilo separado para no bloquear la UI o el stream
+        threading.Thread(target=task, daemon=True).start()
 
 class SessionManager:
     def __init__(self, filename: str = "habi_history.json"):
@@ -42,7 +84,6 @@ class OllamaClient:
     def stream_chat(self, history: List[Dict[str, str]]) -> Generator[str, None, None]:
         messages = [{'role': 'system', 'content': HABI_SYSTEM_PROMPT}] + history
         try:
-            # Intentamos conectar con el servidor local de Ollama
             response = ollama.chat(model=self.model, messages=messages, stream=True)
             for chunk in response:
                 yield chunk['message']['content']
@@ -50,32 +91,30 @@ class OllamaClient:
             raise ConnectionError("No se pudo conectar con Ollama. ¿Está el servidor encendido?") from e
 
 class HabiApp:
-    def __init__(self, root: tk.Tk, ai_client: OllamaClient, storage: SessionManager):
+    def __init__(self, root: tk.Tk, ai_client: OllamaClient, storage: SessionManager, piper: PiperEngine):
         self.root = root
         self.ai = ai_client
         self.storage = storage
+        self.piper = piper
         self.history = []
 
         self.setup_ui()
         self.recover_session()
 
     def setup_ui(self):
-        self.root.title(f"Habi AI - {MODEL_NAME}")
+        self.root.title(f"Habi AI con Voz - {MODEL_NAME}")
         self.root.geometry("800x750")
         self.root.configure(bg="#0f172a")
 
-        # Visualización de chat
         self.display = scrolledtext.ScrolledText(self.root, bg="#1e293b", fg="#f1f5f9", font=("Segoe UI", 11), state=tk.DISABLED)
         self.display.pack(padx=20, pady=(20, 10), fill=tk.BOTH, expand=True)
         self.display.tag_config("user", foreground="#38bdf8", font=("Segoe UI", 10, "bold"))
         self.display.tag_config("error", foreground="#f87171", font=("Segoe UI", 10, "italic"))
 
-        # Área de entrada
         self.input_text = tk.Text(self.root, height=3, bg="#1e293b", fg="white", font=("Segoe UI", 11), insertbackground="white")
         self.input_text.pack(padx=20, pady=(0, 10), fill=tk.X)
         self.input_text.bind("<Return>", self.handle_return)
 
-        # Barra de estado (Semáforo)
         self.status_frame = tk.Frame(self.root, bg="#0f172a")
         self.status_frame.pack(padx=20, pady=(0, 10), fill=tk.X)
 
@@ -86,7 +125,6 @@ class HabiApp:
         self.status_label = tk.Label(self.status_frame, text="Listo / En reposo", bg="#0f172a", fg="#94a3b8", font=("Segoe UI", 9))
         self.status_label.pack(side=tk.LEFT, padx=5)
 
-        # Botones
         btn_frame = tk.Frame(self.root, bg="#0f172a")
         btn_frame.pack(padx=20, pady=(0, 20), fill=tk.X)
 
@@ -97,7 +135,7 @@ class HabiApp:
 
     def update_status(self, active: bool, message: str = ""):
         color = "#22c55e" if active else "#ef4444"
-        default_msg = "Habi está pensando..." if active else "Listo / En reposo"
+        default_msg = "Habi está pensando y hablando..." if active else "Listo / En reposo"
         self.status_light.itemconfig(self.light_id, fill=color)
         self.status_label.config(text=message if message else default_msg)
 
@@ -146,8 +184,13 @@ class HabiApp:
                 full_reply += chunk
                 self.root.after(0, lambda c=chunk: self.append_text(c, None))
 
+            # Una vez terminada la respuesta de texto, activar la voz
             self.history.append({"role": "assistant", "content": full_reply})
             self.root.after(0, lambda: self.append_text("\n\n", None))
+
+            # Hablar la respuesta completa
+            self.piper.speak(full_reply)
+
             self.root.after(0, lambda: self.update_status(False))
         except ConnectionError as e:
             self.root.after(0, lambda: self.handle_error(str(e)))
@@ -157,11 +200,12 @@ class HabiApp:
             self.root.after(0, lambda: self.send_btn.config(state=tk.NORMAL))
 
     def handle_error(self, message):
-        self.update_status(False, "Error de conexión")
+        self.update_status(False, "Error")
         self.append_text(f"\n[SISTEMA]: {message}\n\n", "error")
-        messagebox.showwarning("Conexión Ollama", "Por favor, asegúrate de que Ollama esté abierto.")
 
 if __name__ == "__main__":
     app_root = tk.Tk()
-    HabiApp(app_root, OllamaClient(model=MODEL_NAME), SessionManager())
+    piper_engine = PiperEngine(PIPER_MODEL_PATH)
+    app_root.mainloop()
+    HabiApp(app_root, OllamaClient(model=MODEL_NAME), SessionManager(), piper_engine)
     app_root.mainloop()
