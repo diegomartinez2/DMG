@@ -7,7 +7,12 @@ import os
 import wave
 import subprocess
 from typing import List, Dict, Generator
-from piper.voice import PiperVoice
+
+# Intentar importar Piper, si falla avisar al usuario
+try:
+    from piper.voice import PiperVoice
+except ImportError:
+    print("Error: La librería 'piper-tts' no está instalada. Ejecuta: pip install piper-tts")
 
 # --- CONFIGURACIÓN ---
 MODEL_NAME = "gemma3"
@@ -31,13 +36,15 @@ class PiperEngine:
         if os.path.exists(self.model_path):
             try:
                 self.voice = PiperVoice.load(self.model_path)
+                print(f"Voz de Piper cargada correctamente: {self.model_path}")
             except Exception as e:
                 print(f"Error cargando voz de Piper: {e}")
+        else:
+            print(f"Aviso: No se encontró el modelo de voz en {self.model_path}. La voz estará desactivada.")
 
     def speak(self, text: str):
         """Sintetiza texto y lo reproduce usando aplay."""
         if not self.voice:
-            print("Voz no cargada. Piper no está disponible.")
             return
 
         def task():
@@ -45,7 +52,7 @@ class PiperEngine:
             try:
                 with wave.open(output_file, "wb") as wav_file:
                     self.voice.synthesize(text, wav_file)
-                # Reproducir usando aplay (estándar en Ubuntu)
+                # Reproducir usando aplay (estándar en Linux/Ubuntu)
                 subprocess.run(["aplay", output_file], stderr=subprocess.DEVNULL)
             except Exception as e:
                 print(f"Error en reproducción de voz: {e}")
@@ -54,7 +61,6 @@ class PiperEngine:
                     try: os.remove(output_file)
                     except: pass
 
-        # Ejecutar en hilo separado para no bloquear la UI o el stream
         threading.Thread(target=task, daemon=True).start()
 
 class SessionManager:
@@ -88,7 +94,7 @@ class OllamaClient:
             for chunk in response:
                 yield chunk['message']['content']
         except Exception as e:
-            raise ConnectionError("No se pudo conectar con Ollama. ¿Está el servidor encendido?") from e
+            raise ConnectionError("No se pudo conectar con Ollama.") from e
 
 class HabiApp:
     def __init__(self, root: tk.Tk, ai_client: OllamaClient, storage: SessionManager, piper: PiperEngine):
@@ -162,7 +168,7 @@ class HabiApp:
 
     def on_save(self):
         self.storage.save(self.history)
-        messagebox.showinfo("Habi", "Historial guardado correctamente.")
+        messagebox.showinfo("Habi", "Historial guardado.")
 
     def on_send(self):
         text = self.input_text.get("1.0", tk.END).strip()
@@ -184,18 +190,15 @@ class HabiApp:
                 full_reply += chunk
                 self.root.after(0, lambda c=chunk: self.append_text(c, None))
 
-            # Una vez terminada la respuesta de texto, activar la voz
             self.history.append({"role": "assistant", "content": full_reply})
             self.root.after(0, lambda: self.append_text("\n\n", None))
 
-            # Hablar la respuesta completa
+            # Hablar la respuesta
             self.piper.speak(full_reply)
 
             self.root.after(0, lambda: self.update_status(False))
-        except ConnectionError as e:
-            self.root.after(0, lambda: self.handle_error(str(e)))
         except Exception as e:
-            self.root.after(0, lambda: self.handle_error(f"Error inesperado: {str(e)}"))
+            self.root.after(0, lambda: self.handle_error(str(e)))
         finally:
             self.root.after(0, lambda: self.send_btn.config(state=tk.NORMAL))
 
@@ -204,8 +207,10 @@ class HabiApp:
         self.append_text(f"\n[SISTEMA]: {message}\n\n", "error")
 
 if __name__ == "__main__":
-    app_root = tk.Tk()
-    piper_engine = PiperEngine(PIPER_MODEL_PATH)
-    app_root.mainloop()
-    HabiApp(app_root, OllamaClient(model=MODEL_NAME), SessionManager(), piper_engine)
-    app_root.mainloop()
+    root = tk.Tk()
+    engine = PiperEngine(PIPER_MODEL_PATH)
+    client = OllamaClient(model=MODEL_NAME)
+    storage = SessionManager()
+
+    app = HabiApp(root, client, storage, engine)
+    root.mainloop()
