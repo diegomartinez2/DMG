@@ -42,27 +42,34 @@ class PiperEngine:
             print(f"Aviso: No se encontró el modelo en {self.model_path}")
 
     def speak(self, text: str):
-        """Sintetiza texto configurando correctamente los canales del WAV."""
+        """Sintetiza texto y genera un archivo WAV válido para reproducción."""
         if not self.voice:
+            print("Error: Piper no está inicializado.")
             return
 
         def task():
             output_file = "temp_voice.wav"
             try:
+                # Abrir archivo para escritura binaria de audio
                 with wave.open(output_file, "wb") as wav_file:
-                    # CONFIGURACIÓN CRÍTICA: Definir parámetros antes de sintetizar
-                    # Piper usa generalmente 1 canal, 2 bytes por muestra (16-bit)
                     wav_file.setnchannels(1)
-                    wav_file.setsampwidth(2)
+                    wav_file.setsampwidth(2) # 16-bit
                     wav_file.setframerate(self.voice.config.sample_rate)
 
-                    # Sintetizar directamente al archivo wave
-                    self.voice.synthesize(text, wav_file)
+                    # Generar audio y escribir frames
+                    # Usamos el generador de synthesize para obtener los bytes de audio
+                    for audio_bytes in self.voice.synthesize_stream(text):
+                        wav_file.writeframes(audio_bytes)
 
-                # Reproducir usando aplay
-                subprocess.run(["aplay", output_file], stderr=subprocess.DEVNULL)
+                # Verificar que el archivo no esté vacío (mayor a 44 bytes del header)
+                if os.path.exists(output_file) and os.path.getsize(output_file) > 44:
+                    # Reproducir usando aplay. Si usas PulseAudio/Pipewire, 'paplay' también es opción.
+                    subprocess.run(["aplay", output_file], check=True)
+                else:
+                    print("Error: El archivo de audio generado está vacío.")
+
             except Exception as e:
-                print(f"Error en reproducción de voz: {e}")
+                print(f"Error en el motor de voz: {e}")
             finally:
                 if os.path.exists(output_file):
                     try: os.remove(output_file)
@@ -199,7 +206,7 @@ class HabiApp:
             self.history.append({"role": "assistant", "content": full_reply})
             self.root.after(0, lambda: self.append_text("\n\n", None))
 
-            # Hablar la respuesta corregida
+            # Disparar la voz
             self.piper.speak(full_reply)
 
             self.root.after(0, lambda: self.update_status(False))
