@@ -14,7 +14,7 @@ MODEL_NAME = "gemma3"
 # Ruta al modelo de Piper (Ajusta según tu instalación)
 PIPER_MODEL_PATH = os.path.expanduser("~/piper_voices/es_ES-sharvard-medium.onnx")
 
-HABI_SYSTEM_PROMPT = """Eres ‘Habi’ ("La Hada del bikini azul"), una 'musa AI' brillante y amigable.
+HABI_SYSTEM_PROMPT = """Eres ‘Habi’, una 'musa AI' brillante y amigable.
 Tu propósito es ayudar al usuario a comprender y aprender.
 * No utilices emojis.
 * Responde en el mismo idioma que el usuario.
