@@ -42,11 +42,12 @@ class OllamaClient:
     def stream_chat(self, history: List[Dict[str, str]]) -> Generator[str, None, None]:
         messages = [{'role': 'system', 'content': HABI_SYSTEM_PROMPT}] + history
         try:
+            # Intentamos conectar con el servidor local de Ollama
             response = ollama.chat(model=self.model, messages=messages, stream=True)
             for chunk in response:
                 yield chunk['message']['content']
         except Exception as e:
-            raise e
+            raise ConnectionError("No se pudo conectar con Ollama. ¿Está el servidor encendido?") from e
 
 class HabiApp:
     def __init__(self, root: tk.Tk, ai_client: OllamaClient, storage: SessionManager):
@@ -67,6 +68,7 @@ class HabiApp:
         self.display = scrolledtext.ScrolledText(self.root, bg="#1e293b", fg="#f1f5f9", font=("Segoe UI", 11), state=tk.DISABLED)
         self.display.pack(padx=20, pady=(20, 10), fill=tk.BOTH, expand=True)
         self.display.tag_config("user", foreground="#38bdf8", font=("Segoe UI", 10, "bold"))
+        self.display.tag_config("error", foreground="#f87171", font=("Segoe UI", 10, "italic"))
 
         # Área de entrada
         self.input_text = tk.Text(self.root, height=3, bg="#1e293b", fg="white", font=("Segoe UI", 11), insertbackground="white")
@@ -77,10 +79,9 @@ class HabiApp:
         self.status_frame = tk.Frame(self.root, bg="#0f172a")
         self.status_frame.pack(padx=20, pady=(0, 10), fill=tk.X)
 
-        # El círculo del semáforo (Canvas)
         self.status_light = tk.Canvas(self.status_frame, width=20, height=20, bg="#0f172a", highlightthickness=0)
         self.status_light.pack(side=tk.LEFT)
-        self.light_id = self.status_light.create_oval(4, 4, 16, 16, fill="#ef4444") # Rojo por defecto
+        self.light_id = self.status_light.create_oval(4, 4, 16, 16, fill="#ef4444")
 
         self.status_label = tk.Label(self.status_frame, text="Listo / En reposo", bg="#0f172a", fg="#94a3b8", font=("Segoe UI", 9))
         self.status_label.pack(side=tk.LEFT, padx=5)
@@ -148,18 +149,19 @@ class HabiApp:
             self.history.append({"role": "assistant", "content": full_reply})
             self.root.after(0, lambda: self.append_text("\n\n", None))
             self.root.after(0, lambda: self.update_status(False))
+        except ConnectionError as e:
+            self.root.after(0, lambda: self.handle_error(str(e)))
         except Exception as e:
-            error_msg = str(e)
-            self.root.after(0, lambda m=error_msg: self.handle_error(m))
+            self.root.after(0, lambda: self.handle_error(f"Error inesperado: {str(e)}"))
         finally:
             self.root.after(0, lambda: self.send_btn.config(state=tk.NORMAL))
 
     def handle_error(self, message):
-        self.update_status(False, "Error en el modelo")
-        messagebox.showerror("Error de Ollama", message)
+        self.update_status(False, "Error de conexión")
+        self.append_text(f"\n[SISTEMA]: {message}\n\n", "error")
+        messagebox.showwarning("Conexión Ollama", "Por favor, asegúrate de que Ollama esté abierto.")
 
 if __name__ == "__main__":
     app_root = tk.Tk()
-    # Cambia el nombre del modelo si prefieres usar otro de Ollama
     HabiApp(app_root, OllamaClient(model=MODEL_NAME), SessionManager())
     app_root.mainloop()
