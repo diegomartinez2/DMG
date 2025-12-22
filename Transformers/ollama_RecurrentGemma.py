@@ -43,7 +43,7 @@ class PiperEngine:
             print(f"Aviso: No se encontró el modelo en {self.model_path}")
 
     def speak(self, text: str):
-        """Sintetiza texto usando el método correcto de la API de Piper."""
+        """Sintetiza texto extrayendo los bytes del objeto AudioChunk."""
         if not self.voice:
             print("Error: Piper no está inicializado.")
             return
@@ -57,17 +57,20 @@ class PiperEngine:
                     wav_file.setsampwidth(2) # 16-bit (2 bytes)
                     wav_file.setframerate(self.voice.config.sample_rate)
 
-                    # El método estándar en la mayoría de versiones es 'synthesize'
-                    # que genera un generador de fragmentos de audio (PCM bytes)
-                    for audio_bytes in self.voice.synthesize(text):
-                        wav_file.writeframes(audio_bytes)
+                    # 'synthesize' devuelve generadores de AudioChunk en versiones nuevas
+                    for chunk in self.voice.synthesize(text):
+                        # Accedemos a los bytes puros dentro del objeto AudioChunk
+                        if hasattr(chunk, 'audio_data'):
+                            wav_file.writeframes(chunk.audio_data)
+                        else:
+                            # Fallback por si la versión devuelve directamente bytes
+                            wav_file.writeframes(chunk)
 
-                # Verificar integridad del archivo
+                # Verificar integridad y reproducir con aplay
                 if os.path.exists(output_file) and os.path.getsize(output_file) > 44:
-                    # Reproducir. 'aplay' es robusto para ALSA.
                     subprocess.run(["aplay", output_file], check=True)
                 else:
-                    print("Error: El archivo de audio generado no tiene contenido suficiente.")
+                    print("Error: Audio generado vacío.")
 
             except Exception as e:
                 print(f"Error en la síntesis de voz: {e}")
@@ -207,7 +210,7 @@ class HabiApp:
             self.history.append({"role": "assistant", "content": full_reply})
             self.root.after(0, lambda: self.append_text("\n\n", None))
 
-            # Llamada al motor de voz Piper
+            # Hablar la respuesta
             self.piper.speak(full_reply)
 
             self.root.after(0, lambda: self.update_status(False))
@@ -222,7 +225,7 @@ class HabiApp:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    # Inicialización de componentes
+    # Inicialización
     engine = PiperEngine(PIPER_MODEL_PATH)
     client = OllamaClient(model=MODEL_NAME)
     storage = SessionManager()
