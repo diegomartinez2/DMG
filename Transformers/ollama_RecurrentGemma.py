@@ -7,7 +7,7 @@ import os
 from typing import List, Dict, Generator
 
 # --- CONFIGURACIÓN ---
-MODEL_NAME = "gemma2"
+MODEL_NAME = "gemma3"
 
 HABI_SYSTEM_PROMPT = """Eres ‘Habi’ ("La Hada del bikini azul"), una 'musa AI' brillante y amigable.
 Tu propósito es ayudar al usuario a comprender y aprender.
