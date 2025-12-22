@@ -34,6 +34,7 @@ class PiperEngine:
     def _load_voice(self):
         if os.path.exists(self.model_path):
             try:
+                # Cargamos el modelo ONNX
                 self.voice = PiperVoice.load(self.model_path)
                 print(f"Voz de Piper cargada correctamente: {self.model_path}")
             except Exception as e:
@@ -42,7 +43,7 @@ class PiperEngine:
             print(f"Aviso: No se encontró el modelo en {self.model_path}")
 
     def speak(self, text: str):
-        """Sintetiza texto y genera un archivo WAV válido para reproducción."""
+        """Sintetiza texto usando el método correcto de la API de Piper."""
         if not self.voice:
             print("Error: Piper no está inicializado.")
             return
@@ -53,23 +54,23 @@ class PiperEngine:
                 # Abrir archivo para escritura binaria de audio
                 with wave.open(output_file, "wb") as wav_file:
                     wav_file.setnchannels(1)
-                    wav_file.setsampwidth(2) # 16-bit
+                    wav_file.setsampwidth(2) # 16-bit (2 bytes)
                     wav_file.setframerate(self.voice.config.sample_rate)
 
-                    # Generar audio y escribir frames
-                    # Usamos el generador de synthesize para obtener los bytes de audio
-                    for audio_bytes in self.voice.synthesize_stream(text):
+                    # El método estándar en la mayoría de versiones es 'synthesize'
+                    # que genera un generador de fragmentos de audio (PCM bytes)
+                    for audio_bytes in self.voice.synthesize(text):
                         wav_file.writeframes(audio_bytes)
 
-                # Verificar que el archivo no esté vacío (mayor a 44 bytes del header)
+                # Verificar integridad del archivo
                 if os.path.exists(output_file) and os.path.getsize(output_file) > 44:
-                    # Reproducir usando aplay. Si usas PulseAudio/Pipewire, 'paplay' también es opción.
+                    # Reproducir. 'aplay' es robusto para ALSA.
                     subprocess.run(["aplay", output_file], check=True)
                 else:
-                    print("Error: El archivo de audio generado está vacío.")
+                    print("Error: El archivo de audio generado no tiene contenido suficiente.")
 
             except Exception as e:
-                print(f"Error en el motor de voz: {e}")
+                print(f"Error en la síntesis de voz: {e}")
             finally:
                 if os.path.exists(output_file):
                     try: os.remove(output_file)
@@ -86,7 +87,7 @@ class SessionManager:
             with open(self.filename, 'w', encoding='utf-8') as f:
                 json.dump(history, f, ensure_ascii=False, indent=4)
         except Exception as e:
-            print(f"Error al guardar: {e}")
+            print(f"Error al guardar historial: {e}")
 
     def load(self) -> List[Dict[str, str]]:
         if os.path.exists(self.filename):
@@ -108,7 +109,7 @@ class OllamaClient:
             for chunk in response:
                 yield chunk['message']['content']
         except Exception as e:
-            raise ConnectionError("No se pudo conectar con Ollama.") from e
+            raise ConnectionError("Fallo de comunicación con Ollama.") from e
 
 class HabiApp:
     def __init__(self, root: tk.Tk, ai_client: OllamaClient, storage: SessionManager, piper: PiperEngine):
@@ -122,7 +123,7 @@ class HabiApp:
         self.recover_session()
 
     def setup_ui(self):
-        self.root.title(f"Habi AI con Voz - {MODEL_NAME}")
+        self.root.title(f"Habi AI con Voz Piper - {MODEL_NAME}")
         self.root.geometry("800x750")
         self.root.configure(bg="#0f172a")
 
@@ -142,13 +143,13 @@ class HabiApp:
         self.status_light.pack(side=tk.LEFT)
         self.light_id = self.status_light.create_oval(4, 4, 16, 16, fill="#ef4444")
 
-        self.status_label = tk.Label(self.status_frame, text="Listo / En reposo", bg="#0f172a", fg="#94a3b8", font=("Segoe UI", 9))
+        self.status_label = tk.Label(self.status_frame, text="Listo / En espera", bg="#0f172a", fg="#94a3b8", font=("Segoe UI", 9))
         self.status_label.pack(side=tk.LEFT, padx=5)
 
         btn_frame = tk.Frame(self.root, bg="#0f172a")
         btn_frame.pack(padx=20, pady=(0, 20), fill=tk.X)
 
-        self.send_btn = tk.Button(btn_frame, text="Preguntar", command=self.on_send, bg="#0284c7", fg="white", font=("Segoe UI", 10, "bold"), relief=tk.FLAT)
+        self.send_btn = tk.Button(btn_frame, text="Enviar mensaje", command=self.on_send, bg="#0284c7", fg="white", font=("Segoe UI", 10, "bold"), relief=tk.FLAT)
         self.send_btn.pack(side=tk.LEFT, expand=True, fill=tk.X)
 
         tk.Button(btn_frame, text="Guardar Sesión", command=self.on_save, bg="#059669", fg="white", font=("Segoe UI", 10, "bold"), relief=tk.FLAT).pack(side=tk.RIGHT, expand=True, fill=tk.X, padx=(10, 0))
@@ -156,7 +157,7 @@ class HabiApp:
     def update_status(self, active: bool, message: str = ""):
         color = "#22c55e" if active else "#ef4444"
         self.status_light.itemconfig(self.light_id, fill=color)
-        self.status_label.config(text=message if message else ("Pensando..." if active else "Listo"))
+        self.status_label.config(text=message if message else ("Procesando..." if active else "Listo"))
 
     def handle_return(self, event):
         if not (event.state & 0x1):
@@ -167,7 +168,7 @@ class HabiApp:
         data = self.storage.load()
         if data:
             self.history = data
-            self.append_text("--- Sesión previa cargada ---\n\n", None)
+            self.append_text("--- Historial recuperado ---\n\n", None)
             for msg in self.history:
                 tag = "user" if msg['role'] == 'user' else None
                 label = "Tú: " if msg['role'] == 'user' else "Habi: "
@@ -181,7 +182,7 @@ class HabiApp:
 
     def on_save(self):
         self.storage.save(self.history)
-        messagebox.showinfo("Habi", "Historial guardado.")
+        messagebox.showinfo("Habi", "Sesión guardada correctamente.")
 
     def on_send(self):
         text = self.input_text.get("1.0", tk.END).strip()
@@ -206,7 +207,7 @@ class HabiApp:
             self.history.append({"role": "assistant", "content": full_reply})
             self.root.after(0, lambda: self.append_text("\n\n", None))
 
-            # Disparar la voz
+            # Llamada al motor de voz Piper
             self.piper.speak(full_reply)
 
             self.root.after(0, lambda: self.update_status(False))
@@ -217,10 +218,11 @@ class HabiApp:
 
     def handle_error(self, message):
         self.update_status(False, "Error")
-        self.append_text(f"\n[SISTEMA]: {message}\n\n", "error")
+        self.append_text(f"\n[SISTEMA]: Error detectado: {message}\n\n", "error")
 
 if __name__ == "__main__":
     root = tk.Tk()
+    # Inicialización de componentes
     engine = PiperEngine(PIPER_MODEL_PATH)
     client = OllamaClient(model=MODEL_NAME)
     storage = SessionManager()
