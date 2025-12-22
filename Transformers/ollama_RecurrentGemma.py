@@ -8,15 +8,14 @@ import wave
 import subprocess
 from typing import List, Dict, Generator
 
-# Intentar importar Piper, si falla avisar al usuario
+# Intentar importar Piper
 try:
     from piper.voice import PiperVoice
 except ImportError:
-    print("Error: La librería 'piper-tts' no está instalada. Ejecuta: pip install piper-tts")
+    print("Error: La librería 'piper-tts' no está instalada.")
 
 # --- CONFIGURACIÓN ---
 MODEL_NAME = "gemma3"
-# Ruta al modelo de Piper (Ajusta según tu instalación)
 PIPER_MODEL_PATH = os.path.expanduser("~/piper_voices/es_ES-sharvard-medium.onnx")
 
 HABI_SYSTEM_PROMPT = """Eres ‘Habi’, una 'musa AI' brillante y amigable.
@@ -40,10 +39,10 @@ class PiperEngine:
             except Exception as e:
                 print(f"Error cargando voz de Piper: {e}")
         else:
-            print(f"Aviso: No se encontró el modelo de voz en {self.model_path}. La voz estará desactivada.")
+            print(f"Aviso: No se encontró el modelo en {self.model_path}")
 
     def speak(self, text: str):
-        """Sintetiza texto y lo reproduce usando aplay."""
+        """Sintetiza texto configurando correctamente los canales del WAV."""
         if not self.voice:
             return
 
@@ -51,8 +50,16 @@ class PiperEngine:
             output_file = "temp_voice.wav"
             try:
                 with wave.open(output_file, "wb") as wav_file:
+                    # CONFIGURACIÓN CRÍTICA: Definir parámetros antes de sintetizar
+                    # Piper usa generalmente 1 canal, 2 bytes por muestra (16-bit)
+                    wav_file.setnchannels(1)
+                    wav_file.setsampwidth(2)
+                    wav_file.setframerate(self.voice.config.sample_rate)
+
+                    # Sintetizar directamente al archivo wave
                     self.voice.synthesize(text, wav_file)
-                # Reproducir usando aplay (estándar en Linux/Ubuntu)
+
+                # Reproducir usando aplay
                 subprocess.run(["aplay", output_file], stderr=subprocess.DEVNULL)
             except Exception as e:
                 print(f"Error en reproducción de voz: {e}")
@@ -141,9 +148,8 @@ class HabiApp:
 
     def update_status(self, active: bool, message: str = ""):
         color = "#22c55e" if active else "#ef4444"
-        default_msg = "Habi está pensando y hablando..." if active else "Listo / En reposo"
         self.status_light.itemconfig(self.light_id, fill=color)
-        self.status_label.config(text=message if message else default_msg)
+        self.status_label.config(text=message if message else ("Pensando..." if active else "Listo"))
 
     def handle_return(self, event):
         if not (event.state & 0x1):
@@ -193,7 +199,7 @@ class HabiApp:
             self.history.append({"role": "assistant", "content": full_reply})
             self.root.after(0, lambda: self.append_text("\n\n", None))
 
-            # Hablar la respuesta
+            # Hablar la respuesta corregida
             self.piper.speak(full_reply)
 
             self.root.after(0, lambda: self.update_status(False))
