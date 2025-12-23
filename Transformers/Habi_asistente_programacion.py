@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import scrolledtext, messagebox, font
+from tkinter import scrolledtext, messagebox
 import threading
 import ollama
 import json
@@ -9,12 +9,13 @@ from typing import List, Dict, Generator
 # --- CONFIGURACIÓN ---
 MODEL_NAME = "gemma3"
 
-HABI_SYSTEM_PROMPT = """Eres ‘Habi’, una musa AI y experta programadora.
-Tu propósito es ayudar al usuario a escribir, depurar y optimizar código siguiendo los principios SOLID y KISS.
+# Prompt del sistema especializado en programación
+HABI_SYSTEM_PROMPT = """Eres ‘Habi’, una experta asistente de programación.
+Tu objetivo es ayudar a modificar, depurar y optimizar el código que el usuario te proporciona en el editor lateral.
 * No utilices emojis.
 * Responde en el mismo idioma que el usuario.
-* Nunca narres lo que vas a hacer, simplemente hazlo.
-* Cuando el usuario te pase un código, analízalo y propón mejoras o realiza las modificaciones solicitadas directamente."""
+* Sé directa: si el usuario pide un cambio, muestra el código corregido o explica el error.
+* Utiliza siempre el "CONTEXTO DEL CÓDIGO ACTUAL" como referencia principal."""
 
 class SessionManager:
     def __init__(self, filename: str = "habi_code_history.json"):
@@ -40,84 +41,74 @@ class OllamaClient:
     def __init__(self, model: str = MODEL_NAME):
         self.model = model
 
-    def stream_chat(self, history: List[Dict[str, str]], code_context: str) -> Generator[str, None, None]:
-        # Construimos el mensaje incluyendo el contexto del código actual
-        context_msg = f"CONTEXTO DEL CÓDIGO ACTUAL:\n
+    def stream_chat(self, history: List[Dict[str, str]], code_content: str) -> Generator[str, None, None]:
+        # Evitamos el error de "unterminated f-string" pasando el código
+        # como un bloque de texto independiente antes de las f-strings.
+        system_instruction = f"{HABI_SYSTEM_PROMPT}\n\nCONTEXTO DEL CÓDIGO ACTUAL:\n{code_content}"
 
-        # Insertamos el contexto del código justo después del system prompt para que siempre esté presente
-        messages = [
-            {'role': 'system', 'content': HABI_SYSTEM_PROMPT},
-            {'role': 'system', 'content': context_msg}
-        ] + history
+        # Construimos la lista de mensajes
+        messages = [{'role': 'system', 'content': system_instruction}] + history
 
         try:
             response = ollama.chat(model=self.model, messages=messages, stream=True)
             for chunk in response:
                 yield chunk['message']['content']
         except Exception as e:
-            raise e
+            raise ConnectionError(f"Ollama Error: {str(e)}")
 
 class HabiApp:
-    def __init__(self, root: tk.Tk, ai_client: OllamaClient, storage: SessionManager):
+    def __init__(self, root: tk.Tk):
         self.root = root
-        self.ai = ai_client
-        self.storage = storage
+        self.ai = OllamaClient()
+        self.storage = SessionManager()
         self.history = []
 
         self.setup_ui()
-        self.recover_session()
+        self.load_history()
 
     def setup_ui(self):
-        self.root.title(f"Habi AI - Code Assistant ({MODEL_NAME})")
-        self.root.geometry("1200x800")
-        self.root.configure(bg="#0f172a")
+        self.root.title(f"Habi - Programación (Gemma 3)")
+        self.root.geometry("1100x700")
+        self.root.configure(bg="#1e1e1e")
 
-        # Layout Principal: Ventana dividida (PanedWindow)
-        self.paned = tk.PanedWindow(self.root, orient=tk.HORIZONTAL, bg="#1e293b", sashwidth=4)
+        # PanedWindow para dividir Chat y Código
+        self.paned = tk.PanedWindow(self.root, orient=tk.HORIZONTAL, bg="#333", sashwidth=4)
         self.paned.pack(fill=tk.BOTH, expand=True)
 
-        # --- LADO IZQUIERDO: CHAT ---
-        self.chat_frame = tk.Frame(self.paned, bg="#0f172a")
-        self.paned.add(self.chat_frame, width=500)
+        # LADO IZQUIERDO: Chat
+        self.chat_frame = tk.Frame(self.paned, bg="#1e1e1e")
+        self.paned.add(self.chat_frame, width=450)
 
-        self.display = scrolledtext.ScrolledText(self.chat_frame, bg="#0f172a", fg="#f1f5f9",
-                                                font=("Consolas", 10), state=tk.DISABLED, borderwidth=0)
+        self.display = scrolledtext.ScrolledText(self.chat_frame, bg="#1e1e1e", fg="#d4d4d4",
+                                                font=("Consolas", 10), state=tk.DISABLED)
         self.display.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
-        self.display.tag_config("user", foreground="#38bdf8", font=("Consolas", 10, "bold"))
+        self.display.tag_config("user", foreground="#569cd6", font=("Consolas", 10, "bold"))
 
-        self.input_text = tk.Text(self.chat_frame, height=4, bg="#1e293b", fg="white",
-                                 font=("Consolas", 10), insertbackground="white")
+        self.input_text = tk.Text(self.chat_frame, height=3, bg="#2d2d2d", fg="white", font=("Consolas", 10))
         self.input_text.pack(padx=10, pady=(0, 10), fill=tk.X)
-        self.input_text.bind("<Return>", self.handle_return)
+        self.input_text.bind("<Return>", self.handle_enter)
 
-        # Botones Chat
-        btn_chat_frame = tk.Frame(self.chat_frame, bg="#0f172a")
-        btn_chat_frame.pack(padx=10, pady=(0, 10), fill=tk.X)
+        self.send_btn = tk.Button(self.chat_frame, text="Preguntar a Habi", command=self.on_send,
+                                 bg="#0e639c", fg="white", relief=tk.FLAT)
+        self.send_btn.pack(padx=10, pady=(0, 10), fill=tk.X)
 
-        self.send_btn = tk.Button(btn_chat_frame, text="Enviar Prompt", command=self.on_send,
-                                 bg="#0284c7", fg="white", font=("Segoe UI", 9, "bold"), relief=tk.FLAT)
-        self.send_btn.pack(side=tk.LEFT, expand=True, fill=tk.X)
+        # LADO DERECHO: Editor de Código
+        self.code_frame = tk.Frame(self.paned, bg="#1e1e1e")
+        self.paned.add(self.code_frame, width=650)
 
-        # --- LADO DERECHO: EDITOR DE CÓDIGO ---
-        self.code_frame = tk.Frame(self.paned, bg="#1e293b")
-        self.paned.add(self.code_frame, width=700)
+        tk.Label(self.code_frame, text="SCRIPT A MODIFICAR", bg="#1e1e1e", fg="#808080", font=("Arial", 9)).pack()
 
-        tk.Label(self.code_frame, text="EDITOR DE CÓDIGO (Contexto para Habi)", bg="#1e293b",
-                 fg="#94a3b8", font=("Segoe UI", 9, "bold")).pack(pady=5)
+        self.code_editor = scrolledtext.ScrolledText(self.code_frame, bg="#1e1e1e", fg="#ce9178",
+                                                    font=("Consolas", 11), insertbackground="white")
+        self.code_editor.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+        self.code_editor.insert("1.0", "# Pega aquí el código que quieres que Habi analice...\n")
 
-        self.code_editor = scrolledtext.ScrolledText(self.code_frame, bg="#000000", fg="#adff2f",
-                                                    font=("Consolas", 11), insertbackground="white",
-                                                    undo=True, borderwidth=0)
-        self.code_editor.pack(padx=10, pady=(0, 10), fill=tk.BOTH, expand=True)
-        # Código de ejemplo inicial
-        self.code_editor.insert("1.0", "# Pega aquí el código que quieres modificar...\ndef ejemplo():\n    print('Hola mundo')\n")
-
-    def handle_return(self, event):
-        if not (event.state & 0x1): # Si no es Shift+Enter
+    def handle_enter(self, event):
+        if not (event.state & 0x1): # Si no es Shift
             self.on_send()
             return "break"
 
-    def append_text(self, content, tag):
+    def append_text(self, content, tag=None):
         self.display.config(state=tk.NORMAL)
         self.display.insert(tk.END, content, tag)
         self.display.see(tk.END)
@@ -127,7 +118,7 @@ class HabiApp:
         prompt = self.input_text.get("1.0", tk.END).strip()
         if not prompt: return
 
-        # Obtener el código actual del editor para enviarlo como contexto
+        # Obtenemos el código actual para que la IA lo lea en este turno
         current_code = self.code_editor.get("1.0", tk.END).strip()
 
         self.input_text.delete("1.0", tk.END)
@@ -135,8 +126,6 @@ class HabiApp:
         self.append_text(f"Tú: {prompt}\n\nHabi: ", "user")
 
         self.send_btn.config(state=tk.DISABLED)
-
-        # Pasamos el contexto del código a la función de ejecución
         threading.Thread(target=self.run_ai, args=(current_code,), daemon=True).start()
 
     def run_ai(self, code_context):
@@ -144,25 +133,24 @@ class HabiApp:
         try:
             for chunk in self.ai.stream_chat(self.history, code_context):
                 full_reply += chunk
-                self.root.after(0, lambda c=chunk: self.append_text(c, None))
+                self.root.after(0, lambda c=chunk: self.append_text(c))
 
             self.history.append({"role": "assistant", "content": full_reply})
-            self.root.after(0, lambda: self.append_text("\n\n---\n\n", None))
+            self.root.after(0, lambda: self.append_text("\n\n"))
+            self.storage.save(self.history)
         except Exception as e:
-            self.root.after(0, lambda m=str(e): messagebox.showerror("Error", m))
+            self.root.after(0, lambda: messagebox.showerror("Error", str(e)))
         finally:
             self.root.after(0, lambda: self.send_btn.config(state=tk.NORMAL))
 
-    def recover_session(self):
-        data = self.storage.load()
-        if data:
-            self.history = data
-            for msg in self.history:
-                tag = "user" if msg['role'] == 'user' else None
-                label = "Tú: " if msg['role'] == 'user' else "Habi: "
-                self.append_text(f"{label}{msg['content']}\n\n", tag)
+    def load_history(self):
+        self.history = self.storage.load()
+        for msg in self.history:
+            tag = "user" if msg['role'] == 'user' else None
+            label = "Tú: " if msg['role'] == 'user' else "Habi: "
+            self.append_text(f"{label}{msg['content']}\n\n", tag)
 
 if __name__ == "__main__":
     app_root = tk.Tk()
-    HabiApp(app_root, OllamaClient(), SessionManager())
+    HabiApp(app_root)
     app_root.mainloop()
