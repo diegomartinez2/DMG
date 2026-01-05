@@ -23,7 +23,8 @@
 #
 # ---------------------------
 # Importación de los módulos
-# ---------------------------import random
+# ---------------------------
+import random
 import time
 from typing import Dict, List, Optional, Tuple
 
