@@ -23,9 +23,13 @@ create_box      1 box
 create_atoms    1 box
 
 # 3. Potencial (Lennard-Jones para Argón)
-mass            1 39.948
-pair_style      lj/cut 10.0
-pair_coeff      1 1 0.0103231 3.405 # epsilon (eV), sigma (A)
+# mass            1 39.948
+# pair_style      lj/cut 10.0
+# pair_coeff      1 1 0.0103231 3.405 # epsilon (eV), sigma (A)
+# 3. Potencial (ML chimes)
+pair_style      chimesFF
+pair_coeff      * * params.txt
+
 
 # 4. Equilibrio (Relajación a la temperatura deseada, NPT)
 minimize        1.0e-4 1.0e-6 100 1000  # Minimiza energía (opcional pero recomendado)
