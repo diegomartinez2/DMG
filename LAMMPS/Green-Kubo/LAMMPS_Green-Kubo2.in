@@ -30,7 +30,8 @@ pair_coeff      1 1 0.0103231 3.405 # epsilon (eV), sigma (A)
 # 4. Equilibrio (Relajación a la temperatura deseada, NPT)
 minimize        1.0e-4 1.0e-6 100 1000  # Minimiza energía (opcional pero recomendado)
 velocity        all create ${T} ${seed} mom yes rot no  # Inicializar velocidades usando $T y $seed
-fix             1 all npt temp ${T} ${T} 0.1 iso 0.0 0.0 1.0 # Termostato y barostato NPT
+#fix             1 all npt temp ${T} ${T} 0.1 iso 0.0 0.0 1.0 # Termostato y barostato NPT
+fix             1 all npt temp ${T} ${T} 0.1 aniso 0.0 0.0 1.0 # Termostato y barostato NPT
 timestep        ${dt} # Usando la variable $dt
 thermo          1000
 run             ${tau_max_steps} # Usando la variable $tau_max_steps
