@@ -1,5 +1,6 @@
 # Ejemplo de Input File de LAMMPS para Green-Kubo (kappa.in)
 # Argón Sólido (Lennard-Jones)
+# Other systems (ML potential)
 
 # 0. Definición de Variables (NUEVO)
 variable T equal 80.0
@@ -11,16 +12,19 @@ variable run_steps equal 1000000    # Pasos de corrida NVE (1 ns con dt=0.001 ps
 variable seed equal 12345           # Semilla aleatoria inicial
 
 # 1. Inicialización
-units           metal
+#units           metal  # for L-J
+units           real    # for CHIMESFF
 atom_style      atomic
 dimension       3
 boundary        p p p
 
 # 2. Definición del sistema (Ejemplo: Argón con densidad y tamaño)
-lattice         fcc 5.26
-region          box block 0 10 0 10 0 10 # 10x10x10 celdas unitarias
-create_box      1 box
-create_atoms    1 box
+#lattice         fcc 5.26
+#region          box block 0 10 0 10 0 10 # 10x10x10 celdas unitarias
+#create_box      1 box
+#create_atoms    1 box
+box tilt large
+read_data       AA-supercell-optimized.lmp
 
 # 3. Potencial (Lennard-Jones para Argón)
 # mass            1 39.948
