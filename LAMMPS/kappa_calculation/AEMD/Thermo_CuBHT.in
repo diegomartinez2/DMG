@@ -72,11 +72,27 @@ timestep    ${dt}
 
 # Defining the output format
 #----------------
-compute tl lr temp
-compute tr rr temp
-variable diff equal (c_tl-c_tr)
-thermo_style custom step c_tl c_tr v_diff
+# compute tl lr temp
+# compute tr rr temp
+# variable diff equal (c_tl-c_tr)
+# thermo_style custom step c_tl c_tr v_diff
 
+# -------------------------------consejos-----
+# Al principio NO definas thermo_style ni thermo frecuente
+# O pon un thermo muy espaciado solo para ver que no explota
+thermo          1000
+thermo_style    one    # o custom mínimo: step temp pe ke etotal
+
+# ... todo el proceso de termalización como lo tienes ...
+
+# Justo antes del NVE final (producción):
+# unfix           RUN3
+# thermo          100           # o 50, 200, según quieras
+# thermo_style    custom step c_tl c_tr v_diff press vol etotal ke
+# Opcional: thermo_modify norm yes   (si prefieres valores por átomo)
+# fix             RUN_prod all nve
+# run             300000        # o lo que necesites para producción
+#------------------------------------fin-consejos-----
 
 # PART ONE: thermalization by velocity rescaling
 #-----------------------------------------------
@@ -104,6 +120,11 @@ unfix  RUN2
 
 fix    RUN3 all nve
 thermo 100
+compute tl lr temp
+compute tr rr temp
+variable diff equal (c_tl-c_tr)
+thermo_style custom step c_tl c_tr v_diff
+
 # tal vez hacer el run más largo si el sistema es muy complejo
 run    30000
 unfix  RUN3
