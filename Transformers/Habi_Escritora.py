@@ -1,3 +1,29 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#  Habi_Escritora.py
+#
+#  Copyright 2026 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+#
+#
+# ---------------------------
+# Importación de los módulos
+# ---------------------------
 import tkinter as tk
 from tkinter import scrolledtext, messagebox, ttk
 import threading
@@ -10,7 +36,7 @@ from typing import List, Dict, Generator
 MODEL_NAME = "gemma3"
 
 # Prompt de sistema optimizado para escritura creativa
-HABI_SYSTEM_PROMPT = """Eres ‘Habi’, la musa de los escritores. 
+HABI_SYSTEM_PROMPT = """Eres ‘Habi’, la musa de los escritores.
 Tu objetivo es ayudar a redactar novelas de alta calidad.
 Utilizarás la información de contexto (Trama, Estilo, Personajes y Capítulos Anteriores) para que tus sugerencias sean coherentes.
 * Si el usuario te pide 'escribir el capítulo', genera una narración rica y detallada.
@@ -63,10 +89,10 @@ class HabiApp:
         self.root = root
         self.root.title("Habi - Asistente de Escritura Creativa")
         self.root.geometry("1200x800")
-        
+
         self.ai = OllamaClient()
         self.session = SessionManager()
-        
+
         # Cargar datos previos
         saved_data = self.session.load_all()
         self.history = saved_data.get("history", [])
@@ -115,7 +141,7 @@ class HabiApp:
 
         # 1. Trama del Capítulo
         self.create_context_box("Trama de este capítulo (Lo que debe pasar):", "trama_txt", height=8)
-        
+
         # 2. Estilo de Escritura
         self.create_context_box("Estilo de Escritura (Ej: Primera persona, oscuro, poético):", "estilo_txt", height=3)
 
@@ -178,7 +204,7 @@ class HabiApp:
 
         # Recolectar contexto de las ventanas laterales
         context = self.get_sidebar_data()
-        
+
         # Crear un mensaje "invisible" de contexto para la IA antes de su pregunta
         full_context_prompt = f"""
 --- CONTEXTO ACTUAL DE LA NOVELA ---
@@ -190,8 +216,8 @@ CAPÍTULOS ANTERIORES: {context['anteriores']}
 INSTRUCCIÓN DEL USUARIO: {user_input}
 """
         self.input_text.delete("1.0", tk.END)
-        
-        # Añadimos a la historia visual el texto limpio del usuario, 
+
+        # Añadimos a la historia visual el texto limpio del usuario,
         # pero a la IA le enviamos el bloque con contexto.
         self.history.append({"role": "user", "content": full_context_prompt})
         self.append_text(f"Tú: {user_input}\n\nHabi: ", "user")
@@ -210,11 +236,11 @@ INSTRUCCIÓN DEL USUARIO: {user_input}
 
             self.history.append({"role": "assistant", "content": full_reply})
             self.root.after(0, lambda: self.append_text("\n\n", None))
-            
+
             # Guardar automáticamente después de cada respuesta
             self.session.save_all(self.history, self.get_sidebar_data())
             self.root.after(0, lambda: self.update_status(False))
-            
+
         except Exception as e:
             self.root.after(0, lambda m=str(e): messagebox.showerror("Error", m))
         finally:
