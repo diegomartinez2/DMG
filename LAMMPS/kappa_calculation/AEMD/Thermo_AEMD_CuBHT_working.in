@@ -32,6 +32,18 @@ variable T_eq equal 300.0 # Temperatura de equilibrio (Ej: (310K + 290K) / 2)
 thermo 1000
 thermo_style custom step temp press etotal ke pe enthalpy
 
+
+# 4.5 FASE 0: Minimizacion de la estructura
+# -------------------------------------------------------------------
+# CuBHT AA
+fix             BOX all box/relax tri 0.0 vmax 0.001
+minimize        1.0e-10  1.0e-10  20000  20000
+unfix           BOX
+# CuBHT C
+# fix             BOX all box/relax iso 0.0 vmax 0.001
+# minimize        1.0e-10  1.0e-10  20000  20000
+# unfix           BOX
+
 # 5. FASE I: EQUILIBRIO NVT (PREPARACIÓN) 🌡️
 # -------------------------------------------------------------------
 print "--- FASE I: EQUILIBRIO NVT (TODO EL SISTEMA) ---"
