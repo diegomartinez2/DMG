@@ -15,7 +15,8 @@ atom_modify sort 0 0.0
 # -------------------------------------------------------------------
 read_data AA-supercell-optimized.lmp
 #replicate 35 2 2     # Réplica del sistema (Largo en X, 2x2 en YZ)
-replicate 35 4 4
+#replicate 35 4 4
+replicate 4 2 2 # Mirar si esto es suficiente -> 422, 822, 442, 424, 444,
 
 # 3. POTENCIAL DE INTERACCIÓN
 # -------------------------------------------------------------------
