@@ -32,6 +32,41 @@ variable T_eq equal 300.0 # Temperatura de equilibrio (Ej: (310K + 290K) / 2)
 thermo 1000
 thermo_style custom step temp press etotal ke pe enthalpy
 
+# Busca el lugar donde dividir el sistema por la mitad (mitad de átomos a un lado y mitad al otro)
+variable Ntot  equal count(all)
+variable Nhalf equal floor(v_Ntot/2)
+
+variable lo equal xlo
+variable hi equal xhi
+
+variable it loop 40
+label bisect
+
+  variable xcut equal 0.5*(v_lo+v_hi)
+
+  region  RTMP block INF ${xcut} INF INF INF INF units box
+  group   GLEFT region RTMP
+  variable nleft equal count(GLEFT)
+
+  if "${nleft} > ${Nhalf}" then "variable hi equal ${xcut}" else "variable lo equal ${xcut}"
+
+  group   GLEFT delete
+  region  RTMP delete
+
+next it
+jump SELF bisect
+
+variable xcut_final equal 0.5*(v_lo+v_hi)
+variable eps equal 1.0e-8
+variable x1  equal "v_xcut_final - v_eps"
+variable x2  equal "v_xcut_final + v_eps"
+
+print "AEMD: xcut=${xcut_final} (target left=${Nhalf} of total ${Ntot})"
+
+region  R_HOT  block INF ${x1} INF INF INF INF units box
+region  R_COLD block ${x2} INF INF INF INF INF units box
+group   HOT  region R_HOT
+group   COLD region R_COLD
 
 # 4.5 FASE 0: Minimizacion de la estructura
 # -------------------------------------------------------------------
@@ -63,14 +98,14 @@ reset_timestep 0
 print "--- FASE II: CREACION DEL PULSO DE CALOR (T0) ---"
 
 # 6.1. Definición de las dos mitades (Hot/Cold)
-variable lx_aemd equal ((xhi-xlo)/2.0)
+# variable lx_aemd equal ((xhi-xlo)/2.0)
 # Mitad izquierda (Cold)
-region left_half block EDGE ${lx_aemd} EDGE EDGE EDGE EDGE units box
+# region left_half block EDGE ${lx_aemd} EDGE EDGE EDGE EDGE units box
 # Mitad derecha (Hot)
-region right_half block ${lx_aemd} EDGE EDGE EDGE EDGE EDGE units box
+# region right_half block ${lx_aemd} EDGE EDGE EDGE EDGE EDGE units box
 
-group cold region left_half
-group hot region right_half
+# group cold region left_half
+# group hot region right_half
 
 # 6.2. Asignar las temperaturas del pulso de calor (Tf ± Delta_T)
 variable T_hot_pulse equal 310.0
