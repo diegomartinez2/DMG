@@ -25,7 +25,7 @@ pair_coeff * * params.txt
 
 # 4. PARÁMETROS DE SIMULACIÓN Y TERMODINÁMICA
 # -------------------------------------------------------------------
-variable dt equal 1.0e-2
+variable dt equal 0.5   #0.5 o 1.0 o 1.5 fs para probar...
 #variable dt equal 1.0e-4 #funciona pero no llega al final.. *.old
 timestep ${dt}
 
@@ -88,7 +88,7 @@ print "--- FASE I: EQUILIBRIO NVT (TODO EL SISTEMA) ---"
 velocity all create ${T_eq} 42 dist gaussian
 
 # 5.2. Equilibrar todo el sistema a la temperatura media
-fix NVT_eq all nvt temp ${T_eq} ${T_eq} 0.1
+fix NVT_eq all nvt temp ${T_eq} ${T_eq} 50   #aprox. 100 veces el valor de dt
 run 500000 # Un run largo para estabilizar la energía y la presión
 
 unfix NVT_eq
