@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  File_organizer_ssafe.py
+#  File_organizer_safe.py
 #
 #  Copyright 2026 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
