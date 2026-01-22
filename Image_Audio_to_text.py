@@ -51,23 +51,23 @@ args = parser.parse_args()
 
 # Usa el tiempo del parámetro
 tiempo_grabacion = args.tiempo
-print(f"⏱️  Tiempo de grabación configurado: {tiempo_grabacion} segundos")
+print(f"Tiempo de grabación configurado: {tiempo_grabacion} segundos")
 
 # Parte 1: Captura imagen
-print("📷 Capturando imagen... (mira a la cámara)")
+print("Capturando imagen... (mira a la cámara)")
 cap = cv2.VideoCapture(0)
 ret, frame = cap.read()
 if ret:
     cv2.imwrite('foto.png', frame)
 cap.release()
-print("✅ Imagen capturada")
+print("Imagen capturada")
 
 descripcion_imagen = pytesseract.image_to_string(Image.open('foto.png'), lang='spa').strip()
 if not descripcion_imagen:
     descripcion_imagen = "No se detectó texto en la imagen."
 
 # Parte 2: Captura audio CON CONTADOR VISUAL DINÁMICO
-print("\n🎤 Preparando micrófono...")
+print("\nPreparando micrófono...")
 r = sr.Recognizer()
 with sr.Microphone() as source:
     print("Habla ahora...")
@@ -80,7 +80,7 @@ with sr.Microphone() as source:
         sys.stdout.flush()
         time.sleep(1)
 
-    print("\r🎤 Grabando...     ")  # Limpia la línea
+    print("\rGrabando...     ")  # Limpia la línea
     audio = r.listen(source, timeout=tiempo_grabacion)
 
 try:
@@ -99,4 +99,4 @@ os.system(f'notify-send "Captura Lista" "{output[:100]}..."')
 
 # Limpieza
 os.remove('foto.png')
-print("🧹 Archivos temporales eliminados")
+print("Archivos temporales eliminados")
