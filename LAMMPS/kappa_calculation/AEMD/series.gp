@@ -1,7 +1,9 @@
+# 'l' es la distancia del sistema (¿o de cada bloque?)
 l =135.775
 k(n) = (pi * n) / l
 k1(n) = (pi * n)
 K2=0.00001
+# aquí se ponen las temperaturas de los bloques caliente y frio
 Tmax = 400.0
 Tmin = 200.0
 
