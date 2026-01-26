@@ -38,7 +38,7 @@ print "--- FASE I: EQUILIBRIO NVT (TODO EL SISTEMA) ---"
 velocity all create ${T_eq} 42 dist gaussian
 
 # 5.2. Equilibrar todo el sistema a la temperatura media
-fix NVT_eq all nvt temp ${T_eq} ${T_eq} 0.1
+fix NVT_eq all nvt temp ${T_eq} ${T_eq} 0.1 #0.1 ; Lo Recomendado es usar $(dt)*100
 run 500000 # Un run largo para estabilizar la energía y la presión
 
 unfix NVT_eq
