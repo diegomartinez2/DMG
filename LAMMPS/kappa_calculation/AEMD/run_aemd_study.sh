@@ -7,14 +7,14 @@
 # 1. LISTAS DE PARÁMETROS (Edita estas listas según tus necesidades)
 # -----------------------------------------------------------------------------
 # Tamaños de super-red: "X Y Z"
-SIZES=("4 2 2" "8 2 2" "4 4 2" "4 2 4" "4 4 4" "16 4 4")
+SIZES=("4 2 2" "8 2 2" "4 4 2" "4 2 4" "4 4 4" "8 4 4" "16 2 2" "16 4 4")
 
 # Saltos de temperatura (Delta T alrededor de T_eq=300K)
 # Ejemplo: 10 significa T_hot=310 y T_cold=290
-DELTA_TS=(10 20 5)
+DELTA_TS=(5 15 25)
 
 # Pasos de tiempo (Time-steps en fs)
-TIMESTEPS=(0.5 1.0)
+TIMESTEPS=(0.5 1.0 1.5)
 
 # Número de réplicas por cada configuración (cambia las semillas aleatorias)
 REPLICAS=3
