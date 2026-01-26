@@ -30,7 +30,7 @@ variable T_eq equal 300.0 # Temperatura de equilibrio (Ej: (310K + 290K) / 2)
 thermo 1000
 thermo_style custom step temp press etotal ke pe enthalpy
 
-# 5. FASE I: EQUILIBRIO NVT (PREPARACIÓN) 🌡️
+# 5. FASE I: EQUILIBRIO NVT (PREPARACIÓN)
 # -------------------------------------------------------------------
 print "--- FASE I: EQUILIBRIO NVT (TODO EL SISTEMA) ---"
 
@@ -44,7 +44,7 @@ run 500000 # Un run largo para estabilizar la energía y la presión
 unfix NVT_eq
 reset_timestep 0
 
-# 6. FASE II: CREACIÓN DEL PULSO DE CALOR (KICK) 💥
+# 6. FASE II: CREACIÓN DEL PULSO DE CALOR (KICK)
 # -------------------------------------------------------------------
 print "--- FASE II: CREACION DEL PULSO DE CALOR (T0) ---"
 
@@ -70,7 +70,7 @@ velocity cold create ${T_cold_pulse} 456 dist gaussian
 run 1
 reset_timestep 0
 
-# 7. FASE III: RELAJACIÓN Y MEDICIÓN (NVE) 📉
+# 7. FASE III: RELAJACIÓN Y MEDICIÓN (NVE)
 # -------------------------------------------------------------------
 print "--- FASE III: RELAJACION NVE Y MEDICION ---"
 
