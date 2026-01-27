@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###############################################################################
-# SCRIPT DE AUTOMATIZACIÓN PARA ESTUDIO SISTEMÁTICO AEMD (LAMMPS)
+# SCRIPT DE AUTOMATIZACIÓN PARA ESTUDIO SISTEMÁTICO CuBHT AEMD (LAMMPS)
 ###############################################################################
 
 # 1. LISTAS DE PARÁMETROS (Edita estas listas según tus necesidades)
