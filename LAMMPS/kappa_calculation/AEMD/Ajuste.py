@@ -76,6 +76,7 @@ try:
     data = np.loadtxt('out1')
     x_data = data[:, 0] - X_OFFSET
     y_data = data[:, 3] # Columna 4 en Gnuplot es índice 3 en Python
+#    y_data = data[:, 1] # Columna 2 en Gnuplot es índice 1 en Python
 except FileNotFoundError:
     print("Archivo 'out1' no encontrado. Generando datos de ejemplo...")
     x_data = np.linspace(0, 2000000, 100)
