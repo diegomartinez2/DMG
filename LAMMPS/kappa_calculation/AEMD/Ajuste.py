@@ -34,7 +34,9 @@ def Volumen_celda(arg):
     pass
 
 def calcular_volumen_super(a, b, c, nx=1, ny=1, nz=1):
-    """Versión generalizada para el calculo del volumen de una supercelda"""
+    """Versión generalizada para el calculo del volumen de una supercelda
+    uso:
+           v_unit, v_super = calcular_volumen_super(a, b, c, nx, ny, nz)"""
     vol_unit = np.abs(np.dot(a, np.cross(b, c)))
     vol_super = vol_unit * nx * ny * nz
     print(f"Volumen supercelda: {vol_super:.3f} Å³")
