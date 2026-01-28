@@ -16,7 +16,7 @@ X_OFFSET = 20000  # Desplazamiento en el eje X ($1 - 20000)
 KB = 1.38e-23     # Constante de Boltzmann
 N_PARTICLES = 1600
 DIM = 3
-VOL = (5.431 * 50) * (2 * 5.431) * (2 * 5.431) * 1e-30 # m^3
+VOL = (50 * 5.431) * (2 * 5.431) * (2 * 5.431) * 1e-30 # m^3
 
 # ==========================================
 # 2. DEFINICIÓN DE FUNCIONES MATEMÁTICAS
