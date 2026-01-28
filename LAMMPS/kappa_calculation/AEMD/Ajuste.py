@@ -33,6 +33,13 @@ def Volumen_celda(arg):
     print(f"Vol/átomo: {vol/15:.3f} Å³/átomo")
     pass
 
+def calcular_volumen_super(a, b, c, nx=1, ny=1, nz=1):
+    """Versión generalizada para el calculo del volumen de una supercelda"""
+    vol_unit = np.abs(np.dot(a, np.cross(b, c)))
+    vol_super = vol_unit * nx * ny * nz
+    print(f"Volumen supercelda: {vol_super:.3f} Å³")
+    return vol_unit, vol_super
+
 def get_constants(n):
     """Calcula los coeficientes A, B y k basados en n."""
     k_n = (np.pi * n) / L
