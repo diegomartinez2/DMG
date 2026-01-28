@@ -22,6 +22,8 @@ VOL = (50 * 5.431) * (2 * 5.431) * (2 * 5.431) * 1e-30 # m^3
 # 2. DEFINICIÓN DE FUNCIONES MATEMÁTICAS
 # ==========================================
 def Volumen_celda(arg):
+    """a,b,c se obtienen de la celda triclinica que se define con
+    xlo xhi, ylo yhi, zlo zhi y los factores de tilt xy xz yz """
     a = np.array([8.658944640366, 0.0, 0.0])
     b = np.array([4.324263184156, 7.522840153334, 0.0])
     c = np.array([-0.016658943914, 1.195978650157, 3.183817710818])
