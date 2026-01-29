@@ -24,9 +24,9 @@ VOL = (50 * 5.431) * (2 * 5.431) * (2 * 5.431) * 1e-30 # m^3
 def Volumen_celda(arg):
     """a,b,c se obtienen de la celda triclinica que se define con
     xlo xhi, ylo yhi, zlo zhi y los factores de tilt xy xz yz """
-    a = np.array([8.658944640366, 0.0, 0.0])
-    b = np.array([4.324263184156, 7.522840153334, 0.0])
-    c = np.array([-0.016658943914, 1.195978650157, 3.183817710818])
+    a = np.array([8.658944640366, 0.0, 0.0])                        #ejemplo
+    b = np.array([4.324263184156, 7.522840153334, 0.0])             #ejemplo
+    c = np.array([-0.016658943914, 1.195978650157, 3.183817710818]) #ejemplo
 
     vol = np.abs(np.dot(a, np.cross(b, c)))
     print(f"Volumen: {vol:.3f} Å³")
