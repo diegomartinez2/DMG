@@ -1,3 +1,8 @@
+#!/usr/local/bin/python
+"""
+Este script es un ejemplo de la extracción de variables de un fichero de datos en
+formato LAMMPS. 
+"""
 import numpy as np
 import re
 
