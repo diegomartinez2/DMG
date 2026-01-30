@@ -31,8 +31,12 @@ for SIZE in "${SIZES[@]}"; do
     SIZE_NAME=$(echo $SIZE | tr -d ' ')
 
     for DT_VAL in "${DELTA_TS[@]}"; do
-        T_HOT=$(echo "300 + $DT_VAL" | bc -l)
-        T_COLD=$(echo "300 - $DT_VAL" | bc -l)
+        #T_HOT=$(echo "300 + $DT_VAL" | bc -l)
+        #T_COLD=$(echo "300 - $DT_VAL" | bc -l)
+        T_HOT=$(bc -l <<< "300 + $DT_VAL")
+        T_COLD=$(bc -l <<< "300 - $DT_VAL")
+        #T_HOT=$((300 + DT_VAL))
+        #T_COLD=$((300 - DT_VAL))
 
         for STEP in "${TIMESTEPS[@]}"; do
 
