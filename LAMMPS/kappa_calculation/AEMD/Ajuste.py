@@ -23,7 +23,7 @@
 #
 """
 Este script ajusta los resultados del cálculo AEMD para obtener la conductividad
-térmica. 
+térmica. Puede leer los datos del volumen del archivo de LAMMPS de datos.
 """
 # ---------------------------
 # Importación de los módulos
