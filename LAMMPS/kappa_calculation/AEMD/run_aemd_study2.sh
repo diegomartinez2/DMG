@@ -25,8 +25,10 @@ for SIZE in "${SIZES[@]}"; do
     S_LABEL=$(echo $SIZE | tr ' ' 'x')
 
     for DT in "${DELTA_TS[@]}"; do
-        T_HOT=$(echo "300 + $DT" | bc -l)
-        T_COLD=$(echo "300 - $DT" | bc -l)
+        #T_HOT=$(echo "300 + $DT" | bc -l)
+        #T_COLD=$(echo "300 - $DT" | bc -l)
+        T_HOT=$((300 + DT_VAL))
+        T_COLD=$((300 - DT_VAL))
 
         for TS in "${TIMESTEPS[@]}"; do
 
