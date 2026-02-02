@@ -63,7 +63,7 @@ def Volumen_celda(arg):
     print(f"Vol/átomo: {vol/15:.3f} Å³/átomo")
     pass
 
-def get_lammps_vectors(file_path):
+def get_lammps_vectors(file_path="log.lamps"):
     """
     Lee un archivo de datos de LAMMPS y extrae los vectores de la red a, b, c.
     Maneja tanto celdas ortogonales como triclínicas.
