@@ -134,6 +134,73 @@ def calcular_volumen_super(a, b, c, nx=1, ny=1, nz=1):
     print(f"Volumen supercelda: {vol_super:.3f} Å³")
     return vol_unit, vol_super
 
+
+def extraer_parametros_lammps(file_path):
+    """
+    Analiza un archivo log de LAMMPS para extraer dimensiones, volumen,
+    número de átomos y temperaturas del pulso AEMD.
+    """
+    data = {
+        "volumen_ang3": None,
+        "longitud_x": None,
+        "longitud_y": None,
+        "longitud_z": None,
+        "num_atomos": None,
+        "t_caliente": None,
+        "t_fria": None
+    }
+
+    try:
+        with open(file_path, 'r') as f:
+            content = f.read()
+
+        # 1. Extraer dimensiones de la caja (buscamos la última caja mencionada tras replicate)
+        # Formato: triclinic box = (0 0 0) to (x y z)
+        box_match = re.findall(r"triclinic box = \(0 0 0\) to \(([\d\.]+) ([\d\.]+) ([\d\.]+)\)", content)
+        if box_match:
+            # Tomamos la última coincidencia (la del sistema ya replicado)
+            lx, ly, lz = map(float, box_match[-1])
+            data["longitud_x"] = lx
+            data["longitud_y"] = ly
+            data["longitud_z"] = lz
+            # Nota: Para cajas triclínicas, el volumen es lx * ly * lz independientemente del tilt
+            data["volumen_ang3"] = lx * ly * lz
+
+        # 2. Extraer número de átomos (después de la replicación)
+        atoms_match = re.findall(r"(\d+) atoms", content)
+        if atoms_match:
+            # Tomamos el último valor reportado antes de las simulaciones
+            data["num_atomos"] = int(atoms_match[-1])
+
+        # 3. Extraer temperaturas (buscando las definiciones de variables en el script)
+        t_hot_match = re.search(r"variable T_hot_pulse equal ([\d\.]+)", content)
+        t_cold_match = re.search(r"variable T_cold_pulse equal ([\d\.]+)", content)
+
+        if t_hot_match:
+            data["t_caliente"] = float(t_hot_match.group(1))
+        if t_cold_match:
+            data["t_fria"] = float(t_cold_match.group(1))
+
+        return data
+
+    except FileNotFoundError:
+        return "Error: El archivo no fue encontrado."
+    except Exception as e:
+        return f"Error al procesar el archivo: {e}"
+
+
+    resultados = data
+
+    if isinstance(resultados, dict):
+        print("--- Parámetros Extraídos ---")
+        print(f"Número de átomos: {resultados['num_atomos']}")
+        print(f"Longitud X: {resultados['longitud_x']} Å")
+        print(f"Volumen: {resultados['volumen_ang3']:.2f} Å³")
+        print(f"Temperatura Caliente: {resultados['t_caliente']} K")
+        print(f"Temperatura Fría: {resultados['t_fria']} K")
+    else:
+        print(resultados)
+
 def get_constants(n):
     """Calcula los coeficientes A, B y k basados en n."""
     k_n = (np.pi * n) / L
