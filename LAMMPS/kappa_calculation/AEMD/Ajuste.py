@@ -135,7 +135,7 @@ def calcular_volumen_super(a, b, c, nx=1, ny=1, nz=1):
     return vol_unit, vol_super
 
 
-def extraer_parametros_lammps(file_path):
+def extraer_parametros_lammps(file_path="log.lammps"):
     """
     Analiza un archivo log de LAMMPS para extraer dimensiones, volumen,
     número de átomos y temperaturas del pulso AEMD.
