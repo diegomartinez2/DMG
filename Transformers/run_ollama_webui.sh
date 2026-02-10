@@ -1,47 +1,72 @@
 #!/bin/bash
 
 # ==============================================================================
-# Script para activar entorno Conda y ejecutar Ollama + Open-WebUI
+# Script: Ollama + Open-WebUI con Autolimpieza
 # ==============================================================================
-# 
-# Los scripts de bash no heredan las funciones de shell de conda por defecto.
-# Es necesario cargar el script 'conda.sh' de la instalación de base.
 
 # --- Configuración ---
 CONDA_ENV_NAME="ollama-env"
 OLLAMA_COMMAND="ollama serve"
 OPEN_WEBUI_COMMAND="open-webui serve"
 
-# --- Inicialización de Conda dentro del Script ---
-# Buscamos la ruta de CONDA_EXE y derivamos la ubicación de conda.sh
+# --- Variables de control de procesos ---
+PID_OLLAMA=""
+PID_WEBUI=""
+
+# --- Función de Limpieza (Se ejecuta al salir) ---
+cleanup() {
+    echo -e "\n\n[!] Iniciando limpieza de procesos..."
+
+    if [ -n "$PID_WEBUI" ]; then
+        echo "Deteniendo Open-WebUI (PID: $PID_WEBUI)..."
+        kill $PID_WEBUI 2>/dev/null
+    fi
+
+    if [ -n "$PID_OLLAMA" ]; then
+        echo "Deteniendo Ollama (PID: $PID_OLLAMA)..."
+        kill $PID_OLLAMA 2>/dev/null
+    fi
+
+    echo "[OK] Todos los servicios detenidos. Saliendo."
+    exit 0
+}
+
+# Registrar el trap para capturar Ctrl+C (SIGINT) y salidas normales (EXIT)
+trap cleanup SIGINT SIGTERM
+
+# --- Inicialización de Conda ---
 CONDA_BASE_PATH=$(conda info --base)
 source "$CONDA_BASE_PATH/etc/profile.d/conda.sh"
 
-# Función para verificar ejecución
-run_status() {
-    if [ $? -eq 0 ]; then
-        echo "[OK] $1"
-    else
-        echo "[ERROR] $1 falló."
-        exit 1
-    fi
-}
-
 # 1. Activar el entorno
 echo "Activando entorno: $CONDA_ENV_NAME..."
-conda activate "$CONDA_ENV_NAME"
-run_status "Activación de entorno"
+conda activate "$CONDA_ENV_NAME" || { echo "Error activando entorno"; exit 1; }
 
-# 2. Iniciar Ollama en segundo plano (Background)
-# Usamos '&' porque 'ollama serve' es un proceso persistente que bloquea el hilo.
-echo "Iniciando $OLLAMA_COMMAND en segundo plano..."
+# 2. Iniciar Ollama en segundo plano
+echo "Iniciando Ollama..."
 $OLLAMA_COMMAND > /dev/null 2>&1 &
-sleep 2 # Esperamos un momento a que el servicio levante
+PID_OLLAMA=$! # Guardamos el ID del proceso
+echo "Ollama iniciado con PID: $PID_OLLAMA"
 
-# 3. Iniciar Open-WebUI
-# Este proceso se mantiene en primer plano para ver los logs y mantener el script vivo.
-echo "Iniciando $OPEN_WEBUI_COMMAND..."
-$OPEN_WEBUI_COMMAND
+sleep 2 # Breve espera para estabilidad
 
-# Nota: Si cierras el script con Ctrl+C, el proceso de ollama podría quedar
-# corriendo en segundo plano dependiendo de la configuración de tu sistema.
+# 3. Iniciar Open-WebUI en segundo plano
+echo "Iniciando Open-WebUI..."
+$OPEN_WEBUI_COMMAND > /dev/null 2>&1 &
+PID_WEBUI=$! # Guardamos el ID del proceso
+echo "Open-WebUI iniciado con PID: $PID_WEBUI"
+
+# --- Interfaz de usuario ---
+echo "------------------------------------------------"
+echo " SERVICIOS ACTIVOS"
+echo " - Ollama: http://localhost:11434"
+echo " - WebUI:  http://localhost:8080 (normalmente)"
+echo "------------------------------------------------"
+echo "Presiona cualquier tecla para CERRAR todo y salir."
+echo "------------------------------------------------"
+
+# Esperar entrada del usuario (bloquea el script aquí)
+read -n 1 -s -r
+
+# Al terminar el comando 'read', el script llega al final y dispara el trap de salida
+cleanup
