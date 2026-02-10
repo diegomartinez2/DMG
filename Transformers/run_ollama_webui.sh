@@ -1,38 +1,47 @@
 #!/bin/bash
 
-# Script para activar un entorno conda y ejecutar ollama serve y open-webui serve
+# ==============================================================================
+# Script para activar entorno Conda y ejecutar Ollama + Open-WebUI
+# ==============================================================================
+# 
+# Los scripts de bash no heredan las funciones de shell de conda por defecto.
+# Es necesario cargar el script 'conda.sh' de la instalación de base.
 
-# Propósito: Este script activa un entorno conda específico y ejecuta los comandos necesarios para iniciar ollama serve y open-webui serve.
-# Aplica KISS: El script es simple, conciso y fácil de entender.
-# Aplica SOLID:
-# - Single Responsibility Principle: El script tiene una única responsabilidad: activar el entorno conda y ejecutar los comandos.
-# - Open/Closed Principle: El script es abierto para extensión (podrías añadir más comandos fácilmente) pero cerrado para modificación directa del flujo principal.
-
-# Variables
-CONDA_ENV_NAME="ollama-env" # Nombre del entorno conda
+# --- Configuración ---
+CONDA_ENV_NAME="ollama-env"
 OLLAMA_COMMAND="ollama serve"
 OPEN_WEBUI_COMMAND="open-webui serve"
 
-# Función para verificar si un comando se ejecuta correctamente
-run_command() {
-  echo "Ejecutando: $1"
-  $1
-  if [ $? -eq 0 ]; then
-    echo "$1 se ejecutó correctamente."
-  else
-    echo "$1 falló. Salida de error: $(history | tail -n 1)"
-    exit 1 # Sale del script si un comando falla
-  fi
+# --- Inicialización de Conda dentro del Script ---
+# Buscamos la ruta de CONDA_EXE y derivamos la ubicación de conda.sh
+CONDA_BASE_PATH=$(conda info --base)
+source "$CONDA_BASE_PATH/etc/profile.d/conda.sh"
+
+# Función para verificar ejecución
+run_status() {
+    if [ $? -eq 0 ]; then
+        echo "[OK] $1"
+    else
+        echo "[ERROR] $1 falló."
+        exit 1
+    fi
 }
 
-# 1. Activar el entorno conda
-echo "Activando el entorno conda: $CONDA_ENV_NAME"
-run_command "conda activate $CONDA_ENV_NAME"
+# 1. Activar el entorno
+echo "Activando entorno: $CONDA_ENV_NAME..."
+conda activate "$CONDA_ENV_NAME"
+run_status "Activación de entorno"
 
-# 2. Iniciar ollama serve
-echo "Iniciando ollama serve..."
-run_command "$OLLAMA_COMMAND"
+# 2. Iniciar Ollama en segundo plano (Background)
+# Usamos '&' porque 'ollama serve' es un proceso persistente que bloquea el hilo.
+echo "Iniciando $OLLAMA_COMMAND en segundo plano..."
+$OLLAMA_COMMAND > /dev/null 2>&1 &
+sleep 2 # Esperamos un momento a que el servicio levante
 
-# 3. Iniciar open-webui serve
-echo "Iniciando open-webui serve..."
-run_command "$OPEN_WEBUI_COMMAND"
+# 3. Iniciar Open-WebUI
+# Este proceso se mantiene en primer plano para ver los logs y mantener el script vivo.
+echo "Iniciando $OPEN_WEBUI_COMMAND..."
+$OPEN_WEBUI_COMMAND
+
+# Nota: Si cierras el script con Ctrl+C, el proceso de ollama podría quedar
+# corriendo en segundo plano dependiendo de la configuración de tu sistema.
