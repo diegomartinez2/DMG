@@ -2,6 +2,7 @@
 
 import time  # For delays
 import random # For simulating probability
+import tkinter as tk
 
 # ------------------ Component Classes ------------------
 
@@ -81,7 +82,28 @@ class PlasmaControl:
         """Sets the color of the buttons."""
         print(f"Button color set to: {color}")  #Simulate updating button color
 
+def create_gui():
+    global window, button1, button2, button3, plasma_control
 
+    window = tk.Tk()
+    window.title("Plasma Control Panel")
+
+    #Button 1: Injection
+    button1 = tk.Button(window, text="Injection", width=10, height=2, command=lambda: plasma_control.start_injection())
+    button1.grid(row=0, column=0)
+
+    #Button 2: Purge
+    button2 = tk.Button(window, text="Purge", width=10, height=2, command=lambda: plasma_control.start_purge())
+    button2.grid(row=0, column=1)
+
+    #Button 3: Testing
+    button3 = tk.Button(window, text="Testing", width=10, height=2, command=lambda: print("Testing function called"))
+    button3.grid(row=1, column=0)
+
+    #Plasma Control (this remains the same)
+    plasma_control = PlasmaControl()
+
+    window.mainloop()
 
 
 # ------------------ Example Usage ------------------
