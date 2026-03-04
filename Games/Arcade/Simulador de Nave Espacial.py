@@ -4,7 +4,7 @@ import arcade.gui
 # Constantes de pantalla
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
-SCREEN_TITLE = "Sistema Operativo de Nave Espacial (Arcade Edition)"
+SCREEN_TITLE = "Sistema Operativo de Nave Espacial (Arcade 3.0)"
 
 # Colores Estilo Terminal
 COLOR_CRTR_BG = (10, 15, 10)
@@ -26,11 +26,11 @@ class StationView(arcade.View):
     def draw_header(self, title):
         # Dibujar marco de la pantalla
         arcade.draw_rectangle_outline(
-            SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,
-            SCREEN_WIDTH - 20, SCREEN_HEIGHT - 20,
+            self.window.width // 2, self.window.height // 2,
+            self.window.width - 20, self.window.height - 20,
             COLOR_UI_BORDER, 2
         )
-        arcade.draw_text(title, SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50,
+        arcade.draw_text(title, self.window.width // 2, self.window.height - 50,
                          arcade.color.GREEN, font_size=24, anchor_x="center")
 
 class ReactorView(StationView):
@@ -39,26 +39,31 @@ class ReactorView(StationView):
         super().__init__()
         self.temp = 50.0
 
-        # UI Manager para botones - space_between gestiona el espacio entre elementos
+        # En Arcade 3.0+, a menudo usamos un AnchorLayout como raíz del manager
+        self.anchor = arcade.gui.UIAnchorLayout()
+
+        # Caja vertical para botones
         self.v_box = arcade.gui.UIBoxLayout(space_between=20)
 
         # Botón para cambiar a Soporte Vital
         btn_support = arcade.gui.UIFlatButton(text="Ir a Soporte Vital", width=200)
         self.v_box.add(btn_support)
 
-        # Evento de click (usando decorador moderno)
+        # Evento de click
         @btn_support.event("on_click")
         def on_click_flatbutton(event):
             self.window.show_view(LifeSupportView())
 
-        # Centrar el layout en la parte inferior
-        self.manager.add(
-            arcade.gui.UIAnchorWidget(
-                anchor_x="center_x",
-                anchor_y="bottom",
-                align_y=50,
-                child=self.v_box)
+        # Añadimos la v_box al anchor layout especificando posición
+        self.anchor.add(
+            child=self.v_box,
+            anchor_x="center_x",
+            anchor_y="bottom",
+            align_y=50
         )
+
+        # Añadimos el layout principal al manager
+        self.manager.add(self.anchor)
 
     def on_update(self, delta_time):
         self.temp += delta_time * 2
@@ -82,7 +87,9 @@ class LifeSupportView(StationView):
     def __init__(self):
         super().__init__()
 
+        self.anchor = arcade.gui.UIAnchorLayout()
         self.v_box = arcade.gui.UIBoxLayout()
+
         btn_reactor = arcade.gui.UIFlatButton(text="Volver a Reactor", width=200)
         self.v_box.add(btn_reactor)
 
@@ -90,9 +97,13 @@ class LifeSupportView(StationView):
         def on_click_flatbutton(event):
             self.window.show_view(ReactorView())
 
-        self.manager.add(
-            arcade.gui.UIAnchorWidget(anchor_x="center_x", anchor_y="bottom", align_y=50, child=self.v_box)
+        self.anchor.add(
+            child=self.v_box,
+            anchor_x="center_x",
+            anchor_y="bottom",
+            align_y=50
         )
+        self.manager.add(self.anchor)
 
     def on_draw(self):
         self.clear()
