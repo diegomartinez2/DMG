@@ -31,7 +31,7 @@ class StationView(arcade.View):
             COLOR_UI_BORDER, 2
         )
         arcade.draw_text(title, SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50,
-                         arcade.color.GREEN, font_size=24, anchor_x="center", font_name="Kenney Future")
+                         arcade.color.GREEN, font_size=24, anchor_x="center")
 
 class ReactorView(StationView):
     """Panel de Control del Reactor"""
@@ -39,19 +39,19 @@ class ReactorView(StationView):
         super().__init__()
         self.temp = 50.0
 
-        # UI Manager para botones
-        self.v_box = arcade.gui.UIBoxLayout()
+        # UI Manager para botones - space_between gestiona el espacio entre elementos
+        self.v_box = arcade.gui.UIBoxLayout(space_between=20)
 
         # Botón para cambiar a Soporte Vital
         btn_support = arcade.gui.UIFlatButton(text="Ir a Soporte Vital", width=200)
-        self.v_box.add(btn_support.with_space_around(bottom=20))
+        self.v_box.add(btn_support)
 
-        # Evento de click
+        # Evento de click (usando decorador moderno)
         @btn_support.event("on_click")
         def on_click_flatbutton(event):
-            support_view = LifeSupportView()
-            self.window.show_view(support_view)
+            self.window.show_view(LifeSupportView())
 
+        # Centrar el layout en la parte inferior
         self.manager.add(
             arcade.gui.UIAnchorWidget(
                 anchor_x="center_x",
@@ -61,20 +61,19 @@ class ReactorView(StationView):
         )
 
     def on_update(self, delta_time):
-        self.temp += delta_time * 2 # El reactor se calienta con el tiempo
+        self.temp += delta_time * 2
 
     def on_draw(self):
         self.clear()
         self.draw_header("ESTACION 01: NUCLEO DEL REACTOR")
 
-        # Dibujar indicador de temperatura
         status_color = arcade.color.GREEN if self.temp < 100 else arcade.color.RED
         arcade.draw_text(f"TEMPERATURA: {self.temp:.1f}°K", 100, 500,
-                         status_color, font_size=20, font_name="Courier New")
+                         status_color, font_size=20)
 
-        # Dibujar una gráfica simple (simulada)
-        arcade.draw_line(100, 200, 900, 200, COLOR_UI_BORDER, 2) # Eje X
-        arcade.draw_line(100, 200, 100, 450, COLOR_UI_BORDER, 2) # Eje Y
+        # Gráfica básica
+        arcade.draw_line(100, 200, 900, 200, COLOR_UI_BORDER, 2)
+        arcade.draw_line(100, 200, 100, 450, COLOR_UI_BORDER, 2)
 
         self.manager.draw()
 
@@ -83,7 +82,6 @@ class LifeSupportView(StationView):
     def __init__(self):
         super().__init__()
 
-        # Botón para volver al Reactor
         self.v_box = arcade.gui.UIBoxLayout()
         btn_reactor = arcade.gui.UIFlatButton(text="Volver a Reactor", width=200)
         self.v_box.add(btn_reactor)
@@ -106,7 +104,7 @@ class LifeSupportView(StationView):
         self.manager.draw()
 
 def main():
-    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, resizable=True)
     start_view = ReactorView()
     window.show_view(start_view)
     arcade.run()
