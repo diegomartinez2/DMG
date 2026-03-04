@@ -1,17 +1,41 @@
 import arcade
 import arcade.gui
 
-# Constantes de pantalla
+# --- CONFIGURACIÓN ---
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768
-SCREEN_TITLE = "Sistema Operativo de Nave Espacial"
+SCREEN_TITLE = "Sistema Operativo de Nave Espacial - v0.2"
 
-# Colores Estilo Terminal
+# Estética Terminal
 COLOR_CRTR_BG = (10, 15, 10)
 COLOR_UI_BORDER = (0, 255, 65)
 
+class GameWindow(arcade.Window):
+    """
+    Clase principal que mantiene el estado global del juego.
+    Los datos aquí definidos persisten durante toda la sesión.
+    """
+    def __init__(self):
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, resizable=True)
+
+        # --- ESTADO GLOBAL DE LA NAVE ---
+        self.ship_stats = {
+            "reactor_temp": 50.0,
+            "oxygen_level": 98.4,
+            "hull_integrity": 100,
+            "power_output": 75.0
+        }
+
+    def on_update(self, delta_time):
+        # El reactor siempre se calienta, sin importar en qué vista estemos
+        self.ship_stats["reactor_temp"] += delta_time * 0.8
+
+        # Simulación de consumo de oxígeno
+        if self.ship_stats["oxygen_level"] > 0:
+            self.ship_stats["oxygen_level"] -= delta_time * 0.05
+
 class StationView(arcade.View):
-    """Clase base para todas las estaciones de control"""
+    """Clase base con utilidades de dibujo comunes"""
     def __init__(self):
         super().__init__()
         self.manager = arcade.gui.UIManager()
@@ -23,73 +47,70 @@ class StationView(arcade.View):
     def on_hide_view(self):
         self.manager.disable()
 
-    def draw_header(self, title):
-        # Usamos arcade.rect.XYWH o arcade.rect.LRBT para crear el rectángulo correctamente
-        # LRBT: Left, Right, Bottom, Top
+    def draw_ui_frame(self, title):
+        # Marco principal persistente
         border_rect = arcade.rect.LRBT(
-            left=10,
-            right=self.window.width - 10,
-            bottom=10,
-            top=self.window.height - 10
+            left=15,
+            right=self.window.width - 15,
+            bottom=15,
+            top=self.window.height - 15
         )
+        arcade.draw_rect_outline(rect=border_rect, color=COLOR_UI_BORDER, border_width=2)
 
-        # Dibujamos el contorno
-        arcade.draw_rect_outline(
-            rect=border_rect,
-            color=COLOR_UI_BORDER,
-            border_width=2
-        )
-
+        # Título de la Estación
         arcade.draw_text(
             title,
             self.window.width // 2,
-            self.window.height - 50,
+            self.window.height - 60,
             arcade.color.GREEN,
-            font_size=24,
-            anchor_x="center"
+            font_size=28,
+            anchor_x="center",
+            font_name="Courier New"
         )
+
+        # Barra de estado inferior rápida (Mini-HUD)
+        stats = self.window.ship_stats
+        hud_text = f"TEMP: {stats['reactor_temp']:.1f}°K | O2: {stats['oxygen_level']:.1f}% | CASCO: {stats['hull_integrity']}%"
+        arcade.draw_text(hud_text, 30, 30, COLOR_UI_BORDER, font_size=12)
 
 class ReactorView(StationView):
     def __init__(self):
         super().__init__()
-        self.temp = 50.0
 
-        # Layout principal
         self.anchor = arcade.gui.UIAnchorLayout()
         self.v_box = arcade.gui.UIBoxLayout(space_between=20)
 
-        # Botón para cambiar de vista
-        btn_support = arcade.gui.UIFlatButton(text="IR A SOPORTE VITAL", width=250)
-        self.v_box.add(btn_support)
-
+        # Navegación
+        btn_support = arcade.gui.UIFlatButton(text="SOPORTE VITAL", width=200)
         @btn_support.event("on_click")
         def on_click_btn(event):
             self.window.show_view(LifeSupportView())
 
-        self.anchor.add(
-            child=self.v_box,
-            anchor_x="center_x",
-            anchor_y="bottom",
-            align_y=50
-        )
+        self.v_box.add(btn_support)
+        self.anchor.add(child=self.v_box, anchor_x="right", anchor_y="bottom", align_x=-50, align_y=50)
         self.manager.add(self.anchor)
-
-    def on_update(self, delta_time):
-        # Simulación simple de temperatura
-        self.temp += delta_time * 1.5
 
     def on_draw(self):
         self.clear()
-        self.draw_header("ESTACION 01: NUCLEO DEL REACTOR")
+        self.draw_ui_frame("NUCLEO DEL REACTOR")
 
-        status_color = arcade.color.GREEN if self.temp < 80 else arcade.color.ORANGE_PEEL
-        if self.temp > 110: status_color = arcade.color.RED
+        temp = self.window.ship_stats["reactor_temp"]
 
-        arcade.draw_text(f"ESTADO DEL NUCLEO: OPERATIVO", 100, 550, arcade.color.GREEN, font_size=18)
-        arcade.draw_text(f"TEMPERATURA: {self.temp:.1f}°K", 100, 510, status_color, font_size=22, bold=True)
+        # Color dinámico según peligro
+        color = arcade.color.GREEN
+        if temp > 100: color = arcade.color.RED
+        elif temp > 80: color = arcade.color.ORANGE
 
-        # Líneas decorativas
-        arcade.draw_line(100, 480, 400, 480, COLOR_UI_BORDER, 2)
+        # Dibujo de la "barra de calor"
+        arcade.draw_text("NIVEL TÉRMICO:", 100, 500, arcade.color.WHITE, font_size=16)
+        arcade.draw_lrtb_rectangle_filled(100, 100 + (temp * 2), 480, 450, color)
+        arcade.draw_lrtb_rectangle_outline(100, 400, 480, 450, arcade.color.GRAY, 2)
+
+        arcade.draw_text(f"{temp:.2f} °K", 420, 455, color, font_size=20, bold=True)
+
+        if temp > 100:
+            arcade.draw_text("!!! ALERTA DE SOBRECALENTAMIENTO !!!", self.window.width//2, 300,
+                             arcade.color.RED, font_size=20, anchor_x="center")
 
         self.manager.draw()
 
@@ -97,36 +118,27 @@ class LifeSupportView(StationView):
     def __init__(self):
         super().__init__()
         self.anchor = arcade.gui.UIAnchorLayout()
-        self.v_box = arcade.gui.UIBoxLayout()
 
-        btn_reactor = arcade.gui.UIFlatButton(text="VOLVER AL REACTOR", width=250)
-        self.v_box.add(btn_reactor)
-
+        btn_reactor = arcade.gui.UIFlatButton(text="REGRESAR AL REACTOR", width=200)
         @btn_reactor.event("on_click")
         def on_click_btn(event):
             self.window.show_view(ReactorView())
 
-        self.anchor.add(
-            child=self.v_box,
-            anchor_x="center_x",
-            anchor_y="bottom",
-            align_y=50
-        )
+        self.anchor.add(child=btn_reactor, anchor_x="right", anchor_y="bottom", align_x=-50, align_y=50)
         self.manager.add(self.anchor)
 
     def on_draw(self):
         self.clear()
-        self.draw_header("ESTACION 02: SOPORTE VITAL")
+        self.draw_ui_frame("SISTEMAS DE SOPORTE VITAL")
 
-        arcade.draw_text("NIVELES DE OXIGENO: 98.4%", 100, 550, arcade.color.AERO_BLUE, font_size=20)
-        arcade.draw_text("PRESION CABINA: 1.02 ATM", 100, 510, arcade.color.AERO_BLUE, font_size=20)
-        arcade.draw_text("FILTROS CO2: NOMINAL", 100, 470, arcade.color.GREEN, font_size=18)
+        o2 = self.window.ship_stats["oxygen_level"]
+        arcade.draw_text(f"SUMINISTRO DE OXÍGENO: {o2:.2f}%", 100, 500, arcade.color.AERO_BLUE, font_size=22)
 
         self.manager.draw()
 
 def main():
-    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, resizable=True)
-    # Iniciamos con la vista del Reactor
+    # Creamos la ventana personalizada que guarda el estado
+    window = GameWindow()
     window.show_view(ReactorView())
     arcade.run()
 
