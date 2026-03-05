@@ -103,8 +103,8 @@ class ReactorView(StationView):
 
         # Dibujo de la "barra de calor"
         arcade.draw_text("NIVEL TÉRMICO:", 100, 500, arcade.color.WHITE, font_size=16)
-        arcade.draw_lrtb_rectangle_filled(100, 100 + (temp * 2), 480, 450, color)
-        arcade.draw_lrtb_rectangle_outline(100, 400, 480, 450, arcade.color.GRAY, 2)
+        arcade.draw_lrbt_rectangle_filled(100, 100 + (temp * 2), 450, 480, color)
+        arcade.draw_lrbt_rectangle_outline(100, 400, 450, 480, arcade.color.GRAY, 2)
 
         arcade.draw_text(f"{temp:.2f} °K", 420, 455, color, font_size=20, bold=True)
 
