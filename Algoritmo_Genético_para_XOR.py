@@ -23,7 +23,8 @@
 #
 # ---------------------------
 # Importación de los módulos
-# ---------------------------import numpy as np
+# ---------------------------
+import numpy as np
 import random
 from typing import List, Tuple, Dict
 
