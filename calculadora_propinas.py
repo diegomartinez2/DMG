@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Cadena_rotatoria.py
+#  calculadora_propinas.py
 #
 #  Copyright 2025 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
