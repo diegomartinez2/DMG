@@ -3,7 +3,7 @@
 #
 #  Check_1.py
 #
-#  Copyright 2022 Diego <diego@u038025>
+#  Copyright 2026 Diego <diego@u038025>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
