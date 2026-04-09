@@ -1,3 +1,26 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#  nuclear_reactor_control(1).py
+#
+#  Copyright 2026 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+#
+#
 import curses
 import time
 import random
@@ -11,7 +34,7 @@ def draw_reactor_window(win, reactor_on, temperature, power_level, selected_butt
     win.clear()
     win.border()
     win.addstr(0, 2, "Reactor Control", curses.A_BOLD)
-    
+
     # Status indicators
     status = "ON" if reactor_on else "OFF"
     status_color = curses.color_pair(1) if reactor_on else curses.color_pair(2)
@@ -42,7 +65,7 @@ def draw_turbine_window(win, turbine_rpm, watts_generated, voltage):
     win.clear()
     win.border()
     win.addstr(0, 2, "Turbine Status", curses.A_BOLD)
-    
+
     # Turbine indicators
     win.addstr(2, 2, f"RPM: {turbine_rpm:.0f}")
     rpm_bar = int(turbine_rpm / 3600 * 15)
@@ -62,7 +85,7 @@ def draw_control_window(win, selected_button):
     win.clear()
     win.border()
     win.addstr(0, 2, "Controls", curses.A_BOLD)
-    
+
     buttons = [
         ("Toggle Reactor", 0),
         ("Increase Power", 1),
@@ -72,7 +95,7 @@ def draw_control_window(win, selected_button):
     for i, (label, btn_id) in enumerate(buttons):
         attr = curses.A_REVERSE if selected_button == btn_id else 0
         win.addstr(2 + i, 2, f"[ {label} ]", attr)
-    
+
     win.addstr(7, 2, "UP/DOWN: Select, ENTER: Activate, q: Quit")
     win.refresh()
 
@@ -80,24 +103,24 @@ def draw_plot_window(win, voltage_data, time_data):
     win.clear()
     win.border()
     win.addstr(0, 2, "Voltage Plot (kV)", curses.A_BOLD)
-    
+
     # Window dimensions for plotting
     height, width = win.getmaxyx()
     plot_height = height - 3  # Subtract border and title
     plot_width = width - 3   # Subtract borders
     max_voltage = 20.0  # Max voltage in kV
-    
+
     # Clear plot if it reaches the end
     if len(voltage_data) >= plot_width:
         voltage_data.clear()
         time_data.clear()
-    
+
     # Draw Y-axis (voltage scale)
     for i in range(plot_height):
         voltage = max_voltage * (plot_height - i - 1) / (plot_height - 1)
         if i % 4 == 0:  # Show labels every 4 lines
             win.addstr(i + 1, 1, f"{voltage:4.1f}")
-    
+
     # Draw plot
     for x, voltage in enumerate(voltage_data):
         if x >= plot_width:
@@ -106,28 +129,28 @@ def draw_plot_window(win, voltage_data, time_data):
         y = int((voltage / max_voltage) * (plot_height - 1))
         if 0 <= y < plot_height:
             win.addstr(plot_height - y, x + 2, "*", curses.color_pair(1))
-    
+
     # Draw X-axis label
     win.addstr(plot_height + 1, 2, "Time")
-    
+
     win.refresh()
 
 def update_reactor(reactor_on, temperature, power_level, turbine_rpm, watts_generated, voltage):
     current_time = time.time()
-    
+
     if reactor_on:
         # Simulate temperature increase based on power level
         temperature += power_level * 0.1 + random.uniform(-5, 5)
         temperature -= 10  # Natural cooling
         temperature = max(20, min(temperature, 1000))
         power_level = max(0, min(power_level, 100))
-        
+
         # Realistic turbine RPM model using logistic function
         max_rpm = 3600
         k = 0.01
         T_0 = 500
         turbine_rpm = max_rpm / (1 + np.exp(-k * (temperature - T_0)))
-        
+
         watts_generated = (turbine_rpm / max_rpm) * 1000
         voltage = (watts_generated / 1000) * 20 * 0.95
     else:
@@ -143,7 +166,7 @@ def update_reactor(reactor_on, temperature, power_level, turbine_rpm, watts_gene
         start_time = current_time
     voltage_data.append(voltage)
     time_data.append(current_time - start_time)
-    
+
     return temperature, power_level, turbine_rpm, watts_generated, voltage
 
 def main(stdscr):
@@ -180,9 +203,9 @@ def main(stdscr):
     curses.curs_set(0)
 
     # Title
-    stdscr.addstr(0, (width - len("Nuclear Reactor Control Panel")) // 2, 
+    stdscr.addstr(0, (width - len("Nuclear Reactor Control Panel")) // 2,
                  "Nuclear Reactor Control Panel", curses.A_BOLD)
-    
+
     while True:
         draw_reactor_window(reactor_win, reactor_on, temperature, power_level, selected_button)
         draw_turbine_window(turbine_win, turbine_rpm, watts_generated, voltage)
