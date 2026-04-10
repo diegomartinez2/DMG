@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  nuclear_reactor_control(1).py
+#  nuclear_reactor_control(2).py
 #
 #  Copyright 2026 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
