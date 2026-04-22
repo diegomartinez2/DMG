@@ -21,6 +21,9 @@
 #  MA 02110-1301, USA.
 #
 #
+'''
+Este script simula la vida de un generador nuclear termoeléctrico.
+'''
 import numpy as np
 import matplotlib.pyplot as plt
 
