@@ -21,8 +21,10 @@
 #  MA 02110-1301, USA.
 #
 #
-#A code created to solve a quaestion about who have more
-#sisters, boys or girls.
+'''
+A code created to solve a quaestion about who have more
+sisters, boys or girls.
+'''
 import random
 gender = ["boy", "girl"]
 def generate_family(family_size):
