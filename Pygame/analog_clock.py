@@ -1,3 +1,26 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#  analog_clock.py
+#
+#  Copyright 2026 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+#
+#
 """
 Explicación del código:
 
@@ -22,7 +45,10 @@ Notas:
     El código está optimizado para ejecutarse en Pyodide, evitando operaciones de E/S locales y usando un bucle asíncrono.
     Si prefieres otra biblioteca o un enfoque diferente (por ejemplo, un reloj estático con Matplotlib o una interfaz web con HTML5 Canvas), por favor indícalos y puedo adaptar el código.
     Para probar el reloj, asegúrate de tener Pygame instalado (pip install pygame) si lo ejecutas localmente, o usa un entorno compatible con Pyodide para el navegador.
- """   
+ """
+ # ---------------------------
+ # Importación de los módulos
+ # ---------------------------
 import pygame
 import math
 import datetime
@@ -52,10 +78,10 @@ def setup():
 def draw_clock():
     # Fondo blanco
     screen.fill(WHITE)
-    
+
     # Dibujar círculo del reloj
     pygame.draw.circle(screen, BLACK, center, radius, 2)
-    
+
     # Dibujar marcas de hora
     for i in range(12):
         angle = math.radians(i * 30 - 90)  # 30 grados por hora
@@ -71,21 +97,21 @@ def draw_hands():
     seconds = now.second
     minutes = now.minute + seconds / 60
     hours = now.hour % 12 + minutes / 60
-    
+
     # Aguja de segundos (roja)
     second_angle = math.radians(seconds * 6 - 90)  # 6 grados por segundo
     second_length = radius - 20
     x = center[0] + second_length * math.cos(second_angle)
     y = center[1] + second_length * math.sin(second_angle)
     pygame.draw.line(screen, RED, center, (x, y), 2)
-    
+
     # Aguja de minutos (negra)
     minute_angle = math.radians(minutes * 6 - 90)  # 6 grados por minuto
     minute_length = radius - 40
     x = center[0] + minute_length * math.cos(minute_angle)
     y = center[1] + minute_length * math.sin(minute_angle)
     pygame.draw.line(screen, BLACK, center, (x, y), 4)
-    
+
     # Aguja de horas (negra)
     hour_angle = math.radians(hours * 30 - 90)  # 30 grados por hora
     hour_length = radius - 60
@@ -97,7 +123,7 @@ def update_loop():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return False
-    
+
     draw_clock()
     draw_hands()
     pygame.display.flip()
