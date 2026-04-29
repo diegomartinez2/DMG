@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # pyODE example 2: Connecting bodies with joints
 
 import pygame
