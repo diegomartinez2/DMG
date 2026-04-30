@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  untitled.py
+#  untested_code_ballbouncer.py
 #
 #  Copyright 2024 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
