@@ -23,7 +23,8 @@
 #
 # ---------------------------
 # Importación de los módulos
-# ---------------------------import random
+# ---------------------------
+import random
 import tkinter as tk
 from tkinter import ttk
 
