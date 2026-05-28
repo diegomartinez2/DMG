@@ -20,10 +20,13 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
-# laundry-demonology-terminal.py
-# VERSIÓN OFICIAL - THE LAUNDRY COMPUTATIONAL DEMONOLOGY TERMINAL
-# Con login, panel dividido, efecto FTAGHU apocalíptico + BEEP en Linux/macOS
-# ¡NO EJECUTES EL 4 UN VIERNES!
+#
+'''
+laundry-demonology-terminal.py
+VERSIÓN OFICIAL - THE LAUNDRY COMPUTATIONAL DEMONOLOGY TERMINAL
+Con login, panel dividido, efecto FTAGHU apocalíptico + BEEP en Linux/macOS
+¡NO EJECUTES EL 4 UN VIERNES!
+'''
 """
 Este programa simula una terminal de "The Laundry", la oficina del MI6 que mantiene
 a raya a los entes sobrenaturales y trata de evitar el fin del mundo...
