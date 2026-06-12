@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # importar la libreria TK
 import tkinter as tk
 from tkinter import ttk
