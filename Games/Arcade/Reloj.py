@@ -21,6 +21,9 @@
 #  MA 02110-1301, USA.
 #
 #
+'''
+Ejemplo del uso de las librerias arcade para hacer un juego.
+'''
 import math
 import time
 import arcade
