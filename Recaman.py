@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 def secuencia_recaman(n_terminos):
     """Genera los primeros n términos de la secuencia de Recamán.
 
