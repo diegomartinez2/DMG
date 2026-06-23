@@ -1,29 +1,29 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Reloj.py
+#   Reloj.py
 #
-#  Copyright 2026 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
+#   Copyright 2026 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
 #
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
 #
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-#  MA 02110-1301, USA.
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#   MA 02110-1301, USA.
 #
 #
-'''
+"""
 Ejemplo del uso de las librerias arcade para hacer un juego.
-'''
+"""
 import math
 import time
 import arcade
@@ -102,16 +102,18 @@ class ClockGame(arcade.Window):
         def on_click_exit(event):
             arcade.exit()
 
-        # Añadimos la caja de la GUI a la pantalla en la esquina inferior izquierda
-        self.gui_manager.add(
-            arcade.gui.UIAnchorWidget(
-                anchor_x="left",
-                anchor_y="bottom",
-                align_x=20,
-                align_y=20,
-                child=v_box,
-            )
+        # SOLUCIÓN para la versión moderna de la librería Arcade (v3.x): Usamos UIAnchorLayout en lugar del antiguo UIAnchorWidget
+        anchor_layout = arcade.gui.UIAnchorLayout()
+        anchor_layout.add(
+            child=v_box,
+            anchor_x="left",
+            anchor_y="bottom",
+            align_x=20,
+            align_y=20,
         )
+
+        # Añadimos el layout contenedor al administrador de la GUI
+        self.gui_manager.add(anchor_layout)
 
     def on_update(self, delta_time):
         """Lógica del juego: Se ejecuta automáticamente unas 60 veces por segundo."""
