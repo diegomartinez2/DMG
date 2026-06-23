@@ -49,6 +49,9 @@ class ClockGame(arcade.Window):
         # Establece el fondo de la ventana (gris oscuro)
         arcade.set_background_color(arcade.color.DARK_SLATE_GRAY)
 
+        # En Arcade 3.x necesitamos una SpriteList para renderizar los objetos
+        self.sprite_list = None
+
         # Declaración de variables para los Sprites (imágenes)
         self.clock_background = None
         self.hour_hand = None
@@ -64,6 +67,9 @@ class ClockGame(arcade.Window):
 
     def setup(self):
         """Configura los elementos del juego. Se llama una sola vez al inicio."""
+
+        # Inicializamos la lista de sprites
+        self.sprite_list = arcade.SpriteList()
 
         # 1. Cargar el fondo del reloj (512x512) en el centro de la pantalla
         self.clock_background = arcade.Sprite(
@@ -89,6 +95,12 @@ class ClockGame(arcade.Window):
             anchor_y=16,
         )
 
+        # SOLUCIÓN NUEVA: Añadimos los sprites individuales a la lista en el orden de capas correcto
+        # El orden aquí dicta qué se dibuja encima de qué
+        self.sprite_list.append(self.clock_background)  # Al fondo
+        self.sprite_list.append(self.hour_hand)         # En medio
+        self.sprite_list.append(self.minute_hand)       # Al frente
+
         # --- EJEMPLO DE ELEMENTO GUI (Botón de Salida) ---
         # Creamos una caja vertical para organizar los elementos de la interfaz
         v_box = arcade.gui.UIBoxLayout()
@@ -102,7 +114,7 @@ class ClockGame(arcade.Window):
         def on_click_exit(event):
             arcade.exit()
 
-        # SOLUCIÓN para la versión moderna de la librería Arcade (v3.x): Usamos UIAnchorLayout en lugar del antiguo UIAnchorWidget
+        # Usamos UIAnchorLayout (correcto para Arcade 3.x)
         anchor_layout = arcade.gui.UIAnchorLayout()
         anchor_layout.add(
             child=v_box,
@@ -136,6 +148,7 @@ class ClockGame(arcade.Window):
         self.hour_angle = 90 - (hours * 30) - (minutes * 0.5)
 
         # Aplicamos los ángulos calculados a las propiedades de los Sprites
+        # (Modificar las propiedades de los sprites individuales que están dentro de la lista funciona perfectamente)
         self.minute_hand.angle = self.minute_angle
         self.hour_hand.angle = self.hour_angle
 
@@ -145,10 +158,8 @@ class ClockGame(arcade.Window):
         # Limpia la pantalla antes de volver a dibujar
         self.clear()
 
-        # Dibujar los elementos en orden (capas de abajo hacia arriba)
-        self.clock_background.draw()  # El fondo va primero
-        self.hour_hand.draw()  # Las horas abajo
-        self.minute_hand.draw()  # Los minutos encima
+        # SOLUCIÓN NUEVA: Dibujamos toda la lista de sprites en una sola llamada ultrarrápida
+        self.sprite_list.draw()
 
         # Dibujar la interfaz gráfica (GUI) encima de los sprites
         self.gui_manager.draw()
