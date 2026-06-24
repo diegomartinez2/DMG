@@ -71,27 +71,12 @@ class ClockGame(arcade.Window):
             "reloj_fondo.png", center_x=CLOCK_CENTER_X, center_y=CLOCK_CENTER_Y
         )
 
-        # 2. Cargar la manecilla de las horas (256x32) colocada exactamente en el centro del reloj
-        self.hour_hand = arcade.Sprite(
-            "manecilla_horas.png", center_x=CLOCK_CENTER_X, center_y=CLOCK_CENTER_Y
-        )
+        # 2. Cargar la manecilla de las horas (256x32)
+        # Cargamos el sprite de forma nativa sin pasarle el centro en el constructor
+        self.hour_hand = arcade.Sprite("manecilla_horas.png")
 
-        # SOLUCIÓN DEFINITIVA DE ANCLAJE:
-        # Desplazamos la geometría interna de los vértices del Sprite.
-        # Al restar (128 - 16) a la coordenada X de sus puntos, obligamos a que el píxel 16
-        # de la imagen coincida exactamente con el centro físico del objeto (center_x, center_y).
-        desfase_x = 128 - 16
-        self.hour_hand._points = [
-            (p[0] - desfase_x, p[1]) for p in self.hour_hand._points
-        ]
-
-        # 3. Cargar la manecilla de los minutos (256x32) aplicando el mismo desfase geométrico
-        self.minute_hand = arcade.Sprite(
-            "manecilla_minutos.png", center_x=CLOCK_CENTER_X, center_y=CLOCK_CENTER_Y
-        )
-        self.minute_hand._points = [
-            (p[0] - desfase_x, p[1]) for p in self.minute_hand._points
-        ]
+        # 3. Cargar la manecilla de los minutos (256x32)
+        self.minute_hand = arcade.Sprite("manecilla_minutos.png")
 
         # Añadimos los sprites a la lista en orden de capas
         self.sprite_list.append(self.clock_background)
@@ -126,15 +111,31 @@ class ClockGame(arcade.Window):
         minutes = current_time.tm_min
         seconds = current_time.tm_sec
 
-        # CALCULO DE ÁNGULOS EN SENTIDO HORARIO CORREGIDO:
+        # CÁLCULO DE ÁNGULOS EN SENTIDO HORARIO:
         # Partimos de 90° (las 12 en punto) y restamos para avanzar hacia la derecha.
         minute_angle = 90 - (minutes * 6) - (seconds * 0.1)
         hour_angle = 90 - (hours * 30) - (minutes * 0.5)
 
-        # Aplicamos la rotación. Como la geometría interna ya está desplazada,
-        # el motor rotará de forma perfecta sobre el píxel 16 de la manecilla sin moverse del centro.
+        # Aplicamos la rotación a los objetos
         self.minute_hand.angle = minute_angle
         self.hour_hand.angle = hour_angle
+
+        # SOLUCIÓN DE ANCLAJE COMPATIBLE CON ARCADE 3.x:
+        # Como el motor rota sobre el centro del sprite de forma fija, recalculamos la posición
+        # del centro del sprite basándonos en el ángulo actual para mantener el píxel 16 estático.
+        # La distancia desde el centro del sprite (128) al píxel de anclaje (16) es de 112 píxeles.
+        distancia_eje = 128 - 16
+
+        # Convertimos los ángulos a radianes para la librería math
+        rad_min = math.radians(minute_angle)
+        rad_hour = math.radians(hour_angle)
+
+        # Reposicionamos los centros de los sprites para contrarrestar la rotación
+        self.minute_hand.center_x = CLOCK_CENTER_X + distancia_eje * math.cos(rad_min)
+        self.minute_hand.center_y = CLOCK_CENTER_Y + distancia_eje * math.sin(rad_min)
+
+        self.hour_hand.center_x = CLOCK_CENTER_X + distancia_eje * math.cos(rad_hour)
+        self.hour_hand.center_y = CLOCK_CENTER_Y + distancia_eje * math.sin(rad_hour)
 
     def on_draw(self):
         """Renderizado: Dibuja todo en la pantalla."""
