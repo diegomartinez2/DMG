@@ -49,17 +49,13 @@ class ClockGame(arcade.Window):
         # Establece el fondo de la ventana (gris oscuro)
         arcade.set_background_color(arcade.color.DARK_SLATE_GRAY)
 
-        # En Arcade 3.x necesitamos una SpriteList para renderizar los objetos
+        # SpriteList para renderizar objetos en Arcade 3.x
         self.sprite_list = None
 
         # Declaración de variables para los Sprites (imágenes)
         self.clock_background = None
         self.hour_hand = None
         self.minute_hand = None
-
-        # Variables para almacenar los ángulos de rotación
-        self.hour_angle = 0.0
-        self.minute_angle = 0.0
 
         # Administrador para la Interfaz Gráfica de Usuario (GUI)
         self.gui_manager = arcade.gui.UIManager()
@@ -68,53 +64,41 @@ class ClockGame(arcade.Window):
     def setup(self):
         """Configura los elementos del juego. Se llama una sola vez al inicio."""
 
-        # Inicializamos la lista de sprites
         self.sprite_list = arcade.SpriteList()
 
-        # 1. Cargar el fondo del reloj (512x512) en el centro de la pantalla
+        # 1. Cargar el fondo del reloj (512x512)
         self.clock_background = arcade.Sprite(
             "reloj_fondo.png", center_x=CLOCK_CENTER_X, center_y=CLOCK_CENTER_Y
         )
 
         # 2. Cargar la manecilla de las horas (256x32)
-        # Usamos 'anchor_x' para decirle a Arcade que su eje de rotación está a 16 píxeles de la izquierda
-        self.hour_hand = arcade.Sprite(
-            "manecilla_horas.png",
-            center_x=CLOCK_CENTER_X,
-            center_y=CLOCK_CENTER_Y,
-            anchor_x=16,
-            anchor_y=16,
-        )
+        self.hour_hand = arcade.Sprite("manecilla_horas.png")
 
-        # 3. Cargar la manecilla de los minutos (256x32) con el mismo punto de anclaje
-        self.minute_hand = arcade.Sprite(
-            "manecilla_minutos.png",
-            center_x=CLOCK_CENTER_X,
-            center_y=CLOCK_CENTER_Y,
-            anchor_x=16,
-            anchor_y=16,
-        )
+        # CORRECCIÓN DE ANCLAJE EN ARCADE 3.x:
+        # La imagen mide 256 de ancho. Su centro es 128. Queremos que rote en el píxel 16.
+        # Desplazamos el punto de dibujo (center) respecto al eje del reloj para simular el pivote.
+        self.hour_hand.center_x = CLOCK_CENTER_X + (128 - 16)
+        self.hour_hand.center_y = CLOCK_CENTER_Y
 
-        # SOLUCIÓN NUEVA: Añadimos los sprites individuales a la lista en el orden de capas correcto
-        # El orden aquí dicta qué se dibuja encima de qué
-        self.sprite_list.append(self.clock_background)  # Al fondo
-        self.sprite_list.append(self.hour_hand)         # En medio
-        self.sprite_list.append(self.minute_hand)       # Al frente
+        # 3. Cargar la manecilla de los minutos (256x32) con la misma lógica
+        self.minute_hand = arcade.Sprite("manecilla_minutos.png")
+        self.minute_hand.center_x = CLOCK_CENTER_X + (128 - 16)
+        self.minute_hand.center_y = CLOCK_CENTER_Y
 
-        # --- EJEMPLO DE ELEMENTO GUI (Botón de Salida) ---
-        # Creamos una caja vertical para organizar los elementos de la interfaz
+        # Añadimos los sprites a la lista en orden de capas
+        self.sprite_list.append(self.clock_background)
+        self.sprite_list.append(self.hour_hand)
+        self.sprite_list.append(self.minute_hand)
+
+        # --- INTERFAZ GRÁFICA (GUI) ---
         v_box = arcade.gui.UIBoxLayout()
-
-        # Creamos un botón usando arcade.gui
         exit_button = arcade.gui.UIFlatButton(text="Salir del Juego", width=150)
         v_box.add(exit_button)
 
-        # Programamos el evento: qué pasa cuando se hace clic en el botón
         @exit_button.event("on_click")
         def on_click_exit(event):
             arcade.exit()
 
-        # Usamos UIAnchorLayout (correcto para Arcade 3.x)
         anchor_layout = arcade.gui.UIAnchorLayout()
         anchor_layout.add(
             child=v_box,
@@ -123,49 +107,54 @@ class ClockGame(arcade.Window):
             align_x=20,
             align_y=20,
         )
-
-        # Añadimos el layout contenedor al administrador de la GUI
         self.gui_manager.add(anchor_layout)
 
     def on_update(self, delta_time):
-        """Lógica del juego: Se ejecuta automáticamente unas 60 veces por segundo."""
+        """Lógica del juego: Se ejecuta automáticamente unas 60 veces por second."""
 
         # Obtenemos la hora actual del sistema operativo
         current_time = time.localtime()
-        hours = current_time.tm_hour % 12  # Formato de 12 horas
+        hours = current_time.tm_hour % 12
         minutes = current_time.tm_min
         seconds = current_time.tm_sec
 
-        # CALCULAR LOS ÁNGULOS (En Arcade, 0° es a la derecha, sumamos en sentido horario)
-        # Un reloj avanza en sentido horario, por lo que restamos el ángulo para que vaya a la derecha.
+        # CORRECCIÓN DE SENTIDO HORARIO:
+        # En Arcade 0° es a la derecha (las 3 en un reloj).
+        # Para que empiece en las 12 (arriba), partimos de 90°.
+        # Al usar el signo MENOS (-), forzamos a que el ángulo avance hacia la derecha (sentido horario).
 
-        # Ángulo de los minutos: 360 grados / 60 minutos = 6 grados por minuto
-        # Ajustamos el desfase: 90 grados es "las 12" en matemáticas de computación
-        self.minute_angle = 90 - (minutes * 6) - (seconds * 0.1)
+        minute_angle = 90 - (minutes * 6) - (seconds * 0.1)
+        hour_angle = 90 - (hours * 30) - (minutes * 0.5)
 
-        # Ángulo de las horas: 360 grados / 12 horas = 30 grados por hora
-        # Añadimos la fracción de la hora que representan los minutos actuales para que se mueva suavemente
-        self.hour_angle = 90 - (hours * 30) - (minutes * 0.5)
+        # Aplicamos la rotación
+        self.minute_hand.angle = minute_angle
+        self.hour_hand.angle = hour_angle
 
-        # Aplicamos los ángulos calculados a las propiedades de los Sprites
-        # (Modificar las propiedades de los sprites individuales que están dentro de la lista funciona perfectamente)
-        self.minute_hand.angle = self.minute_angle
-        self.hour_hand.angle = self.hour_angle
+        # CORRECCIÓN DINÁMICA DE ROTACIÓN SOBRE PIVOTE EXCENTRICO:
+        # Como Arcade 3.x rota los sprites sobre su centro geométrico, si cambiamos el ángulo,
+        # debemos recalcular matemáticamente dónde queda el centro del sprite para que el extremo (el píxel 16)
+        # se quede "clavado" inmóvil en el centro del reloj (CLOCK_CENTER_X, CLOCK_CENTER_Y).
+
+        distancia_al_pivote = 128 - 16  # Distancia desde el centro del sprite al píxel del eje
+
+        # Convertimos el ángulo a radianes para las funciones de math
+        rad_min = math.radians(minute_angle)
+        rad_hour = math.radians(hour_angle)
+
+        # Aplicamos trigonometría (Órbita circular del centro del sprite alrededor del eje del reloj)
+        self.minute_hand.center_x = CLOCK_CENTER_X + distancia_al_pivote * math.cos(rad_min)
+        self.minute_hand.center_y = CLOCK_CENTER_Y + distancia_al_pivote * math.sin(rad_min)
+
+        self.hour_hand.center_x = CLOCK_CENTER_X + distancia_al_pivote * math.cos(rad_hour)
+        self.hour_hand.center_y = CLOCK_CENTER_Y + distancia_al_pivote * math.sin(rad_hour)
 
     def on_draw(self):
-        """Renderizado: Dibuja todo en la pantalla en cada fotograma."""
-
-        # Limpia la pantalla antes de volver a dibujar
+        """Renderizado: Dibuja todo en la pantalla."""
         self.clear()
-
-        # SOLUCIÓN NUEVA: Dibujamos toda la lista de sprites en una sola llamada ultrarrápida
         self.sprite_list.draw()
-
-        # Dibujar la interfaz gráfica (GUI) encima de los sprites
         self.gui_manager.draw()
 
 
-# --- PUNTO DE ENTRADA DEL PROGRAMA ---
 def main():
     window = ClockGame()
     window.setup()
