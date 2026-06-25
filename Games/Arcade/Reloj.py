@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   Reloj.py
+#   Reloj_Optimizado.py
 #
 #   Copyright 2026 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
@@ -10,21 +10,9 @@
 #   the Free Software Foundation; either version 2 of the License, or
 #   (at your option) any later version.
 #
-#   This program is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU General Public License for more details.
-#
-#   You should have received a copy of the GNU General Public License
-#   along with this program; if not, write to the Free Software
-#   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-#   MA 02110-1301, USA.
-#
-#
 """
-Ejemplo del uso de las librerias arcade para hacer un juego.
+Ejemplo de reloj analógico optimizado usando escala de Sprites en Arcade 3.x.
 """
-import math
 import time
 import arcade
 import arcade.gui
@@ -32,67 +20,96 @@ import arcade.gui
 # --- CONSTANTES ---
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
-SCREEN_TITLE = "Reloj Analógico con Python Arcade"
+SCREEN_TITLE = "Reloj Optimizado - Aprendiendo Escalado"
 
-# Coordenadas del centro de la pantalla donde irá el reloj
 CLOCK_CENTER_X = SCREEN_WIDTH // 2
 CLOCK_CENTER_Y = SCREEN_HEIGHT // 2
 
 
 class ClockGame(arcade.Window):
-    """Clase principal del juego que hereda de arcade.Window"""
+    """Clase principal del juego"""
 
     def __init__(self):
-        # Inicializa la ventana del juego con el tamaño y título
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-
-        # Establece el fondo de la ventana (gris oscuro)
         arcade.set_background_color(arcade.color.DARK_SLATE_GRAY)
 
-        # SpriteList para renderizar objetos en Arcade 3.x
+        # Contenedor optimizado para los Sprites
         self.sprite_list = None
 
-        # Declaración de variables para los Sprites (imágenes)
+        # Variables para los Sprites
         self.clock_background = None
         self.hour_hand = None
         self.minute_hand = None
 
-        # Administrador para la Interfaz Gráfica de Usuario (GUI)
+        # Administrador de la interfaz gráfica (GUI)
         self.gui_manager = arcade.gui.UIManager()
         self.gui_manager.enable()
 
     def setup(self):
-        """Configura los elementos del juego."""
+        """Configura los elementos del juego. Se llama una sola vez."""
         self.sprite_list = arcade.SpriteList()
 
-        # Al estar el eje en el centro de las imágenes, solo las colocas en el centro del reloj
-        self.clock_background = arcade.Sprite("reloj_fondo.png", center_x=CLOCK_CENTER_X, center_y=CLOCK_CENTER_Y)
+        # 1. Cargar el fondo del reloj
+        self.clock_background = arcade.Sprite(
+            "reloj_fondo.png", center_x=CLOCK_CENTER_X, center_y=CLOCK_CENTER_Y
+        )
 
-        # Las nuevas manecillas extendidas con transparencia
-        self.hour_hand = arcade.Sprite("manecilla_horas_nueva.png", center_x=CLOCK_CENTER_X, center_y=CLOCK_CENTER_Y)
-        self.minute_hand = arcade.Sprite("manecilla_minutos_nueva.png", center_x=CLOCK_CENTER_X, center_y=CLOCK_CENTER_Y)
+        # 2. MANECILLA DE LOS MINUTOS (Tamaño original, escala = 1.0)
+        self.minute_hand = arcade.Sprite(
+            "manecilla.png",
+            center_x=CLOCK_CENTER_X,
+            center_y=CLOCK_CENTER_Y,
+            scale=1.0
+        )
 
+        # 3. MANECILLA DE LAS HORAS (Reutiliza la misma imagen, pero más corta y gruesa)
+        # Al usar 'scale', Arcade reduce proporcionalmente el ancho y el alto.
+        # Una escala de 0.65 significa que medirá el 65% de la original.
+        self.hour_hand = arcade.Sprite(
+            "manecilla.png",
+            center_x=CLOCK_CENTER_X,
+            center_y=CLOCK_CENTER_Y,
+            scale=0.65
+        )
+
+        # Añadimos los elementos en orden de capas
         self.sprite_list.append(self.clock_background)
-        self.sprite_list.append(self.hour_hand)
-        self.sprite_list.append(self.minute_hand)
+        self.sprite_list.append(self.hour_hand)       # Las horas abajo
+        self.sprite_list.append(self.minute_hand)     # Los minutos encima
+
+        # --- INTERFAZ GRÁFICA (Botón Salir) ---
+        v_box = arcade.gui.UIBoxLayout()
+        exit_button = arcade.gui.UIFlatButton(text="Salir del Juego", width=150)
+        v_box.add(exit_button)
+
+        @exit_button.event("on_click")
+        def on_click_exit(event):
+            arcade.exit()
+
+        anchor_layout = arcade.gui.UIAnchorLayout()
+        anchor_layout.add(
+            child=v_box, anchor_x="left", anchor_y="bottom", align_x=20, align_y=20
+        )
+        self.gui_manager.add(anchor_layout)
 
     def on_update(self, delta_time):
-        """Lógica del juego."""
+        """Lógica del juego: Actualiza los ángulos unas 60 veces por segundo."""
         current_time = time.localtime()
         hours = current_time.tm_hour % 12
         minutes = current_time.tm_min
         seconds = current_time.tm_sec
 
-        # Calculas los ángulos en sentido horario
+        # Cálculo de ángulos en sentido horario (partiendo de las 12 en punto = 90°)
         minute_angle = 90 - (minutes * 6) - (seconds * 0.1)
         hour_angle = 90 - (hours * 30) - (minutes * 0.5)
 
-        # Al cambiar el ángulo, rotarán perfectamente sobre su propio centro (el eje real)
+        # Aplicamos la rotación. Al estar el eje en el centro perfecto de la imagen,
+        # el motor gráfico las hace girar sin descolocarse lo más mínimo.
         self.minute_hand.angle = minute_angle
         self.hour_hand.angle = hour_angle
 
     def on_draw(self):
-        """Renderizado: Dibuja todo en la pantalla."""
+        """Renderizado de la pantalla."""
         self.clear()
         self.sprite_list.draw()
         self.gui_manager.draw()
