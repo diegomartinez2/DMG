@@ -72,6 +72,10 @@ class ClockGame(arcade.Window):
             scale=0.65
         )
 
+        # Re-escalamos para hacer la agujas del reloj de tamaños adecuados.
+        self.hour_hand.scale_y = 0.80  # s_x
+        self.minute_hand.scale_y = 0.50  # s_y
+
         # Añadimos los elementos en orden de capas
         self.sprite_list.append(self.clock_background)
         self.sprite_list.append(self.hour_hand)       # Las horas abajo
