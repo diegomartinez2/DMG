@@ -100,8 +100,8 @@ class ClockGame(arcade.Window):
         seconds = current_time.tm_sec
 
         # Cálculo de ángulos en sentido horario (partiendo de las 12 en punto = 90°)
-        minute_angle = 90 - (minutes * 6) - (seconds * 0.1)
-        hour_angle = 90 - (hours * 30) - (minutes * 0.5)
+        minute_angle = 90 + (minutes * 6) + (seconds * 0.1)
+        hour_angle = 90 + (hours * 30) + (minutes * 0.5)
 
         # Aplicamos la rotación. Al estar el eje en el centro perfecto de la imagen,
         # el motor gráfico las hace girar sin descolocarse lo más mínimo.
