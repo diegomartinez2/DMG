@@ -12,6 +12,7 @@
 #
 """
 Ejemplo de reloj analógico optimizado usando escala de Sprites en Arcade 3.x.
+Con esto se puede aprender los canceptos básicos de la librería Arcade.
 """
 import time
 import arcade
