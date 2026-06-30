@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   Reloj_Optimizado.py
+#   Reloj.py
 #
 #   Copyright 2026 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
