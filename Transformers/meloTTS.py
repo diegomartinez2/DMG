@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
 '''
 sudo apt-get update && sudo apt-get install -y python3-pip python3-venv espeak-ng ffmpeg git
 
