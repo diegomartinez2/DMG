@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-
+'''
+Calculadora simple hecha en tkinter.
+'''
 from tkinter import *
 from tkinter import messagebox
 
