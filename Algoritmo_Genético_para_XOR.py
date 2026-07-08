@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  Algotitmo_Genético_para_XOR.py
+#  Algoritmo_Genético_para_XOR.py
 #
 #  Copyright 2025 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
