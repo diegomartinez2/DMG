@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from tkinter import*
 import random
 import time
@@ -282,4 +283,3 @@ btnprice=Button(f1,padx=16,pady=8, bd=10 ,fg="black",font=('ariel' ,16,'bold'),w
 btnprice.grid(row=7, column=0)
 
 root.mainloop()
-
