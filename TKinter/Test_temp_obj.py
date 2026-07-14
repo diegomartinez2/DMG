@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+'''
+Simple conversor de temperaturas entre Celsius, Kelvin y Fahrenheit
+'''
 import tkinter as tk
 from tkinter import ttk
 
