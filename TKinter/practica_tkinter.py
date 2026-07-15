@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-
+'''
+Práctica de Tkinter usando la filosofía KISS
+Usando de todo un poco...
+'''
 import tkinter as tk
 from tkinter import ttk, messagebox
 
