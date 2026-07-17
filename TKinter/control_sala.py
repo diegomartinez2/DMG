@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+'''
+Aplicación simple para el control de uso de una sala común.
+Tiene en cuenta las entradas y salidas de personas. 
+'''
 import csv
 import datetime
 import os
