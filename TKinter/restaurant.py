@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+'''
+Aplicación ejemplo de uso de TKinter.
+'''
 from tkinter import*
 import random
 import time
