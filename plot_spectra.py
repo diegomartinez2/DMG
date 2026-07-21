@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  SSCHA_spectarl_ploter.py
+#  plot_spectra.py
 #
 #  Copyright 2022 Diego <diego@u038025>
 #
@@ -79,7 +79,7 @@ def plot_dispersion_SrTiO3(PATH = "GXMGRX",sschaT300_file = './T300/Hessian/dyn_
             lblsschaT300 = ''
             lblsschaT100 = ''
             lblsschaT50 = ''
-    
+
 
         #ax.plot(xaxis, harmonic_dispersion[:,i], color = 'k', ls = 'dashed', label = lbl)
         ax.plot(xaxis, sschaT300_dispersion[:,i], color = 'r', label = lblsschaT300)
