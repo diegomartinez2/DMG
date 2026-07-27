@@ -1,5 +1,7 @@
 #!/bin/bash
-
+# To be used with "Stop_recover.sh":
+#pkill -STOP lmp_mpi
+#pkill -CONT lmp_mpi
 # Tiempo en segundos entre cada comprobación
 INTERVALO=10
 
