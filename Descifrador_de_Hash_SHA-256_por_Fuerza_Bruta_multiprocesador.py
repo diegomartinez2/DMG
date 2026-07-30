@@ -34,6 +34,8 @@ from typing import Optional, Tuple
 
 # --- Parámetros de Configuración ---
 
+# El hash objetivo (debe ser generado a partir de una palabra conocida para la prueba)
+# Ejemplo: 'password' -> c5a6042c13d94066914619736c072c418c3445e4125f16212ac2d951a84f506e
 HASH_OBJETIVO = "c5a6042c13d94066914619736c072c418c3445e4125f16212ac2d951a84f506e"
 CARACTERES_A_PROBAR = string.ascii_lowercase + string.digits  # a-z y 0-9
 LONGITUD_MIN = 1
