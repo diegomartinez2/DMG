@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 def texto_a_braille(texto):
     # Diccionario de traducción simplificado (Braille español / internacional)
     equivalencias_braille = {
@@ -8,12 +10,12 @@ def texto_a_braille(texto):
         'á': '⠷', 'é': '⠮', 'í': '⠌', 'ó': '⠹', 'ú': '⠾',
         ' ': ' ', '.': '⠲', ',': '⠂', '!': '⠔', '?': '⠢'
     }
-    
+
     resultado = []
     for caracter in texto.lower():
         # Busca el símbolo braille, si no existe lo deja igual
         resultado.append(equivalencias_braille.get(caracter, caracter))
-        
+
     return "".join(resultado)
 
 # Prueba del traductor
