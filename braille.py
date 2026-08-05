@@ -1,24 +1,46 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 def texto_a_braille(texto):
-    # Diccionario de traducción simplificado (Braille español / internacional)
+    PREFIJO_NUMERICO = '⠼'
+
+    # Diccionario de traducción (con equivalencias Braille corregidas)
     equivalencias_braille = {
         'a': '⠁', 'b': '⠃', 'c': '⠉', 'd': '⠙', 'e': '⠑', 'f': '⠋', 'g': '⠛',
-        'h': '⠃', 'i': '⠊', 'j': '⠚', 'k': '⠁', 'l': '⠇', 'm': '⠍', 'n': '⠝',
+        'h': 'o', 'i': '⠊', 'j': '⠚', 'k': '⠅', 'l': '⠇', 'm': '⠍', 'n': '⠝',
         'ñ': '⠌', 'o': '⠕', 'p': '⠏', 'q': '⠟', 'r': '⠌', 's': '⠎', 't': '⠞',
         'u': '⠥', 'v': '⠧', 'w': '⠺', 'x': '⠭', 'y': '⠽', 'z': '⠵',
         'á': '⠷', 'é': '⠮', 'í': '⠌', 'ó': '⠹', 'ú': '⠾',
+        # Mapeo de dígitos (1-9 usan 'a'-'i', 0 usa 'j')
+        '1': '⠁', '2': '⠃', '3': '⠉', '4': '⠙', '5': '⠑',
+        '6': '⠋', '7': '⠛', '8': 'h', '9': '⠊', '0': '⠚',
         ' ': ' ', '.': '⠲', ',': '⠂', '!': '⠔', '?': '⠢'
     }
 
     resultado = []
+    en_modo_numero = False
+
     for caracter in texto.lower():
-        # Busca el símbolo braille, si no existe lo deja igual
-        resultado.append(equivalencias_braille.get(caracter, caracter))
+        if caracter.isdigit():
+            # Si entramos en una secuencia de números, añadimos el prefijo '⠼'
+            if not en_modo_numero:
+                resultado.append(PREFIJO_NUMERICO)
+                en_modo_numero = True
+            resultado.append(equivalencias_braille[caracter])
+        else:
+            # Cualquier caracter no numérico (letras, espacios, signos) rompe el modo número
+            en_modo_numero = False
+            resultado.append(equivalencias_braille.get(caracter, caracter))
 
     return "".join(resultado)
 
 # Prueba del traductor
-mensaje = "hola mundo"
-print(f"Texto original: {mensaje}")
-print(f"En Braille:    {texto_a_braille(mensaje)}")
+mensajes = [
+    "hola mundo",
+    "tengo 25 años",
+    "año 2026"
+]
+
+for msj in mensajes:
+    print(f"Texto original: {msj}")
+    print(f"En Braille:     {texto_a_braille(msj)}\n")
