@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 def fibonacci_python(n):
     """Genera la secuencia de Fibonacci hasta el n-ésimo término."""
     secuencia = []
