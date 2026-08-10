@@ -35,14 +35,17 @@ def texto_a_braille(texto):
             resultado.append(equivalencias_braille.get(caracter, caracter))
 
     return "".join(resultado)
+if __name__ == '__main__':
+    import sys
+    # Prueba del traductor
+    mensajes = [
+        "hola mundo",
+        "tengo 25 años",
+        "año 2026"
+    ]
 
-# Prueba del traductor
-mensajes = [
-    "hola mundo",
-    "tengo 25 años",
-    "año 2026"
-]
+    for msj in mensajes:
+        print(f"Texto original: {msj}")
+        print(f"En Braille:     {texto_a_braille(msj)}\n")
 
-for msj in mensajes:
-    print(f"Texto original: {msj}")
-    print(f"En Braille:     {texto_a_braille(msj)}\n")
+    sys.exit(main(sys.argv))
