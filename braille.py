@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+'''
+Texto a braille.
+'''
 def texto_a_braille(texto):
     PREFIJO_NUMERICO = '⠼'
 
