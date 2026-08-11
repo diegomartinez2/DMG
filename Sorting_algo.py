@@ -66,6 +66,9 @@ def merge_sort(arr, start=0, end=None):
             yield arr, k, mid
 
 def quick_sort(arr, low=0, high=None):
+    '''
+    Note: non 'stable'
+    '''
     if high is None:
         high = len(arr) - 1
 
