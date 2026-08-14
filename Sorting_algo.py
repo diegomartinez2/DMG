@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 '''
 For learning reasons, for real use is better to use the ones implemented in math libraries.
+Quicksort is not stable, using it multiple times breaks previous sortings.
 '''
 # ==========================================
 # 1. ALGORITMOS DE ORDENACIÓN (GENERADORES)
