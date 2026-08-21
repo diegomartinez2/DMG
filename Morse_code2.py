@@ -204,11 +204,20 @@ class MorsePlayer:
 
 
 # --- Módulo 3: Aplicación Principal (OCP/DIP) ---
-
+'''
 def main_app(stdscr, text_to_play: str):
     DOT_DURATION = 0.25   # Duración del punto (0.25s)
     DASH_DURATION = 1.0   # Duración de la raya (1.0s)
     FREQ_HZ = 800         # Frecuencia del sonido en Hz
+'''
+def main_app(stdscr, text_to_play: str):
+    # Definir velocidad en WPM directamente
+    WPM = 15  # Cambia este valor (ej. 12, 15, 20)
+
+    DOT_DURATION = 1.2 / WPM
+    DASH_DURATION = DOT_DURATION * 3
+
+    FREQ_HZ = 800
 
     translator = MorseTranslator()
     player = MorsePlayer(stdscr, DOT_DURATION, DASH_DURATION, FREQ_HZ)
