@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   morse_code_player.py
+#   morse_code2.py
 #
 #   Copyright 2026 Diego Martinez Gutierrez <diego.martinez@ehu.eus>
 #
