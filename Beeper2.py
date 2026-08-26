@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+'''
+This is a test code for later use in the morse code script
+'''
 import math
 import struct
 import subprocess
