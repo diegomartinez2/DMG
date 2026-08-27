@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+'''
+Simple beeper, on Linux/Apple it uses the ASCII bell 
+'''
 import platform
 import sys
 import time
