@@ -149,7 +149,7 @@ def main():
     parent_map = obtener_nodos_con_padres(tree)
     root = tree.getroot()
 
-    print("\nBuscando Cávedas de Datos de Erlking...\n")
+    print("\nBuscando Bóvedas de Datos de Erlking...\n")
     resultados = []
 
     for comp in root.findall(".//component"):
