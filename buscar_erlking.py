@@ -17,9 +17,9 @@ LOCATION_NAMES = {
     "cluster_500_sector001_macro": "Avarice I",
     "cluster_500_sector002_macro": "Avarice V",
     "cluster_500_sector003_macro": "Avarice IV",
-    "cluster_501_macro": "Windfall I",
-    "cluster_502_macro": "Windfall III",
-    "cluster_503_macro": "Windfall IV",
+    "cluster_501_sector001_macro": "Windfall I",
+    "cluster_502_sector001_macro": "Windfall III",
+    "cluster_503_sector001_macro": "Windfall IV",
 }
 
 # Coordenadas fijas para ciertas zonas/macros
