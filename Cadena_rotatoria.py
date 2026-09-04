@@ -136,7 +136,7 @@ def calcular_curva_centrifuga_con_correccion(L_anclajes, N, omega, rho, num_iter
 
 if __name__ == "__main__":
     # Parámetros
-    longitud_eje_anclajes = 10.0 # Distancia 'L' entre anclajes en el eje Y
+    longitud_eje_anclajes = 2.0 # Distancia 'L' entre anclajes en el eje Y
     num_puntos = 101             # Número de puntos (N) para discretizar la cadena
     velocidad_angular = 2.0      # omega (rad/s)
     densidad_masa_lineal = 1.0   # rho (kg/m)
