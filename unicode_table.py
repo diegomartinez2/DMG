@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import tkinter as tk
 from tkinter import ttk
 import unicodedata
@@ -18,7 +20,7 @@ def mostrar_unicode():
     # Tabla para mostrar los datos
     columns = ("char", "hex", "shortcut", "name")
     tree = ttk.Treeview(root, columns=columns, show="headings", selectmode="browse")
-    
+
     tree.heading("char", text="Carácter")
     tree.heading("hex", text="Código Hex")
     tree.heading("shortcut", text="Secuencia (Ctrl+Shift+U)")
@@ -31,7 +33,7 @@ def mostrar_unicode():
 
     scrollbar = ttk.Scrollbar(root, orient=tk.VERTICAL, command=tree.yview)
     tree.configure(yscroll=scrollbar.set)
-    
+
     # Corregido: padx y pady en lugar de padding
     tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(10, 0), pady=10)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y, padx=(0, 10), pady=10)
@@ -40,9 +42,9 @@ def mostrar_unicode():
     def cargar_caracteres(filtro=""):
         tree.delete(*tree.get_children())
         filtro = filtro.lower()
-        
+
         rangos = [(32, 127), (160, 895), (8192, 11263), (128512, 128591)]
-        
+
         for inicio, fin in rangos:
             for codepoint in range(inicio, fin):
                 try:
@@ -50,7 +52,7 @@ def mostrar_unicode():
                     name = unicodedata.name(char, "DESCONOCIDO")
                     hex_code = f"{codepoint:04X}"
                     shortcut = f"Ctrl+Shift+U + {hex_code.lstrip('0')} + Enter"
-                    
+
                     if filtro in char.lower() or filtro in name.lower() or filtro in hex_code.lower():
                         tree.insert("", tk.END, values=(char, f"U+{hex_code}", shortcut, name))
                 except Exception:
