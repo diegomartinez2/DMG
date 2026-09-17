@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from flygym import Fly, Camera
 from flygym.simulation import Simulation
 
