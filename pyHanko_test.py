@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+'''
+Script que usa pyHanko para firmar documentos PDF.
+'''
 import asyncio
 from pyhanko.keys import SimpleSigner
 from pyhanko.pdf_utils.incremental_writer import IncrementalPdfFileWriter
