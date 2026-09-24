@@ -27,7 +27,9 @@
 import tkinter as tk
 from tkinter import ttk
 import unicodedata
-
+# ----------
+# Funciones
+# ----------
 def mostrar_unicode():
     root = tk.Tk()
     root.title("Navegador de Tabla Unicode y Atajos Ctrl+Shift+U")
