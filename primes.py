@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 def nth_prime(n):
    primes = [2, 3]
    i = 3
