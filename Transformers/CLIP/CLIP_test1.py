@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # pip install clip torch torchvision pillow
 import clip
 import torch
