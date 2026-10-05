@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # pip install openai pillow
 from openai import OpenAI
 from PIL import Image
