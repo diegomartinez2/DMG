@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # pip install llama-index-llms-ollama llama-index-embeddings-huggingface pillow
 from llama_index.multi_modal_llms.ollama import OllamaMultiModal
 from PIL import Image
