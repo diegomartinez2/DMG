@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+'''
+Programa simple que usa clip para identificar una imagen desde una lista de candidatos
+'''
 # pip install clip torch torchvision pillow
 import clip
 import torch
