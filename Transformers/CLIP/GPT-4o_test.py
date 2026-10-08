@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+'''
+Este script usa gpt-4o para describir una gráfica o imagen.
+Extrae los datos numéricos de una gráfica usando gpt-4o.
+'''
 # pip install openai pillow
 from openai import OpenAI
 from PIL import Image
