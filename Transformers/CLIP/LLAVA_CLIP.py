@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+'''
+Este script usa llava mediante ollama para describir una imagen o gráfica.
+Tratará de extraer los datos con mayor o menor éxito.
+'''
 # pip install llama-index-llms-ollama llama-index-embeddings-huggingface pillow
 from llama_index.multi_modal_llms.ollama import OllamaMultiModal
 from PIL import Image
