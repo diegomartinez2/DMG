@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 '''
 Usa la librería Arcade para crear un indicador analógico.
+Necesita mejoras...
 '''
 import math
 import arcade
