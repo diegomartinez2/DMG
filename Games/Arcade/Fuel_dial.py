@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''
 Usa la librería Arcade para crear un indicador analógico.
-Actualizado para compatibilidad con Arcade v3.x.
+Actualizado para compatibilidad total con Arcade v3.x (uso de SpriteList).
 '''
 import math
 import arcade
@@ -25,13 +25,15 @@ class FuelGaugeWindow(arcade.Window):
         self.dial_height = 300
         self.radius = self.dial_width / 2
 
-        # 1. Cargar la imagen del dial usando un Sprite (método robusto para texturas)
+        # 1. Crear un SpriteList y el Sprite para el dial (Requerido en Arcade 3.x)
+        self.dial_list = arcade.SpriteList()
         try:
             self.dial_sprite = arcade.Sprite("fuel.png")
             self.dial_sprite.center_x = self.dial_center_x
             self.dial_sprite.center_y = self.dial_center_y
             self.dial_sprite.width = self.dial_width
             self.dial_sprite.height = self.dial_height
+            self.dial_list.append(self.dial_sprite)
         except Exception:
             self.dial_sprite = None
 
@@ -47,12 +49,12 @@ class FuelGaugeWindow(arcade.Window):
         self.time_elapsed += delta_time
 
     def on_draw(self):
-        # Limpiar la pantalla (reemplaza a arcade.start_render en Arcade 3.x)
+        # Limpiar la pantalla
         self.clear()
 
-        # 2. Dibujar el dial de combustible
+        # 2. Dibujar el dial de combustible usando el SpriteList
         if self.dial_sprite:
-            self.dial_sprite.draw()
+            self.dial_list.draw()
         else:
             # Respaldo visual si falta la imagen PNG 'fuel.png'
             arcade.draw_circle_filled(self.dial_center_x, self.dial_center_y, self.radius, arcade.color.LIGHT_GRAY)
