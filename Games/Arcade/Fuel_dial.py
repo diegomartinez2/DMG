@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''
 Usa la librería Arcade para crear un indicador analógico.
-Necesita mejoras...
+Actualizado para compatibilidad con Arcade v3.x.
 '''
 import math
 import arcade
@@ -14,15 +14,9 @@ SCREEN_TITLE = "Indicador de Combustible - Arcade"
 class FuelGaugeWindow(arcade.Window):
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-        arcade.set_background_color(arcade.color.DARK_SLATE_GRAY)
+        self.background_color = arcade.color.DARK_SLATE_GRAY
 
-        # 1. Cargar la imagen del dial (asegúrate de tener 'fuel_dial.png' en la misma carpeta)
-        try:
-            self.dial_texture = arcade.load_texture("fuel.png")
-        except Exception:
-            self.dial_texture = None
-
-        # CORREGIDO: Usar nombres personalizados para evitar colisión con arcade.Window
+        # Coordenadas centrales del dial
         self.dial_center_x = SCREEN_WIDTH // 2
         self.dial_center_y = SCREEN_HEIGHT // 2
 
@@ -30,6 +24,16 @@ class FuelGaugeWindow(arcade.Window):
         self.dial_width = 300
         self.dial_height = 300
         self.radius = self.dial_width / 2
+
+        # 1. Cargar la imagen del dial usando un Sprite (método robusto para texturas)
+        try:
+            self.dial_sprite = arcade.Sprite("fuel.png")
+            self.dial_sprite.center_x = self.dial_center_x
+            self.dial_sprite.center_y = self.dial_center_y
+            self.dial_sprite.width = self.dial_width
+            self.dial_sprite.height = self.dial_height
+        except Exception:
+            self.dial_sprite = None
 
         # Longitud de la aguja: 2/3 del radio de la imagen
         self.needle_length = self.radius * (2 / 3)
@@ -43,18 +47,14 @@ class FuelGaugeWindow(arcade.Window):
         self.time_elapsed += delta_time
 
     def on_draw(self):
-        # Iniciar el proceso de renderizado
-        arcade.start_render()
+        # Limpiar la pantalla (reemplaza a arcade.start_render en Arcade 3.x)
+        self.clear()
 
         # 2. Dibujar el dial de combustible
-        if self.dial_texture:
-            arcade.draw_texture_rectangle(
-                self.dial_center_x, self.dial_center_y,
-                self.dial_width, self.dial_height,
-                self.dial_texture
-            )
+        if self.dial_sprite:
+            self.dial_sprite.draw()
         else:
-            # Respaldo visual si falta la imagen PNG
+            # Respaldo visual si falta la imagen PNG 'fuel.png'
             arcade.draw_circle_filled(self.dial_center_x, self.dial_center_y, self.radius, arcade.color.LIGHT_GRAY)
             arcade.draw_circle_outline(self.dial_center_x, self.dial_center_y, self.radius, arcade.color.BLACK, 3)
 
@@ -65,7 +65,7 @@ class FuelGaugeWindow(arcade.Window):
         angle_deg = 90.0 + (progress * 180.0)
         angle_rad = math.radians(angle_deg)
 
-        # 4. Calcular el extremo de la línea roja
+        # 4. Calcular el extremo de la línea de la aguja
         end_x = self.dial_center_x + self.needle_length * math.cos(angle_rad)
         end_y = self.dial_center_y + self.needle_length * math.sin(angle_rad)
 
