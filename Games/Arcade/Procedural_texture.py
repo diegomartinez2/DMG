@@ -13,42 +13,47 @@ class ProceduralTextureWindow(arcade.Window):
 
         self.time_offset = 0.0
 
-        # Usamos un sprite para renderizar la textura de forma robusta y moderna
+        # 1. Crear el sprite con las dimensiones de la pantalla
         self.texture_sprite = arcade.Sprite()
         self.texture_sprite.center_x = SCREEN_WIDTH / 2
         self.texture_sprite.center_y = SCREEN_HEIGHT / 2
         self.texture_sprite.width = SCREEN_WIDTH
         self.texture_sprite.height = SCREEN_HEIGHT
 
+        # 2. En Arcade 3.0+ los sprites se dibujan a través de una SpriteList
+        self.sprite_list = arcade.SpriteList()
+        self.sprite_list.append(self.texture_sprite)
+
     def on_update(self, delta_time: float):
         # Avanzar el tiempo para darle movimiento a la textura
         self.time_offset += delta_time * 1.5
 
-        # 1. Crear la malla de coordenadas con np.meshgrid() para X e Y
+        # Crear la malla de coordenadas con np.meshgrid() para X e Y
         resolution = 150
         x_vals = np.linspace(-15, 15, resolution)
         y_vals = np.linspace(-15, 15, resolution)
         x, y = np.meshgrid(x_vals, y_vals)
 
-        # 2. Aplicar la fórmula de trigonometría
+        # Aplicar la fórmula de trigonometría
         matrix = np.sin(x * 0.2 + self.time_offset) + np.cos(y * 0.2 + self.time_offset)
 
-        # 3. Normalizar los valores estrictamente entre 0 y 255 (tipo uint8)
+        # Normalizar los valores estrictamente entre 0 y 255 (tipo uint8)
         matrix_min = matrix.min()
         matrix_max = matrix.max()
         normalized = (matrix - matrix_min) / (matrix_max - matrix_min) * 255.0
         img_array = normalized.astype(np.uint8)
 
-        # 4. Convertir con Pillow, forzar RGBA y actualizar la textura del sprite
+        # Convertir con Pillow, forzar RGBA y actualizar la textura del sprite
         pil_image = Image.fromarray(img_array, mode="L").convert("RGBA")
         dynamic_texture = arcade.Texture(image=pil_image)
         self.texture_sprite.texture = dynamic_texture
 
     def on_draw(self):
-        arcade.start_render()
+        # En Arcade 3.0+ se utiliza self.clear() en lugar de arcade.start_render()
+        self.clear()
 
-        # Dibujar el sprite que contiene nuestra textura procedural dinámica
-        self.texture_sprite.draw()
+        # Dibujar la lista de sprites con la textura procedural actualizada
+        self.sprite_list.draw()
 
 def main():
     window = ProceduralTextureWindow()
