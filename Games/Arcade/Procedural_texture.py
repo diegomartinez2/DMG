@@ -21,6 +21,10 @@
 #  MA 02110-1301, USA.
 #
 #
+'''
+Uso de Arcade para generar texturas procedurales.
+Ejemplo de textura dinámica.
+'''
 import numpy as np
 import arcade
 from PIL import Image
