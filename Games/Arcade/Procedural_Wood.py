@@ -22,7 +22,10 @@
 #
 #  Generador procedural de textura de madera al estilo POV-Ray con NumPy y Arcade.
 #
-
+'''
+Generación de una textura de madera usando un método procedural.
+Usando Arcade y PIL.
+'''
 import numpy as np
 import arcade
 from PIL import Image
