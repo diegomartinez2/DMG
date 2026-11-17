@@ -24,6 +24,7 @@
 '''
 Simulación de Péndulo Doble caótico con Mecánica Lagragiana y Runge-Kutta 4 en Arcade.
 '''
+# improtación de librerías
 import math
 import arcade
 from collections import deque
@@ -31,7 +32,7 @@ from collections import deque
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 800
 SCREEN_TITLE = "Simulación de Péndulo Doble - Caos Determinista"
-
+# objeto class
 class DoublePendulumWindow(arcade.Window):
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
