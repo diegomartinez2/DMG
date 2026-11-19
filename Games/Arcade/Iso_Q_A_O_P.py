@@ -64,7 +64,7 @@ class IsometricQaopWindow(arcade.Window):
             rim_rgba=(255, 235, 235, 255),
         )
 
-        # Creamos los sprites de las teselas y los ordenamos de atrás hacia adelante (gx + gy)
+        # Ordenamos de mayor a menor (gx + gy): primero el fondo (mayor sy), luego el frente (menor sy)
         self.tiles_by_depth = []
         for gx in range(GRID_SIZE):
             for gy in range(GRID_SIZE):
@@ -75,11 +75,18 @@ class IsometricQaopWindow(arcade.Window):
                 depth = gx + gy
                 self.tiles_by_depth.append((depth, gx, gy, sprite))
 
-        self.tiles_by_depth.sort(key=lambda item: item[0])
+        self.tiles_by_depth.sort(key=lambda item: item[0], reverse=True)
 
-        # Sprite de la esfera
+        # SpriteList reutilizables para no crear objetos en cada fotograma
+        self.back_tiles = arcade.SpriteList()
+        self.front_tiles = arcade.SpriteList()
+        self.sphere_list = arcade.SpriteList()
+
         self.sphere_sprite = arcade.Sprite(self.sphere_texture)
+        self.sphere_list.append(self.sphere_sprite)
+
         self.sync_sphere_position()
+        self.rebuild_depth_lists()
 
     def grid_to_screen(self, gx: int, gy: int, z_height: float = 0.0):
         """Convierte coordenadas lógicas (gx, gy) y altura z a coordenadas de pantalla."""
@@ -93,14 +100,26 @@ class IsometricQaopWindow(arcade.Window):
         self.sphere_sprite.center_x = sx
         self.sphere_sprite.center_y = sy
 
+    def rebuild_depth_lists(self):
+        """Separa las teselas del fondo y del frente respecto a la profundidad actual de la esfera."""
+        self.back_tiles.clear()
+        self.front_tiles.clear()
+        sphere_depth = self.gx + self.gy
+
+        for depth, _, _, sprite in self.tiles_by_depth:
+            if depth > sphere_depth:
+                self.back_tiles.append(sprite)
+            else:
+                self.front_tiles.append(sprite)
+
     def on_key_press(self, symbol: int, modifiers: int):
         """Un paso discreto en la rejilla por cada pulsación de Q, A, O, P."""
         new_gx, new_gy = self.gx, self.gy
 
-        if symbol == arcade.key.A:
-            new_gx -= 1
-        elif symbol == arcade.key.Q:
+        if symbol == arcade.key.Q:
             new_gx += 1
+        elif symbol == arcade.key.A:
+            new_gx -= 1
         elif symbol == arcade.key.O:
             new_gy += 1
         elif symbol == arcade.key.P:
@@ -108,36 +127,21 @@ class IsometricQaopWindow(arcade.Window):
         else:
             return
 
-        # Mantener dentro de los límites de la rejilla
         if 0 <= new_gx < GRID_SIZE and 0 <= new_gy < GRID_SIZE:
             self.gx = new_gx
             self.gy = new_gy
             self.sync_sphere_position()
+            self.rebuild_depth_lists()
 
     def on_draw(self):
         self.clear()
 
-        sphere_depth = self.gx + self.gy
-        sphere_drawn = False
-
-        # Pintamos primero las teselas con menor profundidad (más atrás);
-        # cuando la profundidad alcanza la de la esfera, pintamos la esfera encima
-        # y luego las teselas que quedan por delante de ella.
-        drawn_sphere_list = arcade.SpriteList()
-        drawn_sphere_list.append(self.sphere_sprite)
-
-        front_tiles = arcade.SpriteList()
-        back_tiles = arcade.SpriteList()
-
-        for depth, _, _, sprite in self.tiles_by_depth:
-            if depth <= sphere_depth:
-                back_tiles.append(sprite)
-            else:
-                front_tiles.append(sprite)
-
-        back_tiles.draw()
-        drawn_sphere_list.draw()
-        front_tiles.draw()
+        # 1. Teselas más lejanas (arriba en pantalla)
+        self.back_tiles.draw()
+        # 2. Esfera
+        self.sphere_list.draw()
+        # 3. Teselas más cercanas (abajo en pantalla), tapando lo que quede detrás
+        self.front_tiles.draw()
 
         arcade.draw_text(
             f"Controles: [Q/A] eje X  [O/P] eje Y   |   Pos: ({self.gx}, {self.gy})",
