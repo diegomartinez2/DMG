@@ -97,9 +97,9 @@ class IsometricQaopWindow(arcade.Window):
         """Un paso discreto en la rejilla por cada pulsación de Q, A, O, P."""
         new_gx, new_gy = self.gx, self.gy
 
-        if symbol == arcade.key.Q:
+        if symbol == arcade.key.A:
             new_gx -= 1
-        elif symbol == arcade.key.A:
+        elif symbol == arcade.key.Q:
             new_gx += 1
         elif symbol == arcade.key.O:
             new_gy += 1
