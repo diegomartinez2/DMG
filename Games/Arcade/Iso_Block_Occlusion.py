@@ -15,7 +15,7 @@ SCREEN_TITLE = "Isometría - Bloque Elevado y Oclusión (Q, A, O, P)"
 GRID_SIZE = 8
 TILE_W = 64
 TILE_H = 32
-BLOCK_HEIGHT = 36
+BLOCK_HEIGHT = 40
 
 BLOCK_GX = 4
 BLOCK_GY = 4
@@ -37,28 +37,27 @@ def make_tile_texture(width: int, height: int, fill_rgba, border_rgba) -> arcade
 
 def make_elevated_block_texture(width: int, height: int, z_h: int) -> arcade.Texture:
     """
-    Genera en memoria un bloque isométrico elevado:
-    - Caras laterales visibles abajo (izquierda y derecha).
-    - Cara superior en rombo desplazada 'z_h' píxeles hacia arriba en el lienzo PIL.
+    Genera en memoria un bloque isométrico elevado con altura z_h:
+    - La cara superior está elevada z_h píxeles respecto a la base.
+    - Las caras laterales bajan desde el perímetro superior hasta la base dentro del lienzo.
     """
     total_h = height + z_h
     img = Image.new("RGBA", (width, total_h), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    # En PIL, y=0 es arriba del lienzo; la base del rombo va de y=z_h a y=z_h+height
-    base_y = z_h
     half_w = width // 2
     half_h = height // 2
 
-    top_pt = (half_w, base_y)
-    right_pt = (width - 1, base_y + half_h)
-    bottom_pt = (half_w, base_y + height - 1)
-    left_pt = (0, base_y + half_h)
+    # Cara superior (arriba en PIL, correspondiente a la cota elevada +z_h en Arcade)
+    top_pt = (half_w, 0)
+    right_pt = (width - 1, half_h)
+    bottom_pt = (half_w, height - 1)
+    left_pt = (0, half_h)
 
-    # Puntos inferiores proyectados hacia abajo en PIL (que es +z en pantalla)
-    left_bot = (left_pt[0], left_pt[1] + z_h)
-    bottom_bot = (bottom_pt[0], bottom_pt[1] + z_h)
-    right_bot = (right_pt[0], right_pt[1] + z_h)
+    # Base inferior de las paredes (desplazada +z_h hacia abajo en PIL, dentro de total_h)
+    left_bot = (left_pt[0], min(total_h - 1, left_pt[1] + z_h))
+    bottom_bot = (bottom_pt[0], min(total_h - 1, bottom_pt[1] + z_h))
+    right_bot = (right_pt[0], min(total_h - 1, right_pt[1] + z_h))
 
     # Cara lateral izquierda (más oscura)
     left_face = [left_pt, bottom_pt, bottom_bot, left_bot]
@@ -68,7 +67,7 @@ def make_elevated_block_texture(width: int, height: int, z_h: int) -> arcade.Tex
     right_face = [bottom_pt, right_pt, right_bot, bottom_bot]
     draw.polygon(right_face, fill=(98, 120, 145, 255), outline=(30, 38, 48, 255))
 
-    # Cara superior (más clara)
+    # Cara superior elevada (más clara)
     top_face = [top_pt, right_pt, bottom_pt, left_pt]
     draw.polygon(top_face, fill=(135, 165, 198, 255), outline=(220, 232, 245, 255))
 
@@ -91,7 +90,7 @@ class IsometricOcclusionWindow(arcade.Window):
         self.origin_x = SCREEN_WIDTH // 2
         self.origin_y = 130
 
-        # Posición inicial de la esfera (justo detrás del bloque para probar oclusión al arrancar)
+        # Posición inicial de la esfera (detrás del bloque para ver oclusión al arrancar)
         self.gx = 5
         self.gy = 5
 
@@ -107,7 +106,7 @@ class IsometricOcclusionWindow(arcade.Window):
             rim_rgba=(255, 235, 235, 255),
         )
 
-        # Suelo: lo dibujamos primero completo para que sirva de base limpia
+        # Suelo base
         self.floor_list = arcade.SpriteList()
         for gx in range(GRID_SIZE):
             for gy in range(GRID_SIZE):
@@ -117,8 +116,9 @@ class IsometricOcclusionWindow(arcade.Window):
                 sprite.center_y = sy
                 self.floor_list.append(sprite)
 
-        # Bloque elevado: su ancla inferior en Arcade es la base del rombo (sy),
-        # y su textura crece hacia arriba en +BLOCK_HEIGHT/2
+        # Bloque elevado: su base apoya en (bx, by) y su cara superior sube BLOCK_HEIGHT.
+        # Como la textura tiene alto TILE_H + BLOCK_HEIGHT, centrarla en by + BLOCK_HEIGHT / 2
+        # coloca su borde inferior en by - TILE_H / 2 (al ras de la tesela) y su cima elevada.
         bx, by = self.grid_to_screen(BLOCK_GX, BLOCK_GY)
         self.block_sprite = arcade.Sprite(self.block_texture)
         self.block_sprite.center_x = bx
@@ -128,7 +128,7 @@ class IsometricOcclusionWindow(arcade.Window):
         self.sphere_sprite = arcade.Sprite(self.sphere_texture)
         self.sync_sphere_position()
 
-        # Lista combinada para ordenar por profundidad (de atrás hacia adelante)
+        # Lista ordenada de profundidad
         self.render_order = arcade.SpriteList()
         self.rebuild_render_order()
 
@@ -148,15 +148,12 @@ class IsometricOcclusionWindow(arcade.Window):
         """
         Ordena el bloque y la esfera de atrás hacia adelante:
         Cuanto mayor es (gx + gy), más atrás (arriba) está en pantalla.
-        Si empatan en profundidad, dibujamos primero la esfera y luego el bloque
-        para que el frente del bloque tape la parte trasera de la esfera.
         """
         self.render_order.clear()
         items = [
             (BLOCK_GX + BLOCK_GY, 1, self.block_sprite),
             (self.gx + self.gy, 0, self.sphere_sprite),
         ]
-        # Orden descendente por profundidad (mayor depth primero = más lejos/arriba)
         items.sort(key=lambda entry: (entry[0], entry[1]), reverse=True)
         for _, _, spr in items:
             self.render_order.append(spr)
@@ -176,7 +173,6 @@ class IsometricOcclusionWindow(arcade.Window):
         else:
             return
 
-        # Límites del mapa y colisión sólida con el bloque elevado
         if not (0 <= new_gx < GRID_SIZE and 0 <= new_gy < GRID_SIZE):
             return
         if new_gx == BLOCK_GX and new_gy == BLOCK_GY:
